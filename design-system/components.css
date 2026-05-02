@@ -1,0 +1,387 @@
+/* ============================================================
+   ManaTuner Design System — Signature Component Classes
+   ------------------------------------------------------------
+   Drop-in CSS. Requires tokens.css to be loaded first.
+   Style-agnostic — works with React, Vue, vanilla, etc.
+   ============================================================ */
+
+/* ---------- Reset minimal (optional — delete if your project ships its own) ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ============================================================
+   1) Mana Symbols (WUBRG circles + colorless + hybrid)
+   ============================================================ */
+
+.mana-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  margin: 0 3px;
+  border: 2px solid;
+  transition: all var(--duration-fast) var(--easing-default);
+  box-shadow: var(--shadow-sm);
+  vertical-align: middle;
+}
+.mana-symbol:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.mana-symbol--white {
+  background: linear-gradient(135deg, #fffbf0, #f5f1e8);
+  color: #8b4513;
+  border-color: #daa520;
+}
+.mana-symbol--blue {
+  background: linear-gradient(135deg, #e6f3ff, #cce7ff);
+  color: #0a4f85;
+  border-color: var(--mana-blue);
+}
+.mana-symbol--black {
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  color: #ffffff;
+  border-color: #666666;
+}
+.mana-symbol--red {
+  background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+  color: #a91e22;
+  border-color: var(--mana-red);
+}
+.mana-symbol--green {
+  background: linear-gradient(135deg, #e6ffe6, #ccffcc);
+  color: #005a2f;
+  border-color: var(--mana-green);
+}
+.mana-symbol--generic {
+  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+  color: #333333;
+  border-color: #cccccc;
+}
+
+/* Hybrid mana — pass --c1 / --c2 inline: style="--c1: var(--mana-red); --c2: var(--mana-green)" */
+.mana-symbol--hybrid {
+  background: linear-gradient(45deg, var(--c1, #ccc) 50%, var(--c2, #999) 50%);
+  color: #fff;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   2) Cards (glass on dark, solid on light)
+   ============================================================ */
+
+.ds-card {
+  background: var(--surface-paper);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition:
+    transform var(--duration-normal) var(--easing-default),
+    box-shadow var(--duration-normal) var(--easing-default),
+    border-color var(--duration-normal) var(--easing-default);
+}
+.ds-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--brand-primary-light);
+}
+
+[data-theme='dark'] .ds-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+[data-theme='dark'] .ds-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================================
+   3) Buttons — three tiers
+      Tier 1 (premium): gold gradient — ONE per page max
+      Tier 2 (knowledge): blue→purple — secondary primary
+      Tier 3 (default):  brand primary outlined
+   ============================================================ */
+
+.ds-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: 10px 24px;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-body);
+  font-weight: var(--fw-semibold);
+  font-size: 1rem;
+  text-decoration: none;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--easing-default);
+  overflow: hidden;
+}
+.ds-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-button-hover);
+}
+.ds-btn:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+.ds-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.ds-btn--premium {
+  background: var(--gradient-cta-premium);
+  color: var(--mana-black);
+  font-weight: var(--fw-bold);
+}
+.ds-btn--premium:hover {
+  background: var(--gradient-cta-premium-hover);
+}
+
+.ds-btn--knowledge {
+  background: var(--gradient-cta-knowledge);
+  color: #ffffff;
+}
+.ds-btn--knowledge:hover {
+  background: var(--gradient-cta-knowledge-hover);
+}
+
+.ds-btn--primary {
+  background: var(--brand-primary);
+  color: #ffffff;
+}
+.ds-btn--primary:hover {
+  background: var(--brand-primary-dark);
+}
+
+.ds-btn--outline {
+  background: transparent;
+  border: 2px solid var(--brand-primary);
+  color: var(--brand-primary);
+}
+.ds-btn--outline:hover {
+  background: var(--brand-primary);
+  color: #ffffff;
+}
+
+.ds-btn--ghost {
+  background: transparent;
+  color: var(--text-primary);
+}
+.ds-btn--ghost:hover {
+  background: var(--glass-secondary);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================================
+   4) Hero H1 — WUBRG gradient text
+   ============================================================ */
+
+.ds-hero-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: var(--fw-heavy);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display);
+  background: var(--gradient-hero-wubrg);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ============================================================
+   5) Chips / status badges
+   ============================================================ */
+
+.ds-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--duration-fast) var(--easing-default),
+    box-shadow var(--duration-fast) var(--easing-default);
+  color: #ffffff;
+}
+.ds-chip:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.ds-chip--success {
+  background: linear-gradient(135deg, #00733e, #27ae60);
+}
+.ds-chip--info {
+  background: linear-gradient(135deg, #0e68ab, #4a90e2);
+}
+.ds-chip--warning {
+  background: linear-gradient(135deg, #e9b54c, #f39c12);
+}
+.ds-chip--error {
+  background: linear-gradient(135deg, #d3202a, #e74c3c);
+}
+
+/* ============================================================
+   6) Progress bar (with shimmer)
+   ============================================================ */
+
+.ds-progress {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.ds-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mana-blue), #4a90e2);
+  transition: width var(--duration-slow) var(--easing-default);
+  position: relative;
+}
+.ds-progress__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: ds-shimmer 2s infinite;
+}
+
+/* ============================================================
+   7) Animations
+   ============================================================ */
+
+@keyframes ds-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ds-slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ds-slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes ds-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+@keyframes ds-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+@keyframes ds-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
+  }
+}
+
+.ds-animate-fadeIn {
+  animation: ds-fadeIn 0.5s var(--easing-default);
+}
+.ds-animate-slideInUp {
+  animation: ds-slideInUp 0.6s var(--easing-default);
+}
+.ds-animate-slideInLeft {
+  animation: ds-slideInLeft 0.6s var(--easing-default);
+}
+.ds-animate-pulse {
+  animation: ds-pulse 2s infinite;
+}
+.ds-animate-glow {
+  animation: ds-glow 2s infinite;
+}
+
+/* ============================================================
+   8) A11y — must keep
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-card,
+  .ds-btn,
+  .ds-chip,
+  .ds-animate-fadeIn,
+  .ds-animate-slideInUp,
+  .ds-animate-slideInLeft,
+  .ds-animate-pulse,
+  .ds-animate-glow {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .ds-card {
+    border: 2px solid currentColor;
+  }
+  .mana-symbol {
+    border-width: 3px;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
