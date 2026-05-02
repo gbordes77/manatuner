@@ -1,6 +1,11 @@
 import type { Card } from '@/types'
 import type { ScryfallCard } from '../types/scryfall'
 import { sanitizeString } from '@/lib/validations'
+import {
+  getCachedCard,
+  setCachedCard,
+  clearPersistentScryfallCache,
+} from './scryfallPersistentCache'
 
 const SCRYFALL_API_BASE = 'https://api.scryfall.com'
 const RATE_LIMIT_DELAY = 100 // 100ms entre les requêtes
@@ -122,8 +127,16 @@ const scryfallRequest = async <T>(endpoint: string): Promise<T> => {
 export const searchCardByName = async (name: string): Promise<Card | null> => {
   const cacheKey = name.toLowerCase().trim()
 
+  // L1: in-memory hot cache
   if (cardCache.has(cacheKey)) {
     return cardCache.get(cacheKey)!
+  }
+
+  // L2: IndexedDB persistent warm cache (survives reloads, 30-day TTL)
+  const persisted = await getCachedCard(cacheKey)
+  if (persisted) {
+    cardCache.set(cacheKey, persisted) // promote to hot
+    return persisted
   }
 
   // Liste des variantes à essayer
@@ -143,6 +156,7 @@ export const searchCardByName = async (name: string): Promise<Card | null> => {
 
       const card = convertScryfallCard(response)
       cardCache.set(cacheKey, card)
+      setCachedCard(cacheKey, card).catch(() => {}) // fire-and-forget IDB write
 
       return card
     } catch {
@@ -322,10 +336,14 @@ export const getLandSuggestions = async (colors: string[]): Promise<Card[]> => {
 
 /**
  * Vide le cache (utile pour les tests ou le refresh)
+ *
+ * Clears the in-memory L1 caches synchronously. The IndexedDB L2 cache is
+ * cleared fire-and-forget — callers don't need to await it.
  */
 export const clearCache = (): void => {
   cardCache.clear()
   collectionCache.clear()
+  clearPersistentScryfallCache().catch(() => {})
 }
 
 /**
