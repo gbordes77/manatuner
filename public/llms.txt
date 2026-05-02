@@ -38,7 +38,7 @@ Based on Frank Karsten's research ("How Many Sources Do You Need to Consistently
 
 - [Home](https://www.manatuner.app/): Landing page with feature overview
 - [Deck Analyzer](https://www.manatuner.app/analyzer): Paste your decklist and analyze
-- [Reading Library](https://www.manatuner.app/library): 46 curated competitive MTG articles and podcasts (Karsten, PVDDR, Reid Duke, Saito, Chapin, Zvi Mowshowitz)
+- [Library](https://www.manatuner.app/library): 54 curated competitive MTG resources — articles, podcasts, videos, and references (Karsten, PVDDR, Reid Duke, Saito, Chapin, Zvi Mowshowitz)
 - [User Guide](https://www.manatuner.app/guide): How to use ManaTuner step by step
 - [Mathematics](https://www.manatuner.app/mathematics): The math behind the calculations
 - [Land Glossary](https://www.manatuner.app/land-glossary): Every MTG dual land type ranked
