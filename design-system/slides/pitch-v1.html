@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ManaTuner — Pitch v1</title>
+<meta name="description" content="ManaTuner — Find out if your manabase can support your game plan. Free, no signup, hypergeometric math + the canon of competitive MTG." />
+<meta name="theme-color" content="#1976d2" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     Tokens — values mirror /design-system/tokens.json (edition 2.8)
+     Source: surface.light, color.mana.light, gradient.*, motion.*,
+     typography.*, radius.*, spacing.*, shadow.*.
+     No invented values.
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    /* Surface & ink (token: surface.light, ink.light) */
+    --bg: #F5F3EE;            /* parchment */
+    --paper: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-soft: #555555;
+
+    /* Mana — light theme (token: color.mana.light) */
+    --mana-w: #F8F6D8;
+    --mana-u: #0E68AB;
+    --mana-b: #150B00;
+    --mana-r: #D3202A;
+    --mana-g: #00733E;
+    --mana-gold: #E9B54C;     /* multicolor */
+    --mana-purple: #9c27b0;   /* heroWubrg band (token: gradient.heroWubrg) */
+
+    /* Glow (token: color.mana.glow.light, α=0.6) */
+    --glow-w: rgba(248, 246, 216, 0.6);
+    --glow-u: rgba(14, 104, 171, 0.6);
+    --glow-b: rgba(90, 60, 90, 0.6);
+    --glow-r: rgba(211, 32, 42, 0.6);
+    --glow-g: rgba(0, 115, 62, 0.6);
+
+    /* Brand (token: color.brand) */
+    --brand-primary: #1565C0;
+    --brand-secondary: #7B1FA2;
+    --brand-loadingText: #1976d2;
+
+    /* Knowledge gradient (token: gradient.ctaKnowledge / ctaKnowledgeHover) */
+    --grad-knowledge: linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%);
+    --grad-knowledge-hover: linear-gradient(135deg, #1976D2 0%, #7B1FA2 100%);
+
+    /* Hero WUBRG (token: gradient.heroWubrg) */
+    --grad-wubrg: linear-gradient(135deg, #E9B54C 0%, #0E68AB 25%, #9c27b0 50%, #D3202A 75%, #00733E 100%);
+
+    /* Premium gold CTA — composed from multicolor #E9B54C + --mtg-gold #DAA520
+       (tokens: color.mana.light.multicolor + color.mtgCss.gold). Single-CTA-per-deck. */
+    --grad-gold: linear-gradient(135deg, #E9B54C 0%, #DAA520 100%);
+
+    /* Radius (token: radius) */
+    --r-sm: 4px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-full: 9999px;
+
+    /* Spacing (token: spacing) */
+    --s-xs: 0.25rem;
+    --s-sm: 0.5rem;
+    --s-md: 1rem;
+    --s-lg: 1.5rem;
+    --s-xl: 2rem;
+    --s-2xl: 3rem;
+
+    /* Shadow (token: shadow) */
+    --sh-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --sh-md: 0 4px 8px rgba(0,0,0,0.12);
+    --sh-lg: 0 8px 16px rgba(0,0,0,0.15);
+    --sh-xl: 0 12px 24px rgba(0,0,0,0.18);
+    --sh-button-base: 0 4px 12px rgba(0,0,0,0.1);
+    --sh-button-hover: 0 8px 24px rgba(0,0,0,0.15);
+    --sh-card-hover: 0 12px 32px rgba(0,0,0,0.15);
+    --sh-library-base: 0 2px 14px rgba(14, 104, 171, 0.65), 0 0 18px rgba(125, 180, 255, 0.35);
+    --sh-library-hover: 0 4px 22px rgba(14, 104, 171, 0.85), 0 0 28px rgba(125, 180, 255, 0.65);
+    --sh-gold-base: 0 4px 18px rgba(233, 181, 76, 0.45), 0 0 22px rgba(218, 165, 32, 0.30);
+    --sh-gold-hover: 0 8px 28px rgba(233, 181, 76, 0.65), 0 0 32px rgba(218, 165, 32, 0.50);
+
+    /* Motion (token: motion.transition) */
+    --t-fast: 0.15s ease-out;
+    --t-normal: 0.25s ease-out;
+    --t-slow: 0.35s ease-out;
+    --t-mui: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Typography (token: typography.fontFamily) */
+    --font-body: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+    --font-heading: "Cinzel", "Playfair Display", serif;
+    --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Parchment ground with radial mana glows (composed from token mana hexes) */
+  body {
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 55% 40% at 12% 18%, var(--glow-w) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 22%, var(--glow-u) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 45% at 50% 55%, var(--glow-b) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 12% 85%, var(--glow-r) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 82%, var(--glow-g) 0%, transparent 55%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Slide deck — vertical scroll-snap, one slide per viewport
+     ───────────────────────────────────────────────────────────── */
+  .deck {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: 100vh;
+    scroll-behavior: smooth;
+  }
+
+  .slide {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  /* Slide-counter (top-right, mono caption) */
+  .slide-counter {
+    position: absolute;
+    top: clamp(1rem, 3vh, 2rem);
+    right: clamp(1rem, 4vw, 3rem);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  /* Animation — fade-up on slide entry, stagger children */
+  .reveal { opacity: 0; transform: translateY(20px); }
+  .slide.is-active .reveal {
+    animation: fadeUp 600ms ease-out forwards;
+  }
+  .slide.is-active .reveal:nth-child(1) { animation-delay: 0ms; }
+  .slide.is-active .reveal:nth-child(2) { animation-delay: 75ms; }
+  .slide.is-active .reveal:nth-child(3) { animation-delay: 150ms; }
+  .slide.is-active .reveal:nth-child(4) { animation-delay: 225ms; }
+  .slide.is-active .reveal:nth-child(5) { animation-delay: 300ms; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Typography
+     ───────────────────────────────────────────────────────────── */
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--ink);
+    margin: 0 0 var(--s-md);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+  }
+  h1 { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800; }
+  h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.25; }
+  h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight: 600; line-height: 1.3; letter-spacing: 0.01em; }
+
+  .tagline {
+    font-family: var(--font-body);
+    font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+    color: var(--ink);
+    line-height: 1.5;
+    max-width: 760px;
+    margin: 0 auto var(--s-lg);
+    font-weight: 400;
+  }
+
+  .caption-mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--s-md);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 1 — Hero
+     ───────────────────────────────────────────────────────────── */
+  .hero-title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(3.5rem, 11vw, 8rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--s-lg);
+    background: var(--grad-wubrg);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    /* token: subtle saturate pulse */
+    animation: heroPulse 4s ease-out infinite;
+    will-change: filter, background-position;
+  }
+
+  @keyframes heroPulse {
+    0%, 100% { filter: saturate(1); background-position: 0% 50%; }
+    50%      { filter: saturate(1.1); background-position: 100% 50%; }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.8vw, 1.875rem);
+    color: var(--ink);
+    margin: 0 auto var(--s-lg);
+    max-width: 720px;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-subtagline {
+    font-family: var(--font-mono);
+    font-size: clamp(0.875rem, 1.4vw, 1rem);
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 2 — The Problem (3 cards, hairline rule)
+     ───────────────────────────────────────────────────────────── */
+  .punchline {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(2rem, 5.5vw, 4rem);
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    margin: 0 auto var(--s-2xl);
+    max-width: 900px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--s-lg);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--r-xl);
+    padding: var(--s-xl);
+    box-shadow: var(--sh-button-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-card-hover);
+  }
+  .card-quote {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--ink);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 3 — The Calculator (3 feature cards with mana accents)
+     ───────────────────────────────────────────────────────────── */
+  .feature-card {
+    background: var(--paper);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--r-xl);
+    padding: var(--s-xl);
+    box-shadow: var(--sh-button-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent, var(--brand-primary));
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-card-hover);
+  }
+  .feature-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin: 0 0 var(--s-sm);
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .feature-body {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 4 — The Library
+     ───────────────────────────────────────────────────────────── */
+  .canon-line {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: var(--s-md) var(--s-xl);
+    margin: 0 auto var(--s-xl);
+    max-width: 900px;
+  }
+  .canon-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.4vw, 1.875rem);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    background: var(--grad-knowledge);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .canon-sep {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    opacity: 0.4;
+  }
+
+  /* CTA Tier 2 — knowledge */
+  .cta-knowledge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    background: var(--grad-knowledge);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--r-lg);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: var(--sh-library-base);
+    transition: all var(--t-slow);
+    letter-spacing: 0.02em;
+  }
+  .cta-knowledge:hover {
+    background: var(--grad-knowledge-hover);
+    box-shadow: var(--sh-library-hover);
+    transform: translateY(-1px);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 5 — Why It Matters (WUBRG ribbon)
+     ───────────────────────────────────────────────────────────── */
+  .why-punchline {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin: 0 auto var(--s-lg);
+    max-width: 900px;
+  }
+  .why-sub {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+    color: var(--ink-soft);
+    margin: 0 auto var(--s-2xl);
+    letter-spacing: 0.01em;
+  }
+  .wubrg-ribbon {
+    width: min(640px, 80vw);
+    height: 6px;
+    margin: 0 auto;
+    background: var(--grad-wubrg);
+    border-radius: var(--r-full);
+    box-shadow: var(--sh-sm);
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     SLIDE 6 — Call to Action (Tier 1 gold — used ONCE in the deck)
+     ───────────────────────────────────────────────────────────── */
+  .cta-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    background: var(--grad-gold);
+    color: #1A1A1A;
+    padding: 1rem 2.25rem;
+    border-radius: var(--r-lg);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: var(--sh-gold-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui), filter var(--t-mui);
+  }
+  .cta-gold:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: var(--sh-gold-hover);
+  }
+
+  .cta-url {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-top: var(--s-md);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-meta {
+    margin-top: var(--s-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+  .footer-meta a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+  }
+  .footer-meta a:hover { color: var(--brand-primary); }
+
+  /* ─────────────────────────────────────────────────────────────
+     Side nav dots
+     ───────────────────────────────────────────────────────────── */
+  .nav-dots {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    z-index: 10;
+  }
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--r-full);
+    background: rgba(26,26,26,0.18);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background var(--t-fast), transform var(--t-fast);
+  }
+  .nav-dot:hover { background: rgba(26,26,26,0.4); transform: scale(1.2); }
+  .nav-dot.is-active {
+    background: var(--brand-primary);
+    transform: scale(1.3);
+  }
+
+  /* Hint */
+  .keyboard-hint {
+    position: fixed;
+    bottom: clamp(0.75rem, 2vh, 1.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .keyboard-hint kbd {
+    font-family: var(--font-mono);
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: var(--r-sm);
+    padding: 1px 5px;
+    font-size: 0.625rem;
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     Reduced motion — global token policy
+     (token: motion.reducedMotion)
+     ───────────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .hero-title { animation: none !important; background-position: 0% 50% !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  /* Print fallback */
+  @media print {
+    .deck { height: auto; overflow: visible; }
+    .slide { page-break-after: always; min-height: auto; }
+    .nav-dots, .keyboard-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-dots" aria-label="Slide navigation">
+  <button class="nav-dot is-active" data-slide="1" aria-label="Slide 1 — Hero"></button>
+  <button class="nav-dot" data-slide="2" aria-label="Slide 2 — Problem"></button>
+  <button class="nav-dot" data-slide="3" aria-label="Slide 3 — Calculator"></button>
+  <button class="nav-dot" data-slide="4" aria-label="Slide 4 — Library"></button>
+  <button class="nav-dot" data-slide="5" aria-label="Slide 5 — Why It Matters"></button>
+  <button class="nav-dot" data-slide="6" aria-label="Slide 6 — Try It"></button>
+</nav>
+
+<div class="keyboard-hint">
+  <kbd>↑</kbd> <kbd>↓</kbd> · <kbd>Space</kbd>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- SLIDE 1 — HERO ─────────────────────────────────────────── -->
+  <section class="slide" id="s1" data-slide="1">
+    <span class="slide-counter">01 / 06</span>
+    <div class="slide-inner">
+      <h1 class="hero-title reveal">ManaTuner</h1>
+      <p class="hero-tagline reveal">Find out if your manabase can support your game plan.</p>
+      <p class="hero-subtagline reveal">FREE · NO SIGNUP · HYPERGEOMETRIC MATH</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — THE PROBLEM ──────────────────────────────────── -->
+  <section class="slide" id="s2" data-slide="2">
+    <span class="slide-counter">02 / 06</span>
+    <div class="slide-inner">
+      <h2 class="punchline reveal">Bad manabases lose games.<br/>Good math prevents&nbsp;it.</h2>
+      <div class="cards reveal">
+        <article class="card">
+          <p class="card-quote">Mana screw isn't bad luck — it's bad math.</p>
+        </article>
+        <article class="card">
+          <p class="card-quote">Most builders guess. Pros calculate.</p>
+        </article>
+        <article class="card">
+          <p class="card-quote">Karsten's tables exist for a reason.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — THE CALCULATOR ───────────────────────────────── -->
+  <section class="slide" id="s3" data-slide="3">
+    <span class="slide-counter">03 / 06</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Calculator</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Probability is your manabase.</h2>
+
+      <div class="cards reveal">
+        <article class="feature-card" style="--accent: var(--mana-u);">
+          <h3 class="feature-title">Hypergeometric distribution</h3>
+          <p class="feature-body">Real math, not heuristics. Exact probability you draw the colors you need by the turn you need them.</p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-g);">
+          <h3 class="feature-title">Counts dorks &amp; rocks</h3>
+          <p class="feature-body">Ramp is mana too. Mana dorks, mana rocks, rituals, land auras, treasure — 13 producer types modelled.</p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-r);">
+          <h3 class="feature-title">Curve-by-curve analysis</h3>
+          <p class="feature-body">Turn 1 to turn 6, every cost in your deck, on the play and on the draw, accounting for the mulligan.</p>
+        </article>
+      </div>
+
+      <p class="caption-mono reveal" style="margin-top: var(--s-2xl);">Hypergeometric · Frank Karsten · Bellman</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — THE LIBRARY ──────────────────────────────────── -->
+  <section class="slide" id="s4" data-slide="4">
+    <span class="slide-counter">04 / 06</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Library</p>
+      <h2 class="reveal">The canon of competitive MTG.</h2>
+
+      <div class="canon-line reveal">
+        <span class="canon-name">Karsten</span>
+        <span class="canon-sep">·</span>
+        <span class="canon-name">PVDDR</span>
+        <span class="canon-sep">·</span>
+        <span class="canon-name">Saito</span>
+        <span class="canon-sep">·</span>
+        <span class="canon-name">Chapin</span>
+        <span class="canon-sep">·</span>
+        <span class="canon-name">Budde</span>
+      </div>
+
+      <p class="tagline reveal">Decades of competitive wisdom, one click away.</p>
+
+      <p class="reveal" style="margin-top: var(--s-xl);">
+        <a class="cta-knowledge" href="https://manatuner.app/library" target="_blank" rel="noopener">
+          Open the Library →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — WHY IT MATTERS ───────────────────────────────── -->
+  <section class="slide" id="s5" data-slide="5">
+    <span class="slide-counter">05 / 06</span>
+    <div class="slide-inner">
+      <h2 class="why-punchline reveal">Pro players don't&nbsp;guess.<br/>They calculate.</h2>
+      <p class="why-sub reveal">Now you can too.</p>
+      <div class="wubrg-ribbon reveal" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — CTA ──────────────────────────────────────────── -->
+  <section class="slide" id="s6" data-slide="6">
+    <span class="slide-counter">06 / 06</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">Ready?</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Try it now.</h2>
+
+      <p class="reveal">
+        <a class="cta-gold" href="https://manatuner.app" target="_blank" rel="noopener">
+          Launch ManaTuner
+        </a>
+        <span class="cta-url">manatuner.app</span>
+      </p>
+
+      <p class="footer-meta reveal">
+        Built by Guillaume Bordes ·
+        <a href="https://github.com/gbordes77" target="_blank" rel="noopener">@gbordes77</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Slide activation via IntersectionObserver — drives reveal animation + dot state.
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dots = Array.from(document.querySelectorAll('.nav-dot'));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const idx = slides.indexOf(entry.target);
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+        entry.target.classList.add('is-active');
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      } else if (entry.intersectionRatio < 0.15) {
+        // Reset reveal so re-entering replays the animation
+        entry.target.classList.remove('is-active');
+      }
+    });
+  }, { root: deck, threshold: [0, 0.15, 0.55, 1] });
+
+  slides.forEach((s) => io.observe(s));
+
+  // Dot click → scroll to slide
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Keyboard navigation
+  let currentIdx = 0;
+  const goTo = (i) => {
+    const next = Math.max(0, Math.min(slides.length - 1, i));
+    slides[next].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    currentIdx = next;
+  };
+
+  // Track current index from active dot
+  const indexObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+        currentIdx = slides.indexOf(entry.target);
+      }
+    });
+  }, { root: deck, threshold: 0.55 });
+  slides.forEach((s) => indexObserver.observe(s));
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault();
+      goTo(currentIdx + 1);
+    } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+      e.preventDefault();
+      goTo(currentIdx - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(slides.length - 1);
+    }
+  });
+
+  // Force first slide active on load (IntersectionObserver may not fire for already-visible elements in some browsers)
+  requestAnimationFrame(() => {
+    slides[0].classList.add('is-active');
+    dots[0].classList.add('is-active');
+  });
+</script>
+
+</body>
+</html>

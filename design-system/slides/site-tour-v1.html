@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ManaTuner — Site Tour</title>
+<meta name="description" content="ManaTuner — A guided tour. How the calculator works, what the library contains, and the privacy contract." />
+<meta name="theme-color" content="#1976d2" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     Tokens — mirror /design-system/tokens.json (edition 2.8)
+     No invented values.
+     ───────────────────────────────────────────────────────────── */
+  :root {
+    --bg: #F5F3EE;
+    --paper: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-soft: #555555;
+
+    --mana-w: #F8F6D8;
+    --mana-u: #0E68AB;
+    --mana-b: #150B00;
+    --mana-r: #D3202A;
+    --mana-g: #00733E;
+    --mana-gold: #E9B54C;
+    --mana-purple: #9c27b0;
+
+    --glow-w: rgba(248, 246, 216, 0.6);
+    --glow-u: rgba(14, 104, 171, 0.6);
+    --glow-b: rgba(90, 60, 90, 0.6);
+    --glow-r: rgba(211, 32, 42, 0.6);
+    --glow-g: rgba(0, 115, 62, 0.6);
+
+    --brand-primary: #1565C0;
+    --brand-secondary: #7B1FA2;
+
+    --grad-knowledge: linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%);
+    --grad-knowledge-hover: linear-gradient(135deg, #1976D2 0%, #7B1FA2 100%);
+    --grad-wubrg: linear-gradient(135deg, #E9B54C 0%, #0E68AB 25%, #9c27b0 50%, #D3202A 75%, #00733E 100%);
+    --grad-gold: linear-gradient(135deg, #E9B54C 0%, #DAA520 100%);
+
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-full: 9999px;
+    --s-xs: 0.25rem; --s-sm: 0.5rem; --s-md: 1rem; --s-lg: 1.5rem; --s-xl: 2rem; --s-2xl: 3rem;
+
+    --sh-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --sh-md: 0 4px 8px rgba(0,0,0,0.12);
+    --sh-lg: 0 8px 16px rgba(0,0,0,0.15);
+    --sh-button-base: 0 4px 12px rgba(0,0,0,0.1);
+    --sh-button-hover: 0 8px 24px rgba(0,0,0,0.15);
+    --sh-card-hover: 0 12px 32px rgba(0,0,0,0.15);
+    --sh-library-base: 0 2px 14px rgba(14, 104, 171, 0.65), 0 0 18px rgba(125, 180, 255, 0.35);
+    --sh-library-hover: 0 4px 22px rgba(14, 104, 171, 0.85), 0 0 28px rgba(125, 180, 255, 0.65);
+    --sh-gold-base: 0 4px 18px rgba(233, 181, 76, 0.45), 0 0 22px rgba(218, 165, 32, 0.30);
+    --sh-gold-hover: 0 8px 28px rgba(233, 181, 76, 0.65), 0 0 32px rgba(218, 165, 32, 0.50);
+
+    --t-fast: 0.15s ease-out;
+    --t-normal: 0.25s ease-out;
+    --t-slow: 0.35s ease-out;
+    --t-mui: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --font-body: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+    --font-heading: "Cinzel", "Playfair Display", serif;
+    --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 55% 40% at 12% 18%, var(--glow-w) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 22%, var(--glow-u) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 45% at 50% 55%, var(--glow-b) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 12% 85%, var(--glow-r) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 40% at 88% 82%, var(--glow-g) 0%, transparent 55%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* Deck framing */
+  .deck {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+    height: 100vh;
+    scroll-behavior: smooth;
+  }
+  .slide {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    min-height: 100vh;
+    padding: clamp(2rem, 5vh, 4rem) clamp(1.5rem, 6vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .slide-inner {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .slide-counter {
+    position: absolute;
+    top: clamp(1rem, 3vh, 2rem);
+    right: clamp(1rem, 4vw, 3rem);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  /* Reveal animation */
+  .reveal { opacity: 0; transform: translateY(20px); }
+  .slide.is-active .reveal { animation: fadeUp 600ms ease-out forwards; }
+  .slide.is-active .reveal:nth-child(1) { animation-delay: 0ms; }
+  .slide.is-active .reveal:nth-child(2) { animation-delay: 75ms; }
+  .slide.is-active .reveal:nth-child(3) { animation-delay: 150ms; }
+  .slide.is-active .reveal:nth-child(4) { animation-delay: 225ms; }
+  .slide.is-active .reveal:nth-child(5) { animation-delay: 300ms; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Typography */
+  h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--ink);
+    margin: 0 0 var(--s-md);
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+  }
+  h1 { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800; }
+  h2 { font-size: clamp(1.75rem, 4.5vw, 3rem); font-weight: 700; line-height: 1.25; }
+  h3 { font-size: clamp(1.125rem, 2vw, 1.5rem); font-weight: 600; line-height: 1.3; letter-spacing: 0.01em; }
+
+  .tagline {
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    color: var(--ink);
+    line-height: 1.5;
+    max-width: 760px;
+    margin: 0 auto var(--s-lg);
+    font-weight: 400;
+  }
+  .caption-mono {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: var(--s-md);
+  }
+
+  /* Cover (smaller hero than pitch deck) */
+  .cover-title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    margin: 0 0 var(--s-md);
+    background: var(--grad-wubrg);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: heroPulse 4s ease-out infinite;
+    will-change: filter, background-position;
+  }
+  @keyframes heroPulse {
+    0%, 100% { filter: saturate(1); background-position: 0% 50%; }
+    50%      { filter: saturate(1.1); background-position: 100% 50%; }
+  }
+  .cover-sub {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+    color: var(--ink);
+    margin: 0 0 var(--s-lg);
+    letter-spacing: 0.02em;
+  }
+
+  /* Generic card grids */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--s-lg);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--s-lg);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--s-md);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Feature card with mana-color accent stripe */
+  .feature-card {
+    background: var(--paper);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--r-xl);
+    padding: var(--s-xl);
+    box-shadow: var(--sh-button-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent, var(--brand-primary));
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-card-hover);
+  }
+  .feature-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin: 0 0 var(--s-sm);
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .feature-body {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Step card with numbered badge */
+  .step-card {
+    background: var(--paper);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--r-xl);
+    padding: var(--s-xl);
+    box-shadow: var(--sh-button-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui);
+    text-align: left;
+    position: relative;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-card-hover);
+  }
+  .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--r-full);
+    background: var(--accent, var(--brand-primary));
+    color: #fff;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-bottom: var(--s-md);
+  }
+
+  /* Track row — vertical list of 5 tracks */
+  .track-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-md);
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .track-row {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: center;
+    gap: var(--s-lg);
+    background: var(--paper);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--r-lg);
+    padding: var(--s-md) var(--s-lg);
+    box-shadow: var(--sh-sm);
+    transition: transform var(--t-mui), box-shadow var(--t-mui);
+  }
+  .track-row:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sh-button-hover);
+  }
+  .track-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--r-md);
+    background: var(--accent, var(--brand-primary));
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .track-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin: 0 0 4px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .track-tagline {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Pillars (slide 7) */
+  .pillar-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-md);
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .pillar {
+    padding: var(--s-md) var(--s-lg);
+    border-left: 3px solid var(--brand-primary);
+    background: rgba(255,255,255,0.5);
+    border-radius: 0 var(--r-md) var(--r-md) 0;
+  }
+  .pillar-title {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .pillar-body {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Routes block */
+  .routes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-sm) var(--s-md);
+    margin: var(--s-xl) auto;
+    max-width: 780px;
+  }
+  .route-chip {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: var(--r-full);
+    padding: 0.375rem 0.875rem;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  /* Knowledge CTA (Tier 2) */
+  .cta-knowledge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    background: var(--grad-knowledge);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--r-lg);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: var(--sh-library-base);
+    transition: all var(--t-slow);
+    letter-spacing: 0.02em;
+  }
+  .cta-knowledge:hover {
+    background: var(--grad-knowledge-hover);
+    box-shadow: var(--sh-library-hover);
+    transform: translateY(-1px);
+  }
+
+  /* Gold CTA Tier 1 — used ONCE (slide 8) */
+  .cta-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    background: var(--grad-gold);
+    color: #1A1A1A;
+    padding: 1rem 2.25rem;
+    border-radius: var(--r-lg);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: var(--sh-gold-base);
+    transition: transform var(--t-mui), box-shadow var(--t-mui), filter var(--t-mui);
+  }
+  .cta-gold:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    box-shadow: var(--sh-gold-hover);
+  }
+  .cta-url {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-top: var(--s-md);
+    letter-spacing: 0.05em;
+  }
+  .footer-meta {
+    margin-top: var(--s-2xl);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+  .footer-meta a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted currentColor;
+  }
+  .footer-meta a:hover { color: var(--brand-primary); }
+
+  /* WUBRG ribbon */
+  .wubrg-ribbon {
+    width: min(440px, 70vw);
+    height: 4px;
+    margin: 0 auto;
+    background: var(--grad-wubrg);
+    border-radius: var(--r-full);
+    box-shadow: var(--sh-sm);
+  }
+
+  /* Nav dots */
+  .nav-dots {
+    position: fixed;
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    z-index: 10;
+  }
+  .nav-dot {
+    width: 10px; height: 10px;
+    border-radius: var(--r-full);
+    background: rgba(26,26,26,0.18);
+    border: none; padding: 0; cursor: pointer;
+    transition: background var(--t-fast), transform var(--t-fast);
+  }
+  .nav-dot:hover { background: rgba(26,26,26,0.4); transform: scale(1.2); }
+  .nav-dot.is-active { background: var(--brand-primary); transform: scale(1.3); }
+
+  .keyboard-hint {
+    position: fixed;
+    bottom: clamp(0.75rem, 2vh, 1.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .keyboard-hint kbd {
+    font-family: var(--font-mono);
+    background: rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: var(--r-sm);
+    padding: 1px 5px;
+    font-size: 0.625rem;
+  }
+
+  /* Reduced motion (token: motion.reducedMotion) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .cover-title { animation: none !important; background-position: 0% 50% !important; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+  }
+
+  @media print {
+    .deck { height: auto; overflow: visible; }
+    .slide { page-break-after: always; min-height: auto; }
+    .nav-dots, .keyboard-hint { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav-dots" aria-label="Slide navigation">
+  <button class="nav-dot is-active" data-slide="1" aria-label="Cover"></button>
+  <button class="nav-dot" data-slide="2" aria-label="Two surfaces"></button>
+  <button class="nav-dot" data-slide="3" aria-label="How it works"></button>
+  <button class="nav-dot" data-slide="4" aria-label="Outputs"></button>
+  <button class="nav-dot" data-slide="5" aria-label="Library tracks"></button>
+  <button class="nav-dot" data-slide="6" aria-label="Library features"></button>
+  <button class="nav-dot" data-slide="7" aria-label="Values"></button>
+  <button class="nav-dot" data-slide="8" aria-label="Try it"></button>
+</nav>
+
+<div class="keyboard-hint">
+  <kbd>↑</kbd> <kbd>↓</kbd> · <kbd>Space</kbd>
+</div>
+
+<main class="deck" id="deck">
+
+  <!-- SLIDE 1 — COVER ────────────────────────────────────────── -->
+  <section class="slide" id="s1" data-slide="1">
+    <span class="slide-counter">01 / 08</span>
+    <div class="slide-inner">
+      <p class="caption-mono reveal" style="margin-bottom: var(--s-lg);">A GUIDED TOUR</p>
+      <h1 class="cover-title reveal">ManaTuner</h1>
+      <p class="cover-sub reveal">How the site works.</p>
+      <div class="wubrg-ribbon reveal" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 2 — TWO SURFACES ─────────────────────────────────── -->
+  <section class="slide" id="s2" data-slide="2">
+    <span class="slide-counter">02 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">Overview</p>
+      <h2 class="reveal">Two surfaces under one identity.</h2>
+      <p class="tagline reveal" style="margin-bottom: var(--s-2xl);">
+        A calculator that does the math you'd skip, and a library that surfaces what the pros have already written.
+      </p>
+
+      <div class="grid-2 reveal">
+        <article class="feature-card" style="--accent: var(--mana-u);">
+          <h3 class="feature-title">The Calculator</h3>
+          <p class="feature-body">
+            Paste a decklist. See exactly when each spell becomes castable —
+            turn by turn, on the play and on the draw. Hypergeometric math, no guessing.
+          </p>
+        </article>
+        <article class="feature-card" style="--accent: var(--brand-secondary);">
+          <h3 class="feature-title">The Library</h3>
+          <p class="feature-body">
+            54 curated resources from the canon of competitive MTG.
+            Karsten, PVDDR, Saito, Chapin, Budde — one click away, organised by format intent.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 — HOW THE CALCULATOR WORKS ─────────────────────── -->
+  <section class="slide" id="s3" data-slide="3">
+    <span class="slide-counter">03 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Calculator · Workflow</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Three steps. A few seconds.</h2>
+
+      <div class="grid-3 reveal">
+        <article class="step-card" style="--accent: var(--mana-u);">
+          <span class="step-badge">01</span>
+          <h3 class="feature-title">Paste your decklist</h3>
+          <p class="feature-body">
+            MTGA export, plain text, one card per line. Split cards, DFCs, sideboards
+            and Arena set codes are auto-normalised. Scryfall validates every name.
+          </p>
+        </article>
+        <article class="step-card" style="--accent: var(--mana-g);">
+          <span class="step-badge">02</span>
+          <h3 class="feature-title">The math runs in your browser</h3>
+          <p class="feature-body">
+            Hypergeometric distribution per turn × per mana cost.
+            Monte Carlo mulligan over 10,000 hands. Bellman keep/mulligan thresholds.
+            Nothing leaves your device.
+          </p>
+        </article>
+        <article class="step-card" style="--accent: var(--mana-r);">
+          <span class="step-badge">03</span>
+          <h3 class="feature-title">Read the verdict</h3>
+          <p class="feature-body">
+            Castability % for every cost. Mulligan guidance. Ramp accounting.
+            Post-board sideboard editor. Save the analysis locally — no signup, no account.
+          </p>
+        </article>
+      </div>
+
+      <p class="caption-mono reveal" style="margin-top: var(--s-2xl);">
+        Hypergeometric · Frank Karsten · Bellman · Fisher–Yates
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 4 — WHAT THE MATH GIVES YOU ──────────────────────── -->
+  <section class="slide" id="s4" data-slide="4">
+    <span class="slide-counter">04 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Calculator · Outputs</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Four lenses on your manabase.</h2>
+
+      <div class="grid-4 reveal">
+        <article class="feature-card" style="--accent: var(--mana-u);">
+          <h3 class="feature-title">Castability per turn</h3>
+          <p class="feature-body">
+            Probability of casting each mana cost on T1, T2, T3 and beyond — on the play AND on the draw.
+          </p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-w);">
+          <h3 class="feature-title">Mulligan thresholds</h3>
+          <p class="feature-body">
+            Bellman keep/mulligan EVs for opening hands of 7, 6, 5 cards. London mulligan rules.
+          </p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-g);">
+          <h3 class="feature-title">Ramp is mana too</h3>
+          <p class="feature-body">
+            13 producer types automatically detected: mana dorks, rocks, rituals, land auras, doublers, landfall, treasure…
+          </p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-r);">
+          <h3 class="feature-title">Post-board analysis</h3>
+          <p class="feature-body">
+            Sideboard swap editor recomputes the manabase for the matchup you're prepping.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — LIBRARY TRACKS ───────────────────────────────── -->
+  <section class="slide" id="s5" data-slide="5">
+    <span class="slide-counter">05 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Library</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-xl);">Five format-aware tracks.</h2>
+      <p class="tagline reveal" style="margin-bottom: var(--s-xl);">
+        Each track is a curated path through the canon — pick where you are, see what's next.
+      </p>
+
+      <div class="track-list reveal">
+        <div class="track-row">
+          <div class="track-badge" style="--accent: var(--mana-w); background: var(--mana-w); color: #1A1A1A;">★</div>
+          <div>
+            <p class="track-title">Your First FNM</p>
+            <p class="track-tagline">Onboarding for new tournament players — formats, rules, common pitfalls.</p>
+          </div>
+        </div>
+        <div class="track-row">
+          <div class="track-badge" style="--accent: var(--mana-u); background: var(--mana-u);">RCQ</div>
+          <div>
+            <p class="track-title">Preparing for an RCQ</p>
+            <p class="track-tagline">Regional Championship qualifier prep — sideboarding, metagaming, mental game.</p>
+          </div>
+        </div>
+        <div class="track-row">
+          <div class="track-badge" style="--accent: var(--mana-r); background: var(--mana-r);">PT</div>
+          <div>
+            <p class="track-title">Pro Tour</p>
+            <p class="track-tagline">The highest level of competitive theory — Karsten, PVDDR, Saito, Chapin, Budde.</p>
+          </div>
+        </div>
+        <div class="track-row">
+          <div class="track-badge" style="--accent: var(--brand-secondary); background: var(--brand-secondary);">👑</div>
+          <div>
+            <p class="track-title">Commander Pod</p>
+            <p class="track-tagline">Casual multiplayer, weekly pod, EDH theory — EDHREC, Command Zone, Game Knights.</p>
+          </div>
+        </div>
+        <div class="track-row">
+          <div class="track-badge" style="--accent: var(--mana-g); background: var(--mana-g);">📦</div>
+          <div>
+            <p class="track-title">Limited</p>
+            <p class="track-tagline">Draft &amp; Sealed strategy — Limited Resources, 17lands, set-by-set archetypes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — LIBRARY FEATURES ─────────────────────────────── -->
+  <section class="slide" id="s6" data-slide="6">
+    <span class="slide-counter">06 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The Library · Features</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Built to be used, not just browsed.</h2>
+
+      <div class="grid-4 reveal">
+        <article class="feature-card" style="--accent: var(--mana-u);">
+          <h3 class="feature-title">Full-text search</h3>
+          <p class="feature-body">Find any article by author, title, or content.</p>
+        </article>
+        <article class="feature-card" style="--accent: var(--brand-secondary);">
+          <h3 class="feature-title">Multi-axis filters</h3>
+          <p class="feature-body">Category × level × language × medium. URL-stateful — shareable links.</p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-g);">
+          <h3 class="feature-title">Reading progress</h3>
+          <p class="feature-body">Bookmarks and read state stored in your browser only.</p>
+        </article>
+        <article class="feature-card" style="--accent: var(--mana-r);">
+          <h3 class="feature-title">Citations &amp; feeds</h3>
+          <p class="feature-body">BibTeX + Markdown exports. RSS + JSON feeds. Dynamic sitemap.</p>
+        </article>
+      </div>
+
+      <p class="reveal" style="margin-top: var(--s-2xl);">
+        <a class="cta-knowledge" href="https://manatuner.app/library" target="_blank" rel="noopener">
+          Open the Library →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- SLIDE 7 — VALUES ───────────────────────────────────────── -->
+  <section class="slide" id="s7" data-slide="7">
+    <span class="slide-counter">07 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">The contract</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-2xl);">Free. No signup. No backend.</h2>
+
+      <div class="pillar-list reveal">
+        <div class="pillar" style="border-left-color: var(--mana-u);">
+          <p class="pillar-title">Everything runs in your browser</p>
+          <p class="pillar-body">Your decklists, your reading history, your bookmarks — all stored in localStorage. Nothing is uploaded.</p>
+        </div>
+        <div class="pillar" style="border-left-color: var(--mana-g);">
+          <p class="pillar-title">No tracking, no analytics, no ads</p>
+          <p class="pillar-body">No third-party scripts. No account system. No data warehouse. Nothing to opt out of.</p>
+        </div>
+        <div class="pillar" style="border-left-color: var(--mana-gold);">
+          <p class="pillar-title">MIT licensed, built by one person</p>
+          <p class="pillar-body">Open source. Audit the code, fork the project, run your own copy. Built by Guillaume Bordes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE 8 — ROUTES + CTA ─────────────────────────────────── -->
+  <section class="slide" id="s8" data-slide="8">
+    <span class="slide-counter">08 / 08</span>
+    <div class="slide-inner">
+      <p class="eyebrow reveal">Sitemap</p>
+      <h2 class="reveal" style="margin-bottom: var(--s-md);">Try it now.</h2>
+
+      <div class="routes reveal">
+        <span class="route-chip">manatuner.app/</span>
+        <span class="route-chip">/analyzer</span>
+        <span class="route-chip">/library</span>
+        <span class="route-chip">/guide</span>
+        <span class="route-chip">/mathematics</span>
+        <span class="route-chip">/land-glossary</span>
+      </div>
+
+      <p class="reveal" style="margin-top: var(--s-lg);">
+        <a class="cta-gold" href="https://manatuner.app" target="_blank" rel="noopener">
+          Launch ManaTuner
+        </a>
+        <span class="cta-url">manatuner.app</span>
+      </p>
+
+      <p class="footer-meta reveal">
+        Built by Guillaume Bordes ·
+        <a href="https://github.com/gbordes77" target="_blank" rel="noopener">@gbordes77</a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dots = Array.from(document.querySelectorAll('.nav-dot'));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const idx = slides.indexOf(entry.target);
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+        entry.target.classList.add('is-active');
+        dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+      } else if (entry.intersectionRatio < 0.15) {
+        entry.target.classList.remove('is-active');
+      }
+    });
+  }, { root: deck, threshold: [0, 0.15, 0.55, 1] });
+
+  slides.forEach((s) => io.observe(s));
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      slides[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  let currentIdx = 0;
+  const goTo = (i) => {
+    const next = Math.max(0, Math.min(slides.length - 1, i));
+    slides[next].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    currentIdx = next;
+  };
+
+  const indexObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.55) {
+        currentIdx = slides.indexOf(entry.target);
+      }
+    });
+  }, { root: deck, threshold: 0.55 });
+  slides.forEach((s) => indexObserver.observe(s));
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault();
+      goTo(currentIdx + 1);
+    } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
+      e.preventDefault();
+      goTo(currentIdx - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(slides.length - 1);
+    }
+  });
+
+  requestAnimationFrame(() => {
+    slides[0].classList.add('is-active');
+    dots[0].classList.add('is-active');
+  });
+</script>
+
+</body>
+</html>
