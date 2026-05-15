@@ -1,0 +1,37 @@
+# ─── ManaTuner Design System · build targets ─────────────────────────
+# Usage:
+#   make -f Makefile.ds ds-pdf      # regenerate the A4 brand book PDF
+#   make -f Makefile.ds ds-commit   # commit the design-system folder
+#   make -f Makefile.ds ds-tag      # tag the current edition
+
+DS_DIR := design-system
+EDITION := 2.6
+
+ds-pdf:
+	@if [ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]; then \
+		BROWSER="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; \
+	else \
+		BROWSER="/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"; \
+	fi; \
+	"$$BROWSER" --headless --disable-gpu --no-pdf-header-footer \
+		--print-to-pdf="$(PWD)/$(DS_DIR)/brand-book-a4.pdf" \
+		"file://$(PWD)/$(DS_DIR)/brand-book-a4.html"
+	@echo "✓ Regenerated $(DS_DIR)/brand-book-a4.pdf"
+
+ds-commit:
+	git add $(DS_DIR)/
+	git commit -m "chore(design-system): edition $(EDITION) update"
+
+ds-tag:
+	git tag -a design-system-v$(EDITION) -m "Light-only edition · tokens + brand book"
+	@echo "✓ Tagged design-system-v$(EDITION)"
+
+ds-status:
+	@echo "Design system files:"
+	@ls -la $(DS_DIR)/
+	@echo ""
+	@echo "Current edition: $(EDITION)"
+	@echo "Source of truth: $(DS_DIR)/BRANDBOOK.md"
+	@echo "Machine source : $(DS_DIR)/tokens.json"
+
+.PHONY: ds-pdf ds-commit ds-tag ds-status

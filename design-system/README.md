@@ -1,175 +1,156 @@
-# ManaTuner Design System — Portable Export
+# ManaTuner Design System
 
-Self-contained design system extracted from ManaTuner v2.6+. Copy this whole folder into any new project and pick the bridge that matches your stack.
+**Edition 2.6 · Light theme · Reference manual**
 
-```
-design-system/
-├── README.md            ← you are here
-├── BRANDBOOK.md         ← the rules (read first if adapting)
-├── tokens.json          ← W3C Design Tokens — universal source of truth
-├── tokens.css           ← CSS custom properties — drop-in for any web stack
-├── tokens.ts            ← TypeScript export — for JS/TS apps
-├── mui-theme.ts         ← React + MUI bridge (light + dark)
-├── tailwind.preset.js   ← Tailwind v3+ preset
-└── components.css       ← signature classes (.ds-btn, .ds-card, .mana-symbol, …)
-```
+This folder is the portable, self-contained design system for ManaTuner. It documents the visual & interaction laws and exports them in every format a consumer might need: machine-readable tokens, CSS variables, typed TypeScript, a Material UI theme, a Tailwind preset, reference component styles, and a rendered showcase.
+
+> **Dark theme is intentionally excluded** from this edition. See [`BRANDBOOK.md` §10](./BRANDBOOK.md#10-edition-notes) for the reason and the path forward.
+
+---
+
+## Folder contents
+
+| File                 | Purpose                                                                   |
+| -------------------- | ------------------------------------------------------------------------- |
+| `BRANDBOOK.md`       | Prose source of truth — voice, laws, rules, don'ts                        |
+| `index.html`         | Rendered showcase — open in a browser to see the system applied           |
+| `tokens.json`        | Cross-platform design tokens (W3C-DTCG-style, machine-readable)           |
+| `tokens.css`         | CSS custom properties — drop-in `:root` variables                         |
+| `tokens.ts`          | Typed token export for React/TypeScript code                              |
+| `components.css`     | Reference component styles (buttons, cards, chips, ribbon, type, motion)  |
+| `mui-theme.ts`       | Material UI `createTheme()` — light only, drops the legacy `darkTheme`    |
+| `tailwind.preset.js` | Tailwind preset — extends `colors.mana.*`, fonts, radii, animations, CTAs |
+| `README.md`          | This file                                                                 |
 
 ---
 
 ## Quick start by stack
 
-### Any HTML / Vue / Svelte / vanilla CSS
+### Plain HTML / vanilla CSS
 
 ```html
-<link rel="stylesheet" href="/design-system/tokens.css" />
-<link rel="stylesheet" href="/design-system/components.css" />
-<!-- optional: <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+<link rel="stylesheet" href="./design-system/tokens.css" />
+<link rel="stylesheet" href="./design-system/components.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link
-  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..700&family=Inter:wght@300..700&family=JetBrains+Mono:wght@400..700&display=swap"
   rel="stylesheet"
 />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@1.15.7/css/mana.min.css" />
+
+<body class="ds-page">
+  <button class="ds-btn ds-btn--action">Analyze deck <span class="ds-btn-arrow">→</span></button>
+</body>
 ```
 
-Then use tokens directly:
+### React + Material UI
 
-```css
-.my-card {
-  background: var(--surface-paper);
-  border-radius: var(--radius-xl);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-md);
-}
+```tsx
+// main.tsx
+import { ThemeProvider, CssBaseline } from '@mui/material'
+import { theme } from './design-system/mui-theme'
+import './design-system/tokens.css'
 
-.my-cta {
-  background: var(--gradient-cta-premium);
-  color: var(--mana-black);
-}
+export const App = () => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    {/* … */}
+  </ThemeProvider>
+)
 ```
 
-Toggle dark mode via `<html data-theme="dark">` or rely on `prefers-color-scheme`.
-
----
-
-### React + MUI
-
-```ts
-// 1. Copy `tokens.ts` and `mui-theme.ts` somewhere in your src
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import { lightTheme, darkTheme } from "./design-system/mui-theme";
-
-export function App() {
-  const isDark = /* your hook */;
-  return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      <CssBaseline />
-      {/* … */}
-    </ThemeProvider>
-  );
-}
-```
-
-Optional: also import `tokens.css` + `components.css` if you want the `.ds-*` utility classes alongside MUI components.
-
----
-
-### React/Next + Tailwind
+### React + Tailwind
 
 ```js
 // tailwind.config.js
-import preset from './design-system/tailwind.preset.js'
-
-export default {
-  presets: [preset],
-  content: ['./src/**/*.{ts,tsx,js,jsx}'],
-  // …extend as needed
+module.exports = {
+  presets: [require('./design-system/tailwind.preset.js')],
+  content: ['./src/**/*.{ts,tsx,html}'],
 }
 ```
 
 ```tsx
-<button className="bg-cta-premium text-mana-black rounded-lg px-6 py-2.5 font-semibold transition-normal ease-brand hover:-translate-y-0.5 hover:shadow-btn-hover">
-  Analyze deck
+<button className="btn-action px-7 py-3.5 rounded-lg font-body font-semibold shadow-button hover:shadow-button-hover hover:-translate-y-0.5 transition-all duration-base ease-standard">
+  Analyze deck →
 </button>
 ```
 
-Dark mode: `<html class="dark">`.
-
----
-
-### Figma / Tokens Studio / Style Dictionary
-
-Import `tokens.json` directly — it follows the [W3C Design Tokens Format](https://tr.designtokens.org/format/). Compatible with Tokens Studio, Specify, Style Dictionary, and the upcoming Figma Variables sync.
-
-For Style Dictionary:
-
-```js
-// build.js
-const StyleDictionary = require('style-dictionary')
-StyleDictionary.extend({
-  source: ['design-system/tokens.json'],
-  platforms: {
-    /* your targets */
-  },
-}).buildAllPlatforms()
-```
-
----
-
-## What's in here
-
-| File                 | Format                | Use for                                                                          |
-| -------------------- | --------------------- | -------------------------------------------------------------------------------- |
-| `tokens.json`        | W3C Design Tokens     | Figma sync, Style Dictionary, Specify, source-of-truth handoff to designers      |
-| `tokens.css`         | CSS custom properties | Any web stack, runtime themeable                                                 |
-| `tokens.ts`          | TypeScript const      | JS/TS apps without CSS-in-JS opinions                                            |
-| `mui-theme.ts`       | MUI `Theme` object    | React + MUI projects                                                             |
-| `tailwind.preset.js` | Tailwind preset       | React/Next/Vue + Tailwind                                                        |
-| `components.css`     | CSS utility classes   | `.ds-btn`, `.ds-card`, `.mana-symbol`, hero gradient — works alongside any stack |
-| `BRANDBOOK.md`       | Markdown              | The rules — palette, CTA hierarchy, do/don'ts                                    |
-
----
-
-## Fonts
-
-Required Google Fonts:
-
-- **Cinzel** (500, 600, 700) — display headings
-- **Inter** (400, 500, 600, 700, 800) — body
-- **JetBrains Mono** (regular) — techTerm captions, code
-
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap"
-  rel="stylesheet"
-/>
-```
-
-For mana symbols, install [`mana-font`](https://mana.andrewgioia.com):
-
-```bash
-npm install mana-font
-```
+### TypeScript — typed access
 
 ```ts
-import 'mana-font/css/mana.css'
-// then: <i class="ms ms-cost ms-w" />
+import { tokens, ctaBackground } from './design-system/tokens'
+
+const hero = {
+  fontFamily: tokens.typography.fontFamily.display,
+  background: tokens.gradient.heroWubrg,
+}
+
+const cta = { background: ctaBackground('premium') }
 ```
+
+### Style Dictionary / token consumers
+
+`tokens.json` follows the W3C Design Tokens Community Group format conventions (with `value` and `type` fields). It is consumable by Style Dictionary, Tokens Studio, Specify, and similar pipelines for cross-platform export (iOS, Android, Figma).
+
+---
+
+## What's in scope
+
+This edition documents:
+
+- **Mana canon** — the seven authentic Wizards-of-the-Coast colours
+- **Three-tier CTA hierarchy** — gold action, blue→purple knowledge, solid brand default
+- **Type system** — Cinzel display + Inter body + JetBrains Mono techTerm
+- **Surfaces** — parchment ground + paper card, with a subtle SVG noise grain
+- **Radii, spacing, shadows** — the layout primitives
+- **Motion** — Material standard easing, 4px / 2px hover lifts, `prefers-reduced-motion` guard
+- **Iconography** — the `mana-font` package (Andrew Gioia, MIT)
+- **Don'ts** — eight constraints learned the hard way
+
+## What's out of scope
+
+- **Dark theme** — pulled from this edition (see BRANDBOOK §10)
+- **Marketing illustration set** — handled separately
+- **Animated mana-symbol set** — handled separately
+- **Product copy / voice & tone guide** — see the main repo `LAUNCH.md` and `mtg-player-personas.md`
+
+---
+
+## Adapting to a different product
+
+The system was designed around the WUBRG canon. To fork it for a non-MTG product, two paths exist:
+
+1. **Keep the structure, swap the canon.** Replace the `mana.*` tokens with 5–7 of your own anchor colours and update `--gradient-hero-wubrg`. Everything else is product-agnostic.
+2. **Keep the canon, swap the framing.** If your product is MTG-adjacent (deckbuilders, drafts, EDH), keep the palette but change `--brand-primary` to differentiate. The mana colours then act as content tags rather than chrome.
+
+The CTA tier rules, hover-lift mechanics, easing curve, and accessibility guards survive both moves unchanged.
 
 ---
 
 ## Versioning
 
-Follow semver on the brand level:
+| Edition | Surface | Notes                                                               |
+| ------- | ------- | ------------------------------------------------------------------- |
+| 2.6     | Light   | Current. Single-surface delivery. Dark intentionally excluded.      |
+| 2.5     | Dual    | Last dual-surface edition; archived. Dark surface had known issues. |
 
-- **MAJOR** — palette change, CTA hierarchy change, breaking token rename
-- **MINOR** — new tokens, new components, new gradient
-- **PATCH** — value tweaks within a token (e.g. shadow weight)
-
-Update `tokens.json $version` and `BRANDBOOK.md` when you bump.
+Future editions should preserve `tokens.json` as the canonical machine-readable source and treat the other exports as generated derivatives.
 
 ---
 
-## Adapting for a different product
+## Accessibility
 
-See `BRANDBOOK.md` § 8. Two paths: keep structure & swap canon, or keep canon & swap framing. The CTA tier rules, motion, and a11y guards survive both.
+- All hover transitions and mount animations collapse to `0.01ms` under `prefers-reduced-motion: reduce`. The guard is replicated in `tokens.css`, `components.css`, and `tailwind.preset.js`. **Do not remove it.**
+- The brand primary `#1565C0` on parchment `#F5F3EE` passes WCAG AA at 14pt+; verify with a contrast checker when mixing colours.
+- The CTA gold (`#E9B54C → #FFD700`) is used on top of a dark ink (`#5A3E00`) for readable contrast — never invert.
+
+---
+
+## Credits
+
+- **Mana-font** — Andrew Gioia · [mana.andrewgioia.com](https://mana.andrewgioia.com) · MIT
+- **Cinzel** — Natanael Gama · SIL Open Font License
+- **Inter** — Rasmus Andersson · SIL Open Font License
+- **JetBrains Mono** — JetBrains · SIL Open Font License
+
+Maintained by the ManaTuner team. License: see the main repo `LICENSE`.

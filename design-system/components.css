@@ -1,387 +1,428 @@
-/* ============================================================
-   ManaTuner Design System — Signature Component Classes
-   ------------------------------------------------------------
-   Drop-in CSS. Requires tokens.css to be loaded first.
-   Style-agnostic — works with React, Vue, vanilla, etc.
-   ============================================================ */
+/* ──────────────────────────────────────────────────────────────────
+   ManaTuner · Reference Component Styles
+   Edition 2.6 · Light theme
+   Depends on tokens.css being loaded first.
+   ────────────────────────────────────────────────────────────────── */
 
-/* ---------- Reset minimal (optional — delete if your project ships its own) ---------- */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import './tokens.css';
+
+/* ─── Reset / page ground ─────────────────────────────────────────── */
+.ds-page {
+  font-family: var(--font-body);
+  font-size: var(--fs-body1);
+  line-height: var(--lh-relaxed);
+  color: var(--ink);
+  background: var(--bg);
+  background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba(14, 104, 171, 0.04), transparent 60%),
+    radial-gradient(900px 500px at 110% 30%, rgba(233, 181, 76, 0.05), transparent 55%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* ============================================================
-   1) Mana Symbols (WUBRG circles + colorless + hybrid)
-   ============================================================ */
+/* Parchment grain overlay — apply once at page root */
+.ds-page-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
 
-.mana-symbol {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  font-size: 13px;
+/* ─── Typography utilities ────────────────────────────────────────── */
+.ds-h1,
+.ds-h2,
+.ds-h3,
+.ds-h4 {
+  font-family: var(--font-display);
+  letter-spacing: var(--ls-tight);
+  margin: 0;
+}
+.ds-h1 {
+  font-size: var(--fs-h1);
   font-weight: var(--fw-bold);
-  margin: 0 3px;
-  border: 2px solid;
-  transition: all var(--duration-fast) var(--easing-default);
-  box-shadow: var(--shadow-sm);
-  vertical-align: middle;
+  line-height: var(--lh-tight);
 }
-.mana-symbol:hover {
-  transform: scale(1.1);
-  box-shadow: var(--shadow-md);
+.ds-h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  line-height: 1.15;
 }
-
-.mana-symbol--white {
-  background: linear-gradient(135deg, #fffbf0, #f5f1e8);
-  color: #8b4513;
-  border-color: #daa520;
+.ds-h3 {
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-semibold);
+  line-height: 1.2;
 }
-.mana-symbol--blue {
-  background: linear-gradient(135deg, #e6f3ff, #cce7ff);
-  color: #0a4f85;
-  border-color: var(--mana-blue);
+.ds-h4 {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-snug);
 }
-.mana-symbol--black {
-  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
-  color: #ffffff;
-  border-color: #666666;
+.ds-h5 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  margin: 0;
 }
-.mana-symbol--red {
-  background: linear-gradient(135deg, #ffe6e6, #ffcccc);
-  color: #a91e22;
-  border-color: var(--mana-red);
-}
-.mana-symbol--green {
-  background: linear-gradient(135deg, #e6ffe6, #ccffcc);
-  color: #005a2f;
-  border-color: var(--mana-green);
-}
-.mana-symbol--generic {
-  background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-  color: #333333;
-  border-color: #cccccc;
+.ds-h6 {
+  font-family: var(--font-body);
+  font-size: var(--fs-h6);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-normal);
+  margin: 0;
 }
 
-/* Hybrid mana — pass --c1 / --c2 inline: style="--c1: var(--mana-red); --c2: var(--mana-green)" */
-.mana-symbol--hybrid {
-  background: linear-gradient(45deg, var(--c1, #ccc) 50%, var(--c2, #999) 50%);
-  color: #fff;
-  border-color: rgba(0, 0, 0, 0.3);
+.ds-body1 {
+  font-family: var(--font-body);
+  font-size: var(--fs-body1);
+  line-height: var(--lh-relaxed);
+  margin: 0;
+}
+.ds-body2 {
+  font-family: var(--font-body);
+  font-size: var(--fs-body2);
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
 }
 
-/* ============================================================
-   2) Cards (glass on dark, solid on light)
-   ============================================================ */
-
-.ds-card {
-  background: var(--surface-paper);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  transition:
-    transform var(--duration-normal) var(--easing-default),
-    box-shadow var(--duration-normal) var(--easing-default),
-    border-color var(--duration-normal) var(--easing-default);
-}
-.ds-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--brand-primary-light);
+.ds-tech-term {
+  font-family: var(--font-mono);
+  font-size: var(--fs-tech);
+  letter-spacing: var(--ls-wide);
+  color: var(--ink-3);
+  text-transform: none;
 }
 
-[data-theme='dark'] .ds-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(var(--blur-glass));
-  -webkit-backdrop-filter: blur(var(--blur-glass));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-[data-theme='dark'] .ds-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
+.ds-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-/* ============================================================
-   3) Buttons — three tiers
-      Tier 1 (premium): gold gradient — ONE per page max
-      Tier 2 (knowledge): blue→purple — secondary primary
-      Tier 3 (default):  brand primary outlined
-   ============================================================ */
+/* Hero WUBRG text — reserved for the home H1 only */
+.ds-hero-wubrg {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  background: var(--gradient-hero-wubrg);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: saturate(1.05);
+}
 
+/* ─── Buttons — three tiers ───────────────────────────────────────── */
 .ds-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: 10px 24px;
-  border-radius: var(--radius-lg);
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
   font-family: var(--font-body);
   font-weight: var(--fw-semibold);
-  font-size: 1rem;
-  text-decoration: none;
-  text-transform: none;
-  border: none;
+  font-size: 15px;
+  letter-spacing: 0.005em;
+  padding: 14px 28px;
+  border-radius: var(--r-lg);
   cursor: pointer;
-  transition: all var(--duration-normal) var(--easing-default);
-  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  box-shadow: var(--shadow-button);
+  transition:
+    transform var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard),
+    filter var(--d-base) var(--ease-standard),
+    background var(--d-base) var(--ease-standard);
+  text-decoration: none;
 }
 .ds-btn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-button-hover);
 }
-.ds-btn:focus-visible {
-  outline: 2px solid var(--brand-primary);
-  outline-offset: 2px;
+.ds-btn:active {
+  transform: translateY(-1px);
 }
 .ds-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
 }
 
-.ds-btn--premium {
+.ds-btn .ds-btn-arrow {
+  transition: transform var(--d-base) var(--ease-standard);
+}
+.ds-btn:hover .ds-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Tier 1 — Gold action */
+.ds-btn--action {
   background: var(--gradient-cta-premium);
-  color: var(--mana-black);
-  font-weight: var(--fw-bold);
+  color: #5a3e00;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 }
-.ds-btn--premium:hover {
-  background: var(--gradient-cta-premium-hover);
+.ds-btn--action:hover {
+  filter: brightness(1.05);
 }
 
+/* Tier 2 — Blue → purple knowledge */
 .ds-btn--knowledge {
   background: var(--gradient-cta-knowledge);
-  color: #ffffff;
-}
-.ds-btn--knowledge:hover {
-  background: var(--gradient-cta-knowledge-hover);
 }
 
-.ds-btn--primary {
+/* Tier 3 — Solid brand */
+.ds-btn--default {
   background: var(--brand-primary);
-  color: #ffffff;
 }
-.ds-btn--primary:hover {
-  background: var(--brand-primary-dark);
+.ds-btn--default:hover {
+  background: var(--brand-primary-deep);
 }
 
+/* Outline variant — also Tier 3 */
 .ds-btn--outline {
   background: transparent;
-  border: 2px solid var(--brand-primary);
   color: var(--brand-primary);
+  border: 1.5px solid var(--brand-primary);
+  box-shadow: none;
 }
 .ds-btn--outline:hover {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: #fff;
 }
 
-.ds-btn--ghost {
-  background: transparent;
-  color: var(--text-primary);
+/* ─── Cards & surfaces ────────────────────────────────────────────── */
+.ds-card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-xl);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--d-base) var(--ease-standard),
+    box-shadow var(--d-base) var(--ease-standard);
 }
-.ds-btn--ghost:hover {
-  background: var(--glass-secondary);
-  transform: none;
-  box-shadow: none;
-}
-
-/* ============================================================
-   4) Hero H1 — WUBRG gradient text
-   ============================================================ */
-
-.ds-hero-title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: var(--fw-heavy);
-  line-height: var(--lh-tight);
-  letter-spacing: var(--ls-display);
-  background: var(--gradient-hero-wubrg);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+.ds-card--hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
 }
 
-/* ============================================================
-   5) Chips / status badges
-   ============================================================ */
+.ds-card--parchment {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+}
 
+.ds-card--accent-w {
+  border-top: 4px solid var(--mana-w);
+}
+.ds-card--accent-u {
+  border-top: 4px solid var(--mana-u);
+}
+.ds-card--accent-b {
+  border-top: 4px solid var(--mana-b);
+}
+.ds-card--accent-r {
+  border-top: 4px solid var(--mana-r);
+}
+.ds-card--accent-g {
+  border-top: 4px solid var(--mana-g);
+}
+.ds-card--accent-m {
+  border-top: 4px solid var(--mana-m);
+}
+
+/* ─── Chips & pills ───────────────────────────────────────────────── */
 .ds-chip {
   display: inline-flex;
   align-items: center;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: var(--fw-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform var(--duration-fast) var(--easing-default),
-    box-shadow var(--duration-fast) var(--easing-default);
-  color: #ffffff;
-}
-.ds-chip:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-md);
-}
-
-.ds-chip--success {
-  background: linear-gradient(135deg, #00733e, #27ae60);
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: var(--fs-body2);
+  font-weight: var(--fw-medium);
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  background: var(--bg-deep);
+  color: var(--ink);
+  border: 1px solid var(--rule);
 }
 .ds-chip--info {
-  background: linear-gradient(135deg, #0e68ab, #4a90e2);
+  background: rgba(14, 104, 171, 0.08);
+  color: var(--mana-u);
+  border-color: rgba(14, 104, 171, 0.2);
 }
-.ds-chip--warning {
-  background: linear-gradient(135deg, #e9b54c, #f39c12);
+.ds-chip--success {
+  background: rgba(0, 115, 62, 0.08);
+  color: var(--mana-g);
+  border-color: rgba(0, 115, 62, 0.2);
 }
 .ds-chip--error {
-  background: linear-gradient(135deg, #d3202a, #e74c3c);
+  background: rgba(211, 32, 42, 0.08);
+  color: var(--mana-r);
+  border-color: rgba(211, 32, 42, 0.2);
+}
+.ds-chip--warning {
+  background: rgba(233, 181, 76, 0.12);
+  color: #8a6300;
+  border-color: rgba(233, 181, 76, 0.35);
 }
 
-/* ============================================================
-   6) Progress bar (with shimmer)
-   ============================================================ */
-
-.ds-progress {
+/* ─── Inputs ──────────────────────────────────────────────────────── */
+.ds-input {
+  font-family: var(--font-body);
+  font-size: var(--fs-body1);
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 12px 16px;
   width: 100%;
-  height: 8px;
-  background: #e2e8f0;
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition:
+    border-color var(--d-fast) var(--ease-standard),
+    box-shadow var(--d-fast) var(--ease-standard);
 }
-.ds-progress__bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--mana-blue), #4a90e2);
-  transition: width var(--duration-slow) var(--easing-default);
+.ds-input::placeholder {
+  color: var(--ink-3);
+}
+.ds-input:hover {
+  border-color: rgba(14, 104, 171, 0.4);
+}
+.ds-input:focus,
+.ds-input:focus-visible {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 4px rgba(14, 104, 171, 0.15);
+}
+
+/* ─── Code & token-line ───────────────────────────────────────────── */
+.ds-code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-tech);
+  background: rgba(26, 26, 26, 0.05);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  color: var(--ink);
+}
+.ds-token-line {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--ls-wide);
+  color: var(--ink-3);
+  padding: 10px 14px;
+  background: var(--bg-deep);
+  border-radius: var(--r-md);
+  border: 1px solid var(--rule);
+}
+
+/* ─── WUBRG ribbon delimiter ──────────────────────────────────────── */
+.ds-ribbon {
+  height: 4px;
+  background: var(--gradient-hero-wubrg);
+  border-radius: 2px;
   position: relative;
 }
-.ds-progress__bar::after {
+.ds-ribbon::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: ds-shimmer 2s infinite;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent);
+  border-radius: 2px;
 }
 
-/* ============================================================
-   7) Animations
-   ============================================================ */
-
-@keyframes ds-fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes ds-slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes ds-slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes ds-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-@keyframes ds-shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-@keyframes ds-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.6);
-  }
-}
-
-.ds-animate-fadeIn {
-  animation: ds-fadeIn 0.5s var(--easing-default);
-}
-.ds-animate-slideInUp {
-  animation: ds-slideInUp 0.6s var(--easing-default);
-}
-.ds-animate-slideInLeft {
-  animation: ds-slideInLeft 0.6s var(--easing-default);
-}
-.ds-animate-pulse {
-  animation: ds-pulse 2s infinite;
-}
-.ds-animate-glow {
-  animation: ds-glow 2s infinite;
-}
-
-/* ============================================================
-   8) A11y — must keep
-   ============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-card,
-  .ds-btn,
-  .ds-chip,
-  .ds-animate-fadeIn,
-  .ds-animate-slideInUp,
-  .ds-animate-slideInLeft,
-  .ds-animate-pulse,
-  .ds-animate-glow {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-@media (prefers-contrast: high) {
-  .ds-card {
-    border: 2px solid currentColor;
-  }
-  .mana-symbol {
-    border-width: 3px;
-  }
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
+/* ─── Hairline rule ───────────────────────────────────────────────── */
+.ds-rule {
   height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  background: var(--rule);
+  border: none;
+  margin: var(--space-lg) 0;
+}
+
+/* ─── Motion utilities ────────────────────────────────────────────── */
+.ds-animate-fadeIn {
+  animation: dsFadeIn var(--d-base) var(--ease-standard) both;
+}
+.ds-animate-slideUp {
+  animation: dsSlideUp var(--d-slow) var(--ease-standard) both;
+}
+.ds-animate-fadeUp {
+  animation: dsFadeUp var(--d-slow) var(--ease-standard) both;
+}
+
+@keyframes dsFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes dsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes dsFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger helpers — use sparingly, max one orchestration per viewport */
+.ds-stagger > * {
+  animation-delay: 0ms;
+}
+.ds-stagger > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+.ds-stagger > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+.ds-stagger > *:nth-child(4) {
+  animation-delay: 180ms;
+}
+.ds-stagger > *:nth-child(5) {
+  animation-delay: 240ms;
+}
+.ds-stagger > *:nth-child(6) {
+  animation-delay: 320ms;
+}
+
+/* prefers-reduced-motion — reaffirmed at component layer */
+@media (prefers-reduced-motion: reduce) {
+  .ds-btn,
+  .ds-card,
+  .ds-card--hover,
+  .ds-animate-fadeIn,
+  .ds-animate-slideUp,
+  .ds-animate-fadeUp,
+  .ds-stagger > * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ─── Focus ring — global accessible default ──────────────────────── */
+.ds-page *:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* ─── Selection ───────────────────────────────────────────────────── */
+.ds-page ::selection {
+  background: rgba(14, 104, 171, 0.18);
+  color: var(--ink);
 }

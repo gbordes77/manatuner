@@ -1,15 +1,18 @@
 /**
- * ManaTuner Design System — MUI Theme bridge
- * ---------------------------------------------------------------
- * Extends MUI's Palette with `mana` and `glass` namespaces.
- * Drop into a React + MUI project:
+ * ManaTuner · MUI Theme · Light edition only
+ * Edition 2.6
  *
- *   import { lightTheme, darkTheme } from "./mui-theme"
- *   <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+ * Dark theme is intentionally NOT exported here — see BRANDBOOK.md §10.
+ * The previous dark surface system had unresolved readability and Safari
+ * glass-effect issues. A dark theme will be re-cut once those are fixed
+ * structurally rather than patched.
+ *
+ * Until then: ship light-only, and respect the user's OS preference by
+ * keeping the parchment surface across both light and dark OS settings.
  */
 
-import { createTheme, ThemeOptions } from '@mui/material/styles'
-import { mana, manaDark, glow, lightPalette, darkPalette, typography as t } from './tokens'
+import { createTheme, type ThemeOptions } from '@mui/material/styles'
+import { tokens } from './tokens'
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -21,142 +24,247 @@ declare module '@mui/material/styles' {
       green: string
       colorless: string
       multicolor: string
-      whiteGlow: string
-      blueGlow: string
-      blackGlow: string
-      redGlow: string
-      greenGlow: string
     }
-    glass: { primary: string; secondary: string; border: string }
+    surface: {
+      background: string
+      backgroundDeep: string
+      paper: string
+    }
   }
+
   interface PaletteOptions {
     mana?: Partial<Palette['mana']>
-    glass?: Partial<Palette['glass']>
+    surface?: Partial<Palette['surface']>
   }
 }
 
 const baseTheme: ThemeOptions = {
   typography: {
-    fontFamily: t.body1.fontFamily,
-    h1: t.h1,
-    h2: t.h2,
-    h3: t.h3,
-    h4: t.h4,
-    h5: t.h5,
-    h6: t.h6,
-    body1: t.body1,
-    body2: t.body2,
+    fontFamily: tokens.typography.fontFamily.body,
+    h1: {
+      fontFamily: tokens.typography.fontFamily.display,
+      fontSize: tokens.typography.fontSize.h1,
+      fontWeight: tokens.typography.fontWeight.bold,
+      lineHeight: tokens.typography.lineHeight.tight,
+      letterSpacing: '0.005em',
+    },
+    h2: {
+      fontFamily: tokens.typography.fontFamily.display,
+      fontSize: tokens.typography.fontSize.h2,
+      fontWeight: tokens.typography.fontWeight.semibold,
+      lineHeight: 1.15,
+      letterSpacing: '0.005em',
+    },
+    h3: {
+      fontFamily: tokens.typography.fontFamily.display,
+      fontSize: tokens.typography.fontSize.h3,
+      fontWeight: tokens.typography.fontWeight.semibold,
+      lineHeight: 1.2,
+    },
+    h4: {
+      fontFamily: tokens.typography.fontFamily.display,
+      fontSize: tokens.typography.fontSize.h4,
+      fontWeight: tokens.typography.fontWeight.medium,
+      lineHeight: tokens.typography.lineHeight.snug,
+    },
+    h5: {
+      fontSize: tokens.typography.fontSize.h5,
+      fontWeight: tokens.typography.fontWeight.medium,
+      lineHeight: 1.4,
+    },
+    h6: {
+      fontSize: tokens.typography.fontSize.h6,
+      fontWeight: tokens.typography.fontWeight.medium,
+      lineHeight: tokens.typography.lineHeight.normal,
+    },
+    body1: {
+      fontSize: tokens.typography.fontSize.body1,
+      lineHeight: tokens.typography.lineHeight.relaxed,
+    },
+    body2: {
+      fontSize: tokens.typography.fontSize.body2,
+      lineHeight: 1.55,
+    },
+    caption: {
+      fontFamily: tokens.typography.fontFamily.mono,
+      fontSize: tokens.typography.fontSize.tech,
+      letterSpacing: '0.04em',
+      color: tokens.color.ink.tertiary,
+    },
   },
-  shape: { borderRadius: 12 },
+
+  shape: {
+    borderRadius: 12,
+  },
+
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundImage: `
+            radial-gradient(1200px 600px at 20% -10%, rgba(14,104,171,.04), transparent 60%),
+            radial-gradient(900px 500px at 110% 30%, rgba(233,181,76,.05), transparent 55%)
+          `,
+          WebkitFontSmoothing: 'antialiased',
+          textRendering: 'optimizeLegibility',
+        },
+      },
+    },
+
     MuiButton: {
       styleOverrides: {
         root: {
           textTransform: 'none',
           borderRadius: 12,
-          fontWeight: 600,
+          fontWeight: tokens.typography.fontWeight.semibold,
           padding: '10px 24px',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          letterSpacing: '0.005em',
+          transition: `all ${tokens.motion.duration.base} ${tokens.motion.easing.standard}`,
           '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+            transform: tokens.motion.transform.buttonLift,
+            boxShadow: tokens.shadow.buttonHover,
+          },
+          '&:active': {
+            transform: 'translateY(-1px)',
           },
         },
-        contained: { boxShadow: '0 4px 12px rgba(0,0,0,0.1)' },
+        contained: {
+          boxShadow: tokens.shadow.button,
+        },
+        containedPrimary: {
+          background: tokens.color.brand.primary,
+          '&:hover': {
+            background: tokens.color.brand.primaryDeep,
+          },
+        },
       },
     },
+
     MuiCard: {
       styleOverrides: {
         root: {
           borderRadius: 16,
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          border: `1px solid ${tokens.color.rule.default}`,
+          boxShadow: tokens.shadow.card,
+          transition: `all ${tokens.motion.duration.base} ${tokens.motion.easing.standard}`,
           '&:hover': {
-            transform: 'translateY(-4px)',
-            boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
+            transform: tokens.motion.transform.cardLift,
+            boxShadow: tokens.shadow.cardHover,
           },
         },
       },
     },
+
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+
     MuiTextField: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
             borderRadius: 12,
-            transition: 'all 0.2s ease-in-out',
-            '&:hover': { boxShadow: '0 0 0 4px rgba(25, 118, 210, 0.1)' },
-            '&.Mui-focused': { boxShadow: '0 0 0 4px rgba(25, 118, 210, 0.2)' },
+            transition: `all ${tokens.motion.duration.fast} ${tokens.motion.easing.standard}`,
+            '&:hover': {
+              boxShadow: '0 0 0 4px rgba(14, 104, 171, 0.08)',
+            },
+            '&.Mui-focused': {
+              boxShadow: '0 0 0 4px rgba(14, 104, 171, 0.15)',
+            },
           },
         },
       },
     },
-    MuiChip: { styleOverrides: { root: { borderRadius: 8, fontWeight: 500 } } },
+
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 9999,
+          fontWeight: tokens.typography.fontWeight.medium,
+        },
+      },
+    },
+
     MuiAppBar: {
       styleOverrides: {
-        root: { borderRadius: 0, backdropFilter: 'blur(10px)' },
+        root: {
+          borderRadius: 0,
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          background: 'rgba(245, 243, 238, 0.85)',
+          color: tokens.color.ink.primary,
+          boxShadow: `0 1px 0 ${tokens.color.rule.default}`,
+        },
+      },
+    },
+
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontFamily: tokens.typography.fontFamily.body,
+          fontSize: tokens.typography.fontSize.body2,
+          background: tokens.color.ink.primary,
+          padding: '8px 12px',
+          borderRadius: tokens.radius.md,
+        },
       },
     },
   },
 }
 
+/**
+ * The ManaTuner light theme.
+ *
+ * Export name is `lightTheme` for ergonomic parity with the previous dual-theme
+ * API; `theme` is the recommended default import. Both refer to the same object.
+ */
 export const lightTheme = createTheme({
   ...baseTheme,
   palette: {
     mode: 'light',
-    ...lightPalette,
-    mana: {
-      ...mana,
-      whiteGlow: glow.white,
-      blueGlow: glow.blue,
-      blackGlow: glow.black,
-      redGlow: glow.red,
-      greenGlow: glow.green,
+    primary: {
+      main: tokens.color.brand.primary,
+      light: '#42A5F5',
+      dark: tokens.color.brand.primaryDeep,
+      contrastText: '#FFFFFF',
     },
+    secondary: {
+      main: '#6A1B9A',
+      light: '#9C4DCC',
+      dark: '#38006B',
+      contrastText: '#FFFFFF',
+    },
+    error: {
+      main: tokens.color.state.error,
+    },
+    warning: {
+      main: tokens.color.state.warning,
+      contrastText: '#5A3E00',
+    },
+    info: {
+      main: tokens.color.state.info,
+    },
+    success: {
+      main: tokens.color.state.success,
+    },
+    background: {
+      default: tokens.color.surface.background,
+      paper: tokens.color.surface.paper,
+    },
+    text: {
+      primary: tokens.color.ink.primary,
+      secondary: tokens.color.ink.secondary,
+      disabled: tokens.color.ink.tertiary,
+    },
+    divider: tokens.color.rule.default,
+    mana: tokens.color.mana,
+    surface: tokens.color.surface,
   },
 })
 
-export const darkTheme = createTheme({
-  ...baseTheme,
-  palette: {
-    mode: 'dark',
-    ...darkPalette,
-    mana: {
-      ...manaDark,
-      whiteGlow: 'rgba(245, 240, 208, 0.5)',
-      blueGlow: 'rgba(74, 158, 232, 0.5)',
-      blackGlow: 'rgba(120, 80, 120, 0.5)',
-      redGlow: 'rgba(255, 82, 82, 0.5)',
-      greenGlow: 'rgba(76, 175, 80, 0.5)',
-    },
-  },
-  components: {
-    ...baseTheme.components,
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 16,
-          background: 'rgba(255, 255, 255, 0.03)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-          '&:hover': {
-            transform: 'translateY(-4px)',
-            background: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid rgba(255, 255, 255, 0.15)',
-            boxShadow: '0 12px 32px rgba(0,0,0,0.4)',
-          },
-        },
-      },
-    },
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          background: 'rgba(13, 13, 15, 0.9)',
-          backdropFilter: 'blur(10px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        },
-      },
-    },
-  },
-})
-
+export const theme = lightTheme
 export default lightTheme

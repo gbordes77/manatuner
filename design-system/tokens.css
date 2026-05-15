@@ -1,217 +1,134 @@
-/* ============================================================
-   ManaTuner Design System — CSS Variables
-   ------------------------------------------------------------
-   Drop-in for any project. Supports light + dark via
-   [data-theme="dark"] OR @media (prefers-color-scheme: dark).
-   Switching strategy: pick ONE — see README.
-   ============================================================ */
+/* ──────────────────────────────────────────────────────────────────
+   ManaTuner · Design Tokens · CSS Custom Properties
+   Edition 2.6 · Light theme
+   Dark theme is intentionally excluded — see BRANDBOOK.md §10.
+   ────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ---------- MTG Mana Colors (canonical, theme-agnostic) ---------- */
-  --mana-white: #f8f6d8;
-  --mana-blue: #0e68ab;
-  --mana-black: #150b00;
-  --mana-red: #d3202a;
-  --mana-green: #00733e;
-  --mana-colorless: #cbc5c0;
-  --mana-multicolor: #e9b54c;
+  /* ── Mana — canon (never change) ───────────────────────────────── */
+  --mana-w: #f8f6d8; /* Plains   — warm cream */
+  --mana-u: #0e68ab; /* Island   — deep blue */
+  --mana-b: #150b00; /* Swamp    — near-black */
+  --mana-r: #d3202a; /* Mountain — vivid red */
+  --mana-g: #00733e; /* Forest   — forest green */
+  --mana-c: #cbc5c0; /* Wastes   — neutral grey */
+  --mana-m: #e9b54c; /* Gold     — premium / multicolor */
 
-  /* Glow effects (rgba — don't translate to dark) */
-  --glow-white: rgba(248, 246, 216, 0.6);
-  --glow-blue: rgba(14, 104, 171, 0.6);
-  --glow-black: rgba(90, 60, 90, 0.6);
-  --glow-red: rgba(211, 32, 42, 0.6);
-  --glow-green: rgba(0, 115, 62, 0.6);
-
-  /* ---------- Brand & Theme Colors (LIGHT) ---------- */
+  /* ── Brand primary ─────────────────────────────────────────────── */
   --brand-primary: #1565c0;
-  --brand-primary-light: #42a5f5;
-  --brand-primary-dark: #0d47a1;
-  --brand-secondary: #7b1fa2;
-  --brand-secondary-light: #ba68c8;
-  --brand-secondary-dark: #4a148c;
+  --brand-primary-deep: #0d47a1;
 
-  --feedback-error: #d3202a;
-  --feedback-warning: #e9b54c;
-  --feedback-info: #0e68ab;
-  --feedback-success: #00733e;
+  /* ── Surfaces ──────────────────────────────────────────────────── */
+  --bg: #f5f3ee; /* parchment ground */
+  --bg-deep: #ede9e0; /* inset wells, token-line backgrounds */
+  --paper: #ffffff; /* card surface */
 
-  --surface-default: #f5f3ee; /* parchment */
-  --surface-paper: #ffffff;
+  /* ── Ink ───────────────────────────────────────────────────────── */
+  --ink: #1a1a1a;
+  --ink-2: #555555;
+  --ink-3: #9a958c;
 
-  --text-primary: #1a1a1a;
-  --text-secondary: #555555;
+  /* ── Rules ─────────────────────────────────────────────────────── */
+  --rule: rgba(26, 26, 26, 0.08);
+  --rule-soft: rgba(26, 26, 26, 0.04);
 
-  --glass-primary: rgba(255, 255, 255, 0.8);
-  --glass-secondary: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  /* ── State ─────────────────────────────────────────────────────── */
+  --state-error: var(--mana-r);
+  --state-warning: var(--mana-m);
+  --state-info: var(--mana-u);
+  --state-success: var(--mana-g);
+  --state-disabled: var(--mana-c);
 
-  /* ---------- Signature Gradients ---------- */
+  /* ── Gradients ─────────────────────────────────────────────────── */
+  --gradient-cta-premium: linear-gradient(135deg, #e9b54c 0%, #ffd700 100%);
   --gradient-cta-knowledge: linear-gradient(135deg, #0e68ab 0%, #6a1b9a 100%);
-  --gradient-cta-knowledge-hover: linear-gradient(135deg, #1976d2 0%, #7b1fa2 100%);
-  --gradient-cta-premium: linear-gradient(135deg, #e9b54c 0%, #ffd700 50%, #e9b54c 100%);
-  --gradient-cta-premium-hover: linear-gradient(135deg, #ffd700 0%, #ffc107 50%, #ffd700 100%);
   --gradient-hero-wubrg: linear-gradient(
-    135deg,
-    #e9b54c 0%,
-    #0e68ab 25%,
-    #9c27b0 50%,
-    #d3202a 75%,
-    #00733e 100%
+    90deg,
+    var(--mana-w) 0% 20%,
+    var(--mana-u) 20% 40%,
+    var(--mana-b) 40% 60%,
+    var(--mana-r) 60% 80%,
+    var(--mana-g) 80% 100%
   );
-  --gradient-bg-primary: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  --gradient-bg-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-  /* ---------- Typography ---------- */
-  --font-heading: 'Cinzel', 'Playfair Display', serif;
-  --font-body: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  /* ── Typography — families ─────────────────────────────────────── */
+  --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
+  /* ── Typography — weights ──────────────────────────────────────── */
   --fw-regular: 400;
   --fw-medium: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
-  --fw-heavy: 800;
 
-  --fs-h1: 3rem;
-  --fs-h2: 2.5rem;
-  --fs-h3: 2rem;
-  --fs-h4: 1.5rem;
-  --fs-h5: 1.25rem;
-  --fs-h6: 1rem;
-  --fs-body1: 1rem;
-  --fs-body2: 0.875rem;
+  /* ── Typography — sizes ────────────────────────────────────────── */
+  --fs-h1: 3rem; /* 48 */
+  --fs-h2: 2.5rem; /* 40 */
+  --fs-h3: 2rem; /* 32 */
+  --fs-h4: 1.5rem; /* 24 */
+  --fs-h5: 1.25rem; /* 20 */
+  --fs-h6: 1rem; /* 16 */
+  --fs-body1: 1rem; /* 16 */
+  --fs-body2: 0.875rem; /* 14 */
+  --fs-tech: 0.75rem; /* 12 */
 
-  --lh-tight: 1.2;
+  /* ── Typography — line-heights ─────────────────────────────────── */
+  --lh-tight: 1.1;
   --lh-snug: 1.3;
-  --lh-normal: 1.4;
-  --lh-relaxed: 1.5;
-  --lh-loose: 1.6;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.65;
 
-  --ls-display: 0.02em;
-  --ls-heading: 0.01em;
+  /* ── Typography — letter-spacing ───────────────────────────────── */
+  --ls-tight: -0.005em;
+  --ls-normal: 0;
+  --ls-wide: 0.04em;
+  --ls-wider: 0.14em;
 
-  /* ---------- Spacing (4-8 baseline, rem) ---------- */
-  --space-xs: 0.25rem; /*  4px */
-  --space-sm: 0.5rem; /*  8px */
-  --space-md: 1rem; /* 16px */
-  --space-lg: 1.5rem; /* 24px */
-  --space-xl: 2rem; /* 32px */
-  --space-2xl: 3rem; /* 48px */
+  /* ── Radii ─────────────────────────────────────────────────────── */
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 16px;
+  --r-full: 9999px;
 
-  /* ---------- Radius ---------- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px; /* default — buttons, inputs */
-  --radius-xl: 16px; /* cards, modals */
-  --radius-full: 9999px;
+  /* ── Spacing ───────────────────────────────────────────────────── */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
 
-  /* ---------- Shadows ---------- */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
-  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.18);
-  --shadow-button-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
-  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+  /* ── Shadows ───────────────────────────────────────────────────── */
+  --shadow-card: 0 1px 2px rgba(20, 11, 0, 0.04), 0 4px 16px rgba(20, 11, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(20, 11, 0, 0.08), 0 16px 40px rgba(20, 11, 0, 0.1);
+  --shadow-button: 0 2px 8px rgba(20, 11, 0, 0.1);
+  --shadow-button-hover: 0 8px 24px rgba(20, 11, 0, 0.18);
 
-  /* ---------- Motion ---------- */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 350ms;
-  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
+  /* ── Motion ────────────────────────────────────────────────────── */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --d-fast: 180ms;
+  --d-base: 320ms;
+  --d-slow: 600ms;
 
-  /* ---------- Glass ---------- */
-  --blur-glass: 10px;
+  /* ── z-index ───────────────────────────────────────────────────── */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
+  --z-toast: 1200;
 }
 
-/* ============================================================
-   Dark Mode — toggle via <html data-theme="dark"> OR system.
-   The two blocks are duplicated on purpose; pick whichever
-   strategy your app uses and delete the other.
-   ============================================================ */
-
-[data-theme='dark'] {
-  --mana-white: #f5f0d0;
-  --mana-blue: #4a9ee8;
-  --mana-black: #3d3d3d;
-  --mana-red: #ff5252;
-  --mana-green: #4caf50;
-  --mana-colorless: #9e9e9e;
-  --mana-multicolor: #ffd700;
-
-  --glow-white: rgba(245, 240, 208, 0.5);
-  --glow-blue: rgba(74, 158, 232, 0.5);
-  --glow-black: rgba(120, 80, 120, 0.5);
-  --glow-red: rgba(255, 82, 82, 0.5);
-  --glow-green: rgba(76, 175, 80, 0.5);
-
-  --brand-primary: #64b5f6;
-  --brand-primary-light: #90caf9;
-  --brand-primary-dark: #42a5f5;
-  --brand-secondary: #ce93d8;
-  --brand-secondary-light: #e1bee7;
-  --brand-secondary-dark: #ba68c8;
-
-  --feedback-error: #ff6b6b;
-  --feedback-warning: #ffd54f;
-  --feedback-info: #4fc3f7;
-  --feedback-success: #69f0ae;
-
-  --surface-default: #0d0d0f;
-  --surface-paper: #1a1a1e;
-
-  --text-primary: #f5f5f5;
-  --text-secondary: #aaaaaa;
-
-  --glass-primary: rgba(255, 255, 255, 0.05);
-  --glass-secondary: rgba(255, 255, 255, 0.02);
-  --glass-border: rgba(255, 255, 255, 0.1);
-
-  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.4);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --mana-white: #f5f0d0;
-    --mana-blue: #4a9ee8;
-    --mana-black: #3d3d3d;
-    --mana-red: #ff5252;
-    --mana-green: #4caf50;
-    --mana-colorless: #9e9e9e;
-    --mana-multicolor: #ffd700;
-
-    --brand-primary: #64b5f6;
-    --brand-primary-light: #90caf9;
-    --brand-primary-dark: #42a5f5;
-    --brand-secondary: #ce93d8;
-
-    --feedback-error: #ff6b6b;
-    --feedback-warning: #ffd54f;
-    --feedback-info: #4fc3f7;
-    --feedback-success: #69f0ae;
-
-    --surface-default: #0d0d0f;
-    --surface-paper: #1a1a1e;
-
-    --text-primary: #f5f5f5;
-    --text-secondary: #aaaaaa;
-
-    --glass-primary: rgba(255, 255, 255, 0.05);
-    --glass-secondary: rgba(255, 255, 255, 0.02);
-    --glass-border: rgba(255, 255, 255, 0.1);
-
-    --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* ============================================================
-   A11y guardrails (keep these — they protect the brand)
-   ============================================================ */
-
+/* prefers-reduced-motion — non-negotiable guard */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --duration-fast: 0.01ms;
-    --duration-normal: 0.01ms;
-    --duration-slow: 0.01ms;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

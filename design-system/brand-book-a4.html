@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ManaTuner — Brand Book · A4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@1.15.7/css/mana.min.css" />
+
+<style>
+  @page { size: A4; margin: 0; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; box-sizing: border-box; }
+
+  :root {
+    --mana-w: #F8F6D8;
+    --mana-u: #0E68AB;
+    --mana-b: #150B00;
+    --mana-r: #D3202A;
+    --mana-g: #00733E;
+    --mana-c: #CBC5C0;
+    --mana-m: #E9B54C;
+    --bg: #F5F3EE;
+    --bg-deep: #EDE9E0;
+    --paper: #FFFFFF;
+    --ink: #1A1A1A;
+    --ink-2: #555555;
+    --ink-3: #9A958C;
+    --rule: rgba(26, 26, 26, 0.10);
+    --brand: #1565C0;
+    --grad-action: linear-gradient(135deg, #E9B54C 0%, #FFD700 100%);
+    --grad-knowledge: linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%);
+    --grad-wubrg: linear-gradient(90deg, var(--mana-w) 0% 20%, var(--mana-u) 20% 40%, var(--mana-b) 40% 60%, var(--mana-r) 60% 80%, var(--mana-g) 80% 100%);
+    --display: "Cinzel", "Playfair Display", Georgia, serif;
+    --body: "Inter", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  html, body { margin: 0; padding: 0; background: #ddd; }
+  body {
+    font-family: var(--body);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 14mm 14mm 12mm;
+    background: var(--bg);
+    background-image:
+      radial-gradient(80mm 50mm at 15% -5%, rgba(14,104,171,.05), transparent 60%),
+      radial-gradient(70mm 45mm at 105% 25%, rgba(233,181,76,.06), transparent 55%);
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
+  /* parchment grain */
+  .page::before {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .28;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  .layer { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; gap: 5mm; }
+
+  /* type */
+  .eyebrow { font-family: var(--mono); font-size: 7pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin: 0 0 3mm; }
+  .h-cinzel { font-family: var(--display); font-weight: 700; letter-spacing: -0.005em; color: var(--ink); margin: 0; }
+  .h-cinzel.lg { font-size: 24pt; line-height: 1.05; }
+  .h-cinzel.md { font-size: 14pt; line-height: 1.15; }
+  .h-cinzel.sm { font-size: 10pt; line-height: 1.2; }
+  .body-text { font-size: 8.5pt; line-height: 1.45; color: var(--ink-2); margin: 0; }
+  .tech { font-family: var(--mono); font-size: 6.5pt; letter-spacing: 0.06em; color: var(--ink-3); }
+
+  /* head */
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8mm; padding-bottom: 4mm; border-bottom: 1px solid var(--rule); }
+  .lockup { display: flex; gap: 4mm; align-items: center; }
+  .mark {
+    width: 16mm; height: 16mm; border-radius: 3mm;
+    background: linear-gradient(135deg, #0D0D0F, #1a1a2e);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 2px rgba(20,11,0,.04), 0 2px 6px rgba(20,11,0,.05);
+  }
+  .lockup .name { font-family: var(--display); font-size: 22pt; font-weight: 700; letter-spacing: -0.01em; line-height: 1; color: var(--ink); }
+  .lockup .sub { font-family: var(--mono); font-size: 7pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin-top: 1.5mm; }
+  .head-meta { text-align: right; }
+  .head-meta .v { font-family: var(--mono); font-size: 7pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin: 0; }
+  .head-meta .tag { font-family: var(--display); font-size: 12pt; font-weight: 600; color: var(--ink); margin: 1mm 0 0; max-width: 78mm; line-height: 1.2; }
+
+  /* WUBRG ribbon */
+  .ribbon { height: 1.6mm; border-radius: 0.8mm; background: var(--grad-wubrg); }
+
+  /* tiles row */
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3.5mm; }
+  .hier {
+    border-radius: 3mm;
+    padding: 5mm 5mm 4mm;
+    color: #fff;
+    min-height: 32mm;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: 0 1px 2px rgba(20,11,0,.04), 0 2px 6px rgba(20,11,0,.05);
+  }
+  .hier .lbl { font-family: var(--mono); font-size: 6.5pt; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.88; }
+  .hier .ht { font-family: var(--display); font-size: 12pt; font-weight: 600; margin: 2mm 0 0; line-height: 1.1; }
+  .hier .meta { display: flex; justify-content: space-between; gap: 3mm; font-family: var(--mono); font-size: 6.5pt; opacity: 0.92; align-items: flex-end; }
+  .hier.gold { background: var(--grad-action); color: #2a1b00; }
+  .hier.gold .lbl, .hier.gold .meta { opacity: 0.78; }
+  .hier.know { background: var(--grad-knowledge); }
+  .hier.brand { background: var(--brand); }
+
+  /* mana strip (extended palette in one row) */
+  .mana-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2.5mm; }
+  .swatch-mini {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 2.5mm;
+    padding: 0 0 3mm;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(20,11,0,.04);
+  }
+  .swatch-mini .c { height: 10mm; }
+  .swatch-mini .n { padding: 2.5mm 3mm 0; font-family: var(--display); font-size: 8pt; font-weight: 600; color: var(--ink); }
+  .swatch-mini .x { padding: 0 3mm; font-family: var(--mono); font-size: 6pt; color: var(--ink-3); letter-spacing: 0.04em; margin-top: 0.5mm; }
+
+  /* two-column middle */
+  .col2 { display: grid; grid-template-columns: 1.05fr 1fr; gap: 4mm; }
+  .card-w {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3mm;
+    padding: 5mm 5.5mm;
+    box-shadow: 0 1px 2px rgba(20,11,0,.04), 0 2px 6px rgba(20,11,0,.05);
+  }
+  .card-w .specimen { font-family: var(--display); font-size: 18pt; font-weight: 600; line-height: 1.1; color: var(--ink); margin: 3mm 0 3mm; }
+  .card-w .specimen-body { font-family: var(--body); font-weight: 600; font-size: 14pt; line-height: 1.2; color: var(--ink); margin: 2mm 0; }
+  .card-w .specimen-mono { font-family: var(--mono); font-size: 9pt; font-weight: 500; color: var(--ink); margin: 1mm 0 2mm; }
+  .specs-line { font-family: var(--mono); font-size: 6.5pt; color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* principles list */
+  .principles-card { display: flex; flex-direction: column; gap: 3mm; }
+  .principle-item { padding: 3mm 0; border-top: 1px solid rgba(26,26,26,.05); }
+  .principle-item:first-of-type { border-top: 0; padding-top: 0; }
+  .principle-item .num { font-family: var(--mono); font-size: 6.5pt; color: var(--ink-3); letter-spacing: 0.12em; }
+  .principle-item .pt { font-family: var(--display); font-size: 10pt; font-weight: 600; color: var(--ink); margin: 0.5mm 0 1.5mm; }
+  .principle-item .pd { font-size: 7.5pt; line-height: 1.4; color: var(--ink-2); margin: 0; }
+
+  /* wordmarks row */
+  .word-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; }
+  .word {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3mm;
+    padding: 5mm 4.5mm 4mm;
+    box-shadow: 0 1px 2px rgba(20,11,0,.04);
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 22mm;
+  }
+  .word .lbl { font-family: var(--mono); font-size: 6.2pt; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); }
+  .word .lk { display: flex; align-items: center; gap: 2.5mm; margin: 2mm 0 0; }
+  .word .wm-mini {
+    width: 7mm; height: 7mm; border-radius: 1.5mm;
+    background: linear-gradient(135deg, #0D0D0F, #1a1a2e);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .word .wm { font-family: var(--display); font-size: 13pt; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); line-height: 1; }
+  .word .wm .light { font-weight: 300; color: var(--ink-2); }
+  .word.wubrg .wm {
+    background: var(--grad-wubrg);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* footer */
+  .foot {
+    margin-top: auto;
+    padding-top: 3mm;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 6.5pt; color: var(--ink-3); letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <div class="layer">
+
+    <!-- HEAD -->
+    <div class="head">
+      <div class="lockup">
+        <div class="mark">
+          <svg width="11mm" height="11mm" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D0D0F"/><stop offset="100%" stop-color="#1a1a2e"/></linearGradient>
+              <linearGradient id="wubrgmk" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F8F6D8"/><stop offset="25%" stop-color="#0E68AB"/><stop offset="50%" stop-color="#9c27b0"/><stop offset="75%" stop-color="#D3202A"/><stop offset="100%" stop-color="#00733E"/></linearGradient>
+            </defs>
+            <rect width="32" height="32" rx="6" fill="url(#bg)"/>
+            <circle cx="16" cy="16" r="11" fill="none" stroke="url(#wubrgmk)" stroke-width="2.5"/>
+            <text x="16" y="22" font-family="Georgia, serif" font-size="15" fill="url(#wubrgmk)" text-anchor="middle" font-weight="700" letter-spacing="-0.5">M</text>
+          </svg>
+        </div>
+        <div>
+          <div class="name">ManaTuner</div>
+          <div class="sub">Brand Book · Edition 2.6 · Light</div>
+        </div>
+      </div>
+      <div class="head-meta">
+        <p class="v">v2.6 · 2026</p>
+        <p class="tag">Find out if your manabase can support your game plan.</p>
+      </div>
+    </div>
+
+    <!-- ribbon -->
+    <div class="ribbon" aria-hidden="true"></div>
+
+    <!-- CTA Hierarchy -->
+    <div>
+      <p class="eyebrow">01 · CTA Hierarchy — three tiers, never invert</p>
+      <div class="row3">
+        <div class="hier gold">
+          <div>
+            <div class="lbl">Tier 1 · Action</div>
+            <div class="ht">Gold premium</div>
+          </div>
+          <div class="meta"><span>#E9B54C → #FFD700</span><span>135°</span></div>
+        </div>
+        <div class="hier know">
+          <div>
+            <div class="lbl">Tier 2 · Knowledge</div>
+            <div class="ht">Blue → Purple</div>
+          </div>
+          <div class="meta"><span>#0E68AB → #6A1B9A</span><span>135°</span></div>
+        </div>
+        <div class="hier brand">
+          <div>
+            <div class="lbl">Tier 3 · Default</div>
+            <div class="ht">Brand blue</div>
+          </div>
+          <div class="meta"><span>#1565C0</span><span>solid</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mana strip -->
+    <div>
+      <p class="eyebrow">02 · Mana palette · canon — never pastel-ize</p>
+      <div class="mana-strip">
+        <div class="swatch-mini"><div class="c" style="background:#F8F6D8"></div><div class="n">White</div><div class="x">#F8F6D8</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#0E68AB"></div><div class="n">Blue</div><div class="x">#0E68AB</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#150B00"></div><div class="n">Black</div><div class="x">#150B00</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#D3202A"></div><div class="n">Red</div><div class="x">#D3202A</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#00733E"></div><div class="n">Green</div><div class="x">#00733E</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#CBC5C0"></div><div class="n">Colorless</div><div class="x">#CBC5C0</div></div>
+        <div class="swatch-mini"><div class="c" style="background:#E9B54C"></div><div class="n">Gold</div><div class="x">#E9B54C</div></div>
+      </div>
+    </div>
+
+    <!-- Two columns: Typography + Principles -->
+    <div class="col2">
+      <div class="card-w">
+        <p class="eyebrow">03 · Typography</p>
+        <div class="specimen">Probability is your manabase.</div>
+        <div class="specs-line">Cinzel · Display · H1–H4 · 400/500/600/700</div>
+        <div class="specimen-body">Find out if your manabase can support your game plan.</div>
+        <div class="specs-line">Inter · Body · H5/H6 + UI · 300–700</div>
+        <div class="specimen-mono">Hypergeometric · Frank Karsten · Bellman</div>
+        <div class="specs-line">JetBrains Mono · techTerm captions · --ink-3</div>
+      </div>
+
+      <div class="card-w principles-card">
+        <p class="eyebrow" style="margin:0 0 1mm">04 · Principles</p>
+        <div class="principle-item">
+          <div class="num">01</div>
+          <div class="pt">Authenticity over decoration</div>
+          <div class="pd">WUBRG is the canon. Never pastel-ize, never desaturate. The mana colours are signal, not flair.</div>
+        </div>
+        <div class="principle-item">
+          <div class="num">02</div>
+          <div class="pt">Knowledge as premium</div>
+          <div class="pd">The Library uses gradients reserved for high-tier products. Math content carries its own visual weight.</div>
+        </div>
+        <div class="principle-item">
+          <div class="num">03</div>
+          <div class="pt">Quiet UI for a loud subject</div>
+          <div class="pd">Sober chrome (Inter, Cinzel, parchment). Mana symbols and the WUBRG hero do the talking.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wordmarks -->
+    <div>
+      <p class="eyebrow">05 · Wordmarks · Lockups</p>
+      <div class="word-row">
+        <div class="word">
+          <div class="lbl">01 · Mark + wordmark</div>
+          <div class="lk">
+            <div class="wm-mini">
+              <svg width="5mm" height="5mm" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="wbg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D0D0F"/><stop offset="100%" stop-color="#1a1a2e"/></linearGradient>
+                  <linearGradient id="wwu2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F8F6D8"/><stop offset="25%" stop-color="#0E68AB"/><stop offset="50%" stop-color="#9c27b0"/><stop offset="75%" stop-color="#D3202A"/><stop offset="100%" stop-color="#00733E"/></linearGradient>
+                </defs>
+                <rect width="32" height="32" rx="6" fill="url(#wbg2)"/>
+                <circle cx="16" cy="16" r="11" fill="none" stroke="url(#wwu2)" stroke-width="2.5"/>
+                <text x="16" y="22" font-family="Georgia, serif" font-size="15" fill="url(#wwu2)" text-anchor="middle" font-weight="700" letter-spacing="-0.5">M</text>
+              </svg>
+            </div>
+            <div class="wm">ManaTuner</div>
+          </div>
+        </div>
+        <div class="word">
+          <div class="lbl">02 · Split weight</div>
+          <div class="lk"><div class="wm">Mana<span class="light">Tuner</span></div></div>
+        </div>
+        <div class="word wubrg">
+          <div class="lbl">03 · WUBRG hero</div>
+          <div class="lk"><div class="wm">ManaTuner</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="foot">
+      <div>design/brand-book-a4.pdf · ManaTuner · Edition 2.6 · Light</div>
+      <div>Dark theme excluded — see BRANDBOOK.md §10</div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
