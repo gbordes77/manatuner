@@ -1,127 +1,265 @@
-/* ──────────────────────────────────────────────────────────────────
-   ManaTuner · Design Tokens · CSS Custom Properties
-   Edition 2.6 · Light theme
-   Dark theme is intentionally excluded — see BRANDBOOK.md §10.
-   ────────────────────────────────────────────────────────────────── */
+/**
+ * ManaTuner Design System · tokens.css
+ * Edition 2.7 · Mirror of manatuner.app production state
+ * Extracted 2026-05-15 from src/theme/index.ts + src/styles/index.css
+ *
+ * This file documents the actual CSS custom properties shipped in production.
+ * It does NOT prescribe a normalized set — the production stylesheet maintains
+ * three parallel naming conventions (--mtg-*, --bg-*, --spacing-*, --radius-*,
+ * --shadow-*, --transition-*, --font-*) which are reproduced verbatim below.
+ *
+ * Two themes are exported via two :root scopes (light + [data-theme="dark"]).
+ */
 
 :root {
-  /* ── Mana — canon (never change) ───────────────────────────────── */
-  --mana-w: #f8f6d8; /* Plains   — warm cream */
-  --mana-u: #0e68ab; /* Island   — deep blue */
-  --mana-b: #150b00; /* Swamp    — near-black */
-  --mana-r: #d3202a; /* Mountain — vivid red */
-  --mana-g: #00733e; /* Forest   — forest green */
-  --mana-c: #cbc5c0; /* Wastes   — neutral grey */
-  --mana-m: #e9b54c; /* Gold     — premium / multicolor */
+  /* ─────────────────────────────────────────────────────────────────────
+     MUI palette · light · canonical mana colors
+     Source: src/theme/index.ts:51-66
+  ───────────────────────────────────────────────────────────────────── */
+  --mana-white: #f8f6d8;
+  --mana-blue: #0e68ab;
+  --mana-black: #150b00;
+  --mana-red: #d3202a;
+  --mana-green: #00733e;
+  --mana-colorless: #cbc5c0;
+  --mana-multicolor: #e9b54c;
+  --mana-white-glow: rgba(248, 246, 216, 0.6);
+  --mana-blue-glow: rgba(14, 104, 171, 0.6);
+  --mana-black-glow: rgba(90, 60, 90, 0.6);
+  --mana-red-glow: rgba(211, 32, 42, 0.6);
+  --mana-green-glow: rgba(0, 115, 62, 0.6);
 
-  /* ── Brand primary ─────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────────────────────
+     Second mana palette (CSS class hexes)
+     Source: src/styles/index.css:45-72
+     These drift from --mana-* above (esp. white #fffbd5, colorless #ccc2c0).
+  ───────────────────────────────────────────────────────────────────── */
+  --mana-w-css: #fffbd5;
+  --mana-u-css: #0e68ab;
+  --mana-b-css: #150b00;
+  --mana-r-css: #d3202a;
+  --mana-g-css: #00733e;
+  --mana-c-css: #ccc2c0;
+
+  /* ─────────────────────────────────────────────────────────────────────
+     Third palette (--mtg-*) — ad-hoc components
+     Source: src/styles/index.css:462-484
+  ───────────────────────────────────────────────────────────────────── */
+  --mtg-white: #fffbf0;
+  --mtg-blue: #0e68ab;
+  --mtg-black: #150b00;
+  --mtg-red: #d3202a;
+  --mtg-green: #00733e;
+  --mtg-white-light: #ffffff;
+  --mtg-white-dark: #f5f1e8;
+  --mtg-blue-light: #4a90e2;
+  --mtg-blue-dark: #0a4f85;
+  --mtg-black-light: #2c2c2c;
+  --mtg-black-dark: #0a0a0a;
+  --mtg-red-light: #e74c3c;
+  --mtg-red-dark: #a91e22;
+  --mtg-green-light: #27ae60;
+  --mtg-green-dark: #005a2f;
+  --mtg-gold: #daa520;
+  --mtg-silver: #c0c0c0;
+  --mtg-bronze: #cd7f32;
+
+  /* ─────────────────────────────────────────────────────────────────────
+     Brand · primary + secondary
+     Source: src/theme/index.ts:191-200
+  ───────────────────────────────────────────────────────────────────── */
   --brand-primary: #1565c0;
+  --brand-primary-light: #42a5f5;
   --brand-primary-deep: #0d47a1;
+  --brand-secondary: #7b1fa2;
+  --brand-secondary-light: #ba68c8;
+  --brand-secondary-dark: #4a148c;
+  --brand-theme-meta: #1976d2; /* index.html:11 + critical CSS .loading */
+  --brand-focus: #1976d2; /* src/styles/index.css:322,428 */
 
-  /* ── Surfaces ──────────────────────────────────────────────────── */
-  --bg: #f5f3ee; /* parchment ground */
-  --bg-deep: #ede9e0; /* inset wells, token-line backgrounds */
-  --paper: #ffffff; /* card surface */
+  /* ─────────────────────────────────────────────────────────────────────
+     Surfaces & ink · light
+     Source: src/theme/index.ts:213-220 + src/styles/index.css:20
+  ───────────────────────────────────────────────────────────────────── */
+  --surface-bg: #f5f3ee; /* MUI background.default */
+  --surface-paper: #ffffff; /* MUI background.paper */
+  --surface-raw-body: #fafafa; /* CSS body background, applied pre-MUI */
 
-  /* ── Ink ───────────────────────────────────────────────────────── */
-  --ink: #1a1a1a;
-  --ink-2: #555555;
-  --ink-3: #9a958c;
+  --ink-primary: #1a1a1a;
+  --ink-secondary: #555555;
 
-  /* ── Rules ─────────────────────────────────────────────────────── */
-  --rule: rgba(26, 26, 26, 0.08);
-  --rule-soft: rgba(26, 26, 26, 0.04);
+  /* ─────────────────────────────────────────────────────────────────────
+     Glass effects (light)
+     Source: src/theme/index.ts:222-226
+  ───────────────────────────────────────────────────────────────────── */
+  --glass-primary: rgba(255, 255, 255, 0.8);
+  --glass-secondary: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.2);
 
-  /* ── State ─────────────────────────────────────────────────────── */
-  --state-error: var(--mana-r);
-  --state-warning: var(--mana-m);
-  --state-info: var(--mana-u);
-  --state-success: var(--mana-g);
-  --state-disabled: var(--mana-c);
+  /* ─────────────────────────────────────────────────────────────────────
+     Background gradients
+     Source: src/styles/index.css:487-489
+  ───────────────────────────────────────────────────────────────────── */
+  --bg-primary: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --bg-secondary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-card: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
 
-  /* ── Gradients ─────────────────────────────────────────────────── */
-  --gradient-cta-premium: linear-gradient(135deg, #e9b54c 0%, #ffd700 100%);
+  /* CTA gradients · sourced from component styles */
   --gradient-cta-knowledge: linear-gradient(135deg, #0e68ab 0%, #6a1b9a 100%);
+  --gradient-cta-knowledge-hover: linear-gradient(135deg, #1976d2 0%, #7b1fa2 100%);
   --gradient-hero-wubrg: linear-gradient(
-    90deg,
-    var(--mana-w) 0% 20%,
-    var(--mana-u) 20% 40%,
-    var(--mana-b) 40% 60%,
-    var(--mana-r) 60% 80%,
-    var(--mana-g) 80% 100%
+    135deg,
+    #e9b54c 0%,
+    #0e68ab 25%,
+    #9c27b0 50%,
+    #d3202a 75%,
+    #00733e 100%
   );
+  --gradient-text-util: linear-gradient(45deg, #667eea, #764ba2);
+  --gradient-loading-skeleton: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
 
-  /* ── Typography — families ─────────────────────────────────────── */
-  --font-display: 'Cinzel', 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* ─────────────────────────────────────────────────────────────────────
+     Typography
+     Source: src/styles/index.css:498-500 + src/theme/index.ts:71-115
+     Note: Inter / Poppins / JetBrains Mono are referenced but NOT loaded
+     as web fonts (only Roboto and Cinzel are loaded from Google Fonts).
+  ───────────────────────────────────────────────────────────────────── */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Poppins', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mui-body: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  --font-mui-heading: 'Cinzel', 'Playfair Display', serif;
+  --font-body-raw:
+    'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
-  /* ── Typography — weights ──────────────────────────────────────── */
-  --fw-regular: 400;
-  --fw-medium: 500;
-  --fw-semibold: 600;
-  --fw-bold: 700;
+  /* Sizes (MUI theme) */
+  --fs-h1: 3rem;
+  --fs-h2: 2.5rem;
+  --fs-h3: 2rem;
+  --fs-h4: 1.5rem;
+  --fs-h5: 1.25rem;
+  --fs-h6: 1rem;
+  --fs-body1: 1rem;
+  --fs-body2: 0.875rem;
 
-  /* ── Typography — sizes ────────────────────────────────────────── */
-  --fs-h1: 3rem; /* 48 */
-  --fs-h2: 2.5rem; /* 40 */
-  --fs-h3: 2rem; /* 32 */
-  --fs-h4: 1.5rem; /* 24 */
-  --fs-h5: 1.25rem; /* 20 */
-  --fs-h6: 1rem; /* 16 */
-  --fs-body1: 1rem; /* 16 */
-  --fs-body2: 0.875rem; /* 14 */
-  --fs-tech: 0.75rem; /* 12 */
+  /* Hero override (src/pages/HomePage.tsx:226-227) */
+  --fs-hero-mobile: 2.5rem;
+  --fs-hero-desktop: 3.5rem;
+  --fw-hero: 800;
 
-  /* ── Typography — line-heights ─────────────────────────────────── */
-  --lh-tight: 1.1;
-  --lh-snug: 1.3;
-  --lh-normal: 1.5;
-  --lh-relaxed: 1.65;
+  /* Line heights / letter spacing */
+  --lh-h1: 1.2;
+  --lh-h2: 1.3;
+  --lh-h3: 1.4;
+  --lh-h4: 1.4;
+  --lh-h5: 1.5;
+  --lh-h6: 1.6;
+  --lh-body1: 1.6;
+  --lh-body2: 1.5;
+  --ls-h1: 0.02em;
+  --ls-h2: 0.01em;
 
-  /* ── Typography — letter-spacing ───────────────────────────────── */
-  --ls-tight: -0.005em;
-  --ls-normal: 0;
-  --ls-wide: 0.04em;
-  --ls-wider: 0.14em;
+  /* ─────────────────────────────────────────────────────────────────────
+     Spacing
+     Source: src/styles/index.css:503-508
+  ───────────────────────────────────────────────────────────────────── */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
 
-  /* ── Radii ─────────────────────────────────────────────────────── */
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 12px;
-  --r-xl: 16px;
-  --r-full: 9999px;
+  /* ─────────────────────────────────────────────────────────────────────
+     Radius
+     Source: src/styles/index.css:511-515 + src/theme/index.ts (shape:12,
+     MuiButton:12, MuiChip:8, MuiCard:16, MuiTextField:12)
+  ───────────────────────────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
 
-  /* ── Spacing ───────────────────────────────────────────────────── */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2.5rem;
-  --space-2xl: 4rem;
+  /* ─────────────────────────────────────────────────────────────────────
+     Shadows
+     Source: src/styles/index.css:492-495 + MUI component overrides
+  ───────────────────────────────────────────────────────────────────── */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.18);
+  --shadow-button: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-button-hover: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover-util: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-library-cta: 0 2px 14px rgba(14, 104, 171, 0.65), 0 0 18px rgba(125, 180, 255, 0.35);
+  --shadow-library-cta-hover:
+    0 4px 22px rgba(14, 104, 171, 0.85), 0 0 28px rgba(125, 180, 255, 0.65);
+  --shadow-library-cta-pulse: 0 2px 14px rgba(14, 104, 171, 0.9), 0 0 34px rgba(180, 120, 255, 0.8);
 
-  /* ── Shadows ───────────────────────────────────────────────────── */
-  --shadow-card: 0 1px 2px rgba(20, 11, 0, 0.04), 0 4px 16px rgba(20, 11, 0, 0.04);
-  --shadow-card-hover: 0 4px 12px rgba(20, 11, 0, 0.08), 0 16px 40px rgba(20, 11, 0, 0.1);
-  --shadow-button: 0 2px 8px rgba(20, 11, 0, 0.1);
-  --shadow-button-hover: 0 8px 24px rgba(20, 11, 0, 0.18);
+  /* ─────────────────────────────────────────────────────────────────────
+     Motion
+     Source: src/styles/index.css:518-520 + MUI component transitions
+  ───────────────────────────────────────────────────────────────────── */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.25s ease-out;
+  --transition-slow: 0.35s ease-out;
+  --transition-mui-button: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-mui-card: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-mui-input: all 0.2s ease-in-out;
 
-  /* ── Motion ────────────────────────────────────────────────────── */
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-  --d-fast: 180ms;
-  --d-base: 320ms;
-  --d-slow: 600ms;
+  --transform-button-hover: translateY(-2px);
+  --transform-card-hover: translateY(-4px);
+  --transform-library-cta: translateY(-1px);
 
-  /* ── z-index ───────────────────────────────────────────────────── */
-  --z-base: 1;
-  --z-raised: 10;
-  --z-sticky: 100;
-  --z-overlay: 1000;
-  --z-modal: 1100;
-  --z-toast: 1200;
+  --backdrop-app-bar: blur(10px);
 }
 
-/* prefers-reduced-motion — non-negotiable guard */
+/* ───────────────────────────────────────────────────────────────────────
+   Dark theme · MUI darkTheme palette
+   Source: src/theme/index.ts:231-316
+   Activate by setting [data-theme="dark"] on <html> or <body>.
+─────────────────────────────────────────────────────────────────────── */
+[data-theme='dark'] {
+  --mana-white: #f5f0d0;
+  --mana-blue: #4a9ee8;
+  --mana-black: #3d3d3d;
+  --mana-red: #ff5252;
+  --mana-green: #4caf50;
+  --mana-colorless: #9e9e9e;
+  --mana-multicolor: #ffd700;
+  --mana-white-glow: rgba(245, 240, 208, 0.5);
+  --mana-blue-glow: rgba(74, 158, 232, 0.5);
+  --mana-black-glow: rgba(120, 80, 120, 0.5);
+  --mana-red-glow: rgba(255, 82, 82, 0.5);
+  --mana-green-glow: rgba(76, 175, 80, 0.5);
+
+  --brand-primary: #64b5f6;
+  --brand-primary-light: #90caf9;
+  --brand-primary-deep: #42a5f5;
+  --brand-secondary: #ce93d8;
+  --brand-secondary-light: #e1bee7;
+  --brand-secondary-dark: #ba68c8;
+  --brand-theme-meta: #0d0d0f;
+
+  --surface-bg: #0d0d0f;
+  --surface-paper: #1a1a1e;
+  --surface-raw-body: #0d0d0f;
+
+  --ink-primary: #f5f5f5;
+  --ink-secondary: #aaaaaa;
+
+  --glass-primary: rgba(255, 255, 255, 0.05);
+  --glass-secondary: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+/* ───────────────────────────────────────────────────────────────────────
+   Reduced motion guard
+   Source: src/styles/index.css:452-458
+─────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -129,6 +267,5 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }

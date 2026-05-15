@@ -1,12 +1,18 @@
 /**
- * ManaTuner · Design Tokens · TypeScript export
- * Edition 2.6 · Light theme
+ * ManaTuner Design System · tokens.ts
+ * Edition 2.7 · Mirror of manatuner.app production state
+ * Extracted 2026-05-15 from src/theme/index.ts + src/styles/index.css
  *
- * Dark theme is intentionally excluded — see BRANDBOOK.md §10.
- * Consume this module as the typed source of truth in React/TS code.
+ * Typed token export. Two themes are present (light + dark). The `tokens`
+ * default export holds the LIGHT theme; the `darkTokens` export holds the
+ * DARK overrides. Mirror, not target — values come from production.
  */
 
 export const tokens = {
+  edition: '2.7',
+  mode: 'mirror' as const,
+  source: 'manatuner.app production state',
+
   color: {
     mana: {
       white: '#F8F6D8',
@@ -17,51 +23,85 @@ export const tokens = {
       colorless: '#CBC5C0',
       multicolor: '#E9B54C',
     },
+    manaGlow: {
+      white: 'rgba(248, 246, 216, 0.6)',
+      blue: 'rgba(14, 104, 171, 0.6)',
+      black: 'rgba(90, 60, 90, 0.6)',
+      red: 'rgba(211, 32, 42, 0.6)',
+      green: 'rgba(0, 115, 62, 0.6)',
+    },
+    manaCss: {
+      w: '#fffbd5',
+      u: '#0e68ab',
+      b: '#150b00',
+      r: '#d3202a',
+      g: '#00733e',
+      c: '#ccc2c0',
+    },
+    mtgCss: {
+      white: '#FFFBF0',
+      blue: '#0E68AB',
+      black: '#150B00',
+      red: '#D3202A',
+      green: '#00733E',
+      gold: '#DAA520',
+      silver: '#C0C0C0',
+      bronze: '#CD7F32',
+    },
     brand: {
       primary: '#1565C0',
+      primaryLight: '#42A5F5',
       primaryDeep: '#0D47A1',
+      secondary: '#7B1FA2',
+      secondaryLight: '#BA68C8',
+      secondaryDark: '#4A148C',
+      themeColorMeta: '#1976d2',
+      focusOutline: '#1976d2',
     },
     surface: {
       background: '#F5F3EE',
-      backgroundDeep: '#EDE9E0',
       paper: '#FFFFFF',
+      rawBody: '#fafafa',
     },
     ink: {
       primary: '#1A1A1A',
       secondary: '#555555',
-      tertiary: '#9A958C',
     },
-    rule: {
-      default: 'rgba(26, 26, 26, 0.08)',
-      soft: 'rgba(26, 26, 26, 0.04)',
-    },
-    state: {
-      error: '#D3202A',
-      warning: '#E9B54C',
-      info: '#0E68AB',
-      success: '#00733E',
-      disabled: '#CBC5C0',
+    glass: {
+      primary: 'rgba(255, 255, 255, 0.8)',
+      secondary: 'rgba(255, 255, 255, 0.6)',
+      border: 'rgba(255, 255, 255, 0.2)',
     },
   },
 
   gradient: {
-    ctaPremium: 'linear-gradient(135deg, #E9B54C 0%, #FFD700 100%)',
-    ctaKnowledge: 'linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%)',
     heroWubrg:
-      'linear-gradient(90deg, #F8F6D8 0% 20%, #0E68AB 20% 40%, #150B00 40% 60%, #D3202A 60% 80%, #00733E 80% 100%)',
+      'linear-gradient(135deg, #E9B54C 0%, #0E68AB 25%, #9c27b0 50%, #D3202A 75%, #00733E 100%)',
+    ctaKnowledge: 'linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%)',
+    ctaKnowledgeHover: 'linear-gradient(135deg, #1976D2 0%, #7B1FA2 100%)',
+    bgPrimary: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+    bgSecondary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    bgCard: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+    gradientText: 'linear-gradient(45deg, #667eea, #764ba2)',
+    loadingSkeleton: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
   },
 
   typography: {
     fontFamily: {
-      display: '"Cinzel", "Playfair Display", Georgia, serif',
-      body: '"Inter", system-ui, -apple-system, sans-serif',
-      mono: '"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace',
+      bodyMui: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      bodyRaw:
+        "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+      heading: '"Cinzel", "Playfair Display", serif',
+      headingCss: "'Poppins', 'Inter', sans-serif",
+      mono: "'JetBrains Mono', 'Fira Code', monospace",
+      primary: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     },
     fontWeight: {
       regular: 400,
       medium: 500,
       semibold: 600,
       bold: 700,
+      heroHomepage: 800,
     },
     fontSize: {
       h1: '3rem',
@@ -72,28 +112,34 @@ export const tokens = {
       h6: '1rem',
       body1: '1rem',
       body2: '0.875rem',
-      tech: '0.75rem',
+      heroHomepageMobile: '2.5rem',
+      heroHomepageDesktop: '3.5rem',
     },
     lineHeight: {
-      tight: 1.1,
-      snug: 1.3,
-      normal: 1.5,
-      relaxed: 1.65,
+      h1: 1.2,
+      h2: 1.3,
+      h3: 1.4,
+      h4: 1.4,
+      h5: 1.5,
+      h6: 1.6,
+      body1: 1.6,
+      body2: 1.5,
     },
     letterSpacing: {
-      tight: '-0.005em',
-      normal: '0',
-      wide: '0.04em',
-      wider: '0.14em',
+      h1: '0.02em',
+      h2: '0.01em',
     },
   },
 
   radius: {
-    sm: '6px',
+    sm: '4px',
     md: '8px',
     lg: '12px',
     xl: '16px',
     full: '9999px',
+    muiShape: 12,
+    muiChip: 8,
+    muiCard: 16,
   },
 
   spacing: {
@@ -101,62 +147,120 @@ export const tokens = {
     sm: '0.5rem',
     md: '1rem',
     lg: '1.5rem',
-    xl: '2.5rem',
-    '2xl': '4rem',
+    xl: '2rem',
+    '2xl': '3rem',
   },
 
   shadow: {
-    card: '0 1px 2px rgba(20,11,0,0.04), 0 4px 16px rgba(20,11,0,0.04)',
-    cardHover: '0 4px 12px rgba(20,11,0,0.08), 0 16px 40px rgba(20,11,0,0.10)',
-    button: '0 2px 8px rgba(20,11,0,0.10)',
-    buttonHover: '0 8px 24px rgba(20,11,0,0.18)',
+    sm: '0 2px 4px rgba(0,0,0,0.1)',
+    md: '0 4px 8px rgba(0,0,0,0.12)',
+    lg: '0 8px 16px rgba(0,0,0,0.15)',
+    xl: '0 12px 24px rgba(0,0,0,0.18)',
+    button: '0 4px 12px rgba(0,0,0,0.1)',
+    buttonHover: '0 8px 24px rgba(0,0,0,0.15)',
+    cardHover: '0 12px 32px rgba(0,0,0,0.15)',
+    cardHoverDark: '0 12px 32px rgba(0,0,0,0.4)',
+    cardHoverUtil: '0 4px 12px rgba(0,0,0,0.15)',
+    libraryCtaBase: '0 2px 14px rgba(14,104,171,0.65), 0 0 18px rgba(125,180,255,0.35)',
+    libraryCtaHover: '0 4px 22px rgba(14,104,171,0.85), 0 0 28px rgba(125,180,255,0.65)',
+    libraryCtaPulse: '0 2px 14px rgba(14,104,171,0.9), 0 0 34px rgba(180,120,255,0.8)',
   },
 
   motion: {
-    easing: {
-      standard: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    },
-    duration: {
-      fast: '180ms',
-      base: '320ms',
-      slow: '600ms',
+    transition: {
+      fast: '0.15s ease-out',
+      normal: '0.25s ease-out',
+      slow: '0.35s ease-out',
+      muiButton: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      muiCard: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+      muiTextField: 'all 0.2s ease-in-out',
+      libraryCta: 'all 0.3s ease',
+      cardHoverUtil: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
     },
     transform: {
-      cardLift: 'translateY(-4px)',
-      buttonLift: 'translateY(-2px)',
-      arrowNudge: 'translateX(4px)',
+      buttonHover: 'translateY(-2px)',
+      cardHover: 'translateY(-4px)',
+      libraryCtaHover: 'translateY(-1px)',
+    },
+    backdropFilter: {
+      appBar: 'blur(10px)',
+      cardDark: 'blur(10px)',
+    },
+    keyframes: {
+      libraryPulse: 'libraryPulse 2.8s ease-out 0.8s 1',
+      loadingSkeleton: 'loading 1.5s infinite',
+      fadeIn: 'fadeIn 0.3s ease-out',
+      slideIn: 'slideIn 0.3s ease-out',
+      pulse: 'pulse 2s infinite',
     },
   },
 
-  zIndex: {
-    base: 1,
-    raised: 10,
-    sticky: 100,
-    overlay: 1000,
-    modal: 1100,
-    toast: 1200,
+  fonts: {
+    loaded: [
+      { family: 'Roboto', weights: '300;400;500;700' },
+      { family: 'Cinzel', weights: '400;600;700' },
+      { family: 'Mana Font', version: '1.18.0' },
+    ],
+    referencedButNotLoaded: ['Inter', 'Poppins', 'JetBrains Mono', 'Fira Code', 'Playfair Display'],
+  },
+
+  stack: {
+    framework: 'React 18 + TypeScript + Vite',
+    componentLibrary: 'Material-UI v5',
+    tailwind: false,
+    iconography: ['@mui/icons-material', 'lucide-react', 'mana-font@1.18.0'],
+  },
+} as const
+
+export const darkTokens = {
+  color: {
+    mana: {
+      white: '#F5F0D0',
+      blue: '#4A9EE8',
+      black: '#3D3D3D',
+      red: '#FF5252',
+      green: '#4CAF50',
+      colorless: '#9E9E9E',
+      multicolor: '#FFD700',
+    },
+    manaGlow: {
+      white: 'rgba(245, 240, 208, 0.5)',
+      blue: 'rgba(74, 158, 232, 0.5)',
+      black: 'rgba(120, 80, 120, 0.5)',
+      red: 'rgba(255, 82, 82, 0.5)',
+      green: 'rgba(76, 175, 80, 0.5)',
+    },
+    brand: {
+      primary: '#64B5F6',
+      primaryLight: '#90CAF9',
+      primaryDeep: '#42A5F5',
+      secondary: '#CE93D8',
+      secondaryLight: '#E1BEE7',
+      secondaryDark: '#BA68C8',
+      themeColorMeta: '#0D0D0F',
+    },
+    surface: {
+      background: '#0D0D0F',
+      paper: '#1A1A1E',
+    },
+    ink: {
+      primary: '#F5F5F5',
+      secondary: '#AAAAAA',
+    },
+    glass: {
+      primary: 'rgba(255, 255, 255, 0.05)',
+      secondary: 'rgba(255, 255, 255, 0.02)',
+      border: 'rgba(255, 255, 255, 0.10)',
+    },
+  },
+  status: {
+    error: '#FF6B6B',
+    warning: '#FFD54F',
+    info: '#4FC3F7',
+    success: '#69F0AE',
   },
 } as const
 
 export type Tokens = typeof tokens
-
-export type ManaColor = keyof typeof tokens.color.mana
-export type CtaTier = 'premium' | 'knowledge' | 'default'
-
-/**
- * Helper — resolve a CTA tier to its gradient or solid colour.
- * Tier 1 (premium) and Tier 2 (knowledge) return a gradient.
- * Tier 3 (default) returns the solid brand colour.
- */
-export const ctaBackground = (tier: CtaTier): string => {
-  switch (tier) {
-    case 'premium':
-      return tokens.gradient.ctaPremium
-    case 'knowledge':
-      return tokens.gradient.ctaKnowledge
-    case 'default':
-      return tokens.color.brand.primary
-  }
-}
-
+export type DarkTokens = typeof darkTokens
 export default tokens

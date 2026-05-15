@@ -1,211 +1,306 @@
 # ManaTuner — Brandbook
 
-**Edition 2.6 · Light theme · Reference manual**
+**Edition 2.7 · Mirror of manatuner.app production state · 2026-05-15**
 
-The visual & interaction laws of ManaTuner. This edition documents the light theme only. The dark theme is deliberately excluded from this revision and will be re-cut once its surface system has been rebuilt from the ground up.
+This edition is a **descriptive snapshot**, not a target spec. It documents the design system as it currently ships on `https://manatuner.app`. Values were extracted from `src/theme/index.ts`, `src/styles/index.css`, `src/pages/HomePage.tsx`, `src/components/layout/Header.tsx`, and `index.html`.
 
-A rendered companion lives at [`./index.html`](./index.html) — open it in a browser to see the system applied.
+A rendered companion lives at [`./design-system.html`](./design-system.html) — open it in a browser to see the system applied. A printable A4 poster is at [`./brand-book-a4.html`](./brand-book-a4.html) (PDF: [`./brand-book-a4.pdf`](./brand-book-a4.pdf)).
 
 ---
 
-## 1. Brand voice
+## 1. Overview
 
-ManaTuner is **competitive Magic the Gathering, technical, generous**. Three rules govern the visual language:
+ManaTuner is a Magic: The Gathering manabase calculator. The visible interface today combines a Material-UI v5 component layer with a parallel CSS variables layer. Two themes are shipped — a light theme (default) and a dark theme — both defined in `src/theme/index.ts`.
 
-1. **Authenticity over decoration.** The mana palette is the canonical Wizards colour set (Plains warm cream, Island deep blue, Swamp near-black, Mountain vivid red, Forest forest green). Never pastel-ize. Never desaturate. They are signal, not flair.
-2. **Knowledge as premium.** The Library uses gradients normally reserved for high-tier products. Math content carries its own visual weight — small monospace techTerm captions credit Karsten, Bellman, Frank Karsten's tables instead of corporate jargon.
-3. **Quiet UI for a loud subject.** The chrome stays sober (Inter body, Cinzel headings, parchment surfaces). The mana symbols and the WUBRG hero gradient do the talking.
+**Stack as deployed:**
 
-**Avoid:** generic SaaS purple-blue gradients on white, stock illustration, decorative badges. The card art is the moodboard.
+- React 18 + TypeScript + Vite
+- Material-UI v5 (`@mui/material` + `@mui/icons-material`)
+- `lucide-react` for non-mana icons
+- `mana-font@1.18.0` for mana symbols (CDN, SRI-pinned)
+- No Tailwind (no `tailwind.config.*` in repo, no `tailwind` in `package.json`)
+
+**Three coexisting palette layers:**
+
+The codebase maintains three different palette declarations that coexist at runtime:
+
+1. **MUI palette** — `palette.mana.*` and the standard MUI palette tokens.
+2. **`.mana-symbol` CSS classes** — fallback mana glyphs in `src/styles/index.css:30-86`. Hexes drift slightly from the MUI palette (e.g. `.mana-w` is `#fffbd5`, MUI mana white is `#F8F6D8`).
+3. **`--mtg-*` CSS variables** — a third set in `src/styles/index.css:462-484` used by ad-hoc components.
+
+This brandbook documents all three rather than reconciling them.
 
 ---
 
 ## 2. Colour system
 
-### Mana — canon (never change)
+### Mana — light theme (MUI `palette.mana`)
 
-| Colour     | Hex       | Use                                                                                            |
-| ---------- | --------- | ---------------------------------------------------------------------------------------------- |
-| White      | `#F8F6D8` | Plains accents, info-light backgrounds                                                         |
-| Blue       | `#0E68AB` | Primary brand. Knowledge CTA. Info chips.                                                      |
-| Black      | `#150B00` | Body text. **Do not use as accent on surfaces darker than parchment** — readability collapses. |
-| Red        | `#D3202A` | Error, destructive, attention                                                                  |
-| Green      | `#00733E` | Success, validated state                                                                       |
-| Colorless  | `#CBC5C0` | Disabled, neutral                                                                              |
-| Multicolor | `#E9B54C` | **Premium gold — single primary CTA per page**                                                 |
+| Colour     | Hex       | MUI key                   |
+| ---------- | --------- | ------------------------- |
+| White      | `#F8F6D8` | `palette.mana.white`      |
+| Blue       | `#0E68AB` | `palette.mana.blue`       |
+| Black      | `#150B00` | `palette.mana.black`      |
+| Red        | `#D3202A` | `palette.mana.red`        |
+| Green      | `#00733E` | `palette.mana.green`      |
+| Colorless  | `#CBC5C0` | `palette.mana.colorless`  |
+| Multicolor | `#E9B54C` | `palette.mana.multicolor` |
 
-### Surfaces & ink (light)
+Glow rgba variants (`whiteGlow`, `blueGlow`, `blackGlow`, `redGlow`, `greenGlow`) at α=0.6 are exposed on the same object for hover/animation effects.
 
-| Token         | Hex                  | Use                                 |
-| ------------- | -------------------- | ----------------------------------- |
-| `--bg`        | `#F5F3EE`            | Parchment background, page ground   |
-| `--bg-deep`   | `#EDE9E0`            | Inset wells, token-line backgrounds |
-| `--paper`     | `#FFFFFF`            | Card surface, raised content        |
-| `--ink`       | `#1A1A1A`            | Body text                           |
-| `--ink-2`     | `#555555`            | Secondary text                      |
-| `--ink-3`     | `#9A958C`            | Tertiary, captions, mono labels     |
-| `--rule`      | `rgba(26,26,26,.08)` | Hairline rules, card borders        |
-| `--rule-soft` | `rgba(26,26,26,.04)` | Within-card dividers                |
+### Mana — dark theme (MUI `darkTheme.palette.mana` overrides)
 
-### Brand primary
+| Colour     | Hex (dark) |
+| ---------- | ---------- |
+| White      | `#F5F0D0`  |
+| Blue       | `#4A9EE8`  |
+| Black      | `#3D3D3D`  |
+| Red        | `#FF5252`  |
+| Green      | `#4CAF50`  |
+| Colorless  | `#9E9E9E`  |
+| Multicolor | `#FFD700`  |
 
-| Token          | Hex       | Use                          |
-| -------------- | --------- | ---------------------------- |
-| `--brand`      | `#1565C0` | Tier 3 default solid buttons |
-| `--brand-deep` | `#0D47A1` | Hover state for `--brand`    |
+Dark-theme glow variants drop to α=0.5.
 
-### CTA hierarchy — three tiers, never invert
+### Brand · primary + secondary
 
-A page carries **at most one Tier 1**. The two gradients are deliberate, not redundant; they encode the user's intent (doing vs. reading).
+| Token                       | Hex (light) | Hex (dark) |
+| --------------------------- | ----------- | ---------- |
+| `palette.primary.main`      | `#1565C0`   | `#64B5F6`  |
+| `palette.primary.light`     | `#42A5F5`   | `#90CAF9`  |
+| `palette.primary.dark`      | `#0D47A1`   | `#42A5F5`  |
+| `palette.secondary.main`    | `#7B1FA2`   | `#CE93D8`  |
+| `palette.secondary.light`   | `#BA68C8`   | `#E1BEE7`  |
+| `palette.secondary.dark`    | `#4A148C`   | `#BA68C8`  |
+| `<meta name="theme-color">` | `#1976d2`   | `#0D0D0F`  |
+| Focus-visible outline       | `#1976d2`   | `#1976d2`  |
 
-| Tier | Treatment                              | Token                      | Meaning                                    |
-| ---- | -------------------------------------- | -------------------------- | ------------------------------------------ |
-| 1    | Gold gradient `#E9B54C → #FFD700` 135° | `--gradient-cta-premium`   | Primary action ("Analyze deck")            |
-| 2    | Blue → purple `#0E68AB → #6A1B9A` 135° | `--gradient-cta-knowledge` | Knowledge / exploration ("Browse Library") |
-| 3    | Solid `--brand` or outline             | `--brand`                  | Default, listed actions                    |
+Note that `#1976d2` (focus, theme-color, critical-CSS loading text) is a fourth blue, distinct from `palette.primary.main` `#1565C0`.
 
-**Why two distinct gradients are kept.** Analyzer = action (gold). Library = knowledge (blue → purple). The user learns the association and it transfers between pages. Harmonizing them to a single colour collapses the signal — tested and rejected. **Do not** demote either CTA gradient to a "secondary" treatment; they are both primary-tier, addressing different intents.
+### Surfaces & ink — light
+
+| Token                        | Value     |
+| ---------------------------- | --------- |
+| `palette.background.default` | `#F5F3EE` |
+| `palette.background.paper`   | `#FFFFFF` |
+| Raw `body` background-color  | `#fafafa` |
+| `palette.text.primary`       | `#1A1A1A` |
+| `palette.text.secondary`     | `#555555` |
+
+The raw `#fafafa` is set in `src/styles/index.css:20` and is briefly visible before MUI's `CssBaseline` overwrites `body` with `#F5F3EE`. The visible ground at steady state is the parchment.
+
+### Surfaces & ink — dark
+
+| Token                        | Value     |
+| ---------------------------- | --------- |
+| `palette.background.default` | `#0D0D0F` |
+| `palette.background.paper`   | `#1A1A1E` |
+| `palette.text.primary`       | `#F5F5F5` |
+| `palette.text.secondary`     | `#AAAAAA` |
+
+### Glass
+
+| Token             | Light                   | Dark                     |
+| ----------------- | ----------------------- | ------------------------ |
+| `glass.primary`   | `rgba(255,255,255,0.8)` | `rgba(255,255,255,0.05)` |
+| `glass.secondary` | `rgba(255,255,255,0.6)` | `rgba(255,255,255,0.02)` |
+| `glass.border`    | `rgba(255,255,255,0.2)` | `rgba(255,255,255,0.10)` |
+
+Used by `MuiAppBar` (`backdrop-filter: blur(10px)`) and the dark `MuiCard` override.
+
+### `--mtg-*` CSS variables (third palette)
+
+Defined in `src/styles/index.css:462-484`. Includes light/dark variants for each colour (`--mtg-blue-light`, `--mtg-blue-dark`, …) plus `--mtg-gold #DAA520`, `--mtg-silver #C0C0C0`, `--mtg-bronze #CD7F32`. Used by ad-hoc components that don't read the MUI palette.
 
 ---
 
-## 3. Typography
+## 3. Gradients
 
-```
-Heading    "Cinzel", "Playfair Display", Georgia, serif    — H1–H4 only
-Body       "Inter", system-ui                              — H5/H6, body, UI
-Mono       "JetBrains Mono", "SF Mono", Menlo, monospace   — techTerm captions, tokens, math
-```
+| Name                     | Value                                                                                      | Source                 |
+| ------------------------ | ------------------------------------------------------------------------------------------ | ---------------------- |
+| Hero WUBRG (homepage H1) | `linear-gradient(135deg, #E9B54C 0%, #0E68AB 25%, #9c27b0 50%, #D3202A 75%, #00733E 100%)` | `HomePage.tsx:230-235` |
+| CTA Knowledge (Library)  | `linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%)`                                        | `Header.tsx:211`       |
+| CTA Knowledge hover      | `linear-gradient(135deg, #1976D2 0%, #7B1FA2 100%)`                                        | `Header.tsx:220`       |
+| `--bg-primary`           | `linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)`                                        | `index.css:487`        |
+| `--bg-secondary`         | `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`                                        | `index.css:488`        |
+| `--bg-card`              | `linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)`                                        | `index.css:489`        |
+| `.gradient-text`         | `linear-gradient(45deg, #667eea, #764ba2)`                                                 | `index.css:363`        |
+| `.loading-skeleton`      | `linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)`                            | `index.css:213`        |
 
-### Scale
-
-| Token | Size     | Weight | Family         | Line-height |
-| ----- | -------- | ------ | -------------- | ----------- |
-| H1    | 3rem     | 700    | Cinzel         | 1.1         |
-| H2    | 2.5rem   | 600    | Cinzel         | 1.15        |
-| H3    | 2rem     | 600    | Cinzel         | 1.2         |
-| H4    | 1.5rem   | 500    | Cinzel         | 1.3         |
-| H5    | 1.25rem  | 500    | Inter          | 1.4         |
-| H6    | 1rem     | 500    | Inter          | 1.5         |
-| body1 | 1rem     | 400    | Inter          | 1.65        |
-| body2 | 0.875rem | 400    | Inter          | 1.55        |
-| tech  | 0.75rem  | 400    | JetBrains Mono | 1.4         |
-
-**Hero H1** uses the WUBRG gradient as text fill (`background-clip: text`). Reserved for the home / landing H1 — never for body content, never for inline emphasis.
-
-**techTerm captions** (e.g. _"Hypergeometric · Frank Karsten"_) render in mono at body2 size with `color: var(--ink-3)`. They sit at the bottom of math cards as a discreet credit line. **Do not** promote to body weight; they are footnotes, not headlines.
+The Hero WUBRG uses the multicolor gold `#E9B54C` in place of mana white, and a hardcoded `#9c27b0` in place of mana black — five bands total, four of which are mana colours.
 
 ---
 
-## 4. Layout primitives
+## 4. Typography
+
+### Font families
+
+| Layer                       | Cascade                                                              |
+| --------------------------- | -------------------------------------------------------------------- |
+| MUI `typography.fontFamily` | `"Inter", "Roboto", "Helvetica", "Arial", sans-serif`                |
+| MUI heading H1–H4           | `"Cinzel", "Playfair Display", serif`                                |
+| Raw `body` font-family      | `'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', …`         |
+| `--font-primary`            | `'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` |
+| `--font-heading`            | `'Poppins', 'Inter', sans-serif`                                     |
+| `--font-mono`               | `'JetBrains Mono', 'Fira Code', monospace`                           |
+
+### Fonts loaded from the network
+
+| Family    | Weights            | Source                   |
+| --------- | ------------------ | ------------------------ |
+| Roboto    | 300, 400, 500, 700 | Google Fonts             |
+| Cinzel    | 400, 600, 700      | Google Fonts             |
+| Mana Font | 1.18.0             | jsdelivr CDN, SRI-pinned |
+
+**Referenced but not loaded:** Inter, Poppins, JetBrains Mono, Fira Code, Playfair Display. Each falls back to the next item in its cascade. Body text resolves to Roboto (the first loaded font in the MUI cascade); `--font-heading` references Poppins → Inter → system sans, none of which are loaded → resolves to system sans.
+
+### Scale (MUI `typography`)
+
+| Variant | Size     | Weight | Family        | Line-height | Letter-spacing |
+| ------- | -------- | ------ | ------------- | ----------- | -------------- |
+| H1      | 3rem     | 700    | Cinzel        | 1.2         | 0.02em         |
+| H2      | 2.5rem   | 600    | Cinzel        | 1.3         | 0.01em         |
+| H3      | 2rem     | 600    | Cinzel        | 1.4         | —              |
+| H4      | 1.5rem   | 500    | Cinzel        | 1.4         | —              |
+| H5      | 1.25rem  | 500    | Inter cascade | 1.5         | —              |
+| H6      | 1rem     | 500    | Inter cascade | 1.6         | —              |
+| body1   | 1rem     | 400    | Inter cascade | 1.6         | —              |
+| body2   | 0.875rem | 400    | Inter cascade | 1.5         | —              |
+
+### Hero override (homepage)
+
+`src/pages/HomePage.tsx:226-227` overrides the H1 variant with:
+
+- `fontWeight: 800`
+- `fontSize: { xs: '2.5rem', md: '3.5rem' }`
+- WUBRG text-fill gradient
+
+This is the dominant typographic moment on the site.
+
+---
+
+## 5. Layout primitives
 
 ### Radii
 
-| Token      | Value  | Use                            |
-| ---------- | ------ | ------------------------------ |
-| `--r-sm`   | 6 px   | Tags, inline code, micro-pills |
-| `--r-md`   | 8 px   | Toolbar chips, compact inputs  |
-| `--r-lg`   | 12 px  | Buttons, inputs, base cards    |
-| `--r-xl`   | 16 px  | Premium surfaces, modals       |
-| `--r-full` | 9999px | Chips, pills, avatars          |
+| Token           | Value  | MUI usage                               |
+| --------------- | ------ | --------------------------------------- |
+| `--radius-sm`   | 4 px   | —                                       |
+| `--radius-md`   | 8 px   | `MuiChip.borderRadius`                  |
+| `--radius-lg`   | 12 px  | `MUI shape.borderRadius`, Button, Input |
+| `--radius-xl`   | 16 px  | `MuiCard.borderRadius`                  |
+| `--radius-full` | 9999px | —                                       |
 
 ### Spacing
 
-| Token         | Value   | Use                        |
-| ------------- | ------- | -------------------------- |
-| `--space-xs`  | 0.25rem | Inline gaps                |
-| `--space-sm`  | 0.5rem  | Compact stacks             |
-| `--space-md`  | 1rem    | Default padding            |
-| `--space-lg`  | 1.5rem  | Card padding, section gaps |
-| `--space-xl`  | 2.5rem  | Major section padding      |
-| `--space-2xl` | 4rem    | Hero / band separation     |
+| Token           | Value   |
+| --------------- | ------- |
+| `--spacing-xs`  | 0.25rem |
+| `--spacing-sm`  | 0.5rem  |
+| `--spacing-md`  | 1rem    |
+| `--spacing-lg`  | 1.5rem  |
+| `--spacing-xl`  | 2rem    |
+| `--spacing-2xl` | 3rem    |
 
 ### Shadows
 
-| Token                   | Value                                                         | Use            |
-| ----------------------- | ------------------------------------------------------------- | -------------- |
-| `--shadow-card`         | `0 1px 2px rgba(20,11,0,.04), 0 4px 16px rgba(20,11,0,.04)`   | Resting card   |
-| `--shadow-card-hover`   | `0 4px 12px rgba(20,11,0,.08), 0 16px 40px rgba(20,11,0,.10)` | Lifted card    |
-| `--shadow-button`       | `0 2px 8px rgba(20,11,0,.10)`                                 | Resting button |
-| `--shadow-button-hover` | `0 8px 24px rgba(20,11,0,.18)`                                | Lifted button  |
-
-### Surfaces
-
-- **Parchment** (`--bg` `#F5F3EE`): the base of every page. Warm, slightly aged, never pure white. Pair with subtle radial mana glows at the corners of the viewport for atmosphere without weight.
-- **Paper** (`--paper` `#FFFFFF`): the container for content. Pure white with a hairline rule (`--rule`), raised one micro-step above parchment via `--shadow-card`. Generous padding (`--space-lg` minimum) lets the type breathe.
-
-A SVG noise overlay at 0.35 opacity with `mix-blend-mode: multiply` gives the parchment its grain. Keep it; the texture is what separates ManaTuner from generic light-mode SaaS.
+| Token                         | Value                                                               | Usage                 |
+| ----------------------------- | ------------------------------------------------------------------- | --------------------- |
+| `--shadow-sm` … `--shadow-xl` | 0 2px 4px → 0 12px 24px, alpha 0.10 → 0.18                          | utility               |
+| Button base                   | `0 4px 12px rgba(0,0,0,0.10)`                                       | `MuiButton.contained` |
+| Button hover                  | `0 8px 24px rgba(0,0,0,0.15)`                                       | `MuiButton :hover`    |
+| Card hover                    | `0 12px 32px rgba(0,0,0,0.15)` (light) / `0.4` (dark)               | `MuiCard :hover`      |
+| Library CTA base              | `0 2px 14px rgba(14,104,171,0.65), 0 0 18px rgba(125,180,255,0.35)` | `Header.tsx:218`      |
+| Library CTA hover             | `0 4px 22px rgba(14,104,171,0.85), 0 0 28px rgba(125,180,255,0.65)` | `Header.tsx:222`      |
+| Library CTA pulse             | `0 2px 14px rgba(14,104,171,0.9), 0 0 34px rgba(180,120,255,0.8)`   | keyframe 50%          |
 
 ---
 
-## 5. Motion
+## 6. Motion
 
-- **Default easing:** `cubic-bezier(0.4, 0, 0.2, 1)` (Material standard).
-- **Durations:** `--d-fast` 180ms (micro-states), `--d-base` 320ms (hover / transitions), `--d-slow` 600ms (mount animations).
-- **Hover lifts:** cards `translateY(-4px)`, buttons `translateY(-2px)`. Always paired with a shadow upgrade (`--shadow-card-hover` / `--shadow-button-hover`).
-- **CTA arrow nudge:** the `→` inside a button translates 4px on hover, same easing.
-- **Mount choreography:** one orchestrated fade-up per scroll viewport — staggered children at 60–90ms intervals over 800ms. Cap at one mount animation per viewport; chained reveals feel cheap.
-- **`prefers-reduced-motion`** is non-negotiable. Every animation must collapse to `0.01ms` or `none`. The CSS guard is at the bottom of every stylesheet — never strip it. Motion is hospitality, not entitlement.
+### Transitions
 
----
+| Token                      | Value                                                     |
+| -------------------------- | --------------------------------------------------------- |
+| `--transition-fast`        | `0.15s ease-out`                                          |
+| `--transition-normal`      | `0.25s ease-out`                                          |
+| `--transition-slow`        | `0.35s ease-out`                                          |
+| MuiButton root             | `all 0.3s cubic-bezier(0.4, 0, 0.2, 1)`                   |
+| MuiCard root               | `all 0.3s cubic-bezier(0.4, 0, 0.2, 1)`                   |
+| MuiTextField OutlinedInput | `all 0.2s ease-in-out`                                    |
+| Header Library CTA         | `all 0.3s ease`                                           |
+| `.card-hover` utility      | `transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out` |
 
-## 6. Iconography
+Two easing systems coexist: Material standard (`cubic-bezier(0.4, 0, 0.2, 1)`) on MUI components, `ease-out` / `ease-in-out` / `ease` on CSS variables and utility classes.
 
-The **mana-font** (Andrew Gioia, MIT — `mana-font@1.15.x`) is the canonical icon set for colour symbols. Class signature: `ms ms-cost ms-{w|u|b|r|g|c}` plus hybrid variants `ms-rg`, `ms-wu`, `ms-ub`, `ms-br`, `ms-gw`, etc., and phyrexian variants `ms-wp`, `ms-up`, `ms-bp`, `ms-rp`, `ms-gp`. Never recreate them as bespoke SVG — the font is exhaustive (every printed symbol since Alpha) and deduplicates the work.
+### Hover transforms
 
-For non-mana icons, the project uses `lucide-react` and `@mui/icons-material` interchangeably; both ship a 24px stroke vocabulary that coexists.
+- Button → `translateY(-2px)`
+- Card → `translateY(-4px)`
+- Library CTA → `translateY(-1px)`
 
----
+### Backdrop filters
 
-## 7. Don'ts — the short list
+- `MuiAppBar.root` — `backdrop-filter: blur(10px)`
+- `MuiCard` (dark theme) — `backdrop-filter: blur(10px)`
 
-| Don't                                                              | Why                                                                             |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
-| Pastel-ize the WUBRG mana colours                                  | They are signal. Pastels = generic.                                             |
-| Add a third CTA gradient                                           | Two is the limit. A third dilutes the hierarchy.                                |
-| Promote techTerm captions to body weight                           | They are discreet credits, not headlines.                                       |
-| Default to generic purple gradients on a white surface             | AI-slop aesthetic. Reserve blue → purple for the Knowledge CTA only.            |
-| Use `.sort(() => Math.random() - 0.5)` for any shuffle             | Biased distribution. Use Fisher-Yates. (Code rule, included for consistency.)   |
-| Drop the parchment noise overlay because "it looks busy"           | The grain is what separates the brand from default Material light surfaces.     |
-| Strip the `prefers-reduced-motion` guard from any stylesheet       | Accessibility outranks every transition in this document.                       |
-| Use `#150B00` as a button accent on surfaces darker than parchment | Readability collapses. Reserve Swamp for body ink on the parchment ground only. |
+### Keyframes that ship in production
 
----
+| Name           | Where            | Usage                                   |
+| -------------- | ---------------- | --------------------------------------- |
+| `libraryPulse` | `Header.tsx:230` | One-shot mount pulse on the Library CTA |
+| `loading`      | `index.css:218`  | `.loading-skeleton` background sweep    |
+| `fadeIn`       | `index.css:137`  | `.fade-in` utility                      |
+| `fadeInUp`     | `index.css:148`  | reserved                                |
+| `slideIn`      | `index.css:159`  | `.slide-in` utility                     |
+| `slideInLeft`  | `index.css:168`  | reserved                                |
+| `scaleIn`      | `index.css:179`  | reserved                                |
+| `pulse`        | `index.css:190`  | `.pulse` utility                        |
 
-## 8. Adapting to a new product
+### Reduced motion
 
-The system was designed around MTG mana colours. To fork it for a different product, two paths:
-
-1. **Keep the structure, swap the canon.** Replace the `mana-*` tokens with your own 5–7 anchor colours and update the WUBRG hero gradient to match. Everything else — typography pairing, motion, surfaces, CTA tiers, radii — is product-agnostic.
-2. **Keep the canon, swap the framing.** If your product is MTG-adjacent (deckbuilders, drafts, EDH tools), keep the mana palette but reset the brand primary (`#1565C0` blue) to whatever differentiates you. Mana colours then act as content tags rather than chrome.
-
-The CTA tier rules, hover-lift mechanics, easing curve, and a11y guards survive both moves unchanged.
-
----
-
-## 9. Companion files
-
-This brandbook is the prose source of truth. The system is also exported as:
-
-| File                 | Purpose                                                    |
-| -------------------- | ---------------------------------------------------------- |
-| `index.html`         | Rendered showcase — open in a browser to verify the system |
-| `tokens.json`        | Cross-platform design tokens, machine-readable             |
-| `tokens.css`         | CSS custom properties, ready to `@import`                  |
-| `tokens.ts`          | Typed token export for the React app                       |
-| `components.css`     | Reference component styles (buttons, cards, surfaces)      |
-| `mui-theme.ts`       | Material UI `createTheme()` configuration                  |
-| `tailwind.preset.js` | Tailwind preset for projects on that stack                 |
-
-> The companion files listed above are part of the design-system delivery scope. This edition of the brandbook is complete on its own; the export files are generated separately when a stack-specific integration is needed.
+A global `@media (prefers-reduced-motion: reduce)` guard (`src/styles/index.css:452-458`) collapses all animations to `0.01ms`. The Library CTA (`Header.tsx:241-244`) carries an inline override that strips its mount animation and transition under the same media query.
 
 ---
 
-## 10. Edition notes
+## 7. Iconography
 
-- **Edition 2.6 — Light** is intentionally narrow in scope.
-- **The dark theme is excluded.** The previous dark surface (`#0D0D0F` near-black + glass cards) and the dark-mode mana variants (`#F5F0D0`, `#4A9EE8`, `#3D3D3D`, `#FF5252`, `#4CAF50`, `#FFD700`) have been removed from this revision because the dark surface system was not load-bearing — readability on `#150B00` accents, inconsistent glass effects across Safari, and a glow palette that didn't survive WCAG AA on body text. A dark edition will be re-issued once those issues are resolved structurally rather than patched.
-- Until the dark edition lands, products forking this system should ship **light-only** and respect the user's OS preference by serving the same parchment surface across light and dark OS settings, not by faking a dark mode.
+| Source                | Usage                                                              |
+| --------------------- | ------------------------------------------------------------------ |
+| `mana-font@1.18.0`    | All mana symbols (`.ms .ms-cost .ms-w` …). CDN-loaded, SRI-pinned. |
+| `@mui/icons-material` | UI icons (search, settings, navigation, …)                         |
+| `lucide-react`        | Decorative and content icons; coexists with the MUI set            |
+
+A second mana glyph implementation exists as plain CSS `.mana-symbol` classes (`src/styles/index.css:30-86`) used as fallback in places where mana-font isn't included.
 
 ---
 
-_Maintained by the ManaTuner team. License: see project root `LICENSE`._
+## 8. Companion files
+
+| File                 | Role                                                        |
+| -------------------- | ----------------------------------------------------------- |
+| `tokens.json`        | W3C-DTCG tokens, machine-readable mirror                    |
+| `tokens.css`         | CSS custom properties, ready to `@import`                   |
+| `tokens.ts`          | TypeScript export                                           |
+| `mui-theme.ts`       | MUI `createTheme()` reproduction (light + dark)             |
+| `components.css`     | Reference component styles                                  |
+| `index.html`         | Minimal showcase                                            |
+| `design-system.html` | Full scrollable showcase (colours, typo, components, icons) |
+| `brand-book-a4.html` | Printable A4 portrait poster (5 sections)                   |
+| `brand-book-a4.pdf`  | Generated PDF of the A4 poster                              |
+
+---
+
+## 9. Edition notes
+
+- **Edition 2.7 — Mirror** is intentionally descriptive. It records what the production build ships today.
+- **Both light and dark themes are documented** — both exist in `src/theme/index.ts` and are exported from production.
+- **Three palette layers coexist** (MUI palette, `.mana-symbol` classes, `--mtg-*` variables) and are documented in parallel rather than reconciled.
+- **Inter, Poppins, JetBrains Mono are referenced in cascades but not loaded.** Body text effectively resolves to Roboto; `--font-heading` resolves to the system sans-serif.
+- **Tailwind is not present.** A previous edition shipped a `tailwind.preset.js`; it has been removed because no Tailwind config exists in the production repo.
+- **No noise overlay or grain texture is applied to the parchment ground.** The visible texture is the gradient stack only.
+- **Two easing systems coexist** on MUI components (Material standard cubic-bezier) vs. CSS variable utilities (`ease-out` family). Both are reproduced verbatim.
+
+---
+
+_Generated 2026-05-15 from manatuner.app. License: see project root `LICENSE`._

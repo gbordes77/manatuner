@@ -1,428 +1,297 @@
-/* ──────────────────────────────────────────────────────────────────
-   ManaTuner · Reference Component Styles
-   Edition 2.6 · Light theme
-   Depends on tokens.css being loaded first.
-   ────────────────────────────────────────────────────────────────── */
+/**
+ * ManaTuner · Components · Mirror reference
+ * Edition 2.7 · Mirror of manatuner.app production state
+ *
+ * Reference styles for the most-shipped components, reproduced from MUI
+ * overrides and src/styles/index.css. Plain CSS, no preprocessing.
+ *
+ * Loads tokens.css. Activate dark theme with [data-theme="dark"].
+ */
 
-@import './tokens.css';
+@import url('./tokens.css');
 
-/* ─── Reset / page ground ─────────────────────────────────────────── */
-.ds-page {
-  font-family: var(--font-body);
-  font-size: var(--fs-body1);
-  line-height: var(--lh-relaxed);
-  color: var(--ink);
-  background: var(--bg);
-  background-image:
-    radial-gradient(1200px 600px at 20% -10%, rgba(14, 104, 171, 0.04), transparent 60%),
-    radial-gradient(900px 500px at 110% 30%, rgba(233, 181, 76, 0.05), transparent 55%);
+/* ───────────────────────────────────────────────────────────────────────
+   Body — note that production runs TWO surfaces:
+   - The raw CSS body background (#fafafa) is applied first.
+   - MUI CssBaseline then writes the parchment (#F5F3EE) onto <body>.
+   We document the MUI surface as the canonical visible ground.
+─────────────────────────────────────────────────────────────────────── */
+body {
+  margin: 0;
+  background-color: var(--surface-bg);
+  color: var(--ink-primary);
+  font-family: var(--font-body-raw);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Parchment grain overlay — apply once at page root */
-.ds-page-grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-/* ─── Typography utilities ────────────────────────────────────────── */
-.ds-h1,
-.ds-h2,
-.ds-h3,
-.ds-h4 {
-  font-family: var(--font-display);
-  letter-spacing: var(--ls-tight);
+/* ───────────────────────────────────────────────────────────────────────
+   Headings · Cinzel for H1–H4 (loaded), system serif fallback for the rest
+─────────────────────────────────────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-mui-heading);
   margin: 0;
 }
-.ds-h1 {
+h1 {
   font-size: var(--fs-h1);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-tight);
+  font-weight: 700;
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
 }
-.ds-h2 {
+h2 {
   font-size: var(--fs-h2);
-  font-weight: var(--fw-semibold);
-  line-height: 1.15;
+  font-weight: 600;
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
 }
-.ds-h3 {
+h3 {
   font-size: var(--fs-h3);
-  font-weight: var(--fw-semibold);
-  line-height: 1.2;
+  font-weight: 600;
+  line-height: var(--lh-h3);
 }
-.ds-h4 {
+h4 {
   font-size: var(--fs-h4);
-  font-weight: var(--fw-medium);
-  line-height: var(--lh-snug);
-}
-.ds-h5 {
-  font-family: var(--font-body);
-  font-size: var(--fs-h5);
-  font-weight: var(--fw-medium);
-  line-height: 1.4;
-  margin: 0;
-}
-.ds-h6 {
-  font-family: var(--font-body);
-  font-size: var(--fs-h6);
-  font-weight: var(--fw-medium);
-  line-height: var(--lh-normal);
-  margin: 0;
+  font-weight: 500;
+  line-height: var(--lh-h4);
 }
 
-.ds-body1 {
-  font-family: var(--font-body);
-  font-size: var(--fs-body1);
-  line-height: var(--lh-relaxed);
-  margin: 0;
-}
-.ds-body2 {
-  font-family: var(--font-body);
-  font-size: var(--fs-body2);
-  line-height: 1.55;
-  color: var(--ink-2);
-  margin: 0;
-}
-
-.ds-tech-term {
-  font-family: var(--font-mono);
-  font-size: var(--fs-tech);
-  letter-spacing: var(--ls-wide);
-  color: var(--ink-3);
-  text-transform: none;
-}
-
-.ds-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: var(--ls-wider);
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-/* Hero WUBRG text — reserved for the home H1 only */
-.ds-hero-wubrg {
-  font-family: var(--font-display);
-  font-weight: var(--fw-bold);
+/* Hero homepage variant — text-fill WUBRG gradient */
+.hero-h1 {
+  font-family: var(--font-mui-heading);
+  font-size: var(--fs-hero-mobile);
+  font-weight: var(--fw-hero);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
   background: var(--gradient-hero-wubrg);
-  -webkit-background-clip: text;
   background-clip: text;
-  color: transparent;
-  filter: saturate(1.05);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media (min-width: 900px) {
+  .hero-h1 {
+    font-size: var(--fs-hero-desktop);
+  }
 }
 
-/* ─── Buttons — three tiers ───────────────────────────────────────── */
-.ds-btn {
-  -webkit-appearance: none;
-  appearance: none;
-  border: none;
-  font-family: var(--font-body);
-  font-weight: var(--fw-semibold);
-  font-size: 15px;
-  letter-spacing: 0.005em;
-  padding: 14px 28px;
-  border-radius: var(--r-lg);
+/* ───────────────────────────────────────────────────────────────────────
+   Buttons · MUI MuiButton.root mirror
+─────────────────────────────────────────────────────────────────────── */
+.btn {
+  font-family: var(--font-mui-body);
+  font-weight: 600;
+  font-size: var(--fs-body1);
+  text-transform: none;
+  border-radius: var(--radius-lg);
+  padding: 10px 24px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: #fff;
-  box-shadow: var(--shadow-button);
-  transition:
-    transform var(--d-base) var(--ease-standard),
-    box-shadow var(--d-base) var(--ease-standard),
-    filter var(--d-base) var(--ease-standard),
-    background var(--d-base) var(--ease-standard);
-  text-decoration: none;
+  border: none;
+  transition: var(--transition-mui-button);
 }
-.ds-btn:hover {
-  transform: translateY(-2px);
+.btn:hover {
+  transform: var(--transform-button-hover);
   box-shadow: var(--shadow-button-hover);
 }
-.ds-btn:active {
-  transform: translateY(-1px);
-}
-.ds-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.ds-btn .ds-btn-arrow {
-  transition: transform var(--d-base) var(--ease-standard);
-}
-.ds-btn:hover .ds-btn-arrow {
-  transform: translateX(4px);
-}
-
-/* Tier 1 — Gold action */
-.ds-btn--action {
-  background: var(--gradient-cta-premium);
-  color: #5a3e00;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-.ds-btn--action:hover {
-  filter: brightness(1.05);
-}
-
-/* Tier 2 — Blue → purple knowledge */
-.ds-btn--knowledge {
-  background: var(--gradient-cta-knowledge);
-}
-
-/* Tier 3 — Solid brand */
-.ds-btn--default {
+.btn-contained {
   background: var(--brand-primary);
+  color: #fff;
+  box-shadow: var(--shadow-button);
 }
-.ds-btn--default:hover {
+.btn-contained:hover {
   background: var(--brand-primary-deep);
 }
 
-/* Outline variant — also Tier 3 */
-.ds-btn--outline {
-  background: transparent;
-  color: var(--brand-primary);
-  border: 1.5px solid var(--brand-primary);
-  box-shadow: none;
-}
-.ds-btn--outline:hover {
-  background: var(--brand-primary);
+/* Library CTA — knowledge gradient with mount pulse */
+.btn-library {
+  background: var(--gradient-cta-knowledge);
   color: #fff;
+  font-weight: 700;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: var(--shadow-library-cta);
+  transition: var(--transition-fast);
+  animation: libraryPulse 2.8s ease-out 0.8s 1;
+}
+.btn-library:hover {
+  background: var(--gradient-cta-knowledge-hover);
+  box-shadow: var(--shadow-library-cta-hover);
+  transform: var(--transform-library-cta);
+}
+@keyframes libraryPulse {
+  0%,
+  100% {
+    box-shadow: var(--shadow-library-cta);
+  }
+  50% {
+    box-shadow: var(--shadow-library-cta-pulse);
+  }
 }
 
-/* ─── Cards & surfaces ────────────────────────────────────────────── */
-.ds-card {
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-xl);
-  padding: var(--space-lg);
-  box-shadow: var(--shadow-card);
-  transition:
-    transform var(--d-base) var(--ease-standard),
-    box-shadow var(--d-base) var(--ease-standard);
+/* ───────────────────────────────────────────────────────────────────────
+   Cards · MUI MuiCard.root mirror
+─────────────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface-paper);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  transition: var(--transition-mui-card);
 }
-.ds-card--hover:hover {
-  transform: translateY(-4px);
+.card:hover {
+  transform: var(--transform-card-hover);
   box-shadow: var(--shadow-card-hover);
 }
 
-.ds-card--parchment {
-  background: var(--bg);
-  border: 1px solid var(--rule);
-}
-
-.ds-card--accent-w {
-  border-top: 4px solid var(--mana-w);
-}
-.ds-card--accent-u {
-  border-top: 4px solid var(--mana-u);
-}
-.ds-card--accent-b {
-  border-top: 4px solid var(--mana-b);
-}
-.ds-card--accent-r {
-  border-top: 4px solid var(--mana-r);
-}
-.ds-card--accent-g {
-  border-top: 4px solid var(--mana-g);
-}
-.ds-card--accent-m {
-  border-top: 4px solid var(--mana-m);
-}
-
-/* ─── Chips & pills ───────────────────────────────────────────────── */
-.ds-chip {
+/* ───────────────────────────────────────────────────────────────────────
+   Chips · MuiChip.root mirror
+─────────────────────────────────────────────────────────────────────── */
+.chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: var(--font-body);
-  font-size: var(--fs-body2);
-  font-weight: var(--fw-medium);
   padding: 4px 12px;
-  border-radius: var(--r-full);
-  background: var(--bg-deep);
-  color: var(--ink);
-  border: 1px solid var(--rule);
-}
-.ds-chip--info {
-  background: rgba(14, 104, 171, 0.08);
-  color: var(--mana-u);
-  border-color: rgba(14, 104, 171, 0.2);
-}
-.ds-chip--success {
-  background: rgba(0, 115, 62, 0.08);
-  color: var(--mana-g);
-  border-color: rgba(0, 115, 62, 0.2);
-}
-.ds-chip--error {
-  background: rgba(211, 32, 42, 0.08);
-  color: var(--mana-r);
-  border-color: rgba(211, 32, 42, 0.2);
-}
-.ds-chip--warning {
-  background: rgba(233, 181, 76, 0.12);
-  color: #8a6300;
-  border-color: rgba(233, 181, 76, 0.35);
+  border-radius: var(--radius-md);
+  background: var(--surface-paper);
+  color: var(--ink-primary);
+  font-size: var(--fs-body2);
+  font-weight: 500;
 }
 
-/* ─── Inputs ──────────────────────────────────────────────────────── */
-.ds-input {
-  font-family: var(--font-body);
+/* ───────────────────────────────────────────────────────────────────────
+   App bar · MuiAppBar.root mirror
+─────────────────────────────────────────────────────────────────────── */
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: var(--glass-primary);
+  backdrop-filter: var(--backdrop-app-bar);
+  -webkit-backdrop-filter: var(--backdrop-app-bar);
+  color: var(--ink-primary);
+  padding: 12px 24px;
+}
+
+/* ───────────────────────────────────────────────────────────────────────
+   Inputs · MuiTextField.OutlinedInput mirror
+─────────────────────────────────────────────────────────────────────── */
+.input {
+  font-family: var(--font-mui-body);
   font-size: var(--fs-body1);
-  color: var(--ink);
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 12px 16px;
-  width: 100%;
-  transition:
-    border-color var(--d-fast) var(--ease-standard),
-    box-shadow var(--d-fast) var(--ease-standard);
-}
-.ds-input::placeholder {
-  color: var(--ink-3);
-}
-.ds-input:hover {
-  border-color: rgba(14, 104, 171, 0.4);
-}
-.ds-input:focus,
-.ds-input:focus-visible {
-  outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 4px rgba(14, 104, 171, 0.15);
-}
-
-/* ─── Code & token-line ───────────────────────────────────────────── */
-.ds-code {
-  font-family: var(--font-mono);
-  font-size: var(--fs-tech);
-  background: rgba(26, 26, 26, 0.05);
-  padding: 3px 8px;
-  border-radius: var(--r-sm);
-  color: var(--ink);
-}
-.ds-token-line {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: var(--ls-wide);
-  color: var(--ink-3);
   padding: 10px 14px;
-  background: var(--bg-deep);
-  border-radius: var(--r-md);
-  border: 1px solid var(--rule);
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  border-radius: var(--radius-lg);
+  background: var(--surface-paper);
+  color: var(--ink-primary);
+  transition: var(--transition-mui-input);
+}
+.input:hover {
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.1);
+}
+.input:focus {
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.2);
+  outline: none;
 }
 
-/* ─── WUBRG ribbon delimiter ──────────────────────────────────────── */
-.ds-ribbon {
-  height: 4px;
-  background: var(--gradient-hero-wubrg);
-  border-radius: 2px;
-  position: relative;
+/* ───────────────────────────────────────────────────────────────────────
+   Mana symbols · two parallel implementations exist in production:
+     1. The mana-font CDN classes (.ms .ms-w …) — the canonical icon set.
+     2. The plain CSS .mana-symbol classes below — a fallback for places
+        where mana-font is not used.
+   We reproduce path 2 verbatim from src/styles/index.css:30-86.
+─────────────────────────────────────────────────────────────────────── */
+.mana-symbol {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.2em;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin: 0 1px;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.ds-ribbon::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent);
-  border-radius: 2px;
+.mana-symbol.mana-w {
+  background: var(--mana-w-css);
+  color: #000;
 }
-
-/* ─── Hairline rule ───────────────────────────────────────────────── */
-.ds-rule {
-  height: 1px;
-  background: var(--rule);
-  border: none;
-  margin: var(--space-lg) 0;
+.mana-symbol.mana-u {
+  background: var(--mana-u-css);
+  color: #fff;
 }
-
-/* ─── Motion utilities ────────────────────────────────────────────── */
-.ds-animate-fadeIn {
-  animation: dsFadeIn var(--d-base) var(--ease-standard) both;
+.mana-symbol.mana-b {
+  background: var(--mana-b-css);
+  color: #fff;
 }
-.ds-animate-slideUp {
-  animation: dsSlideUp var(--d-slow) var(--ease-standard) both;
+.mana-symbol.mana-r {
+  background: var(--mana-r-css);
+  color: #fff;
 }
-.ds-animate-fadeUp {
-  animation: dsFadeUp var(--d-slow) var(--ease-standard) both;
+.mana-symbol.mana-g {
+  background: var(--mana-g-css);
+  color: #fff;
 }
-
-@keyframes dsFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes dsSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes dsFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.mana-symbol.mana-c {
+  background: var(--mana-c-css);
+  color: #000;
 }
 
-/* Stagger helpers — use sparingly, max one orchestration per viewport */
-.ds-stagger > * {
-  animation-delay: 0ms;
+/* ───────────────────────────────────────────────────────────────────────
+   Utilities (subset of src/styles/index.css that ships in prod)
+─────────────────────────────────────────────────────────────────────── */
+.gradient-text {
+  background: var(--gradient-text-util);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.ds-stagger > *:nth-child(2) {
-  animation-delay: 60ms;
+.card-hover {
+  transition: var(
+    --transition-cardHoverUtil,
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out
+  );
 }
-.ds-stagger > *:nth-child(3) {
-  animation-delay: 120ms;
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover-util);
 }
-.ds-stagger > *:nth-child(4) {
-  animation-delay: 180ms;
+.loading-skeleton {
+  background: var(--gradient-loading-skeleton);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
 }
-.ds-stagger > *:nth-child(5) {
-  animation-delay: 240ms;
-}
-.ds-stagger > *:nth-child(6) {
-  animation-delay: 320ms;
-}
-
-/* prefers-reduced-motion — reaffirmed at component layer */
-@media (prefers-reduced-motion: reduce) {
-  .ds-btn,
-  .ds-card,
-  .ds-card--hover,
-  .ds-animate-fadeIn,
-  .ds-animate-slideUp,
-  .ds-animate-fadeUp,
-  .ds-stagger > * {
-    transition: none !important;
-    animation: none !important;
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
   }
 }
 
-/* ─── Focus ring — global accessible default ──────────────────────── */
-.ds-page *:focus-visible {
-  outline: 2px solid var(--brand-primary);
+/* ───────────────────────────────────────────────────────────────────────
+   Focus ring (ships globally)
+─────────────────────────────────────────────────────────────────────── */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--brand-focus);
   outline-offset: 2px;
-  border-radius: var(--r-sm);
 }
 
-/* ─── Selection ───────────────────────────────────────────────────── */
-.ds-page ::selection {
-  background: rgba(14, 104, 171, 0.18);
-  color: var(--ink);
+/* ───────────────────────────────────────────────────────────────────────
+   Reduced motion
+─────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

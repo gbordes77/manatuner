@@ -1,786 +1,410 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ManaTuner — Design System · Edition 2.6 · Light</title>
-<meta name="description" content="The visual & interaction laws of ManaTuner. Light theme reference manual." />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ManaTuner · Design System Showcase · Edition 2.7 Mirror</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@1.18.0/css/mana.css" />
+  <style>
+    body { background: var(--surface-bg); color: var(--ink-primary); }
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mana-font@1.15.7/css/mana.min.css" />
-
-<style>
-  :root {
-    /* mana — canon (never change) */
-    --mana-w: #F8F6D8;
-    --mana-u: #0E68AB;
-    --mana-b: #150B00;
-    --mana-r: #D3202A;
-    --mana-g: #00733E;
-    --mana-c: #CBC5C0;
-    --mana-m: #E9B54C;
-
-    /* surfaces (light) */
-    --bg: #F5F3EE;
-    --bg-deep: #EDE9E0;
-    --paper: #FFFFFF;
-    --ink: #1A1A1A;
-    --ink-2: #555555;
-    --ink-3: #9A958C;
-    --rule: rgba(26, 26, 26, 0.08);
-    --rule-soft: rgba(26, 26, 26, 0.04);
-
-    /* brand primary */
-    --brand: #1565C0;
-    --brand-deep: #0D47A1;
-
-    /* gradients */
-    --grad-action: linear-gradient(135deg, #E9B54C 0%, #FFD700 100%);
-    --grad-knowledge: linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%);
-    --grad-wubrg: linear-gradient(90deg, var(--mana-w) 0% 20%, var(--mana-u) 20% 40%, var(--mana-b) 40% 60%, var(--mana-r) 60% 80%, var(--mana-g) 80% 100%);
-
-    /* radii */
-    --r-sm: 6px;
-    --r-md: 8px;
-    --r-lg: 12px;
-    --r-xl: 16px;
-    --r-full: 9999px;
-
-    /* shadow */
-    --shadow-card: 0 1px 2px rgba(20,11,0,.04), 0 4px 16px rgba(20,11,0,.04);
-    --shadow-card-hover: 0 4px 12px rgba(20,11,0,.08), 0 16px 40px rgba(20,11,0,.10);
-    --shadow-button: 0 2px 8px rgba(20,11,0,.10);
-    --shadow-button-hover: 0 8px 24px rgba(20,11,0,.18);
-
-    /* motion */
-    --ease: cubic-bezier(0.4, 0, 0.2, 1);
-    --d-fast: 180ms;
-    --d-base: 320ms;
-    --d-slow: 600ms;
-
-    /* type */
-    --display: "Cinzel", "Playfair Display", Georgia, serif;
-    --body: "Inter", system-ui, -apple-system, sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  }
-
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--body);
-    font-size: 16px;
-    line-height: 1.6;
-    color: var(--ink);
-    background: var(--bg);
-    background-image:
-      radial-gradient(1200px 600px at 20% -10%, rgba(14,104,171,.04), transparent 60%),
-      radial-gradient(900px 500px at 110% 30%, rgba(233,181,76,.05), transparent 55%);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* parchment grain */
-  body::before {
-    content: "";
-    position: fixed; inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: .35;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.04  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  }
-
-  main { position: relative; z-index: 1; }
-
-  .frame {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 clamp(20px, 4vw, 56px);
-  }
-
-  section { padding: clamp(64px, 8vw, 112px) 0; position: relative; }
-
-  /* WUBRG ribbon */
-  .ribbon {
-    height: 4px;
-    background: var(--grad-wubrg);
-    border-radius: 2px;
-    margin-bottom: clamp(40px, 5vw, 72px);
-  }
-
-  /* type */
-  h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; letter-spacing: -0.005em; margin: 0 0 0.4em; color: var(--ink); }
-  h1 { font-size: clamp(2.4rem, 5vw, 3.2rem); line-height: 1.1; font-weight: 700; }
-  h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.2; }
-  h3 { font-size: 1.5rem; line-height: 1.3; }
-  h4 { font-size: 1.15rem; line-height: 1.4; font-weight: 500; }
-  p { margin: 0 0 1em; color: var(--ink-2); max-width: 68ch; }
-  .lead { font-size: 1.1rem; color: var(--ink); }
-  .eyebrow { font-family: var(--mono); font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); margin: 0 0 1.2em; }
-  .tech { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); }
-  hr.rule { border: 0; height: 1px; background: var(--rule); margin: 0; }
-
-  /* hero */
-  .hero { padding: clamp(72px, 9vw, 128px) 0 clamp(48px, 6vw, 80px); }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: clamp(20px, 3vw, 36px);
-    align-items: center;
-  }
-  .logo-tile {
-    width: 88px; height: 88px;
-    border-radius: var(--r-xl);
-    background: linear-gradient(135deg, #0D0D0F, #1a1a2e);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow-card);
-  }
-  .hero h1 {
-    background: var(--grad-wubrg);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent; color: transparent;
-    margin: 0;
-  }
-  .hero .tag {
-    font-size: 1.05rem; color: var(--ink-2); margin: 0.4em 0 0;
-    max-width: 56ch;
-  }
-  .hero-meta {
-    display: flex; gap: 14px; flex-wrap: wrap;
-    margin-top: 18px;
-    font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3);
-    text-transform: uppercase; letter-spacing: 0.14em;
-  }
-  .hero-meta span { display: inline-flex; gap: 6px; align-items: center; }
-  .hero-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--mana-m); }
-
-  /* card */
-  .card {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: clamp(20px, 2.5vw, 32px);
-    box-shadow: var(--shadow-card);
-  }
-
-  /* color grid */
-  .swatch-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 14px;
-  }
-  .swatch {
-    border-radius: var(--r-lg);
-    overflow: hidden;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-    box-shadow: var(--shadow-card);
-  }
-  .swatch .chip { height: 88px; }
-  .swatch .body { padding: 12px 14px 14px; }
-  .swatch .name { font-family: var(--display); font-weight: 600; font-size: 0.95rem; color: var(--ink); }
-  .swatch .hex { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); margin-top: 2px; letter-spacing: 0.04em; }
-  .swatch .note { font-size: 0.78rem; color: var(--ink-2); margin-top: 6px; line-height: 1.45; }
-
-  /* hierarchy 3-up */
-  .hierarchy {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 720px) { .hierarchy { grid-template-columns: 1fr; } }
-  .hier-tile {
-    border-radius: var(--r-xl);
-    padding: 28px 24px;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-    min-height: 220px;
-    display: flex; flex-direction: column; justify-content: space-between;
-    box-shadow: var(--shadow-card);
-  }
-  .hier-tile .lbl { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }
-  .hier-tile .h { font-family: var(--display); font-size: 1.6rem; font-weight: 600; margin: 8px 0 0; }
-  .hier-tile .meta { display: flex; justify-content: space-between; align-items: flex-end; font-family: var(--mono); font-size: 0.72rem; opacity: 0.92; }
-  .hier-tile.gold { background: var(--grad-action); color: #2a1b00; }
-  .hier-tile.gold .lbl, .hier-tile.gold .meta { opacity: 0.78; }
-  .hier-tile.know { background: var(--grad-knowledge); }
-  .hier-tile.brand { background: var(--brand); }
-
-  /* type sample */
-  .type-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  @media (max-width: 820px) { .type-grid { grid-template-columns: 1fr; } }
-  .type-card { padding: 28px 30px; }
-  .type-card .specimen { font-family: var(--display); font-size: 2.6rem; line-height: 1.1; color: var(--ink); font-weight: 600; }
-  .type-card.body .specimen { font-family: var(--body); font-weight: 600; font-size: 2.4rem; letter-spacing: -0.01em; }
-  .type-card.mono .specimen { font-family: var(--mono); font-size: 1.6rem; font-weight: 500; letter-spacing: -0.005em; }
-  .type-card .specs { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 18px; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
-  .type-card .specs span { display: inline-flex; gap: 6px; align-items: center; }
-  .type-card .specs span::before { content: ""; width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
-
-  /* weight ladder */
-  .ladder { display: grid; gap: 10px; margin-top: 24px; }
-  .ladder .row { display: grid; grid-template-columns: 88px 1fr; gap: 16px; align-items: baseline; padding: 10px 0; border-top: 1px solid var(--rule-soft); }
-  .ladder .row:first-child { border-top: 0; }
-  .ladder .w { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; }
-  .ladder .s { font-family: var(--display); font-size: 1.3rem; color: var(--ink); }
-
-  /* principles */
-  .principles {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 820px) { .principles { grid-template-columns: 1fr; } }
-  .principle {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 28px 26px;
-    box-shadow: var(--shadow-card);
-    position: relative;
-  }
-  .principle .num { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.14em; }
-  .principle .accent { width: 28px; height: 3px; border-radius: 2px; margin: 18px 0 14px; background: var(--brand); }
-  .principle:nth-child(2) .accent { background: var(--mana-m); }
-  .principle:nth-child(3) .accent { background: var(--mana-u); }
-  .principle h4 { font-family: var(--display); font-size: 1.15rem; margin: 0 0 8px; }
-  .principle p { font-size: 0.92rem; color: var(--ink-2); margin: 0; }
-
-  /* components */
-  .comp-grid { display: grid; gap: 20px; }
-  .row-cluster { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 22px;
-    border-radius: var(--r-lg);
-    font-family: var(--body); font-size: 0.95rem; font-weight: 600;
-    border: 0; cursor: pointer;
-    text-decoration: none;
-    transition: transform var(--d-base) var(--ease), box-shadow var(--d-base) var(--ease);
-  }
-  .btn .arrow { transition: transform var(--d-base) var(--ease); }
-  .btn:hover { transform: translateY(-2px); }
-  .btn:hover .arrow { transform: translateX(4px); }
-
-  .btn-gold { background: var(--grad-action); color: #2a1b00; box-shadow: var(--shadow-button); }
-  .btn-gold:hover { box-shadow: var(--shadow-button-hover); }
-  .btn-knowledge { background: var(--grad-knowledge); color: #fff; box-shadow: var(--shadow-button); }
-  .btn-knowledge:hover { box-shadow: var(--shadow-button-hover); }
-  .btn-brand { background: var(--brand); color: #fff; box-shadow: var(--shadow-button); }
-  .btn-brand:hover { background: var(--brand-deep); box-shadow: var(--shadow-button-hover); }
-  .btn-outline { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); }
-  .btn-outline:hover { background: rgba(21,101,192,.06); }
-
-  .chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 12px;
-    border-radius: var(--r-full);
-    font-family: var(--body); font-size: 0.78rem; font-weight: 500;
-    background: var(--bg-deep); color: var(--ink);
-    border: 1px solid var(--rule);
-  }
-  .chip.info    { background: rgba(14,104,171,.10); color: var(--mana-u); border-color: rgba(14,104,171,.18); }
-  .chip.success { background: rgba(0,115,62,.10); color: var(--mana-g); border-color: rgba(0,115,62,.18); }
-  .chip.error   { background: rgba(211,32,42,.10); color: var(--mana-r); border-color: rgba(211,32,42,.18); }
-  .chip.warn    { background: rgba(233,181,76,.18); color: #8a6815; border-color: rgba(233,181,76,.45); }
-
-  .sample-card {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 24px 26px;
-    box-shadow: var(--shadow-card);
-    transition: transform var(--d-base) var(--ease), box-shadow var(--d-base) var(--ease);
-  }
-  .sample-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
-  .sample-card .eyebrow { margin-bottom: 10px; }
-  .sample-card h4 { margin: 0 0 6px; font-family: var(--display); font-weight: 600; }
-  .sample-card p { font-size: 0.9rem; margin: 0 0 16px; }
-
-  .comp-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  @media (max-width: 820px) { .comp-row { grid-template-columns: 1fr; } }
-
-  /* icons */
-  .icon-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-  }
-  .icon-tile {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 18px 14px 14px;
-    box-shadow: var(--shadow-card);
-    text-align: center;
-  }
-  .icon-tile .sym {
-    font-size: 2.2rem;
-    line-height: 1;
-    display: block;
-    margin-bottom: 10px;
-  }
-  .icon-tile .lab { font-family: var(--mono); font-size: 0.68rem; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
-
-  /* wordmarks */
-  .word-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 820px) { .word-grid { grid-template-columns: 1fr; } }
-  .word-tile {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: var(--r-lg);
-    padding: 36px 28px 28px;
-    box-shadow: var(--shadow-card);
-    display: flex; flex-direction: column; gap: 18px;
-    min-height: 200px;
-  }
-  .word-tile .lbl { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.14em; }
-  .lockup { display: flex; align-items: center; gap: 14px; }
-  .lockup .mark { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, #0D0D0F, #1a1a2e); display: flex; align-items: center; justify-content: center; }
-  .lockup .wm { font-family: var(--display); font-size: 1.8rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); }
-  .lockup .wm .light { font-weight: 300; color: var(--ink-2); }
-  .lockup .wm .accent { color: var(--mana-u); }
-  .lockup-wubrg .wm {
-    background: var(--grad-wubrg);
-    -webkit-background-clip: text; background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  /* footer */
-  footer.foot {
-    padding: 56px 0 72px;
-    border-top: 1px solid var(--rule);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--ink-3);
-    letter-spacing: 0.06em;
-  }
-  footer.foot .row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      transition-duration: 0.01ms !important;
-      animation-duration: 0.01ms !important;
+    /* Layout */
+    .page { max-width: 1080px; margin: 0 auto; padding: 4rem 1.5rem; }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ink-secondary);
     }
-  }
-</style>
+    section { margin-top: 5rem; scroll-margin-top: 2rem; }
+    section > h2 {
+      font-family: var(--font-mui-heading);
+      font-size: 2rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.5rem;
+      display: flex; align-items: baseline; gap: 1rem;
+    }
+    section > h2 .num {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--ink-secondary);
+      letter-spacing: 0.1em;
+    }
+    section > p {
+      color: var(--ink-secondary); max-width: 64ch; margin-bottom: 2rem;
+      line-height: 1.65;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 3rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin: 1rem 0; }
+    .hero .lede { font-size: 1.15rem; color: var(--ink-secondary); max-width: 60ch; line-height: 1.6; }
+
+    /* Top nav */
+    nav.toc {
+      position: sticky; top: 0; z-index: 10;
+      background: var(--glass-primary);
+      backdrop-filter: var(--backdrop-app-bar);
+      -webkit-backdrop-filter: var(--backdrop-app-bar);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 0.75rem 1.5rem;
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      font-family: var(--font-mui-body);
+      font-size: 0.85rem;
+    }
+    nav.toc a { color: var(--ink-secondary); text-decoration: none; font-weight: 500; }
+    nav.toc a:hover { color: var(--brand-primary); }
+
+    /* Color swatches */
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .swatch {
+      display: flex; flex-direction: column;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.08);
+      background: var(--surface-paper);
+    }
+    .swatch .chip {
+      height: 90px; display: flex; align-items: flex-end;
+      padding: 0.6rem 0.75rem;
+      font-family: var(--font-mono); font-size: 0.7rem;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+    .swatch .chip.light-fg { color: rgba(0,0,0,0.7); text-shadow: none; }
+    .swatch .meta {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.78rem;
+      display: flex; flex-direction: column; gap: 0.15rem;
+    }
+    .swatch .meta b { font-family: var(--font-mui-heading); font-size: 0.95rem; }
+    .swatch .meta code { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-secondary); }
+
+    /* Typography display */
+    .typo-row { display: grid; grid-template-columns: 80px 1fr; gap: 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid rgba(0,0,0,0.06); align-items: baseline; }
+    .typo-row .label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-secondary); }
+    .typo-row .meta { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-secondary); margin-top: 0.4rem; }
+
+    /* Component demo */
+    .demo {
+      background: var(--surface-paper);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+    /* Mana grid */
+    .mana-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .mana-grid i.ms { font-size: 2rem; }
+    .mana-grid .mana-symbol { width: 2rem; height: 2rem; line-height: 2rem; font-size: 1rem; }
+
+    /* Gradient block */
+    .gradient-block {
+      height: 90px;
+      border-radius: var(--radius-lg);
+      display: flex; align-items: flex-end; padding: 0.6rem 0.75rem;
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    }
+
+    /* Token table */
+    table.tokens {
+      width: 100%; border-collapse: collapse;
+      font-family: var(--font-mono); font-size: 0.78rem;
+    }
+    table.tokens th, table.tokens td {
+      text-align: left; padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    table.tokens th { color: var(--ink-secondary); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    footer.foot {
+      margin: 6rem 0 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-secondary);
+      line-height: 1.7;
+    }
+  </style>
 </head>
 <body>
-<main>
-  <div class="frame">
 
-    <!-- ── Hero ── -->
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="logo-tile" aria-hidden="true">
-          <svg width="56" height="56" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#0D0D0F"/>
-                <stop offset="100%" stop-color="#1a1a2e"/>
-              </linearGradient>
-              <linearGradient id="wubrgmark" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#F8F6D8"/>
-                <stop offset="25%" stop-color="#0E68AB"/>
-                <stop offset="50%" stop-color="#9c27b0"/>
-                <stop offset="75%" stop-color="#D3202A"/>
-                <stop offset="100%" stop-color="#00733E"/>
-              </linearGradient>
-            </defs>
-            <rect width="32" height="32" rx="6" fill="url(#bg)"/>
-            <circle cx="16" cy="16" r="11" fill="none" stroke="url(#wubrgmark)" stroke-width="2.5"/>
-            <text x="16" y="22" font-family="Georgia, serif" font-size="15" fill="url(#wubrgmark)" text-anchor="middle" font-weight="700" letter-spacing="-0.5">M</text>
-          </svg>
-        </div>
-        <div>
-          <p class="eyebrow">Design System · Edition 2.6 · Light</p>
-          <h1>ManaTuner</h1>
-          <p class="tag">Find out if your manabase can support your game plan — competitive Magic: The Gathering, technical, generous.</p>
-          <div class="hero-meta">
-            <span><span class="dot"></span>Light theme only</span>
-            <span>Dark edition deferred</span>
-            <span>v2.6 · 2026</span>
-          </div>
-        </div>
-      </div>
-    </section>
+<nav class="toc">
+  <a href="#identity">01 · Identity</a>
+  <a href="#colour">02 · Colour</a>
+  <a href="#typo">03 · Typography</a>
+  <a href="#components">04 · Components</a>
+  <a href="#motion">05 · Motion</a>
+  <a href="#icons">06 · Iconography</a>
+  <a href="#stack">07 · Stack</a>
+</nav>
 
-    <hr class="rule" />
+<div class="page">
 
-    <!-- ── CTA Hierarchy ── -->
-    <section>
-      <p class="eyebrow">01 · CTA Hierarchy</p>
-      <h2>Three tiers, never invert</h2>
-      <p class="lead">A page carries at most one Tier 1. The two gradients are deliberate, not redundant — they encode the user's intent (doing vs. reading).</p>
-      <div class="ribbon" aria-hidden="true"></div>
+<header class="hero" id="identity">
+  <div class="eyebrow">ManaTuner · Design System · Edition 2.7 Mirror</div>
+  <h1 class="hero-h1">Will your deck cast its spells on curve?</h1>
+  <p class="lede">
+    A descriptive snapshot of the design system shipped on
+    <code>manatuner.app</code> — extracted directly from
+    <code>src/theme/index.ts</code>, <code>src/styles/index.css</code>,
+    <code>src/pages/HomePage.tsx</code>, <code>src/components/layout/Header.tsx</code>,
+    and <code>index.html</code>. Nothing here is aspirational.
+  </p>
+</header>
 
-      <div class="hierarchy">
-        <div class="hier-tile gold">
-          <div>
-            <div class="lbl">Tier 1 — Action</div>
-            <div class="h">Gold premium</div>
-          </div>
-          <div class="meta"><span>#E9B54C → #FFD700</span><span>135°</span></div>
-        </div>
-        <div class="hier-tile know">
-          <div>
-            <div class="lbl">Tier 2 — Knowledge</div>
-            <div class="h">Blue → Purple</div>
-          </div>
-          <div class="meta"><span>#0E68AB → #6A1B9A</span><span>135°</span></div>
-        </div>
-        <div class="hier-tile brand">
-          <div>
-            <div class="lbl">Tier 3 — Default</div>
-            <div class="h">Brand blue</div>
-          </div>
-          <div class="meta"><span>#1565C0</span><span>solid</span></div>
-        </div>
-      </div>
-    </section>
+<!-- ─────────────── 02 COLOUR ─────────────── -->
+<section id="colour">
+  <h2><span class="num">02</span> Colour</h2>
+  <p>Three palette layers coexist in production: the MUI palette (the canonical one), the <code>.mana-symbol</code> CSS classes, and the <code>--mtg-*</code> variables. The first is documented below; the other two are listed in <code>BRANDBOOK.md §2</code>.</p>
 
-    <hr class="rule" />
-
-    <!-- ── Mana Canon ── -->
-    <section>
-      <p class="eyebrow">02 · Mana Palette · Canon</p>
-      <h2>WUBRG — never pastel-ize</h2>
-      <p>The mana palette is the canonical Wizards colour set. They are signal, not flair. Never desaturate them to fit a generic SaaS aesthetic.</p>
-
-      <div class="swatch-grid" style="margin-top:32px">
-        <div class="swatch">
-          <div class="chip" style="background:#F8F6D8"></div>
-          <div class="body">
-            <div class="name">White · Plains</div>
-            <div class="hex">#F8F6D8</div>
-            <div class="note">Plains accents, info-light backgrounds.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#0E68AB"></div>
-          <div class="body">
-            <div class="name">Blue · Island</div>
-            <div class="hex">#0E68AB</div>
-            <div class="note">Primary brand. Knowledge CTA. Info chips.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#150B00"></div>
-          <div class="body">
-            <div class="name">Black · Swamp</div>
-            <div class="hex">#150B00</div>
-            <div class="note">Body ink on parchment ground only.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#D3202A"></div>
-          <div class="body">
-            <div class="name">Red · Mountain</div>
-            <div class="hex">#D3202A</div>
-            <div class="note">Error, destructive, attention.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#00733E"></div>
-          <div class="body">
-            <div class="name">Green · Forest</div>
-            <div class="hex">#00733E</div>
-            <div class="note">Success, validated state.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#CBC5C0"></div>
-          <div class="body">
-            <div class="name">Colorless · Wastes</div>
-            <div class="hex">#CBC5C0</div>
-            <div class="note">Disabled, neutral.</div>
-          </div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#E9B54C"></div>
-          <div class="body">
-            <div class="name">Multicolor · Gold</div>
-            <div class="hex">#E9B54C</div>
-            <div class="note">Premium gold — single primary CTA per page.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Surfaces & ink ── -->
-    <section>
-      <p class="eyebrow">03 · Surfaces &amp; Ink</p>
-      <h2>Parchment, not pure white</h2>
-      <p>Warm, slightly aged. The grain comes from an SVG noise overlay at 0.35 opacity, multiply blend. Keep it — texture is what separates ManaTuner from generic light-mode SaaS.</p>
-
-      <div class="swatch-grid" style="margin-top:32px">
-        <div class="swatch">
-          <div class="chip" style="background:#F5F3EE"></div>
-          <div class="body"><div class="name">Background</div><div class="hex">#F5F3EE · --bg</div><div class="note">Parchment ground, base of every page.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#EDE9E0"></div>
-          <div class="body"><div class="name">Background deep</div><div class="hex">#EDE9E0 · --bg-deep</div><div class="note">Inset wells, token-line backgrounds.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#FFFFFF; border-bottom:1px solid var(--rule)"></div>
-          <div class="body"><div class="name">Paper</div><div class="hex">#FFFFFF · --paper</div><div class="note">Card surface, raised content.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#1A1A1A"></div>
-          <div class="body"><div class="name">Ink primary</div><div class="hex">#1A1A1A · --ink</div><div class="note">Body text.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#555555"></div>
-          <div class="body"><div class="name">Ink secondary</div><div class="hex">#555555 · --ink-2</div><div class="note">Secondary text, descriptions.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#9A958C"></div>
-          <div class="body"><div class="name">Ink tertiary</div><div class="hex">#9A958C · --ink-3</div><div class="note">Captions, mono techTerm labels.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#1565C0"></div>
-          <div class="body"><div class="name">Brand primary</div><div class="hex">#1565C0 · --brand</div><div class="note">Tier 3 default solid buttons.</div></div>
-        </div>
-        <div class="swatch">
-          <div class="chip" style="background:#0D47A1"></div>
-          <div class="body"><div class="name">Brand deep</div><div class="hex">#0D47A1 · --brand-deep</div><div class="note">Hover state for --brand.</div></div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Typography ── -->
-    <section>
-      <p class="eyebrow">04 · Typography</p>
-      <h2>Cinzel · Inter · JetBrains Mono</h2>
-      <p>Headings are editorial serif (Cinzel). Body is humanist sans (Inter). Mono is reserved for techTerm captions, code, and math tokens.</p>
-
-      <div class="type-grid" style="margin-top:32px">
-        <div class="card type-card">
-          <p class="eyebrow">Display · H1–H4</p>
-          <div class="specimen">Probability is your manabase.</div>
-          <div class="specs">
-            <span>Cinzel</span><span>Serif</span><span>400 / 500 / 600 / 700</span>
-          </div>
-        </div>
-        <div class="card type-card body">
-          <p class="eyebrow">Body · H5/H6 + UI</p>
-          <div class="specimen">Find out if your manabase can support your game plan.</div>
-          <div class="specs">
-            <span>Inter</span><span>Sans</span><span>300 / 400 / 500 / 600 / 700</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card type-card mono" style="margin-top:20px">
-        <p class="eyebrow">Mono · techTerm</p>
-        <div class="specimen">Hypergeometric · Frank Karsten · Bellman equation</div>
-        <div class="specs">
-          <span>JetBrains Mono</span><span>0.75rem captions</span><span>--ink-3 only</span>
-        </div>
-      </div>
-
-      <!-- Weight ladder -->
-      <div class="card" style="margin-top:20px">
-        <p class="eyebrow">Weight ladder</p>
-        <div class="ladder">
-          <div class="row"><span class="w">300 · Light</span><span class="s" style="font-weight:300">Aa Bb Cc — competitive math</span></div>
-          <div class="row"><span class="w">400 · Regular</span><span class="s" style="font-weight:400">Aa Bb Cc — competitive math</span></div>
-          <div class="row"><span class="w">500 · Medium</span><span class="s" style="font-weight:500">Aa Bb Cc — competitive math</span></div>
-          <div class="row"><span class="w">600 · Semibold</span><span class="s" style="font-weight:600">Aa Bb Cc — competitive math</span></div>
-          <div class="row"><span class="w">700 · Bold</span><span class="s" style="font-weight:700">Aa Bb Cc — competitive math</span></div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Principles ── -->
-    <section>
-      <p class="eyebrow">05 · Principles</p>
-      <h2>Three rules govern the visual language</h2>
-      <div class="principles" style="margin-top:32px">
-        <div class="principle">
-          <span class="num">01</span>
-          <div class="accent"></div>
-          <h4>Authenticity over decoration</h4>
-          <p>The mana palette is canon — Plains cream, Island blue, Swamp near-black, Mountain red, Forest green. Never pastel-ize. Never desaturate. They are signal, not flair.</p>
-        </div>
-        <div class="principle">
-          <span class="num">02</span>
-          <div class="accent"></div>
-          <h4>Knowledge as premium</h4>
-          <p>The Library uses gradients normally reserved for high-tier products. Math content carries its own weight — discreet mono techTerm captions credit Karsten, Bellman, Karsten's tables instead of corporate jargon.</p>
-        </div>
-        <div class="principle">
-          <span class="num">03</span>
-          <div class="accent"></div>
-          <h4>Quiet UI for a loud subject</h4>
-          <p>The chrome stays sober — Inter body, Cinzel headings, parchment surfaces. The mana symbols and the WUBRG hero gradient do the talking. The card art is the moodboard.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Components ── -->
-    <section>
-      <p class="eyebrow">06 · Components</p>
-      <h2>Buttons, chips, cards</h2>
-      <p>Hover lifts: cards <code style="font-family:var(--mono);font-size:0.85em;color:var(--mana-u)">translateY(-4px)</code>, buttons <code style="font-family:var(--mono);font-size:0.85em;color:var(--mana-u)">translateY(-2px)</code>. Default easing <code style="font-family:var(--mono);font-size:0.85em;color:var(--mana-u)">cubic-bezier(0.4, 0, 0.2, 1)</code>.</p>
-
-      <div class="comp-grid" style="margin-top:32px">
-        <!-- Buttons -->
-        <div class="card">
-          <p class="eyebrow">Buttons</p>
-          <div class="row-cluster">
-            <a class="btn btn-gold" href="#">Analyze deck <span class="arrow">→</span></a>
-            <a class="btn btn-knowledge" href="#">Browse Library <span class="arrow">→</span></a>
-            <a class="btn btn-brand" href="#">Default action</a>
-            <a class="btn btn-outline" href="#">Secondary</a>
-          </div>
-          <p class="tech" style="margin-top:18px">Tier 1 gold = one per page · Tier 2 blue→purple = knowledge intent · Tier 3 solid blue = default listed actions</p>
-        </div>
-
-        <!-- Chips -->
-        <div class="card">
-          <p class="eyebrow">Chips · status</p>
-          <div class="row-cluster">
-            <span class="chip">Default</span>
-            <span class="chip info">Info</span>
-            <span class="chip success">Validated</span>
-            <span class="chip error">Error</span>
-            <span class="chip warn">Warning</span>
-          </div>
-        </div>
-
-        <!-- Cards -->
-        <div class="comp-row">
-          <div class="sample-card">
-            <p class="eyebrow">Article · Library</p>
-            <h4>Frank Karsten's manabase tables</h4>
-            <p>How many sources do you need to cast a {1}{U}{U} on turn 3? The hypergeometric model behind every recommendation.</p>
-            <a class="btn btn-outline" href="#">Read article <span class="arrow">→</span></a>
-          </div>
-          <div class="sample-card">
-            <p class="eyebrow">Result · Castability</p>
-            <h4>Counterspell on turn 2</h4>
-            <p style="margin-bottom:14px">Probability with current manabase</p>
-            <div style="font-family:var(--display);font-size:2.6rem;font-weight:700;color:var(--mana-g);line-height:1">87.4%</div>
-            <p class="tech" style="margin-top:6px">Hypergeometric · 60 cards · 24 sources</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Mana Icons ── -->
-    <section>
-      <p class="eyebrow">07 · Iconography · mana-font</p>
-      <h2>Canonical symbol set</h2>
-      <p>The mana-font (Andrew Gioia, MIT) is the canonical icon set for colour symbols. Every printed symbol since Alpha. Never recreate as bespoke SVG.</p>
-
-      <div class="icon-grid" style="margin-top:32px">
-        <div class="icon-tile"><i class="sym ms ms-cost ms-w"></i><div class="lab">ms-w</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-u"></i><div class="lab">ms-u</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-b"></i><div class="lab">ms-b</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-r"></i><div class="lab">ms-r</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-g"></i><div class="lab">ms-g</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-c"></i><div class="lab">ms-c</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-rg"></i><div class="lab">ms-rg · hybrid</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-ub"></i><div class="lab">ms-ub · hybrid</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-gw"></i><div class="lab">ms-gw · hybrid</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-x"></i><div class="lab">ms-x · variable</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-1"></i><div class="lab">ms-1 · generic</div></div>
-        <div class="icon-tile"><i class="sym ms ms-cost ms-bp"></i><div class="lab">ms-bp · phyrexian</div></div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Wordmarks ── -->
-    <section>
-      <p class="eyebrow">08 · Wordmarks · Lockups</p>
-      <h2>Name treatments</h2>
-      <p>Three valid lockups. The mark stays as-is — never redraw. The wordmark uses Cinzel 700 with -0.01em tracking.</p>
-
-      <div class="word-grid" style="margin-top:32px">
-        <div class="word-tile">
-          <span class="lbl">01 · Mark + wordmark</span>
-          <div class="lockup">
-            <div class="mark">
-              <svg width="28" height="28" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="m1bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0D0D0F"/><stop offset="100%" stop-color="#1a1a2e"/></linearGradient>
-                  <linearGradient id="m1wu" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F8F6D8"/><stop offset="25%" stop-color="#0E68AB"/><stop offset="50%" stop-color="#9c27b0"/><stop offset="75%" stop-color="#D3202A"/><stop offset="100%" stop-color="#00733E"/></linearGradient>
-                </defs>
-                <rect width="32" height="32" rx="6" fill="url(#m1bg)"/>
-                <circle cx="16" cy="16" r="11" fill="none" stroke="url(#m1wu)" stroke-width="2.5"/>
-                <text x="16" y="22" font-family="Georgia, serif" font-size="15" fill="url(#m1wu)" text-anchor="middle" font-weight="700" letter-spacing="-0.5">M</text>
-              </svg>
-            </div>
-            <span class="wm">ManaTuner</span>
-          </div>
-          <p class="tech">Default lockup. Use across web, app, social.</p>
-        </div>
-
-        <div class="word-tile">
-          <span class="lbl">02 · Split weight</span>
-          <div class="lockup">
-            <span class="wm">Mana<span class="light">Tuner</span></span>
-          </div>
-          <p class="tech">Wordmark-only. "Mana" semibold + "Tuner" 300. For tight horizontal lockups.</p>
-        </div>
-
-        <div class="word-tile lockup-wubrg">
-          <span class="lbl">03 · WUBRG hero</span>
-          <div class="lockup">
-            <span class="wm">ManaTuner</span>
-          </div>
-          <p class="tech">Five-band gradient text-fill. Reserved for hero H1 — never body, never inline.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="rule" />
-
-    <!-- ── Footer ── -->
-    <footer class="foot">
-      <div class="frame">
-        <div class="row">
-          <div>ManaTuner · Design System · Edition 2.6 · Light</div>
-          <div>design/design-system.html · 2026</div>
-        </div>
-        <div class="row" style="margin-top:10px; opacity:.7">
-          <div>Dark theme intentionally excluded — see brand book §10</div>
-          <div>Maintained by the ManaTuner team</div>
-        </div>
-      </div>
-    </footer>
-
+  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Mana · light</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip light-fg" style="background:#F8F6D8">#F8F6D8</div><div class="meta"><b>White</b><code>palette.mana.white</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#0E68AB">#0E68AB</div><div class="meta"><b>Blue</b><code>palette.mana.blue</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#150B00">#150B00</div><div class="meta"><b>Black</b><code>palette.mana.black</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#D3202A">#D3202A</div><div class="meta"><b>Red</b><code>palette.mana.red</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#00733E">#00733E</div><div class="meta"><b>Green</b><code>palette.mana.green</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#CBC5C0">#CBC5C0</div><div class="meta"><b>Colorless</b><code>palette.mana.colorless</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#E9B54C">#E9B54C</div><div class="meta"><b>Multicolor</b><code>palette.mana.multicolor</code></div></div>
   </div>
-</main>
+
+  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Mana · dark theme overrides</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip light-fg" style="background:#F5F0D0">#F5F0D0</div><div class="meta"><b>White</b><code>dark.mana.white</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#4A9EE8">#4A9EE8</div><div class="meta"><b>Blue</b><code>dark.mana.blue</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#3D3D3D">#3D3D3D</div><div class="meta"><b>Black</b><code>dark.mana.black</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#FF5252">#FF5252</div><div class="meta"><b>Red</b><code>dark.mana.red</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#4CAF50">#4CAF50</div><div class="meta"><b>Green</b><code>dark.mana.green</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#9E9E9E">#9E9E9E</div><div class="meta"><b>Colorless</b><code>dark.mana.colorless</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#FFD700">#FFD700</div><div class="meta"><b>Multicolor</b><code>dark.mana.multicolor</code></div></div>
+  </div>
+
+  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Brand &amp; surfaces · light</h3>
+  <div class="swatches">
+    <div class="swatch"><div class="chip" style="background:#1565C0">#1565C0</div><div class="meta"><b>Brand primary</b><code>palette.primary.main</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#0D47A1">#0D47A1</div><div class="meta"><b>Brand deep</b><code>primary.dark</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#7B1FA2">#7B1FA2</div><div class="meta"><b>Secondary</b><code>palette.secondary.main</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#1976d2">#1976d2</div><div class="meta"><b>Theme-color meta</b><code>focus + loading</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#F5F3EE">#F5F3EE</div><div class="meta"><b>Parchment bg</b><code>background.default</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#FFFFFF; border:1px solid rgba(0,0,0,0.1)">#FFFFFF</div><div class="meta"><b>Paper</b><code>background.paper</code></div></div>
+    <div class="swatch"><div class="chip light-fg" style="background:#fafafa">#fafafa</div><div class="meta"><b>Raw body bg</b><code>index.css:20</code></div></div>
+    <div class="swatch"><div class="chip" style="background:#1A1A1A">#1A1A1A</div><div class="meta"><b>Ink primary</b><code>text.primary</code></div></div>
+  </div>
+
+  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Gradients shipped in production</h3>
+  <div style="display:grid; gap: 0.75rem; grid-template-columns: 1fr;">
+    <div class="gradient-block" style="background: linear-gradient(135deg, #E9B54C 0%, #0E68AB 25%, #9c27b0 50%, #D3202A 75%, #00733E 100%);">Hero WUBRG · HomePage H1 text-fill</div>
+    <div class="gradient-block" style="background: linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%);">CTA Knowledge · Library button</div>
+    <div class="gradient-block" style="background: linear-gradient(135deg, #1976D2 0%, #7B1FA2 100%);">CTA Knowledge · hover state</div>
+    <div class="gradient-block light-fg" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); color: rgba(0,0,0,0.7); text-shadow: none;">--bg-primary</div>
+    <div class="gradient-block" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">--bg-secondary</div>
+    <div class="gradient-block light-fg" style="background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%); color: rgba(0,0,0,0.7); text-shadow: none; border: 1px solid rgba(0,0,0,0.08);">--bg-card</div>
+  </div>
+</section>
+
+<!-- ─────────────── 03 TYPOGRAPHY ─────────────── -->
+<section id="typo">
+  <h2><span class="num">03</span> Typography</h2>
+  <p>Cinzel handles H1–H4. The body cascade lists Inter first but Inter is not loaded — body text resolves to Roboto, which <em>is</em> loaded. The <code>--font-heading</code> CSS variable lists Poppins first, also not loaded, and falls all the way to system sans.</p>
+
+  <div class="demo">
+    <div class="typo-row">
+      <span class="label">H1</span>
+      <div>
+        <h1 style="margin:0;">The Only Mana Calculator That Counts Your Dorks &amp; Rocks</h1>
+        <div class="meta">Cinzel · 700 · 3rem · lh 1.2 · ls 0.02em</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">Hero H1</span>
+      <div>
+        <div class="hero-h1">Hero variant — fontWeight 800, WUBRG text-fill</div>
+        <div class="meta">Cinzel · 800 · 3.5rem (md) · WUBRG gradient text-fill</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">H2</span>
+      <div>
+        <h2 style="margin:0;">Will your deck cast its spells on curve?</h2>
+        <div class="meta">Cinzel · 600 · 2.5rem · lh 1.3 · ls 0.01em</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">H3</span>
+      <div>
+        <h3 style="margin:0; font-family: var(--font-mui-heading); font-size: 2rem; font-weight: 600; line-height: 1.4;">Castability &amp; tempo, not just lands</h3>
+        <div class="meta">Cinzel · 600 · 2rem · lh 1.4</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">H4</span>
+      <div>
+        <h4 style="margin:0; font-family: var(--font-mui-heading); font-size: 1.5rem; font-weight: 500; line-height: 1.4;">Built for FNM grinders and Pro Tour qualifiers alike</h4>
+        <div class="meta">Cinzel · 500 · 1.5rem · lh 1.4</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">Body 1</span>
+      <div>
+        <p style="margin:0; font-size: 1rem; line-height: 1.6;">ManaTuner is a Magic: The Gathering manabase calculator. Stop guessing. Get exact cast odds for every spell in your deck, plus know exactly when to mulligan — backed by hypergeometric math and Monte Carlo simulation.</p>
+        <div class="meta">Roboto cascade · 400 · 1rem · lh 1.6</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">Body 2</span>
+      <div>
+        <p style="margin:0; font-size: 0.875rem; line-height: 1.5;">Dorks = mana creatures. Rocks = mana artifacts. We count both, plus rituals, treasure tokens, and land auras.</p>
+        <div class="meta">Roboto cascade · 400 · 0.875rem · lh 1.5</div>
+      </div>
+    </div>
+    <div class="typo-row">
+      <span class="label">Mono</span>
+      <div>
+        <code style="font-family: var(--font-mono); font-size: 0.85rem;">hypergeom.atLeast(succ=4, total=60, draws=7) === 0.4022</code>
+        <div class="meta">JetBrains Mono cascade (not loaded → system mono)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── 04 COMPONENTS ─────────────── -->
+<section id="components">
+  <h2><span class="num">04</span> Components</h2>
+  <p>Reproductions of the most-shipped components — buttons, cards, the Library CTA with its mount pulse, chips, the app bar with its <code>backdrop-filter: blur(10px)</code>.</p>
+
+  <div class="demo">
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 0;">Buttons</h3>
+    <div class="row">
+      <button class="btn btn-contained">Analyze deck</button>
+      <button class="btn btn-library">Browse the Library</button>
+      <button class="btn" style="background: transparent; border: 1px solid var(--brand-primary); color: var(--brand-primary);">Outlined</button>
+    </div>
+
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 1.5rem 0 0;">Card</h3>
+    <div class="card" style="max-width: 420px;">
+      <h4 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 0 0 0.5rem;">Castability tab</h4>
+      <p style="margin: 0; color: var(--ink-secondary); line-height: 1.6;">Per-spell probability of casting on curve, with full breakdown of acceleration paths.</p>
+    </div>
+
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 1.5rem 0 0;">Chips</h3>
+    <div class="row">
+      <span class="chip">Standard</span>
+      <span class="chip" style="background: var(--mana-blue); color: #fff;">Modern</span>
+      <span class="chip" style="background: var(--mana-green); color: #fff;">Pioneer</span>
+      <span class="chip" style="background: var(--mana-multicolor); color: #150B00;">Pauper</span>
+    </div>
+
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 1.5rem 0 0;">App bar</h3>
+    <div class="app-bar" style="position: relative; border-radius: var(--radius-md); border: 1px solid rgba(0,0,0,0.08);">
+      <strong style="font-family: var(--font-mui-heading); font-size: 1.1rem;">ManaTuner</strong>
+      <span style="margin-left: 1.5rem; color: var(--ink-secondary); font-size: 0.9rem;">Analyzer · Library · Glossary · Guide</span>
+    </div>
+
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 1.5rem 0 0;">Input</h3>
+    <input class="input" type="text" placeholder="Paste your decklist here…" style="width: 100%; max-width: 480px;" />
+  </div>
+</section>
+
+<!-- ─────────────── 05 MOTION ─────────────── -->
+<section id="motion">
+  <h2><span class="num">05</span> Motion</h2>
+  <p>Two easing systems coexist. Material standard <code>cubic-bezier(0.4, 0, 0.2, 1)</code> on MUI components; <code>ease-out</code> family on CSS variables and utility classes.</p>
+
+  <div class="demo">
+    <table class="tokens">
+      <thead><tr><th>Token</th><th>Value</th><th>Where</th></tr></thead>
+      <tbody>
+        <tr><td>--transition-fast</td><td>0.15s ease-out</td><td>utility</td></tr>
+        <tr><td>--transition-normal</td><td>0.25s ease-out</td><td>utility</td></tr>
+        <tr><td>--transition-slow</td><td>0.35s ease-out</td><td>utility</td></tr>
+        <tr><td>MuiButton root</td><td>all 0.3s cubic-bezier(0.4,0,0.2,1)</td><td>theme/index.ts:128</td></tr>
+        <tr><td>MuiCard root</td><td>all 0.3s cubic-bezier(0.4,0,0.2,1)</td><td>theme/index.ts:143</td></tr>
+        <tr><td>MuiTextField input</td><td>all 0.2s ease-in-out</td><td>theme/index.ts:156</td></tr>
+        <tr><td>Library CTA</td><td>all 0.3s ease</td><td>Header.tsx:240</td></tr>
+        <tr><td>Hover lift · Button</td><td>translateY(-2px)</td><td>theme/index.ts:130</td></tr>
+        <tr><td>Hover lift · Card</td><td>translateY(-4px)</td><td>theme/index.ts:145</td></tr>
+        <tr><td>Hover lift · Library CTA</td><td>translateY(-1px)</td><td>Header.tsx:223</td></tr>
+        <tr><td>backdrop-filter · AppBar</td><td>blur(10px)</td><td>theme/index.ts:179</td></tr>
+        <tr><td>libraryPulse</td><td>2.8s ease-out 0.8s 1 (one-shot mount)</td><td>Header.tsx:229</td></tr>
+        <tr><td>prefers-reduced-motion</td><td>collapses all animations to 0.01ms</td><td>index.css:452-458</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ─────────────── 06 ICONOGRAPHY ─────────────── -->
+<section id="icons">
+  <h2><span class="num">06</span> Iconography</h2>
+  <p>Mana-font handles every printed mana symbol. Plain <code>.mana-symbol</code> CSS classes exist as a fallback. UI icons come from <code>@mui/icons-material</code> and <code>lucide-react</code>.</p>
+
+  <div class="demo">
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 0;">Mana-font (CDN)</h3>
+    <div class="mana-grid">
+      <i class="ms ms-cost ms-w"></i>
+      <i class="ms ms-cost ms-u"></i>
+      <i class="ms ms-cost ms-b"></i>
+      <i class="ms ms-cost ms-r"></i>
+      <i class="ms ms-cost ms-g"></i>
+      <i class="ms ms-cost ms-c"></i>
+      <i class="ms ms-cost ms-1"></i>
+      <i class="ms ms-cost ms-x"></i>
+      <i class="ms ms-cost ms-rg"></i>
+      <i class="ms ms-cost ms-wu"></i>
+      <i class="ms ms-cost ms-bp"></i>
+    </div>
+
+    <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 1.5rem 0 0;">Plain CSS fallback</h3>
+    <div class="mana-grid">
+      <span class="mana-symbol mana-w">W</span>
+      <span class="mana-symbol mana-u">U</span>
+      <span class="mana-symbol mana-b">B</span>
+      <span class="mana-symbol mana-r">R</span>
+      <span class="mana-symbol mana-g">G</span>
+      <span class="mana-symbol mana-c">C</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────── 07 STACK ─────────────── -->
+<section id="stack">
+  <h2><span class="num">07</span> Stack &amp; notes</h2>
+  <div class="demo">
+    <table class="tokens">
+      <tbody>
+        <tr><td>Framework</td><td>React 18 + TypeScript + Vite</td></tr>
+        <tr><td>Component library</td><td>Material-UI v5</td></tr>
+        <tr><td>Routing</td><td>react-router-dom v6</td></tr>
+        <tr><td>State</td><td>Redux Toolkit + redux-persist</td></tr>
+        <tr><td>Tailwind</td><td>not present (no tailwind.config.*)</td></tr>
+        <tr><td>Mana symbols</td><td>mana-font@1.18.0 (jsdelivr, SRI-pinned)</td></tr>
+        <tr><td>Icons</td><td>@mui/icons-material + lucide-react</td></tr>
+        <tr><td>Fonts loaded</td><td>Roboto 300/400/500/700 · Cinzel 400/600/700</td></tr>
+        <tr><td>Fonts referenced not loaded</td><td>Inter, Poppins, JetBrains Mono, Fira Code, Playfair Display</td></tr>
+        <tr><td>Themes shipped</td><td>light (default) + dark (toggle via ThemeContext)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer class="foot">
+  <div>ManaTuner · Design System · Edition 2.7 Mirror</div>
+  <div>Extracted 2026-05-15 from manatuner.app · Sources: src/theme/index.ts, src/styles/index.css, src/pages/HomePage.tsx, src/components/layout/Header.tsx, index.html</div>
+  <div>Companions: <a href="./BRANDBOOK.md" style="color: var(--brand-primary);">BRANDBOOK.md</a> · <a href="./brand-book-a4.html" style="color: var(--brand-primary);">brand-book-a4.html</a> · <a href="./brand-book-a4.pdf" style="color: var(--brand-primary);">brand-book-a4.pdf</a></div>
+</footer>
+
+</div>
 </body>
 </html>
