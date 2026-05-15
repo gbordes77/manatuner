@@ -3,9 +3,19 @@
  * Edition 2.7 · Mirror of manatuner.app production state
  *
  * This is a faithful reproduction of `src/theme/index.ts` from the production
- * build. Both `lightTheme` and `darkTheme` are exported because both exist
- * in production. The default `theme` export points to `lightTheme`, matching
- * the production default (src/theme/index.ts:319).
+ * build. Both `lightTheme` and `darkTheme` are exported because both are
+ * defined in the codebase, but ONLY `lightTheme` is rendered in production:
+ * `darkTheme` is wired to the ThemeProvider in
+ * `src/components/common/NotificationProvider.tsx:92` but no UI control
+ * calls `toggleTheme()` — `isDark` defaults to false and stays false.
+ *
+ * Treat `darkTheme` here as inventory (useful for forks, useful for
+ * reading the existing values), not as a shipped theme. The dark
+ * implementation is unfinished (surface readability issues with `#150B00`,
+ * Safari glass inconsistencies, glow palette failing WCAG AA on body text).
+ *
+ * The default `theme` export points to `lightTheme`, matching the
+ * production default (src/theme/index.ts:319).
  *
  * Source of truth: src/theme/index.ts (extracted 2026-05-15).
  */

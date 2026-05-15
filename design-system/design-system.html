@@ -181,7 +181,8 @@
     <div class="swatch"><div class="chip light-fg" style="background:#E9B54C">#E9B54C</div><div class="meta"><b>Multicolor</b><code>palette.mana.multicolor</code></div></div>
   </div>
 
-  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Mana · dark theme overrides</h3>
+  <h3 style="font-family: var(--font-mui-heading); font-size: 1.25rem; margin: 2rem 0 1rem;">Mana · dark theme <span style="font-family: var(--font-mono); font-size: 0.7rem; font-weight: 400; letter-spacing: 0.08em; color: var(--ink-secondary); text-transform: uppercase; margin-left: 0.75rem; padding: 2px 8px; border: 1px solid var(--ink-secondary); border-radius: 4px;">defined in code · not active in production</span></h3>
+  <p style="margin: -0.5rem 0 1rem; font-size: 0.9rem; color: var(--ink-secondary); max-width: 70ch; line-height: 1.55;">These tokens exist in <code>src/theme/index.ts</code> and the dark theme is wired to the <code>ThemeProvider</code>, but no UI control toggles them on. <code>isDark</code> defaults to <code>false</code> and stays <code>false</code> in production — the dark theme is dormant code, not a shipped experience.</p>
   <div class="swatches">
     <div class="swatch"><div class="chip light-fg" style="background:#F5F0D0">#F5F0D0</div><div class="meta"><b>White</b><code>dark.mana.white</code></div></div>
     <div class="swatch"><div class="chip" style="background:#4A9EE8">#4A9EE8</div><div class="meta"><b>Blue</b><code>dark.mana.blue</code></div></div>
@@ -393,7 +394,7 @@
         <tr><td>Icons</td><td>@mui/icons-material + lucide-react</td></tr>
         <tr><td>Fonts loaded</td><td>Roboto 300/400/500/700 · Cinzel 400/600/700</td></tr>
         <tr><td>Fonts referenced not loaded</td><td>Inter, Poppins, JetBrains Mono, Fira Code, Playfair Display</td></tr>
-        <tr><td>Themes shipped</td><td>light (default) + dark (toggle via ThemeContext)</td></tr>
+        <tr><td>Themes shipped</td><td>light only (dark exists in code but no UI toggle calls it)</td></tr>
       </tbody>
     </table>
   </div>

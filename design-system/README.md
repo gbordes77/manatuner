@@ -57,9 +57,9 @@ const darkBlue = darkTokens.color.mana.blue
 
 ## Themes
 
-Two themes ship in production. The light theme is the default. The dark theme is exported as `darkTheme` from `mui-theme.ts` and is wired through a runtime `ThemeContext` in the production app.
+**Production is light-only.** Both `lightTheme` and `darkTheme` are exported from `mui-theme.ts` and the dark theme is wired into the runtime `ThemeProvider`, but no UI control calls `toggleTheme()` — `isDark` defaults to `false` and stays `false`. The dark tokens are exported because they exist in the codebase (and so they can be used by other projects forking this design system), but ManaTuner itself currently renders the light theme only. The dark implementation is unfinished and not user-facing.
 
-In CSS, switch palettes with `[data-theme="dark"]` on the document root.
+In CSS, you can preview the dark palette by setting `[data-theme="dark"]` on the document root, but this attribute is not toggled by the production app.
 
 ## Companion to the live site
 

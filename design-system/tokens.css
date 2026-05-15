@@ -8,7 +8,11 @@
  * three parallel naming conventions (--mtg-*, --bg-*, --spacing-*, --radius-*,
  * --shadow-*, --transition-*, --font-*) which are reproduced verbatim below.
  *
- * Two themes are exported via two :root scopes (light + [data-theme="dark"]).
+ * Both light and dark token sets are exported via two :root scopes
+ * (light + [data-theme="dark"]). NOTE: only the light theme is rendered
+ * in production — the dark `[data-theme="dark"]` block is exported for
+ * inventory/forking purposes but is never activated by the production app
+ * (no UI control toggles the data-theme attribute).
  */
 
 :root {
@@ -218,9 +222,14 @@
 }
 
 /* ───────────────────────────────────────────────────────────────────────
-   Dark theme · MUI darkTheme palette
+   Dark theme · MUI darkTheme palette · NOT ACTIVE IN PRODUCTION
    Source: src/theme/index.ts:231-316
-   Activate by setting [data-theme="dark"] on <html> or <body>.
+
+   These tokens exist in the codebase but the production app never
+   activates them — no UI control calls toggleTheme() in
+   src/components/common/NotificationProvider.tsx and the
+   [data-theme="dark"] attribute is never set on the document root.
+   Exported here for inventory / forking purposes.
 ─────────────────────────────────────────────────────────────────────── */
 [data-theme='dark'] {
   --mana-white: #f5f0d0;

@@ -10,7 +10,9 @@ A rendered companion lives at [`./design-system.html`](./design-system.html) —
 
 ## 1. Overview
 
-ManaTuner is a Magic: The Gathering manabase calculator. The visible interface today combines a Material-UI v5 component layer with a parallel CSS variables layer. Two themes are shipped — a light theme (default) and a dark theme — both defined in `src/theme/index.ts`.
+ManaTuner is a Magic: The Gathering manabase calculator. The visible interface today combines a Material-UI v5 component layer with a parallel CSS variables layer.
+
+**Themes — light is the only one users see.** Both `lightTheme` and `darkTheme` are defined in `src/theme/index.ts` and the dark theme is wired to the `ThemeProvider` in `src/components/common/NotificationProvider.tsx:92`. However, **no UI control calls `toggleTheme()` in production** — the toggle exists in the context API but no button, switch, or shortcut activates it. `isDark` defaults to `false` and stays `false`. The dark tokens are documented in this brandbook because they live in the codebase, but the visual production experience is **light-only**.
 
 **Stack as deployed:**
 
@@ -48,7 +50,7 @@ This brandbook documents all three rather than reconciling them.
 
 Glow rgba variants (`whiteGlow`, `blueGlow`, `blackGlow`, `redGlow`, `greenGlow`) at α=0.6 are exposed on the same object for hover/animation effects.
 
-### Mana — dark theme (MUI `darkTheme.palette.mana` overrides)
+### Mana — dark theme (defined in code, not active in production)
 
 | Colour     | Hex (dark) |
 | ---------- | ---------- |
@@ -294,7 +296,7 @@ A second mana glyph implementation exists as plain CSS `.mana-symbol` classes (`
 ## 9. Edition notes
 
 - **Edition 2.7 — Mirror** is intentionally descriptive. It records what the production build ships today.
-- **Both light and dark themes are documented** — both exist in `src/theme/index.ts` and are exported from production.
+- **Both light and dark themes are documented, but only light is active.** Both are exported from `src/theme/index.ts` and the dark theme is wired to the `ThemeProvider`, but no UI control calls the `toggleTheme()` function. `isDark` defaults to `false` and stays `false` in production. The dark theme implementation is incomplete (surface system unfinished, `#150B00` accent readability issues, Safari glass inconsistencies, glow palette failing WCAG AA on body text). Treat the dark tokens as inventory, not as a shipped theme.
 - **Three palette layers coexist** (MUI palette, `.mana-symbol` classes, `--mtg-*` variables) and are documented in parallel rather than reconciled.
 - **Inter, Poppins, JetBrains Mono are referenced in cascades but not loaded.** Body text effectively resolves to Roboto; `--font-heading` resolves to the system sans-serif.
 - **Tailwind is not present.** A previous edition shipped a `tailwind.preset.js`; it has been removed because no Tailwind config exists in the production repo.

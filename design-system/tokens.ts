@@ -3,9 +3,15 @@
  * Edition 2.7 · Mirror of manatuner.app production state
  * Extracted 2026-05-15 from src/theme/index.ts + src/styles/index.css
  *
- * Typed token export. Two themes are present (light + dark). The `tokens`
- * default export holds the LIGHT theme; the `darkTokens` export holds the
- * DARK overrides. Mirror, not target — values come from production.
+ * Typed token export. Both light and dark token sets are exported because
+ * both are defined in the production codebase, but only the LIGHT set is
+ * rendered to users — `darkTheme` is wired to ThemeProvider in
+ * NotificationProvider.tsx:92 but no UI control calls toggleTheme().
+ * `isDark` defaults to false and stays false in production. Treat
+ * `darkTokens` as inventory, not as a shipped theme.
+ *
+ * The default export = LIGHT (production-active). Named `darkTokens` =
+ * dormant code-only set.
  */
 
 export const tokens = {
