@@ -1,6 +1,6 @@
 # ManaTuner — Brandbook
 
-**Edition 2.7 · Mirror of manatuner.app production state · 2026-05-15**
+**Edition 2.8 · Mirror of manatuner.app production state · 2026-05-15**
 
 This edition is a **descriptive snapshot**, not a target spec. It documents the design system as it currently ships on `https://manatuner.app`. Values were extracted from `src/theme/index.ts`, `src/styles/index.css`, `src/pages/HomePage.tsx`, `src/components/layout/Header.tsx`, and `index.html`.
 
@@ -31,6 +31,27 @@ The codebase maintains three different palette declarations that coexist at runt
 3. **`--mtg-*` CSS variables** — a third set in `src/styles/index.css:462-484` used by ad-hoc components.
 
 This brandbook documents all three rather than reconciling them.
+
+### Product surface — calculator + competitive library
+
+ManaTuner ships **two surfaces under one identity**:
+
+1. **Mana Calculator** — manabase analysis: hypergeometric probabilities, Monte Carlo mulligan (10 000 hands, configurable up to 50 000), Bellman keep/mulligan thresholds, post-board analysis with sideboard swap editor, 13 ramp types detected (mana dorks, mana rocks, rituals, land auras, land ramp, doublers, landfall…), creature-aware mana sources (Cavern of Souls modelling).
+
+2. **Reading Library** — 54 curated MTG resources across 5 format-aware tracks:
+   - Your First FNM
+   - Preparing for an RCQ
+   - Pro Tour
+   - 👑 Commander Pod
+   - 📦 Limited Draft / Sealed
+
+   Features: full-text search, URL-stateful multi-axis filters (category × level × language × medium), localStorage reading progress and bookmarks (privacy-first), per-article detail pages at `/library/:slug`, author index pages at `/library/author/:slug`, BibTeX + Markdown citation exports, RSS + JSON feeds, dynamic sitemap.
+
+   Authors curated: Frank Karsten, Paulo Vitor Damo da Rosa (PVDDR), Tomoharu Saito, Patrick Chapin, Reid Duke, Zvi Mowshowitz, Kai Budde, Wizards Brackets 2024, Command Zone, Game Knights, EDHREC, Limited Resources, 17lands, Le Podcaster Mage (FR), Battle Chads. Many resources recovered via archive.org with mirror fallbacks for the classics.
+
+The Library CTA in the Header uses the dedicated **"Knowledge" gradient** (`#0E68AB → #6A1B9A`) precisely to mark this second surface as a high-tier product, visually distinct from the calculator's brand blue. The mount-time `libraryPulse` keyframe (2.8s, 0.8s delay, single iteration) is exclusive to this CTA.
+
+> The dual-pitch is also encoded in `<meta name="description">` (`index.html:21`) and in `og:title` (`"ManaTuner — MTG Mana Calculator + Competitive Library"`, `index.html:37`). Any communication that drops the library mention causes a regression — social previews (Discord, Slack, Facebook, LinkedIn) read the static tags, not the per-page `react-helmet-async` overrides. The library mention was dropped once in v2.5.3 and went unnoticed until 2026-04-18.
 
 ---
 
@@ -66,18 +87,21 @@ Dark-theme glow variants drop to α=0.5.
 
 ### Brand · primary + secondary
 
-| Token                       | Hex (light) | Hex (dark) |
-| --------------------------- | ----------- | ---------- |
-| `palette.primary.main`      | `#1565C0`   | `#64B5F6`  |
-| `palette.primary.light`     | `#42A5F5`   | `#90CAF9`  |
-| `palette.primary.dark`      | `#0D47A1`   | `#42A5F5`  |
-| `palette.secondary.main`    | `#7B1FA2`   | `#CE93D8`  |
-| `palette.secondary.light`   | `#BA68C8`   | `#E1BEE7`  |
-| `palette.secondary.dark`    | `#4A148C`   | `#BA68C8`  |
-| `<meta name="theme-color">` | `#1976d2`   | `#0D0D0F`  |
-| Focus-visible outline       | `#1976d2`   | `#1976d2`  |
+| Token                               | Hex (light) | Hex (dark)                                |
+| ----------------------------------- | ----------- | ----------------------------------------- |
+| `palette.primary.main`              | `#1565C0`   | `#64B5F6`                                 |
+| `palette.primary.light`             | `#42A5F5`   | `#90CAF9`                                 |
+| `palette.primary.dark`              | `#0D47A1`   | `#42A5F5`                                 |
+| `palette.secondary.main`            | `#7B1FA2`   | `#CE93D8`                                 |
+| `palette.secondary.light`           | `#BA68C8`   | `#E1BEE7`                                 |
+| `palette.secondary.dark`            | `#4A148C`   | `#BA68C8`                                 |
+| `<meta name="theme-color">` (light) | `#1976d2`   | served when `prefers-color-scheme: light` |
+| `<meta name="theme-color">` (dark)  | `#0D0D0F`   | served when `prefers-color-scheme: dark`  |
+| Focus-visible outline               | `#1976d2`   | `#1976d2`                                 |
 
 Note that `#1976d2` (focus, theme-color, critical-CSS loading text) is a fourth blue, distinct from `palette.primary.main` `#1565C0`.
+
+> **Note** — production ships TWO `<meta name="theme-color">` tags with `media` attributes (`index.html:11-12`). The browser chrome (address bar tint on mobile, window header on macOS Safari) adapts to the OS preference, even though the in-app UI itself remains light-only. This is the only place where a dark-mode brand value is actually rendered to the user.
 
 ### Surfaces & ink — light
 
@@ -248,16 +272,18 @@ Two easing systems coexist: Material standard (`cubic-bezier(0.4, 0, 0.2, 1)`) o
 
 ### Keyframes that ship in production
 
-| Name           | Where            | Usage                                   |
-| -------------- | ---------------- | --------------------------------------- |
-| `libraryPulse` | `Header.tsx:230` | One-shot mount pulse on the Library CTA |
-| `loading`      | `index.css:218`  | `.loading-skeleton` background sweep    |
-| `fadeIn`       | `index.css:137`  | `.fade-in` utility                      |
-| `fadeInUp`     | `index.css:148`  | reserved                                |
-| `slideIn`      | `index.css:159`  | `.slide-in` utility                     |
-| `slideInLeft`  | `index.css:168`  | reserved                                |
-| `scaleIn`      | `index.css:179`  | reserved                                |
-| `pulse`        | `index.css:190`  | `.pulse` utility                        |
+| Name           | Where                | Usage                                                             |
+| -------------- | -------------------- | ----------------------------------------------------------------- |
+| `libraryPulse` | `Header.tsx:230`     | One-shot mount pulse on the Library CTA                           |
+| `mana-pulse`   | `index.html:156-159` | Mana symbol pulse — critical CSS (ships on all pages, pre-bundle) |
+| `mana-glow`    | `index.html:161-164` | Mana symbol glow — critical CSS (ships on all pages, pre-bundle)  |
+| `loading`      | `index.css:218`      | `.loading-skeleton` background sweep                              |
+| `fadeIn`       | `index.css:137`      | `.fade-in` utility                                                |
+| `fadeInUp`     | `index.css:148`      | reserved                                                          |
+| `slideIn`      | `index.css:159`      | `.slide-in` utility                                               |
+| `slideInLeft`  | `index.css:168`      | reserved                                                          |
+| `scaleIn`      | `index.css:179`      | reserved                                                          |
+| `pulse`        | `index.css:190`      | `.pulse` utility                                                  |
 
 ### Reduced motion
 
@@ -267,11 +293,11 @@ A global `@media (prefers-reduced-motion: reduce)` guard (`src/styles/index.css:
 
 ## 7. Iconography
 
-| Source                | Usage                                                              |
-| --------------------- | ------------------------------------------------------------------ |
-| `mana-font@1.18.0`    | All mana symbols (`.ms .ms-cost .ms-w` …). CDN-loaded, SRI-pinned. |
-| `@mui/icons-material` | UI icons (search, settings, navigation, …)                         |
-| `lucide-react`        | Decorative and content icons; coexists with the MUI set            |
+| Source                | Usage                                                                                                                                                                                  |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mana-font@1.18.0`    | All mana symbols (`.ms .ms-cost .ms-w` …). CDN-loaded from jsdelivr with SRI: `integrity="sha384-xa3t1kOlLmfN4q97IHzv+WfBEbMB1RVLs0txIuuryvjKruuVAD+2352y55hZOn2p"` (`index.html:85`). |
+| `@mui/icons-material` | UI icons (search, settings, navigation, …)                                                                                                                                             |
+| `lucide-react`        | Decorative and content icons; coexists with the MUI set                                                                                                                                |
 
 A second mana glyph implementation exists as plain CSS `.mana-symbol` classes (`src/styles/index.css:30-86`) used as fallback in places where mana-font isn't included.
 
@@ -295,13 +321,30 @@ A second mana glyph implementation exists as plain CSS `.mana-symbol` classes (`
 
 ## 9. Edition notes
 
-- **Edition 2.7 — Mirror** is intentionally descriptive. It records what the production build ships today.
+- **Edition 2.8 — Mirror + Library disclosure.** Adds the Reading Library as a first-class product surface (Section 1), corrects fictional H1 examples to match the production `<title>`, documents the media-aware `<meta name="theme-color">` pattern, captures `mana-pulse` / `mana-glow` critical-CSS keyframes (Section 6), embeds the mana-font SRI hash (Section 7), and adds a Stewardship section (Section 10). **No token VALUES changed vs 2.7** — pure documentation and missing-feature disclosure.
+- **Edition 2.8 — Mirror** is intentionally descriptive. It records what the production build ships today.
 - **Both light and dark themes are documented, but only light is active.** Both are exported from `src/theme/index.ts` and the dark theme is wired to the `ThemeProvider`, but no UI control calls the `toggleTheme()` function. `isDark` defaults to `false` and stays `false` in production. The dark theme implementation is incomplete (surface system unfinished, `#150B00` accent readability issues, Safari glass inconsistencies, glow palette failing WCAG AA on body text). Treat the dark tokens as inventory, not as a shipped theme.
 - **Three palette layers coexist** (MUI palette, `.mana-symbol` classes, `--mtg-*` variables) and are documented in parallel rather than reconciled.
 - **Inter, Poppins, JetBrains Mono are referenced in cascades but not loaded.** Body text effectively resolves to Roboto; `--font-heading` resolves to the system sans-serif.
 - **Tailwind is not present.** A previous edition shipped a `tailwind.preset.js`; it has been removed because no Tailwind config exists in the production repo.
 - **No noise overlay or grain texture is applied to the parchment ground.** The visible texture is the gradient stack only.
 - **Two easing systems coexist** on MUI components (Material standard cubic-bezier) vs. CSS variable utilities (`ease-out` family). Both are reproduced verbatim.
+
+---
+
+## 10. Author & Stewardship
+
+| Field           | Value                                              |
+| --------------- | -------------------------------------------------- |
+| Author          | Guillaume Bordes                                   |
+| GitHub          | https://github.com/gbordes77                       |
+| Repository      | https://github.com/gbordes77/manatuner             |
+| Branch of truth | `main`                                             |
+| App version     | 2.7.1 (per `index.html` JSON-LD `softwareVersion`) |
+| Design edition  | 2.8 (this brandbook)                               |
+| License (app)   | MIT                                                |
+
+This brandbook is maintained alongside the application code, in `design-system/` at the repo root. The JSON-LD `@graph` in `index.html` embeds Guillaume Bordes as `Person @id` for both the `SoftwareApplication` and `Organization` entities — the brand and the author are coupled at the structured-data level.
 
 ---
 

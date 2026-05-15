@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ManaTuner · Design System Showcase · Edition 2.7 Mirror</title>
+  <title>ManaTuner · Design System Showcase · Edition 2.8 Mirror</title>
   <link rel="stylesheet" href="./tokens.css" />
   <link rel="stylesheet" href="./components.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
@@ -154,7 +154,7 @@
 <div class="page">
 
 <header class="hero" id="identity">
-  <div class="eyebrow">ManaTuner · Design System · Edition 2.7 Mirror</div>
+  <div class="eyebrow">ManaTuner · Design System · Edition 2.8 Mirror</div>
   <h1 class="hero-h1">Will your deck cast its spells on curve?</h1>
   <p class="lede">
     A descriptive snapshot of the design system shipped on
@@ -164,6 +164,17 @@
     and <code>index.html</code>. Nothing here is aspirational.
   </p>
 </header>
+
+<!-- ─────────────── Product surface (Library disclosure) ─────────────── -->
+<section id="product-surface">
+  <h2><span class="num">01b</span> Product surface — calculator + competitive library</h2>
+  <p>ManaTuner ships <strong>two surfaces under one identity</strong>:</p>
+  <ol style="margin: 1rem 0 1.5rem 1.5rem; line-height: 1.7; color: var(--ink-primary);">
+    <li><strong>Mana Calculator</strong> — manabase analysis: hypergeometric probabilities, Monte Carlo mulligan (10 000 hands, configurable up to 50 000), Bellman keep/mulligan thresholds, post-board analysis with sideboard swap editor, 13 ramp types detected (mana dorks, mana rocks, rituals, land auras, land ramp, doublers, landfall…), creature-aware mana sources (Cavern of Souls modelling).</li>
+    <li style="margin-top: 0.75rem;"><strong>Reading Library</strong> — 54 curated MTG resources across 5 format-aware tracks: Your First FNM · Preparing for an RCQ · Pro Tour · 👑 Commander Pod · 📦 Limited Draft / Sealed. Features: full-text search, URL-stateful multi-axis filters (category × level × language × medium), localStorage reading progress and bookmarks (privacy-first), per-article detail pages at <code>/library/:slug</code>, author indexes at <code>/library/author/:slug</code>, BibTeX + Markdown citation exports, RSS + JSON feeds, dynamic sitemap. Authors curated: Karsten, PVDDR, Saito, Chapin, Duke, Mowshowitz, Budde, Wizards Brackets 2024, Command Zone, Game Knights, EDHREC, Limited Resources, 17lands, Le Podcaster Mage (FR), Battle Chads.</li>
+  </ol>
+  <p>The Library CTA in the Header uses the dedicated <strong>"Knowledge" gradient</strong> (<code>#0E68AB → #6A1B9A</code>) to mark this second surface as a high-tier product, visually distinct from the calculator's brand blue. The mount-time <code>libraryPulse</code> keyframe (2.8s, 0.8s delay, single iteration) is exclusive to this CTA.</p>
+</section>
 
 <!-- ─────────────── 02 COLOUR ─────────────── -->
 <section id="colour">
@@ -225,8 +236,8 @@
     <div class="typo-row">
       <span class="label">H1</span>
       <div>
-        <h1 style="margin:0;">The Only Mana Calculator That Counts Your Dorks &amp; Rocks</h1>
-        <div class="meta">Cinzel · 700 · 3rem · lh 1.2 · ls 0.02em</div>
+        <h1 style="margin:0;">Will your deck cast its spells on curve?</h1>
+        <div class="meta">Cinzel · 700 · 3rem · lh 1.2 · ls 0.02em · production &lt;title&gt;</div>
       </div>
     </div>
     <div class="typo-row">
@@ -401,7 +412,7 @@
 </section>
 
 <footer class="foot">
-  <div>ManaTuner · Design System · Edition 2.7 Mirror</div>
+  <div>ManaTuner · Design System · Edition 2.8 Mirror</div>
   <div>Extracted 2026-05-15 from manatuner.app · Sources: src/theme/index.ts, src/styles/index.css, src/pages/HomePage.tsx, src/components/layout/Header.tsx, index.html</div>
   <div>Companions: <a href="./BRANDBOOK.md" style="color: var(--brand-primary);">BRANDBOOK.md</a> · <a href="./brand-book-a4.html" style="color: var(--brand-primary);">brand-book-a4.html</a> · <a href="./brand-book-a4.pdf" style="color: var(--brand-primary);">brand-book-a4.pdf</a></div>
 </footer>

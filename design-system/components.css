@@ -1,6 +1,6 @@
 /**
  * ManaTuner · Components · Mirror reference
- * Edition 2.7 · Mirror of manatuner.app production state
+ * Edition 2.8 · Mirror of manatuner.app production state
  *
  * Reference styles for the most-shipped components, reproduced from MUI
  * overrides and src/styles/index.css. Plain CSS, no preprocessing.
@@ -281,6 +281,33 @@ select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--brand-focus);
   outline-offset: 2px;
+}
+
+/* ───────────────────────────────────────────────────────────────────────
+   Mana symbol animations · critical CSS in production index.html:156-164
+   Available globally to all .ms / .mana-symbol elements. Production
+   defines the keyframes but does NOT compose them onto any selector by
+   default — consumers opt in via inline `animation: mana-pulse ...`.
+─────────────────────────────────────────────────────────────────────── */
+@keyframes mana-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+@keyframes mana-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px currentColor);
+  }
+  50% {
+    filter: drop-shadow(0 0 8px currentColor);
+  }
 }
 
 /* ───────────────────────────────────────────────────────────────────────

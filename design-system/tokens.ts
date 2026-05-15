@@ -1,6 +1,6 @@
 /**
  * ManaTuner Design System · tokens.ts
- * Edition 2.7 · Mirror of manatuner.app production state
+ * Edition 2.8 · Mirror of manatuner.app production state
  * Extracted 2026-05-15 from src/theme/index.ts + src/styles/index.css
  *
  * Typed token export. Both light and dark token sets are exported because
@@ -15,7 +15,7 @@
  */
 
 export const tokens = {
-  edition: '2.7',
+  edition: '2.8',
   mode: 'mirror' as const,
   source: 'manatuner.app production state',
 
@@ -62,6 +62,8 @@ export const tokens = {
       secondaryLight: '#BA68C8',
       secondaryDark: '#4A148C',
       themeColorMeta: '#1976d2',
+      themeColorMetaLight: '#1976d2',
+      themeColorMetaDark: '#0D0D0F',
       focusOutline: '#1976d2',
     },
     surface: {
@@ -198,6 +200,10 @@ export const tokens = {
       fadeIn: 'fadeIn 0.3s ease-out',
       slideIn: 'slideIn 0.3s ease-out',
       pulse: 'pulse 2s infinite',
+      // Critical CSS (index.html:156-164) — name-only; production does not
+      // compose the animation on any selector by default. Consumers opt in.
+      manaPulse: 'mana-pulse',
+      manaGlow: 'mana-glow',
     },
   },
 
@@ -205,7 +211,12 @@ export const tokens = {
     loaded: [
       { family: 'Roboto', weights: '300;400;500;700' },
       { family: 'Cinzel', weights: '400;600;700' },
-      { family: 'Mana Font', version: '1.18.0' },
+      {
+        family: 'Mana Font',
+        version: '1.18.0',
+        cdn: 'jsdelivr',
+        sri: 'sha384-xa3t1kOlLmfN4q97IHzv+WfBEbMB1RVLs0txIuuryvjKruuVAD+2352y55hZOn2p',
+      },
     ],
     referencedButNotLoaded: ['Inter', 'Poppins', 'JetBrains Mono', 'Fira Code', 'Playfair Display'],
   },

@@ -1,8 +1,10 @@
 # ManaTuner Design System
 
-**Edition 2.7 · Mirror of `manatuner.app` production state · 2026-05-15**
+**Edition 2.8 · Mirror of `manatuner.app` production state · 2026-05-15**
 
 A descriptive snapshot of the design system as it currently ships at `https://manatuner.app`. Values were extracted from `src/theme/index.ts`, `src/styles/index.css`, `src/pages/HomePage.tsx`, `src/components/layout/Header.tsx`, and `index.html`. This is **not** a target spec.
+
+ManaTuner is a **dual-surface product**: the Mana Calculator and the Reading Library (54 curated MTG resources across 5 tracks). The Library has its own dedicated visual identity within the system — the "Knowledge" blue → purple gradient on the Header CTA — and is treated as a first-class product surface in the brandbook.
 
 ## What's in here
 
@@ -68,3 +70,8 @@ This package is a **mirror**. If `manatuner.app` changes, regenerate by re-runni
 ## License
 
 See project root `LICENSE`.
+
+## Maintainer
+
+Guillaume Bordes — [@gbordes77](https://github.com/gbordes77).
+The brandbook lives at `design-system/` in the [main repo](https://github.com/gbordes77/manatuner).

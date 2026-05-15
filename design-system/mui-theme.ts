@@ -1,6 +1,6 @@
 /**
  * ManaTuner · MUI Theme · Mirror export
- * Edition 2.7 · Mirror of manatuner.app production state
+ * Edition 2.8 · Mirror of manatuner.app production state
  *
  * This is a faithful reproduction of `src/theme/index.ts` from the production
  * build. Both `lightTheme` and `darkTheme` are exported because both are
