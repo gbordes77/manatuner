@@ -1,11 +1,13 @@
 # ─── ManaTuner Design System · build targets ─────────────────────────
 # Usage:
-#   make -f Makefile.ds ds-pdf      # regenerate the A4 brand book PDF
-#   make -f Makefile.ds ds-commit   # commit the design-system folder
-#   make -f Makefile.ds ds-tag      # tag the current edition
+#   make -f Makefile.ds ds-pdf       # regenerate the A4 brand book PDF
+#   make -f Makefile.ds ds-commit    # commit the design-system folder
+#   make -f Makefile.ds ds-tag       # tag the current edition
+#   make -f Makefile.ds ds-status    # show current state
+#   make -f Makefile.ds ds-validate  # validate tokens.json schema
 
 DS_DIR := design-system
-EDITION := 2.6
+EDITION := 2.7
 
 ds-pdf:
 	@if [ -x "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]; then \
@@ -23,7 +25,7 @@ ds-commit:
 	git commit -m "chore(design-system): edition $(EDITION) update"
 
 ds-tag:
-	git tag -a design-system-v$(EDITION) -m "Light-only edition · tokens + brand book"
+	git tag -a design-system-v$(EDITION) -m "Mirror of manatuner.app · $$(date +%Y-%m-%d)"
 	@echo "✓ Tagged design-system-v$(EDITION)"
 
 ds-status:
@@ -34,4 +36,13 @@ ds-status:
 	@echo "Source of truth: $(DS_DIR)/BRANDBOOK.md"
 	@echo "Machine source : $(DS_DIR)/tokens.json"
 
-.PHONY: ds-pdf ds-commit ds-tag ds-status
+ds-validate:
+	@if command -v python3 >/dev/null 2>&1; then \
+		python3 -m json.tool $(DS_DIR)/tokens.json > /dev/null && echo "✓ tokens.json valid"; \
+	elif command -v jq >/dev/null 2>&1; then \
+		jq empty $(DS_DIR)/tokens.json && echo "✓ tokens.json valid"; \
+	else \
+		echo "✗ neither python3 nor jq found"; exit 1; \
+	fi
+
+.PHONY: ds-pdf ds-commit ds-tag ds-status ds-validate
