@@ -91,6 +91,14 @@ function ensureNonBlockingOverlayCss() {
     [data-test-id="button-close"] {
       pointer-events: auto !important;
     }
+    /* Feedback banner + header/footer feedback links stay clickable during tour */
+    [aria-label="Feedback banner"],
+    [aria-label="Feedback banner"] a,
+    a[href*="tally.so"] {
+      pointer-events: auto !important;
+      position: relative;
+      z-index: 1301;
+    }
   `
   document.head.appendChild(style)
 }
