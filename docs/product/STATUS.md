@@ -7,7 +7,7 @@
 | ------------------- | --------------------------------------------------------------- |
 | **Version**         | **2.7.8** (`package.json`)                                      |
 | **Engine stamp UI** | `Engine v2.7.8`                                                 |
-| **SHA**             | _(voir `git rev-parse --short HEAD` après push)_                |
+| **SHA**             | **`809ec2a`**                                                   |
 | **Live**            | https://www.manatuner.app                                       |
 | **Repo**            | https://github.com/gbordes77/manatuner                          |
 | **Tests unit**      | **381** pass / 2 skip                                           |
