@@ -96,6 +96,19 @@ export interface DeckCard {
   // Sideboard detection
   isSideboard?: boolean
   /**
+   * True when the card was resolved from LandService seed and/or Scryfall.
+   * False when only heuristic/simulated fallback was used (name not found
+   * or Scryfall unavailable). Used to hard-fail all-garbage decklists.
+   */
+  resolved?: boolean
+  /**
+   * How the card was obtained:
+   * - ok: land seed or Scryfall hit
+   * - not_found: definitive Scryfall 404 (exact+fuzzy)
+   * - unavailable: network / rate-limit — simulated fallback, not a proven fake name
+   */
+  resolution?: 'ok' | 'not_found' | 'unavailable'
+  /**
    * True when the land always enters tapped (clone-safe boolean).
    * Conditional ETB (checkland/fastland/shock) lives in `landMetadata.etbBehavior` —
    * never store a function here (breaks Worker postMessage).
@@ -280,15 +293,29 @@ export class DeckAnalyzer {
    * Returns `null` on genuine not-found or network failure.
    */
   private static async fetchCardFromScryfall(cardName: string): Promise<ScryfallCard | null> {
+    const { data } = await this.fetchCardFromScryfallWithMeta(cardName)
+    return data
+  }
+
+  /**
+   * Like fetchCardFromScryfall but distinguishes definitive not-found (404)
+   * from transient network/rate-limit failures so garbage hard-fail does not
+   * treat Scryfall blips as invented card names.
+   */
+  private static async fetchCardFromScryfallWithMeta(
+    cardName: string
+  ): Promise<{ data: ScryfallCard | null; notFound: boolean }> {
     if (scryfallCache.has(cardName)) {
-      return scryfallCache.get(cardName)!
+      return { data: scryfallCache.get(cardName)!, notFound: false }
     }
 
     const encodedName = encodeURIComponent(cardName)
     const exactUrl = `https://api.scryfall.com/cards/named?exact=${encodedName}`
     const fuzzyUrl = `https://api.scryfall.com/cards/named?fuzzy=${encodedName}`
 
-    const tryFetch = async (url: string, attempt = 0): Promise<ScryfallCard | null> => {
+    type Attempt = { kind: 'ok'; data: ScryfallCard } | { kind: 'not_found' } | { kind: 'error' }
+
+    const tryFetch = async (url: string, attempt = 0): Promise<Attempt> => {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 8000)
       try {
@@ -296,7 +323,7 @@ export class DeckAnalyzer {
         clearTimeout(timeoutId)
 
         if (response.ok) {
-          return (await response.json()) as ScryfallCard
+          return { kind: 'ok', data: (await response.json()) as ScryfallCard }
         }
 
         // Retry transient failures once with short backoff
@@ -305,7 +332,11 @@ export class DeckAnalyzer {
           return tryFetch(url, attempt + 1)
         }
 
-        return null
+        if (response.status === 404) {
+          return { kind: 'not_found' }
+        }
+
+        return { kind: 'error' }
       } catch (error) {
         clearTimeout(timeoutId)
         if (attempt < 1) {
@@ -313,22 +344,32 @@ export class DeckAnalyzer {
           return tryFetch(url, attempt + 1)
         }
         console.warn(`Scryfall fetch failed for "${cardName}":`, error)
-        return null
+        return { kind: 'error' }
       }
     }
 
     // Try exact first (fastest, most predictable)
-    let data = await tryFetch(exactUrl)
+    let result = await tryFetch(exactUrl)
 
     // Fall back to fuzzy for DFCs/typos that slipped through cleanCardName
-    if (!data) {
-      data = await tryFetch(fuzzyUrl)
+    if (result.kind !== 'ok') {
+      const fuzzy = await tryFetch(fuzzyUrl)
+      // Prefer a successful fuzzy hit; else keep not_found only if both were 404
+      if (fuzzy.kind === 'ok') {
+        result = fuzzy
+      } else if (result.kind === 'error' || fuzzy.kind === 'error') {
+        result = { kind: 'error' }
+      } else {
+        result = { kind: 'not_found' }
+      }
     }
 
-    if (data) {
-      scryfallCache.set(cardName, data)
+    if (result.kind === 'ok') {
+      scryfallCache.set(cardName, result.data)
+      return { data: result.data, notFound: false }
     }
-    return data
+
+    return { data: null, notFound: result.kind === 'not_found' }
   }
 
   // Fonction améliorée pour détecter les terrains via Scryfall
@@ -725,24 +766,41 @@ export class DeckAnalyzer {
         let cmc = 0
 
         let isCreature = false
+        // resolved=true only when land seed or Scryfall found the card
+        let resolved = false
+        let resolution: 'ok' | 'not_found' | 'unavailable' = 'unavailable'
 
         if (isLand) {
           // Lands don't have mana costs
           manaCost = ''
           colors = []
           cmc = 0
+          resolved = true
+          resolution = 'ok'
         } else {
           // For spells, try to get mana cost from Scryfall first
-          const scryfallData = await this.fetchCardFromScryfall(name)
-          if (scryfallData && scryfallData.mana_cost) {
-            manaCost = scryfallData.mana_cost
-            const parsed = this.parseManaCost(manaCost)
-            colors = parsed.colors
-            cmc = scryfallData.cmc || parsed.cmc
-            // Detect creature type from Scryfall type_line
-            isCreature = scryfallData.type_line?.toLowerCase().includes('creature') ?? false
+          const { data: scryfallData, notFound } = await this.fetchCardFromScryfallWithMeta(name)
+          if (scryfallData) {
+            resolved = true
+            resolution = 'ok'
+            if (scryfallData.mana_cost) {
+              manaCost = scryfallData.mana_cost
+              const parsed = this.parseManaCost(manaCost)
+              colors = parsed.colors
+              cmc = scryfallData.cmc || parsed.cmc
+              // Detect creature type from Scryfall type_line
+              isCreature = scryfallData.type_line?.toLowerCase().includes('creature') ?? false
+            } else {
+              // Resolved but no mana_cost (e.g. some special cards) — keep empty cost
+              manaCost = ''
+              colors = []
+              cmc = scryfallData.cmc || 0
+              isCreature = scryfallData.type_line?.toLowerCase().includes('creature') ?? false
+            }
           } else {
-            // Fallback to simulated mana cost for unknown cards
+            // Simulated fallback — track why for garbage hard-fail
+            resolved = false
+            resolution = notFound ? 'not_found' : 'unavailable'
             manaCost = this.getSimulatedManaCost(name)
             const parsed = this.parseManaCost(manaCost)
             colors = parsed.colors
@@ -769,6 +827,8 @@ export class DeckAnalyzer {
           producedMana,
           cmc,
           isSideboard: forceIsSideboard || isSideboardSection,
+          resolved,
+          resolution,
           ...landProperties,
           // Override any legacy field with clone-safe boolean
           etbTapped,
@@ -1176,8 +1236,67 @@ export class DeckAnalyzer {
     return 0.45 // Control/Ramp (27/60)
   }
 
+  /**
+   * Hard-fail garbage / majority-not-found decklists so UI never shows
+   * a fake Health 100% on invented names (EDGE-GARBAGE).
+   *
+   * Distinguishes definitive Scryfall 404 (`not_found`) from network/429
+   * (`unavailable`) so rate-limit blips on a real 60-card list (with land
+   * seed hits) do not abort analysis, while pure garbage still fails.
+   */
+  public static assertCardResolution(cards: DeckCard[]): void {
+    if (!cards.length) return
+
+    const totalQty = cards.reduce((sum, c) => sum + (c.quantity || 1), 0)
+    if (totalQty <= 0) return
+
+    const qty = (list: DeckCard[]) => list.reduce((sum, c) => sum + (c.quantity || 1), 0)
+
+    const okCards = cards.filter((c) => c.resolution === 'ok' || c.resolved === true)
+    const notFoundCards = cards.filter(
+      (c) =>
+        c.resolution === 'not_found' || (c.resolved === false && c.resolution !== 'unavailable')
+    )
+    const unavailableCards = cards.filter((c) => c.resolution === 'unavailable')
+
+    const okQty = qty(okCards)
+    const notFoundQty = qty(notFoundCards)
+    const unavailableQty = qty(unavailableCards)
+
+    const sampleFrom = (list: DeckCard[]) =>
+      [...new Set(list.map((c) => c.name))].slice(0, 6).join(', ')
+
+    // Zero proven cards: refuse analysis (no fake Health 100%)
+    if (okQty === 0) {
+      if (notFoundQty > 0) {
+        throw new Error(
+          `Could not resolve any cards (cards not found on Scryfall). Check names${
+            sampleFrom(notFoundCards) ? `: ${sampleFrom(notFoundCards)}` : ''
+          }`
+        )
+      }
+      // All unavailable (rate limit / offline) — still refuse empty trust signal
+      throw new Error(
+        `Could not resolve any cards (Scryfall unavailable or cards not found). Try again in a moment${
+          sampleFrom(unavailableCards) ? ` — ${sampleFrom(unavailableCards)}` : ''
+        }`
+      )
+    }
+
+    // Majority definitive not-found (typos / garbage), ignore unavailable for this gate
+    // so a land-seeded deck under 429 still analyzes.
+    if (notFoundQty / totalQty > 0.5) {
+      throw new Error(
+        `Could not resolve most cards (${notFoundQty}/${totalQty} not found). Check names${
+          sampleFrom(notFoundCards) ? `: ${sampleFrom(notFoundCards)}` : ''
+        }`
+      )
+    }
+  }
+
   public static async analyzeDeck(deckList: string): Promise<AnalysisResult> {
     const cards = await this.parseDeckList(deckList)
+    this.assertCardResolution(cards)
 
     const totalCards = cards.reduce((sum, card) => sum + card.quantity, 0)
     const lands = cards.filter((card) => card.isLand)

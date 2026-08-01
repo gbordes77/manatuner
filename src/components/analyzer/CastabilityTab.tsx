@@ -45,12 +45,6 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   const [boardScope, setBoardScope] = useState<BoardScope>('main')
   const [activeSwaps, setActiveSwaps] = useState<SideboardSwap[]>([])
 
-  // P1-9: auto format from analyzed deck size
-  useEffect(() => {
-    const n = analysisResult?.totalCards
-    if (n && n > 0) suggestFromDeckSize(n)
-  }, [analysisResult?.totalCards, suggestFromDeckSize])
-
   // Separate maindeck and sideboard cards
   const maindeckCards = useMemo(
     () => (analysisResult?.cards || []).filter((c) => !c.isSideboard),
@@ -91,6 +85,24 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     () => sideboardCards.reduce((s, c) => s + (c.quantity || 1), 0),
     [sideboardCards]
   )
+  const mainLands = useMemo(
+    () => maindeckCards.filter((c) => c.isLand).reduce((s, c) => s + (c.quantity || 1), 0),
+    [maindeckCards]
+  )
+  // Board size for odds / banner: main (or post-board after swaps), never main+side.
+  const effectiveDeckSize = useMemo(
+    () => effectiveCards.reduce((s, c) => s + (c.quantity || 1), 0),
+    [effectiveCards]
+  )
+  const effectiveLands = useMemo(
+    () => effectiveCards.filter((c) => c.isLand).reduce((s, c) => s + (c.quantity || 1), 0),
+    [effectiveCards]
+  )
+
+  // P1-9: auto format from main deck size (not main+side = 75)
+  useEffect(() => {
+    if (mainCount > 0) suggestFromDeckSize(mainCount)
+  }, [mainCount, suggestFromDeckSize])
 
   // Command zone cards in effective board
   const commanderCards = useMemo(
@@ -103,7 +115,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   )
   const commanderNames = useMemo(() => commanderCards.map((c) => c.name), [commanderCards])
 
-  const listSize = analysisResult?.totalCards || 60
+  const listSize = effectiveDeckSize || mainCount || 60
   const librarySize = useMemo(() => {
     if (!detectedFamily) return listSize
     return effectiveLibrarySize(listSize, commanderCopies, detectedFamily)
@@ -314,10 +326,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       </Typography>
 
       {/* Acceleration Settings Panel */}
-      <AccelerationSettings
-        producersInDeck={producersInDeck}
-        deckSize={analysisResult?.totalCards || 60}
-      />
+      <AccelerationSettings producersInDeck={producersInDeck} deckSize={listSize || 60} />
 
       {detectedFamily && analysisResult && (
         <Alert severity="info" sx={{ mb: 2 }} data-testid="format-family-banner">
@@ -331,8 +340,8 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
             —{' '}
             {landCountGuidance(
               detectedFamily,
-              analysisResult.totalLands || 0,
-              analysisResult.totalCards || 0
+              effectiveLands || mainLands || 0,
+              listSize || mainCount || 0
             )}
             {horizon ? ` · Priority horizon ${horizon.label}` : ''}
           </Typography>
@@ -591,9 +600,10 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               cardName={card.name}
               quantity={card.quantity || 1}
               deckSources={analysisResult?.colorDistribution}
-              totalLands={analysisResult?.totalLands || 0}
+              totalLands={effectiveLands || mainLands || analysisResult?.totalLands || 0}
               // Commander sits in the command zone: library size excludes commander copies
               // for all castability rows (including the commander row — mana-only odds).
+              // listSize is main (or post-board), never main+side.
               totalCards={librarySize}
               producers={producersInDeck}
               accelContext={accelContext}
