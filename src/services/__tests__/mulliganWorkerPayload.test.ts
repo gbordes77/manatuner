@@ -1,13 +1,16 @@
 /**
  * P0-1 regression: mulligan worker payload must be structured-clone safe.
- * DeckCard.etbTapped is a function on land cards after parse — that must
- * never be posted to a Worker.
+ * DeckCard.etbTapped is a boolean (not a function) — still must clone cleanly.
  */
 import { describe, expect, it } from 'vitest'
 import type { DeckCard } from '../deckAnalyzer'
-import { prepareDeckForSimulation, toCloneableDeckCards } from '../mulliganSimulatorAdvanced'
+import {
+  createSeededRng,
+  prepareDeckForSimulation,
+  toCloneableDeckCards,
+} from '../mulliganSimulatorAdvanced'
 
-function landWithFn(name: string): DeckCard {
+function landCard(name: string, alwaysTapped = false): DeckCard {
   return {
     name,
     quantity: 4,
@@ -16,7 +19,7 @@ function landWithFn(name: string): DeckCard {
     isLand: true,
     producedMana: ['G'],
     cmc: 0,
-    etbTapped: () => false,
+    etbTapped: alwaysTapped,
     landMetadata: {
       name,
       category: 'basic',
@@ -26,7 +29,7 @@ function landWithFn(name: string): DeckCard {
       isCreatureLand: false,
       hasChannel: false,
       confidence: 1,
-      etbBehavior: { type: 'always_untapped' },
+      etbBehavior: { type: alwaysTapped ? 'always_tapped' : 'always_untapped' },
     } as DeckCard['landMetadata'],
   }
 }
@@ -43,14 +46,13 @@ function spellCard(name: string): DeckCard {
 }
 
 describe('toCloneableDeckCards (P0-1 worker payload)', () => {
-  it('strips etbTapped functions so structuredClone succeeds', () => {
-    const cards: DeckCard[] = [landWithFn('Forest'), spellCard('Llanowar Elves')]
-    // Raw cards with functions must fail clone (documents the bug)
-    expect(() => structuredClone(cards)).toThrow()
+  it('clones lands with boolean etbTapped via structuredClone', () => {
+    const cards: DeckCard[] = [landCard('Forest'), spellCard('Llanowar Elves')]
+    expect(() => structuredClone(cards)).not.toThrow()
 
     const plain = toCloneableDeckCards(cards)
     expect(() => structuredClone(plain)).not.toThrow()
-    expect(plain[0].etbTapped).toBeUndefined()
+    expect(plain[0].etbTapped).toBe(false)
     expect(plain[0].name).toBe('Forest')
     expect(plain[0].landMetadata?.etbBehavior).toBeDefined()
   })
@@ -64,7 +66,7 @@ describe('toCloneableDeckCards (P0-1 worker payload)', () => {
       isLand: true,
       producedMana: ['R', 'W'],
       cmc: 0,
-      etbTapped: () => true,
+      etbTapped: true,
       landMetadata: {
         name: 'Wind-Scarred Crag',
         category: 'utility',
@@ -86,5 +88,21 @@ describe('toCloneableDeckCards (P0-1 worker payload)', () => {
   it('is safe for an empty deck', () => {
     expect(toCloneableDeckCards([])).toEqual([])
     expect(() => structuredClone(toCloneableDeckCards([]))).not.toThrow()
+  })
+})
+
+describe('createSeededRng', () => {
+  it('is deterministic for the same seed', () => {
+    const a = createSeededRng(42)
+    const b = createSeededRng(42)
+    const seqA = Array.from({ length: 8 }, () => a())
+    const seqB = Array.from({ length: 8 }, () => b())
+    expect(seqA).toEqual(seqB)
+  })
+
+  it('differs across seeds', () => {
+    const a = createSeededRng(1)
+    const b = createSeededRng(2)
+    expect(a()).not.toBe(b())
   })
 })

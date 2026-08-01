@@ -804,9 +804,11 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
           data-horizon={inFormatHorizon ? 'priority' : undefined}
           data-commander={isCommander ? 'true' : undefined}
           sx={{
-            p: 2,
-            mb: 1.5,
+            p: { xs: 1.25, sm: 2 },
+            mb: { xs: 1, sm: 1.5 },
             transition: 'all 0.2s ease',
+            // P2-5: stack cleanly on narrow screens — avoid dense table feel
+            overflow: 'hidden',
             ...(isCommander
               ? {
                   borderLeft: '3px solid',

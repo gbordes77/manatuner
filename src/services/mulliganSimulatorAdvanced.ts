@@ -42,17 +42,41 @@ export interface SimulatedHand {
 // =============================================================================
 
 /**
- * Strip non-structured-cloneable fields (e.g. `etbTapped` functions on
- * DeckCard lands) so the payload can be sent to a Web Worker via postMessage.
+ * Ensure the payload is structured-clone safe for Worker postMessage.
  *
- * JSON round-trip drops functions/class instances while keeping landMetadata
- * and other plain data. prepareDeckForSimulation already reads ETB from
- * landMetadata, not from the etbTapped function.
+ * Since v2.7.6, `DeckCard.etbTapped` is a boolean (not a function). This still
+ * JSON-round-trips to drop any accidental non-cloneable fields on cards.
  *
  * @see AGENT_PLAN P0-1 — DataCloneError `()=>!0 could not be cloned`
  */
 export function toCloneableDeckCards(cards: DeckCard[]): DeckCard[] {
   return JSON.parse(JSON.stringify(cards)) as DeckCard[]
+}
+
+// =============================================================================
+// SEEDED RNG (stable Monte Carlo for tests)
+// =============================================================================
+
+/** 0–1 uniform RNG. */
+export type RngFn = () => number
+
+/**
+ * Mulberry32 — small fast seeded PRNG. Same seed → same shuffle sequence.
+ * @see https://github.com/bryc/code/blob/master/jshash/PRNGs.md
+ */
+export function createSeededRng(seed: number): RngFn {
+  let s = seed >>> 0
+  return () => {
+    s = (s + 0x6d2b79f5) >>> 0
+    let t = Math.imul(s ^ (s >>> 15), 1 | s)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+export interface AnalyzeArchetypeOptions {
+  /** When set, Monte Carlo shuffles use a deterministic PRNG (tests / repro). */
+  seed?: number
 }
 
 /**
@@ -73,10 +97,14 @@ export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {
         parsedManaCost = { colorless: 0, symbols: {} }
       }
 
-      // Determine if land always enters tapped from LandMetadata
+      // Prefer landMetadata; fall back to clone-safe DeckCard.etbTapped boolean
       let etbTapped: boolean | undefined
-      if (card.isLand && card.landMetadata?.etbBehavior) {
-        etbTapped = card.landMetadata.etbBehavior.type === 'always_tapped'
+      if (card.isLand) {
+        if (card.landMetadata?.etbBehavior) {
+          etbTapped = card.landMetadata.etbBehavior.type === 'always_tapped'
+        } else if (typeof card.etbTapped === 'boolean') {
+          etbTapped = card.etbTapped
+        }
       }
 
       simulatedDeck.push({
@@ -237,7 +265,7 @@ export interface AdvancedMulliganResult {
 export const ARCHETYPE_CONFIGS: Record<Archetype, ArchetypeConfig> = {
   aggro: {
     name: 'Aggro',
-    description: 'Fast, proactive decks that want to kill quickly',
+    description: 'Low curve, kill fast — keep hands with early action',
     icon: '⚡',
     weights: {
       manaEfficiency: 0.2,
@@ -256,7 +284,7 @@ export const ARCHETYPE_CONFIGS: Record<Archetype, ArchetypeConfig> = {
   },
   midrange: {
     name: 'Midrange',
-    description: 'Balanced decks with threats and answers',
+    description: 'Threats + interaction — balanced 2–4 land openers',
     icon: '⚖️',
     weights: {
       manaEfficiency: 0.25,
@@ -275,7 +303,7 @@ export const ARCHETYPE_CONFIGS: Record<Archetype, ArchetypeConfig> = {
   },
   control: {
     name: 'Control',
-    description: 'Reactive decks that want to go long',
+    description: 'Go long — more lands, interaction, late payoffs',
     icon: '🛡️',
     weights: {
       manaEfficiency: 0.15,
@@ -311,6 +339,29 @@ export const ARCHETYPE_CONFIGS: Record<Archetype, ArchetypeConfig> = {
       'Can keep slower hands',
     ],
   },
+}
+
+/**
+ * Heuristic deck → mulligan archetype from average CMC of non-lands.
+ * Used to pre-select Aggro / Midrange / Control so the Mulligan tab matches
+ * the sample deck the user tried (P1-4).
+ */
+export function suggestArchetypeFromDeck(
+  cards: ReadonlyArray<{ isLand?: boolean; cmc?: number; quantity?: number }>
+): Archetype {
+  let spellQty = 0
+  let cmcSum = 0
+  for (const c of cards) {
+    if (c.isLand) continue
+    const q = c.quantity ?? 1
+    spellQty += q
+    cmcSum += (c.cmc ?? 0) * q
+  }
+  if (spellQty === 0) return 'midrange'
+  const avg = cmcSum / spellQty
+  if (avg <= 2.2) return 'aggro'
+  if (avg >= 3.4) return 'control'
+  return 'midrange'
 }
 
 // =============================================================================
@@ -914,10 +965,11 @@ export function simulateSingleGameAdvanced(
 // MAIN ADVANCED ANALYSIS
 // =============================================================================
 
-function shuffleDeck(deck: SimulatedCard[]): SimulatedCard[] {
+/** Fisher–Yates shuffle. Pass `rng` for deterministic tests (default Math.random). */
+function shuffleDeck(deck: SimulatedCard[], rng: RngFn = Math.random): SimulatedCard[] {
   const shuffled = [...deck]
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(rng() * (i + 1))
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled
@@ -1025,7 +1077,8 @@ function selectBestSubset(
 export function analyzeWithArchetype(
   cards: DeckCard[],
   archetype: Archetype,
-  iterations: number = 5000
+  iterations: number = 5000,
+  options?: AnalyzeArchetypeOptions
 ): AdvancedMulliganResult {
   const deck = prepareDeckForSimulation(cards)
 
@@ -1034,6 +1087,10 @@ export function analyzeWithArchetype(
   }
 
   const config = ARCHETYPE_CONFIGS[archetype]
+  const rng: RngFn =
+    options?.seed !== undefined && Number.isFinite(options.seed)
+      ? createSeededRng(options.seed)
+      : Math.random
 
   // Run simulations for each hand size
   const results: Record<number, { scores: number[]; distribution: number[] }> = {}
@@ -1044,7 +1101,7 @@ export function analyzeWithArchetype(
     const distribution = new Array(11).fill(0)
 
     for (let i = 0; i < iterations; i++) {
-      const shuffled = shuffleDeck(deck)
+      const shuffled = shuffleDeck(deck, rng)
       const fullHand = drawHand(shuffled, 7)
       const hand = selectBestSubset(fullHand, handSize, archetype)
 

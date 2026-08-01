@@ -283,11 +283,23 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
         🎯 Castability Analysis
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        sx={{ mb: 2, display: { xs: 'none', sm: 'block' } }}
+      >
         Real-time mana costs from Scryfall with probability calculations
+      </Typography>
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{ mb: 1.5, display: { xs: 'block', sm: 'none' } }}
+        data-testid="castability-mobile-hint"
+      >
+        Each card shows on-curve cast % — scroll the list. Priority horizon spells are highlighted.
       </Typography>
 
       {/* Acceleration Settings Panel */}

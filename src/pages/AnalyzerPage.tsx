@@ -881,7 +881,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.5 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.6 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

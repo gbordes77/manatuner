@@ -64,8 +64,12 @@ export interface DeckCard {
   isCommander?: boolean
   // Sideboard detection
   isSideboard?: boolean
-  // Enhanced land properties from reference project
-  etbTapped?: (lands: DeckCard[], cmc?: number, turn?: number) => boolean
+  /**
+   * True when the land always enters tapped (clone-safe boolean).
+   * Conditional ETB (checkland/fastland/shock) lives in `landMetadata.etbBehavior` —
+   * never store a function here (breaks Worker postMessage).
+   */
+  etbTapped?: boolean
   fetchland?: string[]
   checkland?: boolean
   ravland?: boolean
@@ -427,23 +431,20 @@ export class DeckAnalyzer {
     return this.isLandCardFallback(name)
   }
 
-  // Enhanced land logic from reference project
+  /**
+   * Legacy name-heuristic land flags. `etbTapped` is a **boolean** only:
+   * true = always enters tapped. Conditional ETB (check/fast/shock) is false
+   * here; full rules live in `landMetadata.etbBehavior` from LandService.
+   */
   private static evaluateLandProperties(name: string, _text?: string): Partial<DeckCard> {
     const lowerName = name.toLowerCase()
     const properties: Partial<DeckCard> = {
-      etbTapped: () => false,
+      etbTapped: false,
       producesMana: true,
     }
 
-    // Starting Town et lands similaires (condition temporelle)
+    // Starting Town et lands similaires (condition temporelle) — not always tapped
     if (lowerName.includes('starting town')) {
-      properties.etbTapped = (lands: DeckCard[], cmc?: number, turn?: number) => {
-        // Entre non-engagé seulement aux tours 1, 2, ou 3
-        return (turn || 4) > 3
-      }
-      // Note: Starting Town a des propriétés spéciales :
-      // - {T}: Add {C} (gratuit)
-      // - {T}, Pay 1 life: Add one mana of any color
       return properties
     }
 
@@ -459,10 +460,10 @@ export class DeckAnalyzer {
       lowerName.includes('flats')
     ) {
       properties.fetchland = this.getFetchlandTargets(name)
-      properties.etbTapped = () => false // Fetchlands don't ETB tapped themselves
+      properties.etbTapped = false
     }
 
-    // Checklands (enter tapped unless you control specific basic land types)
+    // Checklands (conditional — details in landMetadata)
     else if (
       lowerName.includes('rootbound') ||
       lowerName.includes('sunpetal') ||
@@ -476,10 +477,10 @@ export class DeckAnalyzer {
       lowerName.includes('clifftop')
     ) {
       properties.checkland = true
-      properties.etbTapped = (lands) => !this.hasRequiredBasicTypes(lands || [], name)
+      properties.etbTapped = false
     }
 
-    // Fastlands (enter tapped if you control 3+ other lands)
+    // Fastlands (conditional)
     else if (
       lowerName.includes('seachrome') ||
       lowerName.includes('darkslick') ||
@@ -489,10 +490,10 @@ export class DeckAnalyzer {
       lowerName.includes('botanical')
     ) {
       properties.fastland = true
-      properties.etbTapped = (lands, cmc) => (lands?.length || 0) > 2 && (cmc || 0) > 2
+      properties.etbTapped = false
     }
 
-    // Shocklands/Ravlands (can pay 2 life to enter untapped)
+    // Shocklands/Ravlands (assume pay life → untapped)
     else if (
       lowerName.includes('temple garden') ||
       lowerName.includes('sacred foundry') ||
@@ -506,20 +507,30 @@ export class DeckAnalyzer {
       lowerName.includes('hallowed fountain')
     ) {
       properties.ravland = true
-      properties.etbTapped = () => false // Assume we pay life
+      properties.etbTapped = false
     }
 
-    // Basic ETB tapped lands
+    // Always-tapped cycles / gates
     else if (
       lowerName.includes('temple') ||
       lowerName.includes('guildgate') ||
       lowerName.includes('tap land') ||
       lowerName.includes('enters tapped')
     ) {
-      properties.etbTapped = () => true
+      properties.etbTapped = true
     }
 
     return properties
+  }
+
+  /** Prefer LandService metadata for always-tapped; fall back to name heuristic. */
+  private static resolveEtbTapped(
+    landMetadata: LandMetadata | null,
+    landProperties: Partial<DeckCard>
+  ): boolean {
+    if (landMetadata?.etbBehavior?.type === 'always_tapped') return true
+    if (landMetadata?.etbBehavior?.type === 'always_untapped') return false
+    return landProperties.etbTapped === true
   }
 
   private static getFetchlandTargets(name: string): string[] {
@@ -714,6 +725,7 @@ export class DeckAnalyzer {
 
         // Keep legacy land properties for compatibility, but enhance with LandMetadata
         const landProperties = isLand ? this.evaluateLandProperties(name) : {}
+        const etbTapped = isLand ? this.resolveEtbTapped(landMetadata, landProperties) : undefined
 
         cards.push({
           name,
@@ -727,6 +739,8 @@ export class DeckAnalyzer {
           cmc,
           isSideboard: forceIsSideboard || isSideboardSection,
           ...landProperties,
+          // Override any legacy field with clone-safe boolean
+          etbTapped,
           // NEW: Include full LandMetadata for tempo analysis
           landMetadata: landMetadata || undefined,
         })

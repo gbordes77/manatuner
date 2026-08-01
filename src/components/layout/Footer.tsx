@@ -24,13 +24,19 @@ const WUBRGSignature: React.FC = () => {
         },
       }}
     >
-      <Typography variant="body2" color="text.secondary" sx={{ mr: 0.5 }}>
+      <Typography
+        variant="body2"
+        sx={{ mr: 0.5, color: (t) => (t.palette.mode === 'dark' ? 'grey.400' : 'grey.800') }}
+      >
         Crafted with
       </Typography>
       <Typography component="span" sx={{ color: '#e91e63', mx: 0.5, fontSize: '1rem' }}>
         ❤️
       </Typography>
-      <Typography variant="body2" color="text.secondary" sx={{ ml: 0.5 }}>
+      <Typography
+        variant="body2"
+        sx={{ ml: 0.5, color: (t) => (t.palette.mode === 'dark' ? 'grey.400' : 'grey.800') }}
+      >
         for the MTG community
       </Typography>
     </Box>
@@ -50,6 +56,8 @@ export const Footer: React.FC = () => {
         mt: 'auto',
         borderTop: 1,
         borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'divider',
+        // Explicit high-contrast body text (MUI text.secondary captions were ~4.47:1)
+        color: isDark ? 'grey.300' : 'grey.900',
       }}
     >
       <Container maxWidth="lg">
@@ -58,19 +66,24 @@ export const Footer: React.FC = () => {
             {/* WUBRG signature */}
             <WUBRGSignature />
 
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 1,
+                color: (t) => (t.palette.mode === 'dark' ? 'grey.400' : 'grey.800'),
+              }}
+            >
               © 2025-2026 ManaTuner. Open source under MIT License.
             </Typography>
 
-            {/* Fan Content Policy attribution */}
+            {/* Fan Content Policy attribution — grey.800 ≈ 12.6:1 on white (WCAG AA) */}
             <Typography
               variant="caption"
-              color="text.secondary"
               sx={{
                 mt: 1,
                 display: 'block',
-                opacity: 0.8,
                 lineHeight: 1.4,
+                color: (t) => (t.palette.mode === 'dark' ? 'grey.400' : 'grey.800'),
               }}
             >
               ManaTuner is unofficial Fan Content permitted under the{' '}
@@ -210,8 +223,12 @@ export const Footer: React.FC = () => {
             {/* Mathematical credit */}
             <Typography
               variant="caption"
-              color="text.secondary"
-              sx={{ mt: 1.5, display: 'block', textAlign: { xs: 'left', md: 'right' } }}
+              sx={{
+                mt: 1.5,
+                display: 'block',
+                textAlign: { xs: 'left', md: 'right' },
+                color: (t) => (t.palette.mode === 'dark' ? 'grey.400' : 'grey.800'),
+              }}
             >
               Probability mathematics based on{' '}
               <Link

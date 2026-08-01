@@ -172,6 +172,22 @@ A11y suite 16 fails = dette specs FR (hors scope E).
 
 ---
 
+## 5d. Vague F — backlog restant (2026-08-01, **local → attendre go prod**)
+
+| Item      | Changement                                                            |
+| --------- | --------------------------------------------------------------------- |
+| etbTapped | `boolean` + resolve via landMetadata ; plus de fonctions sur DeckCard |
+| MC seed   | `createSeededRng` / `analyzeWithArchetype(..., { seed })`             |
+| P1-4      | Archetype selector lisible + `suggestArchetypeFromDeck`               |
+| P2-6      | Footer contraste ; a11y.spec.js EN smoke (6 tests)                    |
+| P2-5      | Castability / ManaCostRow mobile                                      |
+
+**Tests :** unit 362 · tsc OK · E2E core+tabs+a11y 15 pass · build OK  
+**Version :** **2.7.6**  
+**Handoff :** `HANDOFF_NEXT.md` (phrase coller nouvelle conversation)
+
+---
+
 ## 6. Invariants respectés
 
 - Analyse **client-side**, pas de backend decklists

@@ -51,6 +51,7 @@ import type { DeckCard } from '../../services/deckAnalyzer'
 import { toCloneableDeckCards } from '../../services/mulliganSimulatorAdvanced'
 import {
   ARCHETYPE_CONFIGS,
+  suggestArchetypeFromDeck,
   SCORE_LEGEND,
   type AdvancedMulliganResult,
   type Archetype,
@@ -78,11 +79,17 @@ interface ArchetypeSelectorProps {
 
 const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, disabled }) => {
   return (
-    <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-        <Typography variant="subtitle2">🎯 Deck Archetype</Typography>
+    <Box sx={{ mb: 3 }} data-testid="archetype-selector">
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+        <Typography variant="subtitle2" fontWeight={700}>
+          Deck archetype (mulligan lens)
+        </Typography>
         <InfoTooltip title={TOOLTIPS.archetype} />
       </Box>
+      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
+        Scores keep/mull decisions for how your deck wins. Change anytime — Aggro is stricter on
+        early action; Control wants more lands.
+      </Typography>
 
       <Grid container spacing={1}>
         {(Object.entries(ARCHETYPE_CONFIGS) as [Archetype, typeof ARCHETYPE_CONFIGS.aggro][]).map(
@@ -91,12 +98,16 @@ const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, 
               <Paper
                 elevation={value === key ? 4 : 1}
                 onClick={() => !disabled && onChange(key)}
+                role="button"
+                aria-pressed={value === key}
+                data-testid={`archetype-${key}`}
                 sx={{
-                  p: 2,
+                  p: { xs: 1.25, sm: 2 },
+                  minHeight: { xs: 88, sm: 110 },
                   cursor: disabled ? 'not-allowed' : 'pointer',
                   textAlign: 'center',
                   border: 2,
-                  borderColor: value === key ? 'primary.main' : 'transparent',
+                  borderColor: value === key ? 'primary.main' : 'divider',
                   backgroundColor: value === key ? 'action.selected' : 'background.paper',
                   transition: 'all 0.2s ease',
                   opacity: disabled ? 0.6 : 1,
@@ -108,7 +119,10 @@ const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, 
                       },
                 }}
               >
-                <Typography variant="h5" sx={{ mb: 0.5 }}>
+                <Typography
+                  variant="h5"
+                  sx={{ mb: 0.5, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}
+                >
                   {config.icon}
                 </Typography>
                 <Typography variant="subtitle2" fontWeight="bold">
@@ -117,9 +131,14 @@ const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, 
                 <Typography
                   variant="caption"
                   color="text.secondary"
-                  sx={{ display: { xs: 'none', sm: 'block' } }}
+                  sx={{
+                    display: 'block',
+                    mt: 0.5,
+                    lineHeight: 1.3,
+                    px: 0.25,
+                  }}
                 >
-                  {config.description.split(' ').slice(0, 4).join(' ')}...
+                  {config.description}
                 </Typography>
               </Paper>
             </Grid>
@@ -128,10 +147,14 @@ const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, 
       </Grid>
 
       {/* Archetype priorities */}
-      <Box sx={{ mt: 2, p: 2, backgroundColor: 'action.hover', borderRadius: 1 }}>
+      <Box
+        sx={{ mt: 2, p: 2, backgroundColor: 'action.hover', borderRadius: 1 }}
+        data-testid="archetype-priorities"
+      >
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
           <strong>
-            {ARCHETYPE_CONFIGS[value].icon} {ARCHETYPE_CONFIGS[value].name} Priorities:
+            {ARCHETYPE_CONFIGS[value].icon} {ARCHETYPE_CONFIGS[value].name} — what “good hand”
+            means:
           </strong>
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -794,11 +817,23 @@ const SampleHandsSection: React.FC<SampleHandsSectionProps> = ({ sampleHands }) 
 
 export const MulliganTab: React.FC<MulliganTabProps> = memo(
   ({ cards, isMobile: _isMobile = false }) => {
-    const [archetype, setArchetype] = useState<Archetype>('midrange')
+    const [archetype, setArchetype] = useState<Archetype>(() => suggestArchetypeFromDeck(cards))
+    const [archetypeLocked, setArchetypeLocked] = useState(false)
     const [iterations, setIterations] = useState(10000)
     const [result, setResult] = useState<AdvancedMulliganResult | null>(null)
     const [isAnalyzing, setIsAnalyzing] = useState(false)
     const [error, setError] = useState<string | null>(null)
+
+    // Auto-suggest archetype from curve unless the user picked one manually
+    useEffect(() => {
+      if (archetypeLocked) return
+      setArchetype(suggestArchetypeFromDeck(cards))
+    }, [cards, archetypeLocked])
+
+    const handleArchetypeChange = useCallback((a: Archetype) => {
+      setArchetypeLocked(true)
+      setArchetype(a)
+    }, [])
 
     const ITERATION_PRESETS = [
       { value: 3000, label: 'Quick (3k)', desc: '~1.8% margin' },
@@ -854,7 +889,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
       }
       worker.addEventListener('message', handler)
 
-      // P0-1: never post raw DeckCard[] — lands carry etbTapped: () => boolean
+      // P0-1: never post raw DeckCard[] — keep payload structured-clone safe
       // which throws DataCloneError ("()=>!0 could not be cloned").
       const request: MulliganWorkerRequest = {
         id,
@@ -914,7 +949,21 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
         </Box>
 
         {/* Archetype Selector */}
-        <ArchetypeSelector value={archetype} onChange={setArchetype} disabled={isAnalyzing} />
+        <ArchetypeSelector
+          value={archetype}
+          onChange={handleArchetypeChange}
+          disabled={isAnalyzing}
+        />
+        {!archetypeLocked && (
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: 'block', mb: 2, mt: -1 }}
+            data-testid="archetype-auto-hint"
+          >
+            Suggested from your curve (avg CMC) — click a card above to lock a different lens.
+          </Typography>
+        )}
 
         {/* Simulation Precision */}
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
