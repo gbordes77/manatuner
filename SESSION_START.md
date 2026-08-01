@@ -1,7 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date de cut-over :** 2026-08-01  
-> **Branche live :** `main` (vague D P1-9 EDH → push en cours / v2.7.4)  
+> **Branche live :** `main` @ **`7d05d5c`**  
 > **Version app :** **2.7.4**  
 > **Prod :** https://www.manatuner.app/  
 > **Repo :** https://github.com/gbordes77/manatuner
@@ -67,7 +67,7 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 ### Commits `main` (ordre récent attendu)
 
 ```
-(HEAD)  feat: EDH horizon T5–T8, Karsten N/60 scaling, command-zone caveats   ← v2.7.4
+7d05d5c  feat: EDH horizon T5–T8, Karsten N/60, command-zone caveats  ← HEAD v2.7.4
 83efe90  feat: EDH/Limited auto-format, clear play-draw, sideboard scope
 08b80a5  feat: Feedback CTA header + footer
 …
