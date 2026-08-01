@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:prerender",
+  "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
