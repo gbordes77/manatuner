@@ -1,6 +1,10 @@
-import { Alert, Box, List, ListItem, ListItemText, Typography } from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import { Alert, Box, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material'
 import React from 'react'
 import { AnalysisResult } from '../../services/deckAnalyzer'
+
+const HEALTH_SCORE_HELP =
+  'Health Score is the average on-curve cast probability across your non-land spells (turn matched to CMC). Higher means the manabase supports the curve more consistently. Karsten color targets and mulligan advice refine the plain-English verdict below.'
 
 interface QuickVerdictProps {
   analysisResult: AnalysisResult
@@ -144,22 +148,46 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
 
   return (
     <Alert
+      id="quick-verdict"
+      tabIndex={-1}
       severity={severity}
       variant="outlined"
       sx={{
         mb: 2,
         borderWidth: 1.5,
+        outline: 'none',
+        '&:focus-visible': {
+          boxShadow: (t) => `0 0 0 3px ${t.palette.primary.main}55`,
+        },
         '& .MuiAlert-message': { width: '100%' },
       }}
       role="status"
       aria-live="polite"
+      aria-atomic="true"
       data-testid="quick-verdict"
     >
       <Typography
         variant="caption"
-        sx={{ display: 'block', fontWeight: 700, letterSpacing: 0.4, mb: 0.5, opacity: 0.9 }}
+        id="health-score-label"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0.5,
+          fontWeight: 700,
+          letterSpacing: 0.4,
+          mb: 0.5,
+          opacity: 0.9,
+        }}
       >
         Health Score {consistencyPct}% · {healthBand}
+        <Tooltip title={HEALTH_SCORE_HELP}>
+          <HelpOutlineIcon
+            fontSize="inherit"
+            sx={{ fontSize: '1rem', cursor: 'help', opacity: 0.8 }}
+            aria-label="What Health Score means"
+            aria-describedby="health-score-label"
+          />
+        </Tooltip>
       </Typography>
       <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.5 }}>
         {phrase}

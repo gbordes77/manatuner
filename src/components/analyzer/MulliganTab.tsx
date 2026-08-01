@@ -9,10 +9,18 @@
  * - Distribution charts
  */
 
+import BoltIcon from '@mui/icons-material/Bolt'
 import CasinoIcon from '@mui/icons-material/Casino'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import HelpIcon from '@mui/icons-material/Help'
+import LandscapeIcon from '@mui/icons-material/Landscape'
+import PaletteIcon from '@mui/icons-material/Palette'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import TrackChangesIcon from '@mui/icons-material/TrackChanges'
+import TrendingUpIcon from '@mui/icons-material/TrendingUp'
+import LightbulbOutlinedIcon from '@mui/icons-material/LightbulbOutlined'
 import {
   Accordion,
   AccordionDetails,
@@ -175,7 +183,10 @@ const ScoreLegendSection: React.FC = () => {
   return (
     <Accordion defaultExpanded={false}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography variant="subtitle2">📊 Score Legend - What do the numbers mean?</Typography>
+        <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <ShowChartIcon fontSize="small" aria-hidden />
+          Score Legend — What do the numbers mean?
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Grid container spacing={1}>
@@ -462,7 +473,10 @@ const OptimalStrategy: React.FC<OptimalStrategyProps> = ({ result }) => {
   return (
     <Paper sx={{ p: 2, mb: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-        <Typography variant="subtitle2">🎯 Decision Thresholds</Typography>
+        <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <TrackChangesIcon fontSize="small" aria-hidden />
+          Decision Thresholds
+        </Typography>
         <InfoTooltip title={TOOLTIPS.optimalStrategy} />
       </Box>
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
@@ -528,7 +542,10 @@ const DistributionChart: React.FC<DistributionChartProps> = ({ result }) => {
   return (
     <Paper sx={{ p: 2, mb: 3 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Typography variant="subtitle2">📈 Hand Quality Distribution</Typography>
+        <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+          <TrendingUpIcon fontSize="small" aria-hidden />
+          Hand Quality Distribution
+        </Typography>
         <InfoTooltip title={TOOLTIPS.distribution} />
       </Box>
       <ResponsiveContainer width="100%" height={250}>
@@ -560,26 +577,31 @@ const ScoreBreakdownDisplay: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
     {
       label: 'Mana Efficiency',
       value: breakdown.manaEfficiency,
-      icon: '⚡',
+      icon: <BoltIcon sx={{ fontSize: 16 }} aria-hidden />,
       tooltip: TOOLTIPS.manaEfficiency,
     },
     {
       label: 'Curve Playability',
       value: breakdown.curvePlayability,
-      icon: '📈',
+      icon: <TrendingUpIcon sx={{ fontSize: 16 }} aria-hidden />,
       tooltip: TOOLTIPS.curvePlayability,
     },
     {
       label: 'Color Access',
       value: breakdown.colorAccess,
-      icon: '🎨',
+      icon: <PaletteIcon sx={{ fontSize: 16 }} aria-hidden />,
       tooltip: TOOLTIPS.colorAccess,
     },
-    { label: 'Early Game', value: breakdown.earlyGame, icon: '🚀', tooltip: TOOLTIPS.earlyGame },
+    {
+      label: 'Early Game',
+      value: breakdown.earlyGame,
+      icon: <RocketLaunchIcon sx={{ fontSize: 16 }} aria-hidden />,
+      tooltip: TOOLTIPS.earlyGame,
+    },
     {
       label: 'Land Balance',
       value: breakdown.landBalance,
-      icon: '🏔️',
+      icon: <LandscapeIcon sx={{ fontSize: 16 }} aria-hidden />,
       tooltip: TOOLTIPS.landBalance,
     },
   ]
@@ -605,7 +627,8 @@ const ScoreBreakdownDisplay: React.FC<ScoreBreakdownProps> = ({ breakdown }) => 
           placement="top"
         >
           <Chip
-            label={`${m.icon} ${m.label}: ${m.value}%`}
+            icon={m.icon as React.ReactElement}
+            label={`${m.label}: ${m.value}%`}
             size="small"
             sx={{
               backgroundColor: `${getColor(m.value)}22`,
@@ -1077,13 +1100,13 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
             {/* Pedagogical Introduction */}
             <Accordion defaultExpanded sx={{ mb: 3 }}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="subtitle2">📖 How to use this analysis</Typography>
+                <Typography variant="subtitle2">How to use this analysis</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box>
                     <Typography variant="body2" fontWeight="bold" gutterBottom>
-                      🎮 What is a Mulligan?
+                      What is a Mulligan?
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       At game start, you draw 7 cards. If your hand is bad (wrong lands, no playable
@@ -1094,7 +1117,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
 
                   <Box>
                     <Typography variant="body2" fontWeight="bold" gutterBottom>
-                      🎯 Understanding the Scores (0-100)
+                      Understanding the Scores (0–100)
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Each hand gets a score based on how well you can play your first turns.
@@ -1106,7 +1129,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
 
                   <Box>
                     <Typography variant="body2" fontWeight="bold" gutterBottom>
-                      ⚖️ The Key Decision
+                      The Key Decision
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Compare your hand's score to the <strong>"Mull if below"</strong> threshold.
@@ -1132,8 +1155,13 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
 
             {/* Recommendations */}
             <Paper sx={{ p: 2, mb: 3, mt: 2 }}>
-              <Typography variant="subtitle2" gutterBottom>
-                💡 Recommendations
+              <Typography
+                variant="subtitle2"
+                gutterBottom
+                sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}
+              >
+                <LightbulbOutlinedIcon fontSize="small" aria-hidden />
+                Recommendations
               </Typography>
               {result.recommendations.map((rec, i) => (
                 <Typography key={i} variant="body2" sx={{ mb: 0.5 }}>

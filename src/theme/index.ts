@@ -50,12 +50,12 @@ declare module '@mui/material/styles' {
 // Couleurs MTG authentiques basées sur les mana symbols officiels
 const manaColors = {
   // Core colors
-  white: '#F8F6D8',      // Plains - warm white/cream
-  blue: '#0E68AB',       // Island - deep blue
-  black: '#150B00',      // Swamp - near black
-  red: '#D3202A',        // Mountain - vibrant red
-  green: '#00733E',      // Forest - rich green
-  colorless: '#CBC5C0',  // Wastes - grey
+  white: '#F8F6D8', // Plains - warm white/cream
+  blue: '#0E68AB', // Island - deep blue
+  black: '#150B00', // Swamp - near black
+  red: '#D3202A', // Mountain - vibrant red
+  green: '#00733E', // Forest - rich green
+  colorless: '#CBC5C0', // Wastes - grey
   multicolor: '#E9B54C', // Gold - multicolor spells
   // Glow effects for hover/animations
   whiteGlow: 'rgba(248, 246, 216, 0.6)',
@@ -140,11 +140,25 @@ const baseTheme: ThemeOptions = {
       styleOverrides: {
         root: {
           borderRadius: 16,
-          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          // P2-1: subtle elevation only — avoid default MUI “floaty” card hop
+          // that makes dense analyzer results feel unstable.
+          transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
           '&:hover': {
-            transform: 'translateY(-4px)',
-            boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
+            boxShadow: '0 6px 18px rgba(0,0,0,0.12)',
           },
+        },
+      },
+    },
+    MuiPaper: {
+      defaultProps: {
+        elevation: 0,
+      },
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+        outlined: {
+          borderColor: 'rgba(0,0,0,0.08)',
         },
       },
     },
@@ -189,12 +203,12 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#1565C0',  // Slightly deeper blue
+      main: '#1565C0', // Slightly deeper blue
       light: '#42A5F5',
       dark: '#0D47A1',
     },
     secondary: {
-      main: '#7B1FA2',  // Purple for multicolor feel
+      main: '#7B1FA2', // Purple for multicolor feel
       light: '#BA68C8',
       dark: '#4A148C',
     },
@@ -211,7 +225,7 @@ export const lightTheme = createTheme({
       main: manaColors.green,
     },
     background: {
-      default: '#F5F3EE',  // Parchment-like background
+      default: '#F5F3EE', // Parchment-like background
       paper: '#FFFFFF',
     },
     text: {
@@ -255,7 +269,7 @@ export const darkTheme = createTheme({
       main: '#69F0AE',
     },
     background: {
-      default: '#0D0D0F',  // Near black like Swamp
+      default: '#0D0D0F', // Near black like Swamp
       paper: '#1A1A1E',
     },
     text: {

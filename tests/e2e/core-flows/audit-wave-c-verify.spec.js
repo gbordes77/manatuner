@@ -66,19 +66,30 @@ test.describe('Audit verification (automated)', () => {
 
   test('EDH sample auto-detects Commander format family', async ({ page }) => {
     test.setTimeout(120000)
+    await page.addInitScript(() => {
+      try {
+        sessionStorage.removeItem('manatuner-commander-preset')
+      } catch {
+        /* ignore */
+      }
+    })
     await page.goto('/analyzer?sample=edh')
 
     // Wait for sample hydrate into textarea
     const deckBox = page.getByPlaceholder(/paste your decklist/i)
     await expect(deckBox).toBeVisible({ timeout: 15000 })
     await expect
-      .poll(async () => (await deckBox.inputValue()).length, { timeout: 15000 })
+      .poll(async () => (await deckBox.inputValue()).length, { timeout: 20000 })
       .toBeGreaterThan(50)
 
-    await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
+    // Ensure analyze is enabled only after deck is present
+    const analyzeBtn = page.getByRole('button', { name: /analyze manabase|analyze/i }).first()
+    await expect(analyzeBtn).toBeEnabled({ timeout: 10000 })
+    await analyzeBtn.click()
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 90000 })
 
     await page.getByTestId('tab-castability').click()
+    await expect(page.getByTestId('tab-castability')).toHaveAttribute('aria-selected', 'true')
     await expect(page.getByTestId('format-family-banner')).toBeVisible({ timeout: 20000 })
     await expect(page.getByTestId('format-family-banner')).toContainText(/Commander/i)
   })

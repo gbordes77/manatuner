@@ -1,4 +1,7 @@
 import AnalyticsIcon from '@mui/icons-material/Analytics'
+import ClearIcon from '@mui/icons-material/Clear'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
 import SpeedIcon from '@mui/icons-material/Speed'
 import { Box, Button, LinearProgress, Paper, TextField, Typography } from '@mui/material'
 import React, { memo } from 'react'
@@ -60,9 +63,15 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
         <Typography
           variant={isMobile ? 'h6' : 'h5'}
           gutterBottom
-          sx={{ fontSize: isMobile ? '1.1rem' : undefined }}
+          sx={{
+            fontSize: isMobile ? '1.1rem' : undefined,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+          }}
         >
-          📝 Your Deck {analysisResult && isDeckMinimized && '(Click to expand)'}
+          <DescriptionOutlinedIcon fontSize="small" color="action" aria-hidden />
+          Your Deck {analysisResult && isDeckMinimized && '(Click to expand)'}
         </Typography>
 
         {!isDeckMinimized && (
@@ -137,6 +146,7 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
                   variant="outlined"
                   size={isMobile ? 'medium' : 'large'}
                   onClick={onClear}
+                  startIcon={<ClearIcon />}
                   sx={{
                     color: 'var(--mtg-red)',
                     borderColor: 'var(--mtg-red)',
@@ -149,20 +159,21 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
                     },
                   }}
                 >
-                  🗑️ Clear
+                  Clear
                 </Button>
 
                 <Button
                   variant="outlined"
                   size={isMobile ? 'medium' : 'large'}
                   onClick={onLoadSample}
+                  startIcon={<PlaylistAddCheckIcon />}
                   sx={{
                     minWidth: isMobile ? 'auto' : '140px',
                     fontSize: isMobile ? '0.875rem' : '1rem',
                     fontWeight: 600,
                   }}
                 >
-                  📋 Try Example
+                  Try Example
                 </Button>
               </Box>
             </Box>

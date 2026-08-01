@@ -73,4 +73,33 @@ test.describe('Accessibility smoke (EN)', () => {
     })
     expect(color).toBeTruthy()
   })
+
+  test('Home hero shows product preview (P2-2)', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.getByTestId('hero-product-preview')).toBeVisible()
+    await expect(page.getByTestId('hero-product-preview')).toContainText(/Health Score/i)
+  })
+
+  test('Analyzer primary buttons use text + icons (no emoji-only)', async ({ page }) => {
+    await page.goto('/analyzer')
+    const tryExample = page.getByRole('button', { name: /try example/i })
+    await expect(tryExample).toBeVisible({ timeout: 15000 })
+    const label = (await tryExample.innerText()).replace(/\s+/g, ' ').trim()
+    expect(label).toMatch(/Try Example/i)
+    // Emoji-only would be short / symbol-heavy; require latin letters
+    expect(label).toMatch(/[A-Za-z]{3,}/)
+  })
+
+  test('After analyze, focus lands on Health Score verdict (P2-11)', async ({ page }) => {
+    test.setTimeout(90000)
+    await page.goto('/analyzer')
+    await page.getByRole('button', { name: /try example/i }).click()
+    await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
+    await expect(page.getByTestId('quick-verdict')).toBeVisible({ timeout: 60000 })
+    // Focus should move to verdict region for keyboard users
+    await expect
+      .poll(async () => page.evaluate(() => document.activeElement?.id || ''), { timeout: 5000 })
+      .toBe('quick-verdict')
+    await expect(page.getByTestId('quick-verdict')).toHaveAttribute('aria-live', 'polite')
+  })
 })

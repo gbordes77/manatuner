@@ -1,4 +1,5 @@
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import TimelineIcon from '@mui/icons-material/Timeline'
 import {
   Alert,
   Box,
@@ -283,8 +284,18 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
 
   return (
     <>
-      <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem' } }}>
-        🎯 Castability Analysis
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          fontSize: { xs: '1.1rem', sm: '1.25rem' },
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
+        <TimelineIcon fontSize="small" color="primary" aria-hidden />
+        Castability Analysis
       </Typography>
       <Typography
         variant="body2"

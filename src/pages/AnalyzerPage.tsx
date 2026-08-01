@@ -1,6 +1,7 @@
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import CasinoIcon from '@mui/icons-material/Casino'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import DownloadIcon from '@mui/icons-material/Download'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import ShowChartIcon from '@mui/icons-material/ShowChart'
@@ -285,11 +286,43 @@ const AnalyzerPage: React.FC = () => {
   const [commanderPreset, setCommanderPreset] = useState(false)
   const { suggestFromDeckSize, unlockFormatAuto } = useAcceleration()
 
+  // Banner flag in sessionStorage survives React 18 Strict Mode remount after
+  // replaceState clears ?sample=edh / ?format=commander. Deck list lives in
+  // Redux; only the local `commanderPreset` boolean needs this bridge.
+  const COMMANDER_PRESET_KEY = 'manatuner-commander-preset'
+
+  const clearCommanderPresetFlag = useCallback(() => {
+    try {
+      sessionStorage.removeItem(COMMANDER_PRESET_KEY)
+    } catch {
+      /* private mode */
+    }
+  }, [])
+
+  const markCommanderPreset = useCallback(() => {
+    try {
+      sessionStorage.setItem(COMMANDER_PRESET_KEY, '1')
+    } catch {
+      /* private mode */
+    }
+    setCommanderPreset(true)
+  }, [])
+
   // URL share: hydrate deck from URL params on mount (once).
   // Also handles ?sample=1 shortcut from HomePage to auto-load the sample
   // deck (Léo friction fix — no decklist-pasting required on first visit).
   const hydratedRef = useRef(false)
   useEffect(() => {
+    // Always restore banner after Strict Mode remount (even if hydrate already ran
+    // on the previous mount instance — that instance's local state is gone).
+    try {
+      if (sessionStorage.getItem(COMMANDER_PRESET_KEY) === '1') {
+        setCommanderPreset(true)
+      }
+    } catch {
+      /* private mode */
+    }
+
     if (hydratedRef.current) return
     hydratedRef.current = true
 
@@ -302,7 +335,7 @@ const AnalyzerPage: React.FC = () => {
     // Analyzer DOES know it's analyzing Commander, not a 60-card default.
     const formatParam = params.get('format')
     if (formatParam === 'commander') {
-      setCommanderPreset(true)
+      markCommanderPreset()
       unlockFormatAuto()
       suggestFromDeckSize(100)
       const sample = SAMPLE_DECKS.edh
@@ -324,11 +357,15 @@ const AnalyzerPage: React.FC = () => {
         dispatch(setDeckName(sample.name))
         unlockFormatAuto()
         if (sampleParam === 'edh') {
-          setCommanderPreset(true)
+          markCommanderPreset()
           suggestFromDeckSize(100)
         } else if (sampleParam === 'limited') {
+          clearCommanderPresetFlag()
+          setCommanderPreset(false)
           suggestFromDeckSize(40)
         } else {
+          clearCommanderPresetFlag()
+          setCommanderPreset(false)
           suggestFromDeckSize(60)
         }
         window.history.replaceState({}, '', '/analyzer')
@@ -343,7 +380,13 @@ const AnalyzerPage: React.FC = () => {
       if (shared.tab > 0) dispatch(setActiveTab(shared.tab))
       window.history.replaceState({}, '', '/analyzer')
     }
-  }, [dispatch, unlockFormatAuto, suggestFromDeckSize])
+  }, [
+    dispatch,
+    unlockFormatAuto,
+    suggestFromDeckSize,
+    markCommanderPreset,
+    clearCommanderPresetFlag,
+  ])
 
   const handleShare = useCallback(() => {
     if (!deckList.trim()) return
@@ -380,7 +423,7 @@ const AnalyzerPage: React.FC = () => {
       if (result?.totalCards) {
         suggestFromDeckSize(result.totalCards)
         if (detectDeckFormatFamily(result.totalCards) === 'edh') {
-          setCommanderPreset(true)
+          markCommanderPreset()
         }
       }
       dispatch(setAnalysisResult(result))
@@ -389,6 +432,18 @@ const AnalyzerPage: React.FC = () => {
       if (isMobile) {
         dispatch(setIsDeckMinimized(true))
       }
+
+      // P2-11: move focus to verdict for keyboard / SR users after analysis
+      requestAnimationFrame(() => {
+        const el = document.getElementById('quick-verdict')
+        if (!el) return
+        if (typeof el.focus === 'function') {
+          el.focus({ preventScroll: false })
+        }
+        if (typeof el.scrollIntoView === 'function') {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }
+      })
 
       // Auto-save to PrivacyStorage
       try {
@@ -439,22 +494,27 @@ const AnalyzerPage: React.FC = () => {
     } finally {
       dispatch(setIsAnalyzing(false))
     }
-  }, [deckList, deckName, dispatch, suggestFromDeckSize])
+  }, [deckList, deckName, dispatch, suggestFromDeckSize, markCommanderPreset, isMobile])
 
   const handleClear = useCallback(() => {
+    setCommanderPreset(false)
+    clearCommanderPresetFlag()
     dispatch(clearAnalyzer())
     dispatch(
       showSnackbar({
-        message: '🗑️ Interface cleared! Ready for new deck analysis.',
+        message: 'Interface cleared. Ready for a new deck analysis.',
         severity: 'info',
       })
     )
-  }, [dispatch])
+  }, [dispatch, clearCommanderPresetFlag])
 
   const handleLoadSample = useCallback(() => {
+    // Midrange 60-card sample — leave Commander mode if it was active
+    setCommanderPreset(false)
+    clearCommanderPresetFlag()
     dispatch(setDeckList(SAMPLE_DECK))
     dispatch(setDeckName(SAMPLE_DECKS.midrange.name))
-  }, [dispatch])
+  }, [dispatch, clearCommanderPresetFlag])
 
   return (
     <>
@@ -522,21 +582,21 @@ const AnalyzerPage: React.FC = () => {
         {commanderPreset && (
           <Alert
             severity="info"
-            onClose={() => setCommanderPreset(false)}
+            onClose={() => {
+              setCommanderPreset(false)
+              clearCommanderPresetFlag()
+            }}
             sx={{
               mb: 2,
               borderWidth: 1.5,
               borderRadius: 2,
               '& .MuiAlert-message': { width: '100%' },
             }}
+            data-testid="commander-preset-banner"
           >
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 600 }}
-              data-testid="commander-preset-banner"
-            >
-              👑 Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled
-              N/60, command zone detection, EDH tier bands.
+            <Typography variant="body2" sx={{ fontWeight: 600 }}>
+              Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled N/60,
+              command zone detection, EDH tier bands.
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
               Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
@@ -674,7 +734,7 @@ const AnalyzerPage: React.FC = () => {
                   justifyContent: 'center',
                 }}
               >
-                <Typography variant="h6">📋</Typography>
+                <DescriptionOutlinedIcon color="primary" />
               </Box>
               <Box>
                 <Typography variant="body1" fontWeight={700}>
@@ -881,7 +941,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.6 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.7 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 
@@ -895,6 +955,11 @@ const AnalyzerPage: React.FC = () => {
                     aria-label="Analysis results tabs"
                     sx={{
                       mb: isMobile ? 2 : 3,
+                      // P2-5: scroll-snap tabs on narrow screens
+                      scrollPaddingInline: 8,
+                      '& .MuiTabs-scroller': {
+                        scrollSnapType: { xs: 'x mandatory', sm: 'none' },
+                      },
                       '& .MuiTab-root': {
                         fontSize: isSmallMobile ? '0.75rem' : isMobile ? '0.85rem' : '0.95rem',
                         fontWeight: 600,
@@ -902,6 +967,7 @@ const AnalyzerPage: React.FC = () => {
                         minHeight: isMobile ? 48 : 56,
                         borderRadius: '8px 8px 0 0',
                         transition: 'all 0.2s ease',
+                        scrollSnapAlign: { xs: 'start', sm: 'none' },
                         '&:hover': {
                           bgcolor: 'action.hover',
                         },

@@ -8,6 +8,9 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Analyzer happy path (P0)', () => {
   test('Try Example → Analyze → all 5 result tabs without crash', async ({ page }) => {
+    // Scryfall + 5 tabs + mulligan worker — needs headroom under parallel load
+    test.setTimeout(120000)
+
     // Pre-dismiss onboarding so Joyride does not block the flow
     await page.addInitScript(() => {
       window.localStorage.setItem('manatuner-onboarding-completed', 'true')
@@ -23,13 +26,16 @@ test.describe('Analyzer happy path (P0)', () => {
 
     // Load sample deck
     await page.getByRole('button', { name: /try example/i }).click()
+    await expect(page.getByPlaceholder(/paste your decklist/i)).not.toHaveValue('', {
+      timeout: 10000,
+    })
 
     // Analyze
     const analyzeBtn = page.getByRole('button', { name: /analyze manabase|analyze/i }).first()
     await analyzeBtn.click()
 
     // Results shell + verdict
-    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 45000 })
+    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 90000 })
     await expect(page.getByTestId('quick-verdict')).toBeVisible({ timeout: 15000 })
     await expect(page.getByText(/Health Score/i)).toBeVisible()
 
@@ -47,7 +53,11 @@ test.describe('Analyzer happy path (P0)', () => {
     ]
 
     for (const { testId, panel, marker } of tabs) {
-      await page.getByTestId(testId).click()
+      const tab = page.getByTestId(testId)
+      await tab.scrollIntoViewIfNeeded()
+      await tab.click()
+      // Confirm MUI selected the tab before asserting panel visibility
+      await expect(tab).toHaveAttribute('aria-selected', 'true', { timeout: 10000 })
       await expect(page.getByTestId(panel)).toBeVisible({ timeout: 20000 })
       // ErrorBoundary copy must not appear inside results
       await expect(
@@ -55,12 +65,13 @@ test.describe('Analyzer happy path (P0)', () => {
       ).toHaveCount(0)
       // Soft content marker — tab has real content
       await expect(page.getByTestId(panel).getByText(marker).first()).toBeVisible({
-        timeout: 30000,
+        timeout: 45000,
       })
     }
 
     // Analysis sub-tabs exist and are distinct from Castability
     await page.getByTestId('tab-analysis').click()
+    await expect(page.getByTestId('tab-analysis')).toHaveAttribute('aria-selected', 'true')
     await page.getByTestId('analysis-subtab-recommendations').click()
     await expect(page.getByTestId('analyzer-tabpanel-1')).toBeVisible()
   })

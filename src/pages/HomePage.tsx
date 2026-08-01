@@ -431,6 +431,47 @@ export const HomePage: React.FC = () => {
             </AnimatedContainer>
           </Box>
 
+          {/* P2-2: product output preview above the fold — not only bullets.
+              Stylized sample result so newcomers see a real Health Score shape. */}
+          <Paper
+            elevation={0}
+            data-testid="hero-product-preview"
+            sx={{
+              mt: 3,
+              mx: 'auto',
+              maxWidth: 420,
+              p: 2,
+              borderRadius: 3,
+              border: '1px solid',
+              borderColor: 'divider',
+              bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.72)',
+              backdropFilter: 'blur(8px)',
+              textAlign: 'left',
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{ fontWeight: 700, letterSpacing: 0.4, opacity: 0.85, display: 'block', mb: 0.5 }}
+            >
+              Sample result · Health Score 87% · Good
+            </Typography>
+            <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.45, mb: 1 }}>
+              Your deck casts 87% of spells on curve — solid; keep almost any 2–4-land opener.
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+              <Chip size="small" label="Lightning Bolt 94%" color="success" variant="outlined" />
+              <Chip size="small" label="Sheoldred 81%" color="info" variant="outlined" />
+              <Chip size="small" label="Ramp counted" variant="outlined" />
+            </Box>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: 'block', mt: 1, fontStyle: 'italic' }}
+            >
+              Built on Frank Karsten&apos;s manabase research · rocks &amp; dorks included
+            </Typography>
+          </Paper>
+
           {/* Privacy reassurance line — sits directly under the CTAs so
               Léo (first visit, wary of handing over a decklist) and
               Thibault (pod EDH, trust-first) see the claim before clicking

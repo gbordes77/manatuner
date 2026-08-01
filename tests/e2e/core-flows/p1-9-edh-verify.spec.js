@@ -7,6 +7,11 @@ test.describe('P1-9 EDH deeper', () => {
   test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem('manatuner-onboarding-completed', 'true')
+      try {
+        sessionStorage.removeItem('manatuner-commander-preset')
+      } catch {
+        /* ignore */
+      }
     })
   })
 
@@ -14,7 +19,7 @@ test.describe('P1-9 EDH deeper', () => {
     page,
   }) => {
     test.setTimeout(120000)
-    await page.goto('http://localhost:3000/analyzer?sample=edh')
+    await page.goto('/analyzer?sample=edh')
 
     const deckBox = page.getByPlaceholder(/paste your decklist/i)
     await expect(deckBox).toBeVisible({ timeout: 15000 })
@@ -22,8 +27,8 @@ test.describe('P1-9 EDH deeper', () => {
       .poll(async () => (await deckBox.inputValue()).length, { timeout: 15000 })
       .toBeGreaterThan(50)
 
-    // Banner on hydrate (before analyze)
-    await expect(page.getByTestId('commander-preset-banner')).toBeVisible({ timeout: 10000 })
+    // Banner on hydrate (before analyze) — survives Strict Mode remount via sessionStorage
+    await expect(page.getByTestId('commander-preset-banner')).toBeVisible({ timeout: 15000 })
     await expect(page.getByTestId('commander-preset-banner')).toContainText(/T4|horizon|Commander/i)
 
     await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
@@ -59,13 +64,13 @@ test.describe('P1-9 EDH deeper', () => {
 
   test('format=commander hydrates Atraxa + banner', async ({ page }) => {
     test.setTimeout(60000)
-    await page.goto('http://localhost:3000/analyzer?format=commander')
+    await page.goto('/analyzer?format=commander')
     const deckBox = page.getByPlaceholder(/paste your decklist/i)
     await expect(deckBox).toBeVisible({ timeout: 15000 })
     await expect
       .poll(async () => (await deckBox.inputValue()).length, { timeout: 15000 })
       .toBeGreaterThan(50)
-    await expect(page.getByTestId('commander-preset-banner')).toBeVisible()
+    await expect(page.getByTestId('commander-preset-banner')).toBeVisible({ timeout: 15000 })
     await expect(deckBox).toHaveValue(/Atraxa|Commander|Plains|Forest/i)
   })
 })

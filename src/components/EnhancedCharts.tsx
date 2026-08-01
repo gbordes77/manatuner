@@ -1,4 +1,8 @@
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import DonutLargeIcon from '@mui/icons-material/DonutLarge'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import TrackChangesIcon from '@mui/icons-material/TrackChanges'
 import {
   Box,
   Chip,
@@ -173,8 +177,15 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
         {/* Turn-by-Turn Probability */}
         <Grid item xs={12} lg={6}>
           <Paper className="mtg-card" sx={{ p: 3, height: 400 }}>
-            <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
-              📈 Turn-by-Turn Casting Probability
+            <Typography
+              variant="h6"
+              fontWeight="600"
+              mb={2}
+              color="var(--mtg-blue-dark)"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              <ShowChartIcon fontSize="small" aria-hidden />
+              Turn-by-Turn Casting Probability
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <AreaChart data={prepareTurnData()}>
@@ -210,8 +221,15 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
         {/* Color Distribution */}
         <Grid item xs={12} lg={6}>
           <Paper className="mtg-card" sx={{ p: 3, height: 400 }}>
-            <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
-              🎨 Color Distribution
+            <Typography
+              variant="h6"
+              fontWeight="600"
+              mb={2}
+              color="var(--mtg-blue-dark)"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              <DonutLargeIcon fontSize="small" aria-hidden />
+              Color Distribution
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <PieChart>
@@ -248,8 +266,15 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
         {/* Mana Curve */}
         <Grid item xs={12} lg={8}>
           <Paper className="mtg-card" sx={{ p: 3, height: 350 }}>
-            <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
-              📊 Mana Curve Analysis
+            <Typography
+              variant="h6"
+              fontWeight="600"
+              mb={2}
+              color="var(--mtg-blue-dark)"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              <BarChartIcon fontSize="small" aria-hidden />
+              Mana Curve Analysis
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <BarChart data={prepareCurveData()}>
@@ -283,8 +308,15 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
         {/* Consistency Radar */}
         <Grid item xs={12} lg={4}>
           <Paper className="mtg-card" sx={{ p: 3, height: 350 }}>
-            <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
-              🎯 Deck Consistency
+            <Typography
+              variant="h6"
+              fontWeight="600"
+              mb={2}
+              color="var(--mtg-blue-dark)"
+              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+            >
+              <TrackChangesIcon fontSize="small" aria-hidden />
+              Deck Consistency
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <RadarChart data={prepareConsistencyData()}>

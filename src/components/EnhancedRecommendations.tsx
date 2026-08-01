@@ -269,7 +269,7 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
       {/* Quick Actions */}
       <Paper className="mtg-card" sx={{ p: 3, mt: 3 }}>
         <Typography variant="h6" fontWeight="600" mb={2}>
-          🚀 Quick Actions
+          Quick Actions
         </Typography>
 
         <Grid container spacing={2}>
@@ -326,7 +326,7 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
       {/* Pro Tips */}
       <Alert severity="info" icon={<LightbulbIcon />} sx={{ mt: 3 }} className="animate-slideIn">
         <Typography variant="subtitle2" fontWeight="600" mb={1}>
-          💡 Pro Tips from Frank Karsten's Research
+          Pro Tips from Frank Karsten&apos;s Research
         </Typography>
         <Typography variant="body2">
           • For 2-color decks, aim for 13+ sources of each color • Fetchlands count as 0.5 sources

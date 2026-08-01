@@ -875,8 +875,8 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
               </CardImageTooltip>
             </Grid>
 
-            {/* Mana Cost with Keyrune + CMC */}
-            <Grid item xs={4} md={2}>
+            {/* Mana Cost with Keyrune + CMC — full width on phone for readability */}
+            <Grid item xs={12} sm={4} md={2}>
               <Box display="flex" alignItems="center" gap={1.5}>
                 <KeyruneManaCost manaCost={getManaCostFromCard(cardData) || ''} size={20} />
                 {probabilities.hasX && probabilities.xInfo ? (
@@ -961,8 +961,9 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
               </Box>
             </Grid>
 
-            {/* Realistic + Perfect drops — prefer SSOT accelerated engine (base always). */}
-            <Grid item xs={8} md={6}>
+            {/* Realistic + Perfect drops — prefer SSOT accelerated engine (base always).
+                Full width on xs so primary % never clips beside mana pips. */}
+            <Grid item xs={12} sm={8} md={6}>
               {acceleratedResult ? (
                 <Box>
                   {showAcceleration &&
