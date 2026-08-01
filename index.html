@@ -244,6 +244,9 @@
         <div id="root">
             <div class="loading">Loading ManaTuner</div>
         </div>
+        <!-- Classic script (not module): CSP script-src 'self' — recovery if React never mounts -->
+        <script src="/boot-watchdog.js" defer></script>
         <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>
+

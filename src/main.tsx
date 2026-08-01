@@ -74,21 +74,23 @@ import './styles/ux-improvements.css'
 // PWA Cleanup: Unregister all old Service Workers and clear caches
 // This fixes the issue where old cached versions persist after deployment
 if ('serviceWorker' in navigator) {
-  // Unregister all Service Workers
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => {
-      registration.unregister()
-    })
+  const controlled = Boolean(navigator.serviceWorker.controller)
+  navigator.serviceWorker.getRegistrations().then(async (registrations) => {
+    await Promise.all(registrations.map((registration) => registration.unregister()))
+    if ('caches' in window) {
+      const cacheNames = await caches.keys()
+      await Promise.all(cacheNames.map((name) => caches.delete(name)))
+    }
+    // One-shot recovery: if a SW was controlling this page, reload once onto network
+    try {
+      if (controlled && !sessionStorage.getItem('mt-sw-cleared')) {
+        sessionStorage.setItem('mt-sw-cleared', '1')
+        window.location.reload()
+      }
+    } catch {
+      /* private mode */
+    }
   })
-
-  // Clear all caches
-  if ('caches' in window) {
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        caches.delete(cacheName)
-      })
-    })
-  }
 }
 
 // Configure React Query client with performance optimizations

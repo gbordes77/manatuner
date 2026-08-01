@@ -4,7 +4,7 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/((?!sw\\.js$).*)",
+      "source": "/((?!sw\\.js$|boot-watchdog\\.js$|assets/|favicon\\.svg|manifest\\.json|robots\\.txt|sitemap\\.xml|library\\.json|og-image|llms).*)",
       "destination": "/index.html"
     }
   ],
@@ -66,6 +66,19 @@
         {
           "key": "Content-Type",
           "value": "application/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/boot-watchdog.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript; charset=utf-8"
         }
       ]
     },
