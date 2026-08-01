@@ -180,14 +180,15 @@ Owner : local → tests → **“go prod”**.
 
 ## 8. Commits GitHub (prod connus)
 
-| SHA        | Résumé                                                      |
-| ---------- | ----------------------------------------------------------- |
-| `25598c6`  | P0 trust (worker, P1/P2 math, E2E, Health Score)            |
-| `9eef000`  | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1)       |
-| `3ff9b99`  | Feedback footer après dismiss                               |
-| `08b80a5`  | Feedback chips header + footer                              |
-| `83efe90`  | Vague C — EDH/Limited format, play-draw, sideboard          |
-| _(push D)_ | Vague D — EDH horizon T5–T8, Karsten N/60, caveats (v2.7.4) |
+| SHA       | Résumé                                                      |
+| --------- | ----------------------------------------------------------- |
+| `25598c6` | P0 trust (worker, P1/P2 math, E2E, Health Score)            |
+| `9eef000` | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1)       |
+| `3ff9b99` | Feedback footer après dismiss                               |
+| `08b80a5` | Feedback chips header + footer                              |
+| `83efe90` | Vague C — EDH/Limited format, play-draw, sideboard          |
+| `7d05d5c` | Vague D — EDH horizon T5–T8, Karsten N/60, caveats (v2.7.4) |
+| `2753751` | docs: SESSION_START ship SHA                                |
 
 ---
 

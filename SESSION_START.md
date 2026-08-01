@@ -1,7 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date de cut-over :** 2026-08-01  
-> **Branche live :** `main` @ **`7d05d5c`**  
+> **Branche live :** `main` @ **`2753751`** (feature **`7d05d5c`**)  
 > **Version app :** **2.7.4**  
 > **Prod :** https://www.manatuner.app/  
 > **Repo :** https://github.com/gbordes77/manatuner
