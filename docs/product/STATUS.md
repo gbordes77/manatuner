@@ -5,9 +5,10 @@
 
 |                     |                                                                                      |
 | ------------------- | ------------------------------------------------------------------------------------ |
-| **Version**         | **2.7.9** (`package.json`) — deploy prod = owner                                     |
+| **Version**         | **2.7.9** (`package.json`)                                                           |
 | **Engine stamp UI** | `Engine v2.7.9`                                                                      |
-| **Live**            | https://www.manatuner.app (peut encore servir 2.7.8 jusqu’au ship)                   |
+| **SHA prod**        | **`fdef163`** (Vercel Production success)                                            |
+| **Live**            | https://www.manatuner.app · **v2.7.9 live**                                          |
 | **Repo**            | https://github.com/gbordes77/manatuner                                               |
 | **Tests unit**      | **404** pass / 2 skip                                                                |
 | **Sécu**            | [`../session/SECURITY_AUDIT_2026-08-01.md`](../session/SECURITY_AUDIT_2026-08-01.md) |
