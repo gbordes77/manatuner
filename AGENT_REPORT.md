@@ -56,17 +56,26 @@ Full verification table: `AGENT_PLAN.md`.
 | `npm run test:unit`              | **336 passed**, 2 skipped |
 | Playwright happy path (chromium) | **1 passed**              |
 
+## 4b. Follow-up wave (post-prod, same day)
+
+| ID   | Work                                                          | Status |
+| ---- | ------------------------------------------------------------- | ------ |
+| P1-2 | Header: Analyzer · My Analyses · Library · **Learn** dropdown | Done   |
+| P2-3 | BetaBanner dismissible + `localStorage` key                   | Done   |
+| P1-5 | My Analyses empty state → sample CTAs (`?sample=`)            | Done   |
+| P1-1 | Hero CTAs: “Paste a deck & analyze” + “Try an example deck”   | Done   |
+| P3-7 | Engine stamp under QuickVerdict                               | Done   |
+| P3-1 | Soften absolute H1 marketing claim                            | Done   |
+| CI   | type-check fix on mulliganWorkerPayload test fixtures         | Done   |
+
 ## 4. Remaining backlog (not done)
 
-- P1-2 Learn nav dropdown
-- P1-1 hero paste mini-form
 - P1-7 Moxfield URL import (defer — ToS/CORS)
 - P1-9 full EDH analyzer preset
 - Unify dual castability engines fully (inline vs SSOT — improved but hooks still dual)
 - Seeded Monte Carlo RNG for deterministic mulligan tests
 - Long-term: replace `etbTapped` function type on `DeckCard` with boolean + metadata only
 - Stale French E2E specs still in tree (`main-user-flows`, old `analyzer-tabs`) — rewrite or delete later
-- P2-3 BetaBanner still not dismissible
 
 ## 5. Risks / follow-ups
 

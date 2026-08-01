@@ -240,7 +240,7 @@ export const HomePage: React.FC = () => {
               textShadow: isDark ? '0 0 40px rgba(255,255,255,0.1)' : 'none',
             }}
           >
-            The Only Mana Calculator That Counts Your Dorks & Rocks
+            Built to Count Rocks &amp; Dorks — Not Just Lands
           </Typography>
 
           <Typography
@@ -366,7 +366,8 @@ export const HomePage: React.FC = () => {
             />
           </Box>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons — P1-1: primary path to paste/analyze above the fold;
+              secondary Try Example deep-links so competitive users skip the pitch. */}
           <Box
             sx={{
               display: 'flex',
@@ -400,7 +401,32 @@ export const HomePage: React.FC = () => {
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 }}
               >
-                Analyze My Deck
+                Paste a deck & analyze
+              </Button>
+            </AnimatedContainer>
+            <AnimatedContainer animation="scaleIn" delay={0.28}>
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => navigate('/analyzer?sample=midrange')}
+                sx={{
+                  px: 3,
+                  py: 1.8,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  borderRadius: 3,
+                  borderWidth: 2,
+                  textTransform: 'none',
+                  borderColor: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.25)',
+                  color: 'text.primary',
+                  '&:hover': {
+                    borderWidth: 2,
+                    borderColor: theme.palette.primary.main,
+                    bgcolor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(25,118,210,0.06)',
+                  },
+                }}
+              >
+                Try an example deck
               </Button>
             </AnimatedContainer>
           </Box>

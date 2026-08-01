@@ -1,6 +1,7 @@
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'
 import CloseIcon from '@mui/icons-material/Close'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import GuideIcon from '@mui/icons-material/MenuBook'
@@ -9,6 +10,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import InfoIcon from '@mui/icons-material/Info'
 import LandscapeIcon from '@mui/icons-material/Landscape'
 import MenuIcon from '@mui/icons-material/Menu'
+import SchoolIcon from '@mui/icons-material/School'
 import {
   AppBar,
   Box,
@@ -21,6 +23,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
+  Menu,
+  MenuItem,
   Toolbar,
   Tooltip,
   Typography,
@@ -84,6 +89,7 @@ export const Header: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [learnAnchor, setLearnAnchor] = useState<null | HTMLElement>(null)
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen)
@@ -92,18 +98,31 @@ export const Header: React.FC = () => {
   const handleNavigation = (path: string) => {
     navigate(path)
     setMobileMenuOpen(false)
+    setLearnAnchor(null)
   }
 
-  const navItems = [
-    { label: 'Home', path: '/', icon: HomeIcon },
+  // P1-2: Primary conversion paths stay top-level; docs grouped under Learn.
+  // Home is logo-only. Target: ≤5 desktop top-level items.
+  const primaryNav = [
     { label: 'Analyzer', path: '/analyzer', icon: AnalyticsIcon },
     { label: 'My Analyses', path: '/my-analyses', icon: HistoryIcon },
-    { label: 'Lands', path: '/land-glossary', icon: LandscapeIcon },
     { label: 'Library', path: '/library', icon: AutoStoriesIcon },
+  ] as const
+
+  const learnNav = [
     { label: 'Guide', path: '/guide', icon: GuideIcon },
     { label: 'Mathematics', path: '/mathematics', icon: FunctionsIcon },
+    { label: 'Land Glossary', path: '/land-glossary', icon: LandscapeIcon },
     { label: 'About', path: '/about', icon: InfoIcon },
-  ]
+  ] as const
+
+  const learnPaths = learnNav.map((i) => i.path)
+  const isLearnActive = learnPaths.some(
+    (p) => location.pathname === p || location.pathname.startsWith(p + '/')
+  )
+
+  // Mobile drawer: Home + primary + Learn group
+  const mobilePrimary = [{ label: 'Home', path: '/', icon: HomeIcon }, ...primaryNav]
 
   return (
     <AppBar
@@ -160,7 +179,7 @@ export const Header: React.FC = () => {
               justifyContent: 'center',
             }}
           >
-            {navItems.map((item) => {
+            {primaryNav.map((item) => {
               const isAnalyzer = item.path === '/analyzer'
               const isActive = location.pathname === item.path
 
@@ -175,12 +194,11 @@ export const Header: React.FC = () => {
                   startIcon={<item.icon />}
                   sx={{
                     borderColor: isActive ? 'rgba(255,255,255,0.5)' : 'transparent',
-                    // Style CTA pour Analyzer - gold multicolor style
+                    textTransform: 'none',
                     ...(isAnalyzer && {
                       background: 'linear-gradient(135deg, #E9B54C 0%, #FFD700 50%, #E9B54C 100%)',
                       color: '#1a1a2e',
                       fontWeight: 'bold',
-                      textTransform: 'none',
                       px: 2.5,
                       boxShadow: '0 2px 12px rgba(233, 181, 76, 0.5)',
                       border: '1px solid rgba(255,255,255,0.3)',
@@ -194,24 +212,10 @@ export const Header: React.FC = () => {
                         color: '#1a1a2e',
                       },
                     }),
-                    // Style pour Guide
-                    ...(item.path === '/guide' && {
-                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      },
-                      fontWeight: 'bold',
-                      textTransform: 'none',
-                    }),
-                    // Style pour Library — knowledge tier, primary CTA paired
-                    // with Analyzer (gold = action, blue-purple = knowledge).
-                    // Matches the HomePage "Browse the Library" button verbatim
-                    // so the learned association transfers hero → header.
                     ...(item.path === '/library' && {
                       background: 'linear-gradient(135deg, #0E68AB 0%, #6A1B9A 100%)',
                       color: '#ffffff',
                       fontWeight: 700,
-                      textTransform: 'none',
                       px: 2.5,
                       border: '1px solid rgba(255, 255, 255, 0.45)',
                       boxShadow:
@@ -225,7 +229,6 @@ export const Header: React.FC = () => {
                       '& .MuiSvgIcon-root': {
                         color: '#ffffff',
                       },
-                      // Subtle pulse once on mount to draw the eye, respecting motion preferences
                       animation: 'libraryPulse 2.8s ease-out 0.8s 1',
                       '@keyframes libraryPulse': {
                         '0%, 100%': {
@@ -249,6 +252,56 @@ export const Header: React.FC = () => {
                 </Button>
               )
             })}
+
+            {/* Learn dropdown — Guide, Math, Lands, About */}
+            <Button
+              color="inherit"
+              variant={isLearnActive ? 'outlined' : 'text'}
+              startIcon={<SchoolIcon />}
+              endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+              onClick={(e) => setLearnAnchor(e.currentTarget)}
+              aria-haspopup="menu"
+              aria-expanded={Boolean(learnAnchor)}
+              aria-controls={learnAnchor ? 'learn-menu' : undefined}
+              sx={{
+                textTransform: 'none',
+                borderColor: isLearnActive ? 'rgba(255,255,255,0.5)' : 'transparent',
+                fontWeight: isLearnActive ? 700 : 500,
+                backgroundColor: isLearnActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                },
+              }}
+            >
+              Learn
+            </Button>
+            <Menu
+              id="learn-menu"
+              anchorEl={learnAnchor}
+              open={Boolean(learnAnchor)}
+              onClose={() => setLearnAnchor(null)}
+              MenuListProps={{ 'aria-label': 'Learn pages' }}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+              {learnNav.map((item) => {
+                const Icon = item.icon
+                const isActive = location.pathname === item.path
+                return (
+                  <MenuItem
+                    key={item.path}
+                    component={RouterLink}
+                    to={item.path}
+                    selected={isActive}
+                    onClick={() => setLearnAnchor(null)}
+                    sx={{ minWidth: 200, gap: 1 }}
+                  >
+                    <Icon fontSize="small" color={isActive ? 'primary' : 'inherit'} />
+                    {item.label}
+                  </MenuItem>
+                )
+              })}
+            </Menu>
           </Box>
         )}
 
@@ -326,9 +379,9 @@ export const Header: React.FC = () => {
 
         <Divider />
 
-        {/* Navigation Items */}
+        {/* Navigation Items — primary then Learn group */}
         <List sx={{ pt: 1 }}>
-          {navItems.map((item) => {
+          {mobilePrimary.map((item) => {
             const Icon = item.icon
             const isActive = location.pathname === item.path
             const isAnalyzer = item.path === '/analyzer'
@@ -344,7 +397,6 @@ export const Header: React.FC = () => {
                   selected={isActive}
                   sx={{
                     py: 1.5,
-                    // Style CTA pour Analyzer dans le drawer
                     ...(isAnalyzer && {
                       background: 'linear-gradient(135deg, #E9B54C 0%, #FFD700 100%)',
                       borderRadius: 2,
@@ -384,6 +436,40 @@ export const Header: React.FC = () => {
                         : isActive
                           ? muiTheme.palette.primary.main
                           : 'inherit',
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            )
+          })}
+        </List>
+
+        <List
+          subheader={
+            <ListSubheader component="div" sx={{ bgcolor: 'transparent', lineHeight: '36px' }}>
+              Learn
+            </ListSubheader>
+          }
+        >
+          {learnNav.map((item) => {
+            const Icon = item.icon
+            const isActive = location.pathname === item.path
+            return (
+              <ListItem key={item.path} disablePadding>
+                <ListItemButton onClick={() => handleNavigation(item.path)} selected={isActive}>
+                  <ListItemIcon
+                    sx={{
+                      color: isActive ? muiTheme.palette.primary.main : 'inherit',
+                      minWidth: 40,
+                    }}
+                  >
+                    <Icon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.label}
+                    primaryTypographyProps={{
+                      fontWeight: isActive ? 'bold' : 'normal',
+                      color: isActive ? muiTheme.palette.primary.main : 'inherit',
                     }}
                   />
                 </ListItemButton>

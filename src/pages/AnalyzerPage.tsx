@@ -842,6 +842,24 @@ const AnalyzerPage: React.FC = () => {
                       whether my deck is good before I read 5 tabs". */}
                   <QuickVerdict analysisResult={analysisResult} manabaseVerdict={manabaseVerdict} />
 
+                  {/* P3-7: engine provenance for screenshots / Discord debates */}
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    data-testid="engine-stamp"
+                    sx={{
+                      display: 'block',
+                      mb: 1.5,
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      fontSize: '0.7rem',
+                      letterSpacing: 0.2,
+                      opacity: 0.85,
+                    }}
+                  >
+                    Engine v2.7.2 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Bellman
+                  </Typography>
+
                   {/* Tabs with improved styling */}
                   <Tabs
                     value={activeTab}

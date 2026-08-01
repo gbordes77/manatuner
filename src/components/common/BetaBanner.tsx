@@ -1,8 +1,35 @@
+import CloseIcon from '@mui/icons-material/Close'
 import FeedbackIcon from '@mui/icons-material/Feedback'
-import { Alert, Box, Chip, Container, Link, Typography } from '@mui/material'
-import React from 'react'
+import { Alert, Box, Chip, Container, IconButton, Link, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+
+/** Bump this when a major release should re-show the banner after dismiss. */
+const BANNER_KEY = 'manatuner-feedback-banner-dismissed-v1'
 
 export const BetaBanner: React.FC = () => {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(BANNER_KEY) !== '1') {
+        setVisible(true)
+      }
+    } catch {
+      setVisible(true)
+    }
+  }, [])
+
+  const dismiss = () => {
+    try {
+      localStorage.setItem(BANNER_KEY, '1')
+    } catch {
+      /* privacy / private mode — still hide for this session */
+    }
+    setVisible(false)
+  }
+
+  if (!visible) return null
+
   return (
     <Box
       sx={{
@@ -18,6 +45,8 @@ export const BetaBanner: React.FC = () => {
       <Container maxWidth="lg">
         <Alert
           severity="info"
+          onClose={dismiss}
+          closeText="Dismiss feedback banner"
           sx={{
             bgcolor: 'transparent',
             border: 'none',
@@ -30,8 +59,23 @@ export const BetaBanner: React.FC = () => {
               px: 0,
               width: '100%',
             },
+            '& .MuiAlert-action': {
+              pt: 0,
+              pr: 0.5,
+              alignItems: 'center',
+            },
           }}
           icon={false}
+          action={
+            <IconButton
+              aria-label="Dismiss feedback banner"
+              size="small"
+              onClick={dismiss}
+              sx={{ color: 'text.secondary' }}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
         >
           <Box display="flex" alignItems="center" justifyContent="center" gap={1} flexWrap="wrap">
             <Typography

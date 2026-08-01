@@ -21,7 +21,12 @@ function landWithFn(name: string): DeckCard {
       name,
       category: 'basic',
       produces: ['G'],
-      etbBehavior: { type: 'untapped' },
+      producesAny: false,
+      isFetch: false,
+      isCreatureLand: false,
+      hasChannel: false,
+      confidence: 1,
+      etbBehavior: { type: 'always_untapped' },
     } as DeckCard['landMetadata'],
   }
 }
@@ -64,6 +69,11 @@ describe('toCloneableDeckCards (P0-1 worker payload)', () => {
         name: 'Wind-Scarred Crag',
         category: 'utility',
         produces: ['R', 'W'],
+        producesAny: false,
+        isFetch: false,
+        isCreatureLand: false,
+        hasChannel: false,
+        confidence: 1,
         etbBehavior: { type: 'always_tapped' },
       } as DeckCard['landMetadata'],
     }

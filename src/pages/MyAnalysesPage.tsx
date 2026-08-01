@@ -880,15 +880,52 @@ const MyAnalysesPage: React.FC = () => {
             borderColor: 'divider',
             bgcolor: 'transparent',
           }}
+          data-testid="my-analyses-empty"
         >
           <CardContent sx={{ textAlign: 'center', py: 6 }}>
             <AnalyticsIcon sx={{ fontSize: 48, color: '#1976d2', mb: 2 }} />
             <Typography variant="h6" gutterBottom>
               No saved analyses yet
             </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Analyze a deck and it will automatically appear here
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mb: 2, maxWidth: 420, mx: 'auto' }}
+            >
+              Analyze a deck and it will appear here automatically (local only — nothing leaves your
+              browser). Or open a sample in one click:
             </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                mb: 2.5,
+              }}
+            >
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => navigate('/analyzer?sample=midrange')}
+              >
+                Constructed midrange
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => navigate('/analyzer?sample=aggro')}
+              >
+                Aggro ramp sample
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                onClick={() => navigate('/analyzer?sample=edh')}
+              >
+                Commander (100c)
+              </Button>
+            </Box>
             <Button
               variant="contained"
               onClick={() => navigate('/analyzer')}
@@ -896,6 +933,9 @@ const MyAnalysesPage: React.FC = () => {
             >
               Analyze a Deck
             </Button>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 2 }}>
+              Tip: use Export / Import JSON here once you have at least one saved analysis.
+            </Typography>
           </CardContent>
         </Card>
       ) : filteredAnalyses.length === 0 ? (
