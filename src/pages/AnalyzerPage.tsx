@@ -197,8 +197,8 @@ const AnalyzerPage: React.FC = () => {
     if (!deckList.trim()) return
     const url = buildShareUrl({ deckList, deckName, tab: activeTab })
     if (!url) return
-    // P1-2: explicit Discord hint so Share isn't silent clipboard (persona Partage)
-    const shareToastMessage = 'Share link copied — paste in Discord'
+    // P1-2: Discord hint + honesty that the link embeds the deck (SEC-2026-08-01)
+    const shareToastMessage = 'Share link copied — paste in Discord (link includes your deck)'
     navigator.clipboard.writeText(url).then(
       () => {
         dispatch(showSnackbar({ message: shareToastMessage, severity: 'success' }))
@@ -763,7 +763,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.8 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.9 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

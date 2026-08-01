@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.9] - 2026-08-01 — Security audit remediations (privacy wipe, share hash, deps)
+
+### Security
+
+- **Share links** use URL **hash** `#d=` (not query) so edge/CDN logs do not receive deck payloads; legacy `?d=` still loads
+- **Privacy Reset** wipes analyses, `persist:root`, land/producer caches, library progress, prefs + session flags; dispatches `clearAnalyzer` + `persistor.purge()`
+- **PrivacySettings** copy honest about Scryfall name lookup + share-link visibility
+- **SECURITY.md** CSP aligned with live `vercel.json` (no phantom Sentry `connect-src`); document share + wipe
+- **`.env` local** purged of orphan Supabase keys (never in git)
+- **Deps:** `dompurify` → 3.4.12 (via jspdf); `react-router-dom` → 7.18.2 (open-redirect class fixed; residual npm advisory is RSC-mode CSRF — N/A for this Vite SPA)
+
+### Tests
+
+- Unit: `urlCodec` hash/legacy parse; `PrivacyStorage.clearAllLocalData` sweep
+- **404** pass / 2 skip
+
+### Notes
+
+- Engine stamp: **v2.7.9**
+- Full audit report: `docs/session/SECURITY_AUDIT_2026-08-01.md` (findings remediated)
+
 ## [2.7.8] - 2026-08-01 — Persona audit P0/P1 polish (Joyride, EDH colors, Castability legend, Share toast)
 
 ### Fixed

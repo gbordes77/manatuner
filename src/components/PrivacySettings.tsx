@@ -26,6 +26,8 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { PrivacyStorage } from '../lib/privacy'
+import { persistor, store } from '../store'
+import { clearAnalyzer } from '../store/slices/analyzerSlice'
 
 export const PrivacySettings: React.FC = () => {
   const theme = useTheme()
@@ -198,16 +200,19 @@ export const PrivacySettings: React.FC = () => {
           </Typography>
           <List dense>
             <ListItem>
-              <ListItemText primary="• Your analyses and decklists never leave your browser" />
+              <ListItemText primary="• Saved analyses and the current deck stay in this browser only (no ManaTuner server)" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="• Card data is fetched from Scryfall (the public MTG card API)" />
+              <ListItemText primary="• Card names/images are resolved via Scryfall (public API) when you Analyze" />
             </ListItem>
             <ListItem>
               <ListItemText primary="• No accounts, no tracking, no analytics, no crash reports" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="• Clearing browser data will delete your analyses" />
+              <ListItemText primary="• Share links encode your deck in the URL hash — anyone with the link can open it" />
+            </ListItem>
+            <ListItem>
+              <ListItemText primary="• Reset deletes all local ManaTuner data (analyses, deck, caches, prefs)" />
             </ListItem>
           </List>
 
@@ -246,10 +251,11 @@ export const PrivacySettings: React.FC = () => {
 
       {/* Data Management Dialog */}
       <Dialog open={showDataDialog} onClose={() => setShowDataDialog(false)} maxWidth="sm">
-        <DialogTitle color="error">⚠️ Delete all data</DialogTitle>
+        <DialogTitle color="error">⚠️ Delete all local data</DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
-            This will permanently delete all your saved analyses.
+            This permanently deletes saved analyses, the current deck in this browser, land/producer
+            caches, library progress, and preferences.
           </Typography>
           <Alert severity="warning" sx={{ mt: 2 }}>
             This action is irreversible! Consider exporting first.
@@ -260,8 +266,10 @@ export const PrivacySettings: React.FC = () => {
           <Button
             onClick={() => {
               PrivacyStorage.clearAllLocalData()
+              store.dispatch(clearAnalyzer())
+              void persistor.purge()
               setShowDataDialog(false)
-              setSnackbarMessage('All data has been deleted')
+              setSnackbarMessage('All local ManaTuner data has been deleted')
               setShowSnackbar(true)
             }}
             color="error"

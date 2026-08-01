@@ -175,16 +175,67 @@ export class PrivacyStorage {
   }
 
   /**
-   * Clears all local data
+   * Known localStorage keys written by ManaTuner (analyses, caches, prefs).
+   * Keep in sync when adding a new key — wipe must be complete (SEC-2026-08-02).
+   */
+  private static readonly APP_LOCAL_KEYS = [
+    'manatuner_analyses',
+    'manatuner-analyses',
+    'manatuner_user_code',
+    'manatuner_privacy_mode',
+    'userCode',
+    'persist:root', // redux-persist (includes deckList + analysisResult)
+    'manatuner_lands_cache',
+    'manatuner_producer_cache',
+    'manatuner_acceleration_settings',
+    'manatuner-library-progress-v1',
+    'manatuner-theme',
+    'manatuner-onboarding-completed',
+    'manatuner-feedback-banner-dismissed-v1',
+  ] as const
+
+  private static readonly APP_SESSION_KEYS = [
+    'manatuner-commander-preset',
+    'mt-sw-cleared',
+  ] as const
+
+  /**
+   * Clears all ManaTuner local data (analyses, Redux persist, caches, prefs).
+   * Callers that own React state should also dispatch `clearAnalyzer` / purge
+   * the persistor so in-memory UI matches storage.
    */
   static clearAllLocalData(): void {
     if (typeof window === 'undefined') return
-    localStorage.removeItem(this.ANALYSES_KEY)
-    localStorage.removeItem(this.LEGACY_KEY)
-    // Clean up legacy keys
-    localStorage.removeItem('manatuner_user_code')
-    localStorage.removeItem('manatuner_privacy_mode')
-    localStorage.removeItem('userCode')
+
+    for (const key of this.APP_LOCAL_KEYS) {
+      try {
+        localStorage.removeItem(key)
+      } catch {
+        // private mode / quota — keep going
+      }
+    }
+
+    // Belt-and-suspenders: any leftover manatuner* keys
+    try {
+      const toRemove: string[] = []
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key && (key.startsWith('manatuner') || key.startsWith('persist:'))) {
+          toRemove.push(key)
+        }
+      }
+      for (const key of toRemove) localStorage.removeItem(key)
+    } catch {
+      // ignore
+    }
+
+    for (const key of this.APP_SESSION_KEYS) {
+      try {
+        sessionStorage.removeItem(key)
+      } catch {
+        // ignore
+      }
+    }
   }
 
   /**

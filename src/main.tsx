@@ -19,6 +19,7 @@ import { persistor, store } from './store'
  * Before enabling DSN in Vercel: update PrivacySettings disclosure + GDPR opt-out.
  */
 function scrubSentryEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
+  // Strip share payloads (?d= legacy query and #d= hash) so decks never reach Sentry.
   if (event.request?.url) {
     try {
       const u = new URL(event.request.url)
@@ -59,7 +60,7 @@ if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE || 'production',
-    release: 'manatuner@2.7.8',
+    release: 'manatuner@2.7.9',
     tracesSampleRate: 0.05,
     sendDefaultPii: false,
     beforeSend: scrubSentryEvent,

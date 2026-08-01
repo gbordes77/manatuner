@@ -49,8 +49,8 @@ import {
   getMyAnalyses,
   PrivacyStorage,
 } from '../lib/privacy'
-import { AppDispatch } from '../store'
-import { setDeckList, setDeckName } from '../store/slices/analyzerSlice'
+import { AppDispatch, persistor } from '../store'
+import { clearAnalyzer, setDeckList, setDeckName } from '../store/slices/analyzerSlice'
 
 const MANA_COLORS_MAP: Record<string, string> = {
   W: '#F9FAF4',
@@ -544,6 +544,8 @@ const MyAnalysesPage: React.FC = () => {
 
   const handleClearAll = () => {
     clearAllLocalData()
+    dispatch(clearAnalyzer())
+    void persistor.purge()
     setAnalyses([])
     setDeleteDialog({ open: false })
   }

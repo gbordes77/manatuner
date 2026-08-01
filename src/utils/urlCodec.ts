@@ -3,6 +3,10 @@
  *
  * Encodes a decklist into a compact URL-safe string using base64.
  * Decodes it back on load. Keeps URLs under ~2000 chars for compatibility.
+ *
+ * Privacy (SEC-2026-08-01): new share links put the deck in the **hash**
+ * (`#d=…`) so the payload is not sent to the edge/CDN in the request URL.
+ * Legacy query links (`?d=…`) remain supported for Discord/history links.
  */
 
 /** Encode a decklist string into a URL-safe base64 param */
@@ -31,30 +35,11 @@ export function decodeDeck(encoded: string): string {
   }
 }
 
-/** Build a shareable URL from current deck state */
-export function buildShareUrl(params: {
-  deckList: string
-  deckName?: string
-  tab?: number
-}): string {
-  const url = new URL(window.location.origin + '/analyzer')
-  const encoded = encodeDeck(params.deckList)
-  if (!encoded) return ''
-
-  url.searchParams.set('d', encoded)
-  if (params.deckName) url.searchParams.set('name', params.deckName)
-  if (params.tab !== undefined && params.tab > 0) url.searchParams.set('tab', String(params.tab))
-
-  return url.toString()
-}
-
-/** Parse share params from current URL */
-export function parseShareParams(): {
+function readShareFromParams(params: URLSearchParams): {
   deckList: string
   deckName: string
   tab: number
 } | null {
-  const params = new URLSearchParams(window.location.search)
   const encoded = params.get('d')
   if (!encoded) return null
 
@@ -66,4 +51,44 @@ export function parseShareParams(): {
     deckName: params.get('name') || '',
     tab: parseInt(params.get('tab') || '0', 10) || 0,
   }
+}
+
+/** Build a shareable URL from current deck state (hash-based for privacy). */
+export function buildShareUrl(params: {
+  deckList: string
+  deckName?: string
+  tab?: number
+}): string {
+  try {
+    const url = new URL('/analyzer', window.location.origin)
+    const encoded = encodeDeck(params.deckList)
+    if (!encoded) return ''
+
+    // Hash fragment is not sent to the server on navigation — reduces CDN log exposure.
+    const hash = new URLSearchParams()
+    hash.set('d', encoded)
+    if (params.deckName) hash.set('name', params.deckName)
+    if (params.tab !== undefined && params.tab > 0) hash.set('tab', String(params.tab))
+    url.hash = hash.toString()
+    return url.toString()
+  } catch {
+    return ''
+  }
+}
+
+/** Parse share params from current URL (hash first, then legacy query). */
+export function parseShareParams(): {
+  deckList: string
+  deckName: string
+  tab: number
+} | null {
+  if (typeof window === 'undefined') return null
+
+  const hashRaw = window.location.hash.replace(/^#/, '')
+  if (hashRaw) {
+    const fromHash = readShareFromParams(new URLSearchParams(hashRaw))
+    if (fromHash) return fromHash
+  }
+
+  return readShareFromParams(new URLSearchParams(window.location.search))
 }

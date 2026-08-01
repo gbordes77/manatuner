@@ -2,15 +2,17 @@
 
 ## Latest (2026-08-01) — lire en premier
 
-- **Prod :** **v2.7.8** · stamp **Engine v2.7.8** · https://www.manatuner.app
+- **Code :** **v2.7.9** · stamp **Engine v2.7.9** · https://www.manatuner.app (prod peut lag jusqu’au ship)
 - **Boot :** `SESSION_START.md` · **Index docs :** `docs/README.md` · **État :** `docs/product/STATUS.md`
 - **SSOT journée :** `docs/session/HANDOFF_2026-08-01.md` · suite : `docs/session/HANDOFF_NEXT.md`
 - **Ship 2.7.8 :** persona P0/P1 — Joyride non-bloquant · EDH 4 colors · légende Perfect/Realistic · Share Discord
-- **Baseline audit v2.7.7 :** `docs/session/PERSONA_AUDIT_2026-08-01.md` (moy 4.00) — re-audit pour deltas
+- **Ship 2.7.9 (sécu) :** share URL **hash `#d=`** · wipe localStorage **complet** · `SECURITY.md` CSP = vercel.json · `react-router-dom@7.18.2` · tests **404**
+- **Audit sécu :** `docs/session/SECURITY_AUDIT_2026-08-01.md` (remédiations code done)
+- **Baseline audit personas v2.7.7 :** `docs/session/PERSONA_AUDIT_2026-08-01.md` (moy 4.00)
 - **Priorité business :** `LAUNCH.md` (distribution) — pas de feature gratuite
 - **Personas :** `docs/personas/mtg-player-personas.md`
-- **Sentry :** `@sentry/react` + `@sentry/vite-plugin` installés ; **init off** sans `VITE_SENTRY_DSN` ; scrubber `beforeSend` prêt ; voir `SECURITY.md`
-- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side ; multi-color = WUBRG spells
+- **Sentry :** `@sentry/react` + `@sentry/vite-plugin` installés ; **init off** sans `VITE_SENTRY_DSN` ; scrubber `beforeSend` prêt ; **CSP sans** `*.ingest.sentry.io` tant que DSN unset — voir `SECURITY.md`
+- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side ; multi-color = WUBRG spells ; share hash ; wipe complet
 - **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
 - **Prerender :** soft-fail Vercel → SPA ; HTML crawler **pas** garanti en prod
 
