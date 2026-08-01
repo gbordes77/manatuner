@@ -11,13 +11,14 @@ Tooling générique (`.claude/`, `_bmad/`) n’est **pas** document produit.
 
 ## Démarrage (ordre de lecture)
 
-| Priorité | Fichier                                                          | Rôle                                 |
-| -------- | ---------------------------------------------------------------- | ------------------------------------ |
-| 1        | [`../SESSION_START.md`](../SESSION_START.md)                     | Boot agent / dev                     |
-| 2        | [`session/HANDOFF_2026-08-01.md`](session/HANDOFF_2026-08-01.md) | SSOT journée A→G                     |
-| 3        | [`session/HANDOFF_NEXT.md`](session/HANDOFF_NEXT.md)             | Priorités suite                      |
-| 4        | [`../LAUNCH.md`](../LAUNCH.md)                                   | **Priorité business = distribution** |
-| 5        | [`product/STATUS.md`](product/STATUS.md)                         | État produit condensé prod           |
+| Priorité | Fichier                                                                        | Rôle                                 |
+| -------- | ------------------------------------------------------------------------------ | ------------------------------------ |
+| 1        | [`../SESSION_START.md`](../SESSION_START.md)                                   | Boot agent / dev                     |
+| 2        | [`session/HANDOFF_2026-08-01.md`](session/HANDOFF_2026-08-01.md)               | SSOT journée A→G                     |
+| 3        | [`session/HANDOFF_NEXT.md`](session/HANDOFF_NEXT.md)                           | Priorités suite                      |
+| 4        | [`../LAUNCH.md`](../LAUNCH.md)                                                 | **Priorité business = distribution** |
+| 5        | [`product/STATUS.md`](product/STATUS.md)                                       | État produit condensé prod           |
+| 6        | [`session/PROMPT_PERSONA_AUDIT_NEXT.md`](session/PROMPT_PERSONA_AUDIT_NEXT.md) | Audit UX 6 personas (relançable)     |
 
 ---
 

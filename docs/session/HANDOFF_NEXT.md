@@ -9,9 +9,21 @@
 
 ## Phrase à copier-coller (nouvelle conversation)
 
+### A — Audit multi-personas (recommandé avant / pendant distribution)
+
+```
+Lis et exécute en entier docs/session/PROMPT_PERSONA_AUDIT_NEXT.md
+(ManaTuner, prod https://www.manatuner.app). Audit UX multi-personas uniquement :
+les 6 personas du fichier docs/personas/mtg-player-personas.md analysent le site
+sous tous les angles, notes 1–5 (grille officielle), synthèse + backlog.
+Ne code pas tant que je ne dis pas « go fix ». Rapport en français.
+```
+
+### B — Session générique (produit / docs)
+
 ```
 Lis SESSION_START.md puis docs/product/STATUS.md et docs/session/HANDOFF_2026-08-01.md
-(ManaTuner v2.7.7 / f0e5d7f). Docs réorganisées sous docs/ — index docs/README.md.
+(ManaTuner v2.7.7 / f0e5d7f). Docs sous docs/ — index docs/README.md.
 
 Priorité business = LAUNCH.md (distribution). Pas de feature gratuite.
 Ne pas activer VITE_SENTRY_DSN sans checklist privacy (SECURITY.md).

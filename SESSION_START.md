@@ -12,6 +12,9 @@
 4. [`LAUNCH.md`](LAUNCH.md) — **priorité business (utilisateurs)**
 5. [`docs/product/STATUS.md`](docs/product/STATUS.md) — vérité condensée
 
+**Audit UX 6 personas (relançable) :**  
+[`docs/session/PROMPT_PERSONA_AUDIT_NEXT.md`](docs/session/PROMPT_PERSONA_AUDIT_NEXT.md) — phrase de lancement dans le fichier + `HANDOFF_NEXT` section A.
+
 ## Règles owner
 
 1. Local d’abord → `http://localhost:3000`
