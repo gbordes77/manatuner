@@ -1,7 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date :** 2026-08-01  
-> **Branche live :** `main` @ **v2.7.6** (vague F)  
+> **Branche live :** `main` @ **`7febc34`** · **v2.7.6** (vague F)  
 > **Prod :** https://www.manatuner.app/  
 > **Repo :** https://github.com/gbordes77/manatuner  
 > **Handoff prochaines étapes :** `HANDOFF_NEXT.md`
