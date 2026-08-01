@@ -83,7 +83,7 @@ export const BetaBanner: React.FC = () => {
               component="span"
               sx={{ fontWeight: 'medium', fontSize: '0.8rem' }}
             >
-              Help us improve ManaTuner!
+              Help us improve ManaTuner! (dismiss = hide banner; feedback stays in the footer)
             </Typography>
             <Chip
               icon={<FeedbackIcon />}

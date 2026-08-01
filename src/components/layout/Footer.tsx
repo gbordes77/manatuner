@@ -128,6 +128,22 @@ export const Footer: React.FC = () => {
               }}
             >
               <Link
+                href="https://tally.so/r/A7KRkN"
+                target="_blank"
+                rel="noopener noreferrer"
+                color="inherit"
+                sx={{
+                  fontWeight: 600,
+                  transition: 'color 0.2s ease',
+                  '&:hover': { color: theme.palette.primary.main },
+                }}
+              >
+                Feedback
+              </Link>
+
+              <Divider orientation="vertical" flexItem />
+
+              <Link
                 href="https://github.com/gbordes77/manatuner"
                 target="_blank"
                 rel="noopener noreferrer"
