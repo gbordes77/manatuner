@@ -123,9 +123,9 @@ const CompareView: React.FC<{
     avgCMC: record.analysis?.averageCMC || 0,
     landRatio: record.analysis?.landRatio || 0,
     colors: record.analysis?.colorDistribution
-      ? Object.entries(record.analysis.colorDistribution)
-          .filter(([, v]) => (v as number) > 0)
-          .map(([k]) => k)
+      ? (['W', 'U', 'B', 'R', 'G'] as const).filter(
+          (k) => (record.analysis.colorDistribution[k] as number) > 0
+        )
       : [],
     probabilities: record.analysis?.probabilities || null,
     cards: record.analysis?.cards || [],
@@ -356,9 +356,10 @@ const AnalysisCard: React.FC<{
   selected: boolean
   onToggleSelect: () => void
 }> = ({ analysis, onLoad, onDelete, compareMode, selected, onToggleSelect }) => {
+  // WUBRG only — colorless is not a deck color chip (P0-EDH-1)
   const colors: string[] = analysis.analysis?.colorDistribution
-    ? Object.keys(analysis.analysis.colorDistribution).filter(
-        (c) => analysis.analysis.colorDistribution[c] > 0
+    ? (['W', 'U', 'B', 'R', 'G'] as const).filter(
+        (c) => (analysis.analysis.colorDistribution[c] || 0) > 0
       )
     : []
   const totalCards = analysis.analysis?.totalCards || 0
@@ -576,8 +577,8 @@ const MyAnalysesPage: React.FC = () => {
       // Color filter
       if (colorFilter.length > 0) {
         const deckColors = a.analysis?.colorDistribution
-          ? Object.keys(a.analysis.colorDistribution).filter(
-              (c) => a.analysis.colorDistribution[c] > 0
+          ? (['W', 'U', 'B', 'R', 'G'] as const).filter(
+              (c) => (a.analysis.colorDistribution[c] || 0) > 0
             )
           : []
         if (!colorFilter.every((c) => deckColors.includes(c))) return false

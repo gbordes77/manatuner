@@ -1,9 +1,40 @@
-import { MANA_COLORS, ManaColor } from '../types'
+import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
 import { landService } from './landService'
 import { analyzeSpellCastability, compareTempoImpact } from './manaCalculator'
 import { BoundedMap } from './scryfall'
+
+/**
+ * Count active WUBRG colors in a land colorDistribution map.
+ * Colorless (C) is never a "color" for identity messaging (P0-EDH-1).
+ */
+export function countActiveWubrgColors(
+  colorDistribution: Partial<Record<string, number>> | undefined | null
+): number {
+  if (!colorDistribution) return 0
+  return WUBRG_COLORS.filter((color) => (colorDistribution[color] || 0) > 0).length
+}
+
+/**
+ * Deck color identity from non-land spells (WUBRG only).
+ * Prefer this over land production for multi-color recommendations:
+ * any-color lands (Command Tower, City of Brass) would otherwise inflate
+ * a 4c Atraxa list to 5 colors (P0-EDH-1).
+ */
+export function countActiveWubrgFromSpells(
+  cards: Array<{ isLand?: boolean; colors?: string[] }> | undefined | null
+): number {
+  if (!cards?.length) return 0
+  const active = new Set<string>()
+  for (const card of cards) {
+    if (card.isLand) continue
+    for (const c of card.colors || []) {
+      if ((WUBRG_COLORS as readonly string[]).includes(c)) active.add(c)
+    }
+  }
+  return active.size
+}
 
 // Cache pour éviter les appels répétés à Scryfall.
 // Audit fix H4 (2026-04-13): use BoundedMap (LRU, cap 500) instead of unbounded
@@ -1065,22 +1096,20 @@ export class DeckAnalyzer {
       )
     }
 
-    // Color distribution recommendations
-    if (analysis.colorDistribution) {
-      const colors = Object.keys(analysis.colorDistribution) as ManaColor[]
-      const activeColors = colors.filter((color) => (analysis.colorDistribution![color] || 0) > 0)
+    // Multi-color reco — identity from non-land spell colors (WUBRG only).
+    // P0-EDH-1: do not use land colorDistribution (any-color lands + C inflated
+    // Atraxa 4c to "5–6 colors"). Threshold ≥ 3 WUBRG.
+    const activeWubrgCount = countActiveWubrgFromSpells(cards)
+    if (activeWubrgCount >= 3) {
+      recommendations.push(
+        `🌈 Multi-color deck detected (${activeWubrgCount} colors). Consider more dual lands and mana fixing.`
+      )
 
-      if (activeColors.length >= 3) {
+      // Starting Town specific recommendation for multicolor decks
+      if (complexAnalysis.flexibleManaLands < activeWubrgCount * 2) {
         recommendations.push(
-          `🌈 Multi-color deck detected (${activeColors.length} colors). Consider more dual lands and mana fixing.`
+          `✨ Starting Town would be excellent here - provides any color early game and remains useful late game.`
         )
-
-        // Starting Town specific recommendation for multicolor decks
-        if (complexAnalysis.flexibleManaLands < activeColors.length * 2) {
-          recommendations.push(
-            `✨ Starting Town would be excellent here - provides any color early game and remains useful late game.`
-          )
-        }
       }
     }
 

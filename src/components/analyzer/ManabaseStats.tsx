@@ -1,6 +1,10 @@
 import { Box, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
-import { AnalysisResult } from '../../services/deckAnalyzer'
+import {
+  AnalysisResult,
+  countActiveWubrgColors,
+  countActiveWubrgFromSpells,
+} from '../../services/deckAnalyzer'
 
 interface ManabaseStatsProps {
   analysisResult: AnalysisResult
@@ -70,7 +74,11 @@ export const ManabaseStats: React.FC<ManabaseStatsProps> = ({ analysisResult, is
               color="primary"
               sx={{ fontSize: isMobile ? '1.2rem' : undefined }}
             >
-              {Object.values(analysisResult.colorDistribution).filter((v) => v > 0).length}
+              {
+                // Spell identity first (Atraxa 4c); fallback land map WUBRG only (P0-EDH-1)
+                countActiveWubrgFromSpells(analysisResult.cards) ||
+                  countActiveWubrgColors(analysisResult.colorDistribution)
+              }
             </Typography>
             <Typography
               variant={isMobile ? 'caption' : 'body2'}

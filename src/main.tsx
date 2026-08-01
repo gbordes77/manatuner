@@ -59,7 +59,7 @@ if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: import.meta.env.MODE || 'production',
-    release: 'manatuner@2.7.7',
+    release: 'manatuner@2.7.8',
     tracesSampleRate: 0.05,
     sendDefaultPii: false,
     beforeSend: scrubSentryEvent,

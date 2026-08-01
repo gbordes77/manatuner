@@ -2,17 +2,17 @@
 
 **Ce fichier existe pour une seule raison : tu as un produit fini qui n'a pas d'utilisateurs.**
 
-> **Métriques produit (rafraîchies 2026-08-01 post v2.7.7) :** live https://www.manatuner.app · **Engine v2.7.7** · SHA feature+fix `ac8371e`/`f0e5d7f` · unit **369** pass / 2 skip · vagues A–G shippées (EDH T4–T8, command zone, Karsten N/60, workers clone-safe, MC seed, prerender soft SPA).  
+> **Métriques produit (rafraîchies 2026-08-01 post v2.7.8) :** live https://www.manatuner.app · **Engine v2.7.8** · unit **381** pass / 2 skip · vagues A–G + persona polish H (Joyride non-bloquant, EDH 4c, légende Castability, Share Discord).  
 > **Message inchangé :** le goulot n’est **pas** une feature manquante — c’est la **distribution**.  
 > Détail technique journée : `docs/session/HANDOFF_2026-08-01.md`. Ne pas rouvrir Moxfield URL / i18n FR / backend / Sentry / analytics decklist sans owner.
 
 ---
 
-## L'ETAT DES LIEUX (mis a jour 2026-08-01 — v2.7.7 ; plan de lancement inchangé)
+## L'ETAT DES LIEUX (mis a jour 2026-08-01 — v2.7.8 ; plan de lancement inchangé)
 
 Le produit est **pret**. Ce n'est pas une opinion, ce sont les faits :
 
-- **369** tests unit passent, 2 skipped, 0 echec (fin vague G)
+- **381** tests unit passent, 2 skipped, 0 echec (post persona polish 2.7.8)
 - Deploye sur Vercel, live a https://www.manatuner.app (SPA ; prerender crawler soft-fail tant que Chromium Vercel incomplet)
 - Moteur hypergeometrique unifie, audite, valide contre Karsten (+ scale N/60 pour 100c)
 - Moteur d'acceleration K=3 (DORK/ROCK/ENHANCER) — **aucun concurrent n'a ca**
@@ -20,7 +20,7 @@ Le produit est **pret**. Ce n'est pas une opinion, ce sont les faits :
 - 100% client-side, zero compte, zero tracking decklist, zero Supabase — **aucun concurrent ne propose ca**
 - **Couverture formats full** : Constructed + Commander (auto-format, command zone, horizon T4–T8) + Limited. Samples `?sample=aggro|midrange|control|edh|limited` / `?format=commander`
 - **Library** : 54 ressources curées (tracks First FNM / RCQ / Pro Tour / Commander / Limited), routes article + author, feeds RSS/JSON
-- Tabs : Castability > Analysis > Mulligan > Manabase > Blueprint + Health Score / QuickVerdict + stamp Engine v2.7.7
+- Tabs : Castability > Analysis > Mulligan > Manabase > Blueprint + Health Score / QuickVerdict + stamp Engine v2.7.8
 - Feedback permanent header + footer (Tally externe, pas de deck envoyé)
 
 **Tu n'as pas un probleme de produit. Tu as un probleme de distribution.**

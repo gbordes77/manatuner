@@ -464,6 +464,80 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
 
       {nonLandCards.length > 0 ? (
         <Box>
+          {/* P1-1: permanent legend ABOVE the % wall (sticky) — Leo/Sarah must see
+              Perfect vs Realistic without scrolling past every spell. */}
+          <Box
+            data-testid="castability-legend"
+            sx={{
+              mb: 1.5,
+              p: { xs: 1.25, sm: 1.5 },
+              bgcolor: 'action.hover',
+              borderRadius: 1,
+              border: '1px solid',
+              borderColor: 'divider',
+              position: 'sticky',
+              top: { xs: 0, md: 8 },
+              zIndex: 2,
+              backdropFilter: 'blur(6px)',
+            }}
+          >
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{
+                fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                lineHeight: 1.5,
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                flexWrap: 'wrap',
+                gap: { xs: 0.5, sm: 1 },
+              }}
+            >
+              <Box
+                component="span"
+                sx={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap' }}
+              >
+                <strong>
+                  <Term id="best-case">Perfect drops</Term>
+                </strong>
+                &nbsp;= right colors if lands on curve
+              </Box>
+              <Box
+                component="span"
+                sx={{ display: { xs: 'none', sm: 'inline' }, color: 'text.secondary' }}
+                aria-hidden
+              >
+                ·
+              </Box>
+              <Box
+                component="span"
+                sx={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap' }}
+              >
+                <strong>
+                  <Term id="realistic">Realistic</Term>
+                </strong>
+                &nbsp;= what to optimize (mana screw
+                {producersInDeck.length > 0 ? ' + rocks/dorks' : ''})
+              </Box>
+              <Tooltip
+                title="Perfect drops: chance of the right colors if you always hit land drops on curve. Realistic: on-curve cast chance including mana screw (and rocks/dorks when acceleration is on). Perfect drops is always ≥ Realistic (same model). Focus on Realistic."
+                arrow
+                placement="top"
+              >
+                <IconButton
+                  size="small"
+                  sx={{ p: 0.25, ml: { xs: 0, sm: 0.25 } }}
+                  component="a"
+                  href="/mathematics#probabilities"
+                  aria-label="Explain Perfect drops vs Realistic probabilities"
+                >
+                  <HelpOutlineIcon sx={{ fontSize: 16, opacity: 0.6 }} />
+                </IconButton>
+              </Tooltip>
+            </Typography>
+          </Box>
+
           <Grid container spacing={1} sx={{ mb: 2, display: { xs: 'none', md: 'flex' } }}>
             <Grid item md={4}>
               <Typography variant="subtitle2" color="text.secondary">
@@ -570,28 +644,11 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         </Box>
       )}
 
-      <Box sx={{ mt: 3, p: 2, bgcolor: 'action.hover', borderRadius: 1 }}>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', gap: 0.5 }}
-        >
-          <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            <strong>
-              <Term id="best-case">Perfect drops</Term>
-            </strong>
-            &nbsp;= right colors if lands on curve
-          </Box>
-          <Box component="span" sx={{ mx: 1 }}>
-            |
-          </Box>
-          <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-            <strong>
-              <Term id="realistic">Realistic</Term>
-            </strong>
-            &nbsp;= mana screw
-            {producersInDeck.length > 0 ? ' + rocks/dorks' : ''} (optimize this)
-          </Box>
+      {/* Footer echo kept short — primary legend is sticky at top (P1-1) */}
+      <Box sx={{ mt: 2, px: 0.5 }}>
+        <Typography variant="caption" color="text.secondary">
+          Tip: optimize <strong>Realistic</strong> first — Perfect drops is always ≥ Realistic (same
+          model).
         </Typography>
       </Box>
     </>

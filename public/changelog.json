@@ -6,8 +6,20 @@
   "format": "keepachangelog-1.0.0",
   "semver": "2.0.0",
   "note": "Machine-readable version history. Generated from CHANGELOG.md. Each entry is summary-level; full changelog at https://github.com/gbordes77/ManaTuner-v2/blob/main/CHANGELOG.md",
-  "current": "2.7.7",
+  "current": "2.7.8",
   "versions": [
+    {
+      "version": "2.7.8",
+      "date": "2026-08-01",
+      "title": "Persona audit P0/P1: non-blocking Joyride, EDH 4-color identity, sticky Perfect/Realistic legend, Discord share toast",
+      "highlights": [
+        "Joyride no longer blocks Try Example / Analyze on first visit",
+        "Multi-color reco uses WUBRG spell identity (Atraxa sample = 4 colors, never 6)",
+        "Sticky Castability legend: Perfect drops vs Realistic",
+        "Share snackbar: Share link copied — paste in Discord",
+        "Unit tests 381 pass / 2 skip; Engine stamp v2.7.8"
+      ]
+    },
     {
       "version": "2.7.7",
       "date": "2026-08-01",

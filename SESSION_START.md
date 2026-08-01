@@ -1,7 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date :** 2026-08-01  
-> **Prod :** **v2.7.7** · SHA **`f0e5d7f`** · https://www.manatuner.app  
+> **Prod :** **v2.7.8** · https://www.manatuner.app · stamp **Engine v2.7.8**  
 > **Docs index :** [`docs/README.md`](docs/README.md) · **État produit :** [`docs/product/STATUS.md`](docs/product/STATUS.md)
 
 ## Ordre de lecture
@@ -28,7 +28,7 @@
 ```bash
 cd "/Volumes/DataDisk/_Projects/Project Mana base V2"
 npm run dev          # port 3000
-npm run test:unit    # 369 pass / 2 skip
+npm run test:unit    # 381 pass / 2 skip
 npm run build:vercel # prod Vercel (prerender soft-fail)
 ```
 
@@ -37,13 +37,15 @@ Routes : `/` · `/analyzer` · `/my-analyses` · `/library` · `/guide` · `/mat
 ## Invariants
 
 - `etbTapped` **boolean** · `toCloneableDeckCards` · hypergeom SSOT · Karsten N/60 · EDH T4–T8 · P1≥P2 · Fisher-Yates
+- Multi-color reco : WUBRG spell identity only
 - Sentry : SDK + Vite plugin installés ; **init off** sans `VITE_SENTRY_DSN` (voir `SECURITY.md`)
 
 ## Smoke prod
 
-1. `/analyzer?sample=edh` → Commander, T4–T8, Atraxa
-2. Try Example → 5 tabs + **Engine v2.7.7**
-3. Feedback header + footer
+1. `/analyzer?sample=edh` → Commander, T4–T8, Atraxa, **4 colors** (jamais 6)
+2. First-visit `/analyzer` → **Try Example sans Skip** Joyride
+3. Try Example → 5 tabs + **Engine v2.7.8** + légende Perfect/Realistic + Share Discord
+4. Feedback header + footer
 
 ## Où est le reste des docs ?
 

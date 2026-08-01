@@ -1,17 +1,16 @@
 # État produit — ManaTuner (production)
 
 > **Source de vérité condensée.** Détail journée : [`../session/HANDOFF_2026-08-01.md`](../session/HANDOFF_2026-08-01.md).  
-> **Mis à jour :** 2026-08-01
+> **Mis à jour :** 2026-08-01 (post persona polish **v2.7.8**)
 
 |                     |                                                                 |
 | ------------------- | --------------------------------------------------------------- |
-| **Version**         | **2.7.7** (`package.json`)                                      |
-| **Engine stamp UI** | `Engine v2.7.7`                                                 |
-| **SHA feature G**   | `ac8371e`                                                       |
-| **SHA fix deploy**  | **`f0e5d7f`** (soft-fail prerender Vercel)                      |
+| **Version**         | **2.7.8** (`package.json`)                                      |
+| **Engine stamp UI** | `Engine v2.7.8`                                                 |
+| **SHA**             | _(voir `git rev-parse --short HEAD` après push)_                |
 | **Live**            | https://www.manatuner.app                                       |
 | **Repo**            | https://github.com/gbordes77/manatuner                          |
-| **Tests unit**      | **369** pass / 2 skip                                           |
+| **Tests unit**      | **381** pass / 2 skip                                           |
 | **Hébergement**     | Vercel · build `npm run build:vercel`                           |
 | **Mode crawl**      | SPA (HTML prerender **pas** garanti en prod si Chromium absent) |
 
@@ -28,14 +27,15 @@ Analyseur manabase MTG **100 % client-side** :
 
 ## Vagues 2026-08-01 (shippées)
 
-| Vague | Version   | Contenu                                     |
-| ----- | --------- | ------------------------------------------- |
-| A–B   | 2.7.x     | P0 trust, UX Learn/Feedback, Health Score   |
-| C     | 2.7.3     | EDH/Limited first-class                     |
-| D     | 2.7.4     | Karsten N/60                                |
-| E     | 2.7.5     | Command zone + T4–T8                        |
-| F     | 2.7.6     | etbTapped boolean, MC seed, archetype, a11y |
-| G     | **2.7.7** | Prerender soft, polish, E2E harden          |
+| Vague | Version   | Contenu                                                  |
+| ----- | --------- | -------------------------------------------------------- |
+| A–B   | 2.7.x     | P0 trust, UX Learn/Feedback, Health Score                |
+| C     | 2.7.3     | EDH/Limited first-class                                  |
+| D     | 2.7.4     | Karsten N/60                                             |
+| E     | 2.7.5     | Command zone + T4–T8                                     |
+| F     | 2.7.6     | etbTapped boolean, MC seed, archetype, a11y              |
+| G     | 2.7.7     | Prerender soft, polish, E2E harden                       |
+| H     | **2.7.8** | Persona audit P0/P1 (Joyride, EDH colors, legend, Share) |
 
 ## Invariants
 
@@ -47,6 +47,7 @@ Analyseur manabase MTG **100 % client-side** :
 6. **P1 ≥ P2** même moteur
 7. Privacy : pas de backend decklists ; Sentry **off** sans `VITE_SENTRY_DSN`
 8. Fisher-Yates pour shuffles
+9. Multi-color reco : **WUBRG spell identity** only (pas C, pas any-color lands)
 
 ## Routes
 
@@ -54,12 +55,12 @@ Analyseur manabase MTG **100 % client-side** :
 
 ## Backlog honnête
 
-| Priorité        | Item                                                            |
-| --------------- | --------------------------------------------------------------- |
-| **P0 business** | Distribution — [`../../LAUNCH.md`](../../LAUNCH.md)             |
-| Optionnel       | Prerender HTML réel (deps Chromium Vercel) ; polish ; a11y deep |
-| Dette math      | Dual engines ManaCostRow (inline + accel)                       |
-| Sans owner      | Moxfield URL, i18n FR, backend, Sentry DSN, analytics decklist  |
+| Priorité        | Item                                                           |
+| --------------- | -------------------------------------------------------------- |
+| **P0 business** | Distribution — [`../../LAUNCH.md`](../../LAUNCH.md)            |
+| Optionnel       | P1-3 Critical label · P1-4 empty My Analyses · P2 exports      |
+| Dette math      | Dual engines ManaCostRow (inline + accel)                      |
+| Sans owner      | Moxfield URL, i18n FR, backend, Sentry DSN, analytics decklist |
 
 ## Sentry (état code)
 

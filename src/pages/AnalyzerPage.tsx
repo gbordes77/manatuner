@@ -392,9 +392,22 @@ const AnalyzerPage: React.FC = () => {
     if (!deckList.trim()) return
     const url = buildShareUrl({ deckList, deckName, tab: activeTab })
     if (!url) return
-    navigator.clipboard.writeText(url).then(() => {
-      dispatch(showSnackbar({ message: 'Share link copied to clipboard!', severity: 'success' }))
-    })
+    // P1-2: explicit Discord hint so Share isn't silent clipboard (persona Partage)
+    const shareToastMessage = 'Share link copied — paste in Discord'
+    navigator.clipboard.writeText(url).then(
+      () => {
+        dispatch(showSnackbar({ message: shareToastMessage, severity: 'success' }))
+      },
+      () => {
+        // Clipboard may fail in insecure contexts; still surface the URL intent
+        dispatch(
+          showSnackbar({
+            message: 'Could not copy automatically — use the address bar to share',
+            severity: 'warning',
+          })
+        )
+      }
+    )
   }, [deckList, deckName, activeTab, dispatch])
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -455,10 +468,11 @@ const AnalyzerPage: React.FC = () => {
           R: 'Red',
           G: 'Green',
         }
+        // WUBRG only — never count colorless as a deck color (P0-EDH-1)
         const activeColors = result.colorDistribution
-          ? Object.entries(result.colorDistribution)
-              .filter(([, v]) => v > 0)
-              .map(([k]) => colorNames[k] || k)
+          ? (['W', 'U', 'B', 'R', 'G'] as const)
+              .filter((k) => (result.colorDistribution[k] || 0) > 0)
+              .map((k) => colorNames[k] || k)
           : []
         const colorLabel =
           activeColors.length > 0 ? `${activeColors.length}C ${activeColors.join('/')}` : 'Deck'
@@ -941,7 +955,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.7 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.8 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

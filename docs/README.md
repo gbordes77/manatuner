@@ -1,6 +1,6 @@
 # Documentation ManaTuner
 
-> **Produit live :** [manatuner.app](https://www.manatuner.app) · **v2.7.7** · Engine stamp `Engine v2.7.7`  
+> **Produit live :** [manatuner.app](https://www.manatuner.app) · **v2.7.8** · Engine stamp `Engine v2.7.8`  
 > **SHA référence (fix deploy jour 2026-08-01) :** `f0e5d7f`  
 > **Racine repo (docs actives) :** `README.md` · `LAUNCH.md` · `SESSION_START.md` · `CHANGELOG.md` · `CLAUDE.md`
 

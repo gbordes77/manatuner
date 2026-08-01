@@ -2,13 +2,15 @@
 
 ## Latest (2026-08-01) — lire en premier
 
-- **Prod :** **v2.7.7** · SHA **`f0e5d7f`** · stamp **Engine v2.7.7** · https://www.manatuner.app
+- **Prod :** **v2.7.8** · stamp **Engine v2.7.8** · https://www.manatuner.app
 - **Boot :** `SESSION_START.md` · **Index docs :** `docs/README.md` · **État :** `docs/product/STATUS.md`
 - **SSOT journée :** `docs/session/HANDOFF_2026-08-01.md` · suite : `docs/session/HANDOFF_NEXT.md`
+- **Ship 2.7.8 :** persona P0/P1 — Joyride non-bloquant · EDH 4 colors · légende Perfect/Realistic · Share Discord
+- **Baseline audit v2.7.7 :** `docs/session/PERSONA_AUDIT_2026-08-01.md` (moy 4.00) — re-audit pour deltas
 - **Priorité business :** `LAUNCH.md` (distribution) — pas de feature gratuite
 - **Personas :** `docs/personas/mtg-player-personas.md`
 - **Sentry :** `@sentry/react` + `@sentry/vite-plugin` installés ; **init off** sans `VITE_SENTRY_DSN` ; scrubber `beforeSend` prêt ; voir `SECURITY.md`
-- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side
+- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side ; multi-color = WUBRG spells
 - **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
 - **Prerender :** soft-fail Vercel → SPA ; HTML crawler **pas** garanti en prod
 

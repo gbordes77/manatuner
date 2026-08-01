@@ -5,22 +5,26 @@ All notable changes to ManaTuner will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — Docs reorg + Sentry Vite plugin (privacy-gated)
+## [Unreleased]
 
-### Changed
+## [2.7.8] - 2026-08-01 — Persona audit P0/P1 polish (Joyride, EDH colors, Castability legend, Share toast)
 
-- **Documentation reorganized** under `docs/` (session, engineering, math, product, archive, personas, marketing, seo, security). Root keeps only README, LAUNCH, SESSION_START, CHANGELOG, CLAUDE, legal files.
-- Product status SSOT: `docs/product/STATUS.md` · index: `docs/README.md`
-- Removed root junk: `presentation.html` (duplicate of `public/`), `mtg-player-personas-portable.md`
+### Fixed
 
-### Added
+- **P0-UX-1 Joyride non-blocking** — first-visit overlay no longer blocks **Try Example** / **Analyze** (CSS `pointer-events` override + CTA auto-dismiss + skip tour on `?sample=` / `?format=`)
+- **P0-EDH-1 Multi-color count** — recommendations use **WUBRG spell identity** only (never colorless + any-color lands). Atraxa `?sample=edh` → **4 colors**, never 6
 
-- **`@sentry/vite-plugin`** (devDependency) — source-map upload only when `SENTRY_AUTH_TOKEN` + org/project are set
-- **Sentry `beforeSend` scrubber** in `src/main.tsx` (strips URL query / PII / heavy breadcrumbs; no Replay) — runtime still **off** without `VITE_SENTRY_DSN`
+### Added / Changed
+
+- **P1-1 Castability legend** sticky above the % list: Perfect drops vs Realistic (always visible desktop + mobile)
+- **P1-2 Share toast** — _Share link copied — paste in Discord_ (snackbar ≥ 3 s, already 6 s)
+- Unit tests: Onboarding helpers + `countActiveWubrgColors` / `countActiveWubrgFromSpells`
+- Docs reorg under `docs/` + Sentry Vite plugin privacy-gated (from prior unreleased commit)
 
 ### Notes
 
-- Privacy claim unchanged: no crash reports in prod until DSN is deliberately enabled with PrivacySettings + opt-out (see `SECURITY.md`).
+- Unit tests: **381** pass / 2 skip. Engine stamp: **v2.7.8**.
+- Baseline audit: `docs/session/PERSONA_AUDIT_2026-08-01.md` (v2.7.7, moy 4.00). Re-audit after ship for score deltas.
 
 ## [2.7.7] - 2026-08-01 — Wave G: prerender soft-fail, UI polish, a11y, E2E harden
 
