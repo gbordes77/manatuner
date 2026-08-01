@@ -99,16 +99,16 @@ describe('landUtils - categorizeLandComplete', () => {
     expect(categorizeLandComplete('Horizon Canopy')).toBe('Horizon Land')
   })
 
-  test('catégorise les rainbow lands', () => {
-    expect(categorizeLandComplete('Mana Confluence')).toBe('Rainbow Land')
-    expect(categorizeLandComplete('City of Brass')).toBe('Rainbow Land')
+  test('catégorise les rainbow / any-color utility lands via seed', () => {
+    // Seed source of truth: category "utility" → LAND_CATEGORY_NAMES
+    expect(categorizeLandComplete('Mana Confluence')).toBe('Utility Land')
+    expect(categorizeLandComplete('City of Brass')).toBe('Utility Land')
   })
 
   test('retourne une catégorie valide pour les lands non spécifiquement catégorisés', () => {
     const result = categorizeLandComplete('Some Unknown Land')
-    // La fonction retourne toujours une catégorie valide
-    expect(typeof result).toBe('string')
-    expect(result.length).toBeGreaterThan(0)
+    // Hors seed: pas de fetch sync — label de repli stable
+    expect(result).toBe('Other Land')
   })
 })
 

@@ -23,6 +23,7 @@ import type {
 } from '../types/manaProducers'
 import { FORMAT_REMOVAL_RATES, colorMaskFromLetters } from '../types/manaProducers'
 import { computeAcceleratedCastability, computeCastabilityByTurn } from './castability'
+import { fetchWithTimeout } from './http'
 
 // =============================================================================
 // CONSTANTS
@@ -419,8 +420,10 @@ export function analyzeOracleForMana(oracleText: string): {
  */
 async function detectProducerFromScryfall(cardName: string): Promise<ManaProducerDef | null> {
   try {
-    const response = await fetch(
-      `https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(cardName)}`
+    const response = await fetchWithTimeout(
+      `https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(cardName)}`,
+      {},
+      { timeoutMs: 8000, retries: 1 }
     )
 
     if (!response.ok) return null

@@ -9,8 +9,6 @@ function card(partial: Partial<DeckCard> & { name: string; quantity: number }): 
     colors: [],
     isLand: false,
     cmc: 2,
-    resolved,
-    resolution,
     ...partial,
     resolved: partial.resolved ?? resolved,
     resolution: partial.resolution ?? resolution,

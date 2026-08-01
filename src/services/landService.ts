@@ -18,6 +18,7 @@ import type {
   LandMetadata,
 } from '@/types/lands'
 
+import { LAND_CATEGORY_NAMES } from '@/types/lands'
 import { LAND_SEED } from '../data/landSeed'
 import { landCacheService } from './landCacheService'
 import { fetchLandData, type ScryfallLandData } from './scryfall'
@@ -188,6 +189,9 @@ const CATEGORY_PATTERNS: Array<{
 class LandService implements ILandService {
   private initialized = false
 
+  /** Case-insensitive index over local seed data (sync, no network). */
+  private seedByLower: Map<string, LandMetadata> | null = null
+
   constructor() {
     this.initialize()
   }
@@ -200,14 +204,62 @@ class LandService implements ILandService {
 
     // Preload seed data into cache
     landCacheService.preloadFromSeed(LAND_SEED)
+    this.ensureSeedIndex()
     this.initialized = true
 
     console.debug('[LandService] Initialized with seed data')
   }
 
+  /**
+   * Build (once) a lowercased map of seed lands for O(1) sync lookup.
+   */
+  private ensureSeedIndex(): void {
+    if (this.seedByLower) return
+    this.seedByLower = new Map()
+    for (const [name, metadata] of Object.entries(LAND_SEED)) {
+      this.seedByLower.set(name.toLowerCase(), metadata)
+    }
+  }
+
   // ===========================================================================
   // PUBLIC METHODS
   // ===========================================================================
+
+  /**
+   * Synchronous land lookup against seed + in-memory/localStorage cache.
+   * No network — unknown names return null (async detectLand handles Scryfall).
+   */
+  getLandSync(cardName: string): LandMetadata | null {
+    const trimmed = cardName?.trim()
+    if (!trimmed) return null
+
+    // 1. Cache (seed preloaded + prior Scryfall hits)
+    const cached = landCacheService.get(trimmed)
+    if (cached) return cached
+
+    // 2. Case-insensitive seed index (handles "PLAINS", "sacred foundry", etc.)
+    this.ensureSeedIndex()
+    const fromSeed = this.seedByLower!.get(trimmed.toLowerCase())
+    if (fromSeed) return fromSeed
+
+    return null
+  }
+
+  /**
+   * Synchronous land check (seed/cache only — never throws, never fetches).
+   */
+  isLandSync(cardName: string): boolean {
+    return this.getLandSync(cardName) !== null
+  }
+
+  /**
+   * Human-readable category label from seed/cache, or "Other Land" if unknown.
+   */
+  getCategoryLabelSync(cardName: string): string {
+    const meta = this.getLandSync(cardName)
+    if (!meta) return 'Other Land'
+    return LAND_CATEGORY_NAMES[meta.category] || 'Other Land'
+  }
 
   /**
    * Detect and analyze a land by name.
@@ -217,10 +269,10 @@ class LandService implements ILandService {
    * @returns Land metadata or null if not a land
    */
   async detectLand(cardName: string): Promise<LandMetadata | null> {
-    // 1. Check cache (includes seed data)
-    const cached = landCacheService.get(cardName)
-    if (cached) {
-      return cached
+    // 1. Sync path (cache + seed) — no network
+    const syncHit = this.getLandSync(cardName)
+    if (syncHit) {
+      return syncHit
     }
 
     // 2. Fetch from Scryfall

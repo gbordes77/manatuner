@@ -1,6 +1,7 @@
 import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
+import { fetchWithTimeout } from './http'
 import { landService } from './landService'
 import { analyzeSpellCastability, compareTempoImpact } from './manaCalculator'
 import { BoundedMap } from './scryfall'
@@ -55,11 +56,15 @@ async function batchFetchFromScryfall(cardNames: string[]): Promise<void> {
     const identifiers = batch.map((name) => ({ name }))
 
     try {
-      const response = await fetch('https://api.scryfall.com/cards/collection', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifiers }),
-      })
+      const response = await fetchWithTimeout(
+        'https://api.scryfall.com/cards/collection',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifiers }),
+        },
+        { timeoutMs: 8000, retries: 1 }
+      )
 
       if (response.ok) {
         const data = await response.json()
@@ -315,21 +320,13 @@ export class DeckAnalyzer {
 
     type Attempt = { kind: 'ok'; data: ScryfallCard } | { kind: 'not_found' } | { kind: 'error' }
 
-    const tryFetch = async (url: string, attempt = 0): Promise<Attempt> => {
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 8000)
+    const tryFetch = async (url: string): Promise<Attempt> => {
       try {
-        const response = await fetch(url, { signal: controller.signal })
-        clearTimeout(timeoutId)
+        // Shared helper: 8s timeout, retry once on 429/5xx (Retry-After aware)
+        const response = await fetchWithTimeout(url, {}, { timeoutMs: 8000, retries: 1 })
 
         if (response.ok) {
           return { kind: 'ok', data: (await response.json()) as ScryfallCard }
-        }
-
-        // Retry transient failures once with short backoff
-        if ((response.status === 429 || response.status >= 500) && attempt < 1) {
-          await new Promise((r) => setTimeout(r, 400))
-          return tryFetch(url, attempt + 1)
         }
 
         if (response.status === 404) {
@@ -338,11 +335,6 @@ export class DeckAnalyzer {
 
         return { kind: 'error' }
       } catch (error) {
-        clearTimeout(timeoutId)
-        if (attempt < 1) {
-          await new Promise((r) => setTimeout(r, 400))
-          return tryFetch(url, attempt + 1)
-        }
         console.warn(`Scryfall fetch failed for "${cardName}":`, error)
         return { kind: 'error' }
       }
@@ -1645,60 +1637,43 @@ export class DeckAnalyzer {
     cards
       .filter((card) => card.isLand)
       .forEach((land) => {
-        const lowerName = land.name.toLowerCase()
+        // Prefer Scryfall-attached metadata, else seed/cache sync lookup
+        const meta = land.landMetadata ?? landService.getLandSync(land.name)
+        const category = meta?.category
+        const producesAny = meta?.producesAny === true
+        const etbType = meta?.etbBehavior?.type
+        const etbCondition = meta?.etbBehavior?.condition
 
-        // Starting Town analysis
-        if (lowerName.includes('starting town')) {
-          earlyGameLands += land.quantity // Excellent early game
-          lateGameLands += land.quantity // Still useful late game
-          lifeCostLands += land.quantity // Coût en vie pour mana coloré
-          flexibleManaLands += land.quantity // Peut produire toutes les couleurs
-          timingDependentLands.push(`${land.quantity}x ${land.name} (optimal turns 1-3)`)
+        // Starting Town / turn-threshold ETB (optimal early turns)
+        if (etbCondition?.type === 'turn_threshold') {
+          earlyGameLands += land.quantity
+          lateGameLands += land.quantity
+          if (producesAny) {
+            lifeCostLands += land.quantity
+            flexibleManaLands += land.quantity
+          }
+          timingDependentLands.push(
+            `${land.quantity}x ${land.name} (optimal turns 1-${etbCondition.threshold ?? 3})`
+          )
         }
 
-        // Shocklands analysis
-        else if (
-          [
-            'temple garden',
-            'sacred foundry',
-            'steam vents',
-            'overgrown tomb',
-            'watery grave',
-            'godless shrine',
-            'stomping ground',
-            'breeding pool',
-            'blood crypt',
-            'hallowed fountain',
-          ].some((shock) => lowerName.includes(shock))
-        ) {
+        // Shocklands: pay life to enter untapped
+        else if (category === 'shock') {
           earlyGameLands += land.quantity
-          lifeCostLands += land.quantity // 2 life pour entrer non-engagé
+          lifeCostLands += land.quantity
           flexibleManaLands += land.quantity
         }
 
-        // Fastlands analysis
-        else if (
-          [
-            'seachrome coast',
-            'darkslick shores',
-            'blackcleave cliffs',
-            'copperline gorge',
-            'razorverge thicket',
-            'inspiring vantage',
-            'concealed courtyard',
-            'spirebluff canal',
-            'blooming marsh',
-            'botanical sanctum',
-          ].some((fast) => lowerName.includes(fast))
-        ) {
-          earlyGameLands += land.quantity // Excellent early game
+        // Fastlands: untapped with ≤2 other lands
+        else if (category === 'fast') {
+          earlyGameLands += land.quantity
           timingDependentLands.push(`${land.quantity}x ${land.name} (optimal with ≤2 other lands)`)
         }
 
-        // Mana Confluence analysis
-        else if (lowerName.includes('mana confluence')) {
+        // Rainbow / any-color producers with life activation (Mana Confluence, City of Brass…)
+        else if (producesAny && etbType === 'always_untapped') {
           flexibleManaLands += land.quantity
-          lifeCostLands += land.quantity // 1 life par activation
+          lifeCostLands += land.quantity
         }
       })
 

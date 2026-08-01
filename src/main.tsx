@@ -1,7 +1,5 @@
 import * as Sentry from '@sentry/react'
 import { Box, CircularProgress } from '@mui/material'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -94,30 +92,6 @@ if ('serviceWorker' in navigator) {
   })
 }
 
-// Configure React Query client with performance optimizations
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      // Scryfall API cache for 10 minutes (réduit de 30 min)
-      staleTime: 10 * 60 * 1000,
-      // Keep in cache for 15 minutes (réduit de 30 min)
-      gcTime: 15 * 60 * 1000,
-      // Retry failed requests
-      retry: 1, // Réduit de 2 à 1
-      // Refetch on window focus for fresh data
-      refetchOnWindowFocus: false,
-      // Background refetch
-      refetchOnMount: false,
-      // Réduire les refetch automatiques
-      refetchOnReconnect: false,
-    },
-    mutations: {
-      // Retry mutations once
-      retry: 0, // Réduit de 1 à 0
-    },
-  },
-})
-
 // Loading component for PersistGate
 const PersistLoader = () => (
   <Box
@@ -167,22 +141,16 @@ const ErrorFallback = ({ error: _error }: { error: Error }) => (
   </div>
 )
 
-const isDevelopment = import.meta.env.DEV
-
 try {
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <Provider store={store}>
-          <PersistGate loading={<PersistLoader />} persistor={persistor}>
-            <BrowserRouter>
-              <App />
-              {/* React Query DevTools - only in development */}
-              {isDevelopment && <ReactQueryDevtools initialIsOpen={false} />}
-            </BrowserRouter>
-          </PersistGate>
-        </Provider>
-      </QueryClientProvider>
+      <Provider store={store}>
+        <PersistGate loading={<PersistLoader />} persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
+      </Provider>
     </React.StrictMode>
   )
 } catch (error) {

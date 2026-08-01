@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { DeckCard } from '../deckAnalyzer'
 import {
+  analyzeWithArchetype,
   chooseBottom,
   prepareDeckForSimulation,
-  analyzeMulliganStrategy,
-} from '../mulliganSimulator'
-import { analyzeWithArchetype, simulateSingleGameAdvanced } from '../mulliganSimulatorAdvanced'
+  simulateSingleGameAdvanced,
+} from '../mulliganSimulatorAdvanced'
 
 // =============================================================================
 // HELPERS
@@ -261,11 +261,21 @@ describe('simulateSingleGameAdvanced', () => {
 describe('London Mulligan library correctness', () => {
   it('should preserve total card count (hand + library = deck size)', () => {
     const deckCards = createTestDeck(24, 36)
-    const analysis = analyzeMulliganStrategy(deckCards, 100)
+    const analysis = analyzeWithArchetype(deckCards, 'midrange', 100)
 
     // If analysis completes without error, the library was correctly constructed
     expect(analysis).toBeDefined()
-    expect(analysis.values.length).toBe(4) // hand sizes 4, 5, 6, 7
+    expect(analysis.expectedScores).toBeDefined()
+    expect(analysis.distributions).toBeDefined()
+    expect(analysis.thresholds).toBeDefined()
+    expect(analysis.expectedScores.hand7).toBeGreaterThan(0)
+    expect(analysis.expectedScores.hand6).toBeGreaterThan(0)
+    expect(analysis.expectedScores.hand5).toBeGreaterThan(0)
+    expect(analysis.expectedScores.hand4).toBeGreaterThanOrEqual(0)
+    expect(analysis.distributions.hand7.length).toBeGreaterThan(0)
+    expect(analysis.distributions.hand6.length).toBeGreaterThan(0)
+    expect(analysis.distributions.hand5.length).toBeGreaterThan(0)
+    expect(analysis.thresholds.keep7).toBeGreaterThanOrEqual(0)
   })
 
   it('London Mulligan to 6 should score higher than random 6-card draw on average', () => {

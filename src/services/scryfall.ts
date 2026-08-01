@@ -1,6 +1,7 @@
 import type { Card } from '@/types'
 import type { ScryfallCard } from '../types/scryfall'
 import { sanitizeString } from '@/lib/validations'
+import { fetchWithTimeout } from './http'
 import {
   getCachedCard,
   setCachedCard,
@@ -104,11 +105,15 @@ const convertScryfallCard = (scryfallCard: ScryfallCard): Card => {
 /**
  * Effectue une requête à l'API Scryfall
  */
-const scryfallRequest = async <T>(endpoint: string): Promise<T> => {
+const scryfallRequest = async <T>(endpoint: string, signal?: AbortSignal): Promise<T> => {
   await ensureRateLimit()
 
   try {
-    const response = await fetch(`${SCRYFALL_API_BASE}${endpoint}`)
+    const response = await fetchWithTimeout(
+      `${SCRYFALL_API_BASE}${endpoint}`,
+      {},
+      { timeoutMs: 8000, retries: 1, signal }
+    )
 
     if (!response.ok) {
       throw new Error(`Scryfall API error: ${response.status} ${response.statusText}`)
@@ -181,13 +186,17 @@ export const searchCardsByCollection = async (cardNames: string[]): Promise<Card
   try {
     const identifiers = cardNames.map((name) => ({ name: name.trim() }))
 
-    const response = await fetch(`${SCRYFALL_API_BASE}/cards/collection`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetchWithTimeout(
+      `${SCRYFALL_API_BASE}/cards/collection`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ identifiers }),
       },
-      body: JSON.stringify({ identifiers }),
-    })
+      { timeoutMs: 8000, retries: 1 }
+    )
 
     if (!response.ok) {
       throw new Error(`Scryfall collection API error: ${response.status}`)
@@ -401,11 +410,19 @@ export const fetchLandData = async (cardName: string): Promise<ScryfallLandData 
     await ensureRateLimit()
 
     const encodedName = encodeURIComponent(cardName.trim())
-    const response = await fetch(`${SCRYFALL_API_BASE}/cards/named?exact=${encodedName}`)
+    const response = await fetchWithTimeout(
+      `${SCRYFALL_API_BASE}/cards/named?exact=${encodedName}`,
+      {},
+      { timeoutMs: 8000, retries: 1 }
+    )
 
     if (!response.ok) {
       // Try fuzzy search as fallback
-      const fuzzyResponse = await fetch(`${SCRYFALL_API_BASE}/cards/named?fuzzy=${encodedName}`)
+      const fuzzyResponse = await fetchWithTimeout(
+        `${SCRYFALL_API_BASE}/cards/named?fuzzy=${encodedName}`,
+        {},
+        { timeoutMs: 8000, retries: 1 }
+      )
 
       if (!fuzzyResponse.ok) {
         landDataCache.set(cacheKey, null)
@@ -492,11 +509,15 @@ export const fetchLandDataBatch = async (
 
     const identifiers = toFetch.map((name) => ({ name: name.trim() }))
 
-    const response = await fetch(`${SCRYFALL_API_BASE}/cards/collection`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifiers }),
-    })
+    const response = await fetchWithTimeout(
+      `${SCRYFALL_API_BASE}/cards/collection`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifiers }),
+      },
+      { timeoutMs: 8000, retries: 1 }
+    )
 
     if (!response.ok) {
       throw new Error(`Scryfall collection API error: ${response.status}`)

@@ -1,6 +1,80 @@
 // manaCalculator.test.ts - Tests unitaires pour valider l'implémentation
 
-import { ManaCalculator } from './manaCalculator'
+import { calculateHypergeometric, ManaCalculator } from './manaCalculator'
+
+describe('calculateHypergeometric', () => {
+  it('should calculate correct probability for turn 1 land drop', () => {
+    const result = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 24, // lands in deck
+      sampleSize: 7, // cards in opening hand
+      successesWanted: 1, // lands needed
+    })
+
+    // With 24 lands in 60 cards, probability of getting at least 1 land in 7 cards
+    // Real probability is ~0.978 (mathematical precision) not 0.94
+    expect(result).toBeCloseTo(0.978, 2)
+  })
+
+  it('should calculate correct probability for 2 lands by turn 2', () => {
+    const result = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 24,
+      sampleSize: 8, // 7 + 1 draw
+      successesWanted: 2,
+    })
+
+    // Real probability is ~0.910 (mathematical precision)
+    expect(result).toBeCloseTo(0.91, 2)
+  })
+
+  it('should handle edge cases correctly', () => {
+    // No lands in deck
+    const noLands = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 0,
+      sampleSize: 7,
+      successesWanted: 1,
+    })
+    expect(noLands).toBe(0)
+
+    // All lands
+    const allLands = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 60,
+      sampleSize: 7,
+      successesWanted: 1,
+    })
+    expect(allLands).toBe(1)
+  })
+})
+
+describe('Frank Karsten methodology compliance', () => {
+  it('should follow Karsten research for colored mana requirements', () => {
+    // According to Karsten: 14 red sources gives ~90% chance for R on turn 1
+    const turn1RedProbability = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 14,
+      sampleSize: 7,
+      successesWanted: 1,
+    })
+
+    expect(turn1RedProbability).toBeGreaterThan(0.85)
+    expect(turn1RedProbability).toBeLessThan(0.95)
+  })
+
+  it('should handle double colored requirements correctly', () => {
+    // For UU on turn 2, Karsten recommends ~20 blue sources
+    const doubleBlueByTurn2 = calculateHypergeometric({
+      deckSize: 60,
+      successStates: 20,
+      sampleSize: 8, // 7 + 1 draw
+      successesWanted: 2,
+    })
+
+    expect(doubleBlueByTurn2).toBeGreaterThan(0.82) // Should be reliable
+  })
+})
 
 describe('ManaCalculator', () => {
   let calculator: ManaCalculator

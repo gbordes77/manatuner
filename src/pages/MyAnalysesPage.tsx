@@ -508,7 +508,7 @@ const MyAnalysesPage: React.FC = () => {
   })
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState<'date' | 'score' | 'name'>('date')
-  const [colorFilter, setColorFilter] = useState<string[]>([])
+  const [colorFilter, setColorFilter] = useState<Array<'W' | 'U' | 'B' | 'R' | 'G'>>([])
   const [compareMode, setCompareMode] = useState(false)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [compareDialog, setCompareDialog] = useState(false)
@@ -603,7 +603,8 @@ const MyAnalysesPage: React.FC = () => {
   const selectedB = analyses.find((a) => a.id === selectedIds[1])
 
   const WUBRG = ['W', 'U', 'B', 'R', 'G'] as const
-  const toggleColor = (c: string) => {
+  type ManaColor = (typeof WUBRG)[number]
+  const toggleColor = (c: ManaColor) => {
     setColorFilter((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]))
   }
 
