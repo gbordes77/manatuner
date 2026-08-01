@@ -1,5 +1,10 @@
 # ManaTuner — Full Product Audit & Improvement Backlog
 
+> ⚠️ **HISTORIQUE (classe B)** — Backlog d’audit **pré-implémentation** (2026-07-31).  
+> **2026-08-01 :** P0 trust + vagues A–G **shippés** → produit **v2.7.7** (`f0e5d7f`).  
+> **Ne pas** traiter les sections P0-1…P0-4 ci-dessous comme “encore ouvertes”.  
+> **SSOT état produit :** `HANDOFF_2026-08-01.md` · backlog restant : `JOURNAL_AUDIT_IMPLEMENTATION.md` §7 · priorité business : `LAUNCH.md`.
+
 > **Source site:** https://www.manatuner.app/  
 > **Repo:** https://github.com/gbordes77/manatuner  
 > **Audit date:** 2026-07-31  

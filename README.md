@@ -4,12 +4,12 @@
 [![React](https://img.shields.io/badge/React-18.2-61DAFB?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-332%20Passing-green)](https://github.com/gbordes77/manatuner)
-[![Version](https://img.shields.io/badge/Version-2.7.1-blue)](https://github.com/gbordes77/manatuner/releases)
+[![Tests](https://img.shields.io/badge/Tests-369%20Passing-green)](https://github.com/gbordes77/manatuner)
+[![Version](https://img.shields.io/badge/Version-2.7.7-blue)](https://github.com/gbordes77/manatuner/releases)
 
 **Advanced MTG Manabase Analyzer** - Calculate exact probabilities for casting spells on curve and make optimal mulligan decisions.
 
-[Live Demo](https://manatuner.app) | [Documentation](./docs/ARCHITECTURE.md) | [Guide](https://manatuner.app/guide)
+[Live Demo](https://manatuner.app) | [Docs index](./docs/README.md) | [Product status](./docs/product/STATUS.md) | [Guide](https://manatuner.app/guide)
 
 ---
 
@@ -26,6 +26,10 @@ Built on Frank Karsten's mathematical research, it provides:
 - A curated reading library of **54 essential MTG resources** across **5 format-aware tracks** (Your First FNM · Preparing for an RCQ · Pro Tour · 👑 Commander Pod · 📦 Limited Draft/Sealed), with full-text search, URL-stateful filters (category × level × language × medium), localStorage reading progress, per-article detail pages (`/library/:slug`), author indexes (`/library/author/:slug`), BibTeX citation export, and RSS + JSON feeds. Karsten, PVDDR, Saito, Chapin, Reid Duke, Zvi, Wizards Brackets 2024, Command Zone, Game Knights, EDHREC, Limited Resources, 17lands, Le Podcaster Mage FR, Battle Chads — many recovered via archive.org.
 
 **100% client-side** - Your decklists never leave your browser.
+
+**Current release:** **v2.7.7** (2026-08-01) — EDH/Limited first-class, command zone + T4–T8, Karsten N/60, clone-safe mulligan, seeded MC, prerender soft-fail.  
+**Day log:** `docs/session/HANDOFF_2026-08-01.md` · **Status:** `docs/product/STATUS.md` · **Business:** `LAUNCH.md` (distribution).  
+**Docs layout:** all product docs under `docs/` — see `docs/README.md`. Root keeps only README / LAUNCH / SESSION_START / CHANGELOG / CLAUDE / legal.
 
 ---
 

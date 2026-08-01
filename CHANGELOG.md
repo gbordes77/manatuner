@@ -5,6 +5,107 @@ All notable changes to ManaTuner will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] — Docs reorg + Sentry Vite plugin (privacy-gated)
+
+### Changed
+
+- **Documentation reorganized** under `docs/` (session, engineering, math, product, archive, personas, marketing, seo, security). Root keeps only README, LAUNCH, SESSION_START, CHANGELOG, CLAUDE, legal files.
+- Product status SSOT: `docs/product/STATUS.md` · index: `docs/README.md`
+- Removed root junk: `presentation.html` (duplicate of `public/`), `mtg-player-personas-portable.md`
+
+### Added
+
+- **`@sentry/vite-plugin`** (devDependency) — source-map upload only when `SENTRY_AUTH_TOKEN` + org/project are set
+- **Sentry `beforeSend` scrubber** in `src/main.tsx` (strips URL query / PII / heavy breadcrumbs; no Replay) — runtime still **off** without `VITE_SENTRY_DSN`
+
+### Notes
+
+- Privacy claim unchanged: no crash reports in prod until DSN is deliberately enabled with PrivacySettings + opt-out (see `SECURITY.md`).
+
+## [2.7.7] - 2026-08-01 — Wave G: prerender soft-fail, UI polish, a11y, E2E harden
+
+### Added
+
+- Production build path `npm run build:vercel` (vite + prerender) wired in `vercel.json`
+- `src/utils/prerenderLib.ts` + unit tests; prerender concurrency / library skip options
+- Hero product preview (`data-testid="hero-product-preview"`) on Home
+- Focus management to `#quick-verdict` after analyze; Health Score tooltip / aria-live polish
+
+### Changed
+
+- UI polish: emoji → MUI icons in deck input, mulligan metrics, chart titles; Card/Paper elevation
+- Mobile castability: full-width pips/% on xs; tab scroll-snap
+- Commander preset banner survives Strict Mode remount via `sessionStorage`
+- E2E: 120s happy-path timeout, local retries, a11y EN +3 tests
+
+### Fixed
+
+- **Vercel deploy soft-fail prerender** (`f0e5d7f`): if Chromium/system libs missing on Vercel, exit 0 and ship SPA. HTML crawler prerender is **not** guaranteed in prod until deps work.
+- Feature commit `ac8371e` (v2.7.7); deploy fix `f0e5d7f`
+
+### Notes
+
+- Unit tests: **369** pass / 2 skip. Engine stamp: **v2.7.7**.
+- Full day log: `HANDOFF_2026-08-01.md` (waves A–G).
+
+## [2.7.6] - 2026-08-01 — Wave F: etbTapped boolean, MC seed, archetype UX, a11y
+
+### Changed
+
+- `DeckCard.etbTapped` is a **boolean** only (no functions) — root cause of worker DataCloneError removed at type level; resolve via `landMetadata` when needed
+- Monte Carlo: `createSeededRng` / `analyzeWithArchetype(..., { seed })` for deterministic tests
+- Mulligan archetype selector readable + `suggestArchetypeFromDeck` (avg CMC)
+- Footer contrast; `a11y.spec.js` rewritten to EN smoke (dead FR selectors removed)
+- Castability / ManaCostRow mobile padding + hints
+
+### SHA
+
+- `7febc34`
+
+## [2.7.5] - 2026-08-01 — Wave E: command zone + T4–T8 horizon
+
+### Added
+
+- Commander detection: `*CMDR*`, Commander section, first non-land heuristic on 99–100 lists
+- Castability horizon **T4–T8** for EDH (`castabilityHorizon`)
+- UI chips commander / horizon; castability banner; QuickVerdict EDH copy
+- Library CTA `?format=commander` → Atraxa sample + Commander banner
+
+### SHA
+
+- `9e90ffb`
+
+## [2.7.4] - 2026-08-01 — Wave D: Karsten N/60 scale + EDH math caveats
+
+### Added
+
+- `scaleKarstenSources` in `deckFormat.ts` + `KarstenTargetDelta` UI
+- EDH castability caveats (command zone notes) in Castability / Guide
+- Tests: `deckFormat.test.ts`, `p1-9-edh-verify` E2E
+
+### SHA
+
+- `7d05d5c` (horizon initially T5–T8; refined to T4–T8 in 2.7.5)
+
+## [2.7.3] - 2026-08-01 — Wave C: EDH/Limited first-class format
+
+### Added
+
+- `detectDeckFormatFamily`, land guidance, auto-format via `AccelerationContext.suggestFromDeckSize`
+- Samples `?sample=edh|limited|…`, `?format=commander`
+- Clear play/draw controls in AccelerationSettings
+- Sideboard scope main / post-board
+- E2E `audit-wave-c-verify`; remove dead FR specs from critical path
+
+### SHA
+
+- `83efe90`
+
+### Also same day (pre-2.7.3, no semver bump)
+
+- **Wave A** (`25598c6`): mulligan worker clone-safe, P1≥P2 castability, Health Score in QuickVerdict, EN happy-path E2E
+- **Wave B** (`9eef000`…`08b80a5`): Learn nav, dismissible banner + permanent Feedback header/footer, empty My Analyses, hero CTAs, engine stamp
+
 ## [2.7.1] - 2026-04-19 — Privacy claim accuracy, version triad, Library ErrorBoundary, launch hardening
 
 Patch release. Post-14-agent audit (6 personas whole-site, 6 technical,

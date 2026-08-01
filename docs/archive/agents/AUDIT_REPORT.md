@@ -1,3 +1,5 @@
+> ⚠️ **HISTORIQUE / SNAPSHOT (classe B)** — Document daté. **État produit 2026-08-01 : v2.7.7 · SHA f0e5d7f · vagues A–G.** Ne pas utiliser comme backlog “ouvert” sans croiser `HANDOFF_2026-08-01.md` et `DOCS_AUDIT_REPORT_2026-08-01.md`.
+
 # AUDIT REPORT -- ManaTuner v2.0.0
 
 **Date**: 2026-04-05

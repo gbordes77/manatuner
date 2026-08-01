@@ -1,5 +1,10 @@
 # ManaTuner - Session Handoff
 
+> ⚠️ **HISTORIQUE / ARCHIVE (classe B)** — Log de sessions long (jusqu’à ~v2.7.1 / avril 2026).  
+> **État produit actuel (2026-08-01) :** **v2.7.7** · SHA **`f0e5d7f`** · vagues **A–G**.  
+> **Lire en premier :** `HANDOFF_2026-08-01.md` · `SESSION_START.md` · `HANDOFF_NEXT.md` · `DOCS_AUDIT_REPORT_2026-08-01.md` · `LAUNCH.md`.  
+> Ne pas traiter les claims “encore ouvert / P0” ci-dessous comme backlog live.
+
 ## Project Status: PRODUCTION — v2.7.1 live · Homepage V-A Respiration shipped 2026-04-21 (4 commits, `75d8780` HEAD)
 
 **Latest Session:** 2026-04-21 — External tester feedback (CharlesW / WickedFridge, Discord) flagged homepage as "bombardé" — 3 Library pitches before fold + two primary CTAs stacked read as "pubés l'un après l'autre". Creator asked if site should be split. 3-agent parallel audit (`product-manager` + `ux-designer` + `project-planner`) unanimously converged on **redesign homepage, don't split**. V-A "Respiration" shipped across 4 commits: Analyzer sample chips removed (`4fb169a`), V-A + OG v4 composite (`cd1be62`), SEO copy MTG-first (`6e0d058`), "Reading" dropped since library is multi-medium (`75d8780`). CharlesW + Leo re-validation pending 48-72h post-deploy. Details in Session 2026-04-21 block below.

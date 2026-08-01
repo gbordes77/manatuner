@@ -1,8 +1,34 @@
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig, type PluginOption } from 'vite'
+
+/**
+ * Sentry Vite plugin uploads source maps only when credentials are present.
+ * Default local/Vercel builds: plugin omitted → no Sentry network, no map upload.
+ * Enable with: SENTRY_AUTH_TOKEN + SENTRY_ORG + SENTRY_PROJECT (+ VITE_SENTRY_DSN for runtime).
+ */
+function maybeSentryPlugin(): PluginOption[] {
+  const token = process.env.SENTRY_AUTH_TOKEN
+  const org = process.env.SENTRY_ORG
+  const project = process.env.SENTRY_PROJECT
+  if (!token || !org || !project) {
+    return []
+  }
+  return [
+    sentryVitePlugin({
+      org,
+      project,
+      authToken: token,
+      sourcemaps: {
+        filesToDeleteAfterUpload: ['./dist/**/*.map'],
+      },
+      telemetry: false,
+    }),
+  ]
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), ...maybeSentryPlugin()],
   resolve: {
     alias: {
       '@': '/src',
@@ -18,7 +44,8 @@ export default defineConfig({
     // CSS minified with lightningcss — more aggressive shorthand collapsing
     // and vendor-prefix stripping than esbuild's CSS minifier.
     cssMinify: 'lightningcss',
-    sourcemap: false,
+    // Source maps only when Sentry upload is configured (keeps public dist lean)
+    sourcemap: Boolean(process.env.SENTRY_AUTH_TOKEN),
     rollupOptions: {
       output: {
         manualChunks: {

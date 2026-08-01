@@ -1,3 +1,5 @@
+> ⚠️ **HISTORIQUE (classe B)** — Snapshot technique/daté. **Runtime 2026-08-01 :** `DeckCard.etbTapped` = **boolean** (v2.7.6+) ; produit **v2.7.7** ; voir `HANDOFF_2026-08-01.md`. Specs ci-dessous peuvent décrire l’ancien design (function / prerender hard).
+
 # ManaTuner — Audit Pré-Production Complet
 
 **Date** : 2026-04-13 (re-audit final)

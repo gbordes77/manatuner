@@ -6,8 +6,22 @@
   "format": "keepachangelog-1.0.0",
   "semver": "2.0.0",
   "note": "Machine-readable version history. Generated from CHANGELOG.md. Each entry is summary-level; full changelog at https://github.com/gbordes77/ManaTuner-v2/blob/main/CHANGELOG.md",
-  "current": "2.7.0",
+  "current": "2.7.7",
   "versions": [
+    {
+      "version": "2.7.7",
+      "date": "2026-08-01",
+      "title": "Waves A–G: trust P0, EDH/Limited first-class, command zone T4–T8, Karsten N/60, etbTapped boolean, MC seed, prerender soft-fail",
+      "highlights": [
+        "Wave A–B: mulligan worker clone-safe, P1≥P2 castability, Health Score, Learn nav, permanent Feedback CTAs, engine stamp",
+        "2.7.3 Wave C: EDH/Limited auto-format, play/draw controls, sideboard scope",
+        "2.7.4 Wave D: Karsten N/60 scaling + EDH math caveats",
+        "2.7.5 Wave E: command zone detection + castability horizon T4–T8",
+        "2.7.6 Wave F: DeckCard.etbTapped boolean, seeded Monte Carlo, archetype UX, a11y EN smoke",
+        "2.7.7 Wave G: prerender soft-fail on Vercel (SPA ships if Chromium missing), UI polish, a11y focus, E2E harden",
+        "Unit tests 369 pass / 2 skip; Engine stamp v2.7.7; day log HANDOFF_2026-08-01.md"
+      ]
+    },
     {
       "version": "2.7.0",
       "date": "2026-04-18",

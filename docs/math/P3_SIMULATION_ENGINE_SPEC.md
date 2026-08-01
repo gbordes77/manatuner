@@ -1,3 +1,5 @@
+> ⚠️ **HISTORIQUE (classe B)** — Snapshot technique/daté. **Runtime 2026-08-01 :** `DeckCard.etbTapped` = **boolean** (v2.7.6+) ; produit **v2.7.7** ; voir `HANDOFF_2026-08-01.md`. Specs ci-dessous peuvent décrire l’ancien design (function / prerender hard).
+
 # P3: Simulation Engine - Technical Specification
 
 **Version**: 1.0  
@@ -14,13 +16,13 @@
 
 The v1.1 Analytic Engine handles 95% of mana acceleration scenarios in O(1) time. However, certain edge cases require **simulation** because their probability distributions cannot be computed analytically:
 
-| Case | Why Simulation Required |
-|------|------------------------|
-| **ENHANCERs** (Badgermole Cub) | Multiplies other dorks' output - requires tracking board state |
+| Case                             | Why Simulation Required                                                     |
+| -------------------------------- | --------------------------------------------------------------------------- |
+| **ENHANCERs** (Badgermole Cub)   | Multiplies other dorks' output - requires tracking board state              |
 | **Multi-group multi-mana lands** | Ancient Tomb + Bounce lands with different deltas - combinatorial explosion |
-| **Conditional producers** | Nykthos (devotion), Urborg+Coffers (land count) - game-state dependent |
-| **Treasure generators** | Dockside Extortionist - opponent-dependent, variable output |
-| **Complex mana costs** | Phyrexian, hybrid, X with constraints - branching decisions |
+| **Conditional producers**        | Nykthos (devotion), Urborg+Coffers (land count) - game-state dependent      |
+| **Treasure generators**          | Dockside Extortionist - opponent-dependent, variable output                 |
+| **Complex mana costs**           | Phyrexian, hybrid, X with constraints - branching decisions                 |
 
 ### 1.2 Design Goals
 
@@ -116,20 +118,20 @@ export type Zone = 'library' | 'hand' | 'battlefield' | 'graveyard' | 'exile'
 
 /** Base card in simulation */
 export interface SimCard {
-  id: string           // Unique instance ID (for tracking)
-  name: string         // Card name
+  id: string // Unique instance ID (for tracking)
+  name: string // Card name
   isLand: boolean
-  manaCost?: string    // e.g., "{1}{G}"
-  mv: number           // Mana value
+  manaCost?: string // e.g., "{1}{G}"
+  mv: number // Mana value
 }
 
 /** Land card with mana production */
 export interface SimLand extends SimCard {
   isLand: true
   producesColors: LandManaColor[]
-  producesAmount: number      // 1 for normal, 2 for Ancient Tomb
+  producesAmount: number // 1 for normal, 2 for Ancient Tomb
   etbTapped: boolean | ((state: GameState) => boolean)
-  isMultiMana: boolean        // Produces > 1 mana
+  isMultiMana: boolean // Produces > 1 mana
 }
 
 /** Non-land card (spell or producer) */
@@ -149,7 +151,7 @@ export type SimulationCard = SimLand | SimSpell
 export interface Permanent {
   card: SimulationCard
   tapped: boolean
-  summoningSick: boolean      // For creatures
+  summoningSick: boolean // For creatures
   turnPlayed: number
   counters?: Record<string, number>
 }
@@ -172,7 +174,7 @@ export interface ManaPool {
   B: number
   R: number
   G: number
-  C: number  // Colorless
+  C: number // Colorless
 }
 
 /** Empty mana pool constant */
@@ -189,23 +191,23 @@ export interface GameState {
   hand: SimulationCard[]
   battlefield: Permanent[]
   graveyard: SimulationCard[]
-  
+
   // Turn tracking
   turn: number
   phase: 'upkeep' | 'main1' | 'combat' | 'main2' | 'end'
-  
+
   // Resources
   landDropUsed: boolean
-  landDropsPerTurn: number    // Usually 1, can be more with Exploration
+  landDropsPerTurn: number // Usually 1, can be more with Exploration
   manaPool: ManaPool
-  
+
   // Play/Draw
   onThePlay: boolean
-  
+
   // Tracking
   cardsDrawnThisTurn: number
   spellsCastThisTurn: number
-  
+
   // For ENHANCER tracking
   dorksOnBattlefield: number
   enhancersOnBattlefield: Permanent[]
@@ -219,22 +221,22 @@ export interface GameState {
 export interface SimulationConfig {
   /** Number of iterations (default: 1000) */
   iterations: number
-  
+
   /** Random seed for reproducibility (optional) */
   seed?: number
-  
+
   /** Maximum turn to simulate to */
   maxTurn: number
-  
+
   /** Mulligan strategy */
   mulliganStrategy: MulliganStrategy
-  
+
   /** Land play strategy */
   landPlayStrategy: LandPlayStrategy
-  
+
   /** Removal simulation (0 = goldfish) */
   removalRate: number
-  
+
   /** Whether to track detailed per-turn data */
   trackDetailedStats: boolean
 }
@@ -246,7 +248,7 @@ export const DEFAULT_SIM_CONFIG: SimulationConfig = {
   mulliganStrategy: 'london',
   landPlayStrategy: 'greedy-color',
   removalRate: 0,
-  trackDetailedStats: false
+  trackDetailedStats: false,
 }
 
 // =============================================================================
@@ -254,18 +256,18 @@ export const DEFAULT_SIM_CONFIG: SimulationConfig = {
 // =============================================================================
 
 /** Mulligan strategy types */
-export type MulliganStrategy = 
-  | 'always-keep'      // Never mulligan (testing)
-  | 'london'           // London mulligan with hand quality assessment
-  | 'aggressive'       // Mulligan aggressively for specific cards
-  | 'conservative'     // Keep more marginal hands
+export type MulliganStrategy =
+  | 'always-keep' // Never mulligan (testing)
+  | 'london' // London mulligan with hand quality assessment
+  | 'aggressive' // Mulligan aggressively for specific cards
+  | 'conservative' // Keep more marginal hands
 
 /** Land play strategy types */
 export type LandPlayStrategy =
-  | 'first-available'  // Play first land in hand
-  | 'greedy-color'     // Prioritize colors needed for spells in hand
-  | 'untapped-first'   // Prefer untapped lands
-  | 'optimal'          // Full lookahead (slower)
+  | 'first-available' // Play first land in hand
+  | 'greedy-color' // Prioritize colors needed for spells in hand
+  | 'untapped-first' // Prefer untapped lands
+  | 'optimal' // Full lookahead (slower)
 
 // =============================================================================
 // SIMULATION RESULTS
@@ -275,22 +277,22 @@ export type LandPlayStrategy =
 export interface SimulationRun {
   /** Did we successfully cast the target spell? */
   success: boolean
-  
+
   /** Turn on which spell was cast (null if never) */
   turnCast: number | null
-  
+
   /** Number of mulligans taken */
   mulligansTaken: number
-  
+
   /** Final hand size after mulligans */
   finalHandSize: number
-  
+
   /** Mana available on target turn */
   manaAvailable: number
-  
+
   /** Producers that contributed */
   producersUsed: string[]
-  
+
   /** Per-turn snapshots (if trackDetailedStats) */
   turnSnapshots?: TurnSnapshot[]
 }
@@ -309,37 +311,37 @@ export interface TurnSnapshot {
 export interface SimulationResult {
   /** Probability of casting by target turn (0-1) */
   probability: number
-  
+
   /** 95% confidence interval */
   confidenceInterval: {
     lower: number
     upper: number
   }
-  
+
   /** Number of simulations run */
   iterations: number
-  
+
   /** Average turn when cast (among successes) */
   averageTurnCast: number
-  
+
   /** Probability by turn (cumulative) */
   probabilityByTurn: Record<number, number>
-  
+
   /** Most impactful producers */
   keyProducers: Array<{
     name: string
-    contributionRate: number  // % of successful games where this helped
+    contributionRate: number // % of successful games where this helped
   }>
-  
+
   /** Mulligan statistics */
   mulliganStats: {
     averageMulligans: number
-    keepOnSeven: number       // % kept on 7
+    keepOnSeven: number // % kept on 7
     keepOnSix: number
     keepOnFive: number
     mulliganToFour: number
   }
-  
+
   /** Execution time in ms */
   executionTimeMs: number
 }
@@ -352,13 +354,13 @@ export interface SimulationResult {
 export interface EnhancerEffect {
   /** Source permanent ID */
   sourceId: string
-  
+
   /** Bonus mana per dork tap */
   bonusPerDork: number
-  
+
   /** Color mask of bonus mana */
   bonusMask: number
-  
+
   /** Types of producers enhanced */
   enhancesTypes: ManaProducerType[]
 }
@@ -370,7 +372,7 @@ export function calculateDorkManaWithEnhancers(
   state: GameState
 ): ManaPool {
   const baseMana = getManaFromPermanent(dork)
-  
+
   // Apply each enhancer
   for (const enhancer of enhancers) {
     if (enhancer.enhancesTypes.includes(dork.card.producerDef?.type)) {
@@ -381,7 +383,7 @@ export function calculateDorkManaWithEnhancers(
       }
     }
   }
-  
+
   return baseMana
 }
 ```
@@ -398,14 +400,14 @@ export function calculateDorkManaWithEnhancers(
  * @version 1.0
  */
 
-import type { 
-  GameState, 
-  SimulationCard, 
-  Permanent, 
+import type {
+  GameState,
+  SimulationCard,
+  Permanent,
   ManaPool,
   SimLand,
   SimSpell,
-  EMPTY_MANA_POOL
+  EMPTY_MANA_POOL,
 } from './simulationTypes'
 import type { DeckManaProfile, ProducerInDeck, ManaProducerDef } from '../../types/manaProducers'
 
@@ -423,16 +425,16 @@ export function buildSimulationDeck(
 ): SimulationCard[] {
   const deck: SimulationCard[] = []
   let id = 0
-  
+
   // Add lands
   // Note: We need land metadata from the analyzer for accurate simulation
   // For now, create generic lands based on color sources
   const landsToAdd = profile.totalLands
   const colorSources = profile.landColorSources
-  
+
   // Distribute lands by color proportionally
   const totalSources = Object.values(colorSources).reduce((a, b) => a + (b || 0), 0)
-  
+
   for (const [color, count] of Object.entries(colorSources)) {
     if (!count) continue
     for (let i = 0; i < count; i++) {
@@ -444,11 +446,11 @@ export function buildSimulationDeck(
         producesColors: [color as LandManaColor],
         producesAmount: 1,
         etbTapped: false,
-        isMultiMana: false
+        isMultiMana: false,
       } as SimLand)
     }
   }
-  
+
   // Handle multi-mana lands
   if (profile.unconditionalMultiMana) {
     const { count, delta } = profile.unconditionalMultiMana
@@ -462,11 +464,11 @@ export function buildSimulationDeck(
         producesColors: ['C'],
         producesAmount: 1 + delta,
         etbTapped: false,
-        isMultiMana: true
+        isMultiMana: true,
       } as SimLand)
     }
   }
-  
+
   // Add producers
   for (const producer of producers) {
     for (let i = 0; i < producer.copies; i++) {
@@ -475,14 +477,15 @@ export function buildSimulationDeck(
         name: producer.def.name,
         isLand: false,
         manaCost: buildManaCostString(producer.def),
-        mv: producer.def.castCostGeneric + 
-            Object.values(producer.def.castCostColors).reduce((a, b) => a + (b || 0), 0),
+        mv:
+          producer.def.castCostGeneric +
+          Object.values(producer.def.castCostColors).reduce((a, b) => a + (b || 0), 0),
         isProducer: true,
-        producerDef: producer.def
+        producerDef: producer.def,
       } as SimSpell)
     }
   }
-  
+
   // Add the target spell we're trying to cast
   deck.push({
     id: `target-spell`,
@@ -490,9 +493,9 @@ export function buildSimulationDeck(
     isLand: false,
     manaCost: spellToTrack.manaCost,
     mv: spellToTrack.mv,
-    isProducer: false
+    isProducer: false,
   } as SimSpell)
-  
+
   // Fill remaining slots with generic cards
   const remaining = profile.deckSize - deck.length
   for (let i = 0; i < remaining; i++) {
@@ -502,20 +505,17 @@ export function buildSimulationDeck(
       isLand: false,
       manaCost: '{2}',
       mv: 2,
-      isProducer: false
+      isProducer: false,
     } as SimSpell)
   }
-  
+
   return deck
 }
 
 /**
  * Create initial game state
  */
-export function createInitialState(
-  deck: SimulationCard[],
-  onThePlay: boolean
-): GameState {
+export function createInitialState(deck: SimulationCard[], onThePlay: boolean): GameState {
   return {
     library: [...deck],
     hand: [],
@@ -530,7 +530,7 @@ export function createInitialState(
     cardsDrawnThisTurn: 0,
     spellsCastThisTurn: 0,
     dorksOnBattlefield: 0,
-    enhancersOnBattlefield: []
+    enhancersOnBattlefield: [],
   }
 }
 
@@ -539,11 +539,11 @@ export function createInitialState(
  */
 export function shuffle<T>(array: T[], seed?: number): T[] {
   const result = [...array]
-  
+
   // Simple seeded random (Mulberry32)
   let random: () => number
   if (seed !== undefined) {
-    let t = seed + 0x6D2B79F5
+    let t = seed + 0x6d2b79f5
     random = () => {
       t = Math.imul(t ^ (t >>> 15), t | 1)
       t ^= t + Math.imul(t ^ (t >>> 7), t | 61)
@@ -552,12 +552,12 @@ export function shuffle<T>(array: T[], seed?: number): T[] {
   } else {
     random = Math.random
   }
-  
+
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1))
     ;[result[i], result[j]] = [result[j], result[i]]
   }
-  
+
   return result
 }
 
@@ -595,7 +595,7 @@ function buildManaCostString(def: ManaProducerDef): string {
 /**
  * Monte Carlo Simulation Engine
  * @version 1.0
- * 
+ *
  * Handles complex mana scenarios that cannot be computed analytically:
  * - ENHANCERs (mana multipliers)
  * - Conditional producers (Nykthos, Coffers)
@@ -615,21 +615,16 @@ import type {
   TurnSnapshot,
   EnhancerEffect,
   DEFAULT_SIM_CONFIG,
-  EMPTY_MANA_POOL
+  EMPTY_MANA_POOL,
 } from './simulationTypes'
-import {
-  buildSimulationDeck,
-  createInitialState,
-  shuffle,
-  drawCards
-} from './gameState'
+import { buildSimulationDeck, createInitialState, shuffle, drawCards } from './gameState'
 import type {
   DeckManaProfile,
   ManaCost,
   ProducerInDeck,
   AccelContext,
   ManaProducerDef,
-  LandManaColor
+  LandManaColor,
 } from '../../types/manaProducers'
 import { colorsFromMask, maskHasColor } from '../../types/manaProducers'
 
@@ -638,7 +633,7 @@ import { colorsFromMask, maskHasColor } from '../../types/manaProducers'
 // =============================================================================
 
 const STARTING_HAND_SIZE = 7
-const MIN_HAND_SIZE = 4  // Don't mulligan below this
+const MIN_HAND_SIZE = 4 // Don't mulligan below this
 
 // =============================================================================
 // MAIN SIMULATION ENGINE
@@ -656,28 +651,28 @@ export function runSimulation(
 ): SimulationResult {
   const startTime = performance.now()
   const cfg: SimulationConfig = { ...DEFAULT_SIM_CONFIG, ...config }
-  
+
   // Build simulation deck
   const simDeck = buildSimulationDeck(deck, producers, {
     name: 'Target Spell',
     manaCost: buildManaCostFromSpell(spell),
-    mv: spell.mv
+    mv: spell.mv,
   })
-  
+
   const runs: SimulationRun[] = []
-  const targetTurn = spell.mv  // Natural turn to cast
-  
+  const targetTurn = spell.mv // Natural turn to cast
+
   // Run N simulations
   for (let i = 0; i < cfg.iterations; i++) {
     const seed = cfg.seed !== undefined ? cfg.seed + i : undefined
     const run = simulateSingleGame(simDeck, spell, cfg, ctx, seed)
     runs.push(run)
   }
-  
+
   // Aggregate results
   const result = aggregateResults(runs, cfg, targetTurn)
   result.executionTimeMs = performance.now() - startTime
-  
+
   return result
 }
 
@@ -694,42 +689,42 @@ function simulateSingleGame(
   // Initialize state
   const shuffled = shuffle(deck, seed)
   const state = createInitialState(shuffled, ctx.playDraw === 'PLAY')
-  
+
   // Draw opening hand and handle mulligans
   const { mulligansTaken, finalHandSize } = handleMulligans(state, config, spell)
-  
+
   const turnSnapshots: TurnSnapshot[] = []
   let castTurn: number | null = null
   const producersUsed: Set<string> = new Set()
-  
+
   // Simulate turns
   for (let turn = 1; turn <= config.maxTurn; turn++) {
     state.turn = turn
     state.landDropUsed = false
     state.manaPool = { ...EMPTY_MANA_POOL }
     state.cardsDrawnThisTurn = 0
-    
+
     // Upkeep: remove summoning sickness from creatures
     for (const perm of state.battlefield) {
       if (perm.turnPlayed < turn) {
         perm.summoningSick = false
       }
     }
-    
+
     // Draw step (skip on T1 if on the play)
     if (!(turn === 1 && state.onThePlay)) {
       drawCards(state, 1)
     }
-    
+
     // Main phase 1: Play lands
     playLandsPhase(state, config.landPlayStrategy, spell)
-    
+
     // Main phase 1: Cast mana producers if possible
     castProducersPhase(state, ctx)
-    
+
     // Check if we can cast target spell
     const canCast = canCastSpell(state, spell)
-    
+
     if (canCast && castTurn === null) {
       castTurn = turn
       // Track which producers helped
@@ -739,31 +734,31 @@ function simulateSingleGame(
         }
       }
     }
-    
+
     // Track snapshot if requested
     if (config.trackDetailedStats) {
       turnSnapshots.push({
         turn,
-        landsInPlay: state.battlefield.filter(p => p.card.isLand).length,
-        producersInPlay: state.battlefield.filter(p => 
-          !p.card.isLand && (p.card as SimSpell).isProducer
+        landsInPlay: state.battlefield.filter((p) => p.card.isLand).length,
+        producersInPlay: state.battlefield.filter(
+          (p) => !p.card.isLand && (p.card as SimSpell).isProducer
         ).length,
         manaProduced: calculateTotalManaAvailable(state),
         cardsInHand: state.hand.length,
-        couldCastSpell: canCast
+        couldCastSpell: canCast,
       })
     }
-    
+
     // Apply removal (probabilistic creature death)
     if (config.removalRate > 0) {
       applyRemoval(state, config.removalRate, ctx)
     }
-    
+
     // End step: clear mana pool, update dork count
     state.manaPool = { ...EMPTY_MANA_POOL }
     updateDorkCount(state)
   }
-  
+
   return {
     success: castTurn !== null && castTurn <= spell.mv,
     turnCast: castTurn,
@@ -771,7 +766,7 @@ function simulateSingleGame(
     finalHandSize,
     manaAvailable: calculateTotalManaAvailable(state),
     producersUsed: Array.from(producersUsed),
-    turnSnapshots: config.trackDetailedStats ? turnSnapshots : undefined
+    turnSnapshots: config.trackDetailedStats ? turnSnapshots : undefined,
   }
 }
 
@@ -789,25 +784,23 @@ function handleMulligans(
 ): { mulligansTaken: number; finalHandSize: number } {
   let mulligansTaken = 0
   let handSize = STARTING_HAND_SIZE
-  
+
   while (handSize >= MIN_HAND_SIZE) {
     // Draw hand
     state.hand = []
     state.library = shuffle([...state.library, ...state.hand])
     drawCards(state, handSize)
-    
+
     // Evaluate hand quality
     const keepHand = evaluateHand(state.hand, spell, config.mulliganStrategy, handSize)
-    
+
     if (keepHand) {
       // London mulligan: put cards on bottom
       if (mulligansTaken > 0) {
         const toBottom = mulligansTaken
         // Simple strategy: bottom the highest MV non-lands
-        const nonLands = state.hand
-          .filter(c => !c.isLand)
-          .sort((a, b) => b.mv - a.mv)
-        
+        const nonLands = state.hand.filter((c) => !c.isLand).sort((a, b) => b.mv - a.mv)
+
         for (let i = 0; i < toBottom && nonLands.length > 0; i++) {
           const card = nonLands.shift()!
           const idx = state.hand.indexOf(card)
@@ -817,11 +810,11 @@ function handleMulligans(
       }
       break
     }
-    
+
     mulligansTaken++
     handSize--
   }
-  
+
   return { mulligansTaken, finalHandSize: state.hand.length }
 }
 
@@ -835,18 +828,18 @@ function evaluateHand(
   handSize: number
 ): boolean {
   if (strategy === 'always-keep') return true
-  
-  const lands = hand.filter(c => c.isLand)
-  const spells = hand.filter(c => !c.isLand)
-  
+
+  const lands = hand.filter((c) => c.isLand)
+  const spells = hand.filter((c) => !c.isLand)
+
   // Basic London mulligan heuristics
   const landCount = lands.length
-  
+
   // On 7: Keep 2-5 lands
   // On 6: Keep 2-4 lands
   // On 5: Keep 1-4 lands
   // On 4: Keep any hand with lands
-  
+
   if (handSize >= 6) {
     if (landCount < 2 || landCount > 5) return false
   } else if (handSize === 5) {
@@ -855,50 +848,47 @@ function evaluateHand(
     // Keep anything on 4
     return landCount >= 1
   }
-  
+
   // Check if we have colors for spells in hand
   const hasRelevantColors = checkColorRequirements(lands, spells)
-  
+
   // Aggressive strategy: also want producer or early plays
   if (strategy === 'aggressive') {
-    const hasProducer = spells.some(s => (s as SimSpell).isProducer)
-    const hasEarlyPlay = spells.some(s => s.mv <= 2)
+    const hasProducer = spells.some((s) => (s as SimSpell).isProducer)
+    const hasEarlyPlay = spells.some((s) => s.mv <= 2)
     return hasRelevantColors && (hasProducer || hasEarlyPlay)
   }
-  
+
   return hasRelevantColors
 }
 
 /**
  * Check if lands can produce colors for spells
  */
-function checkColorRequirements(
-  lands: SimulationCard[],
-  spells: SimulationCard[]
-): boolean {
+function checkColorRequirements(lands: SimulationCard[], spells: SimulationCard[]): boolean {
   // Simple check: do lands produce at least one color needed by spells?
   const colorsNeeded = new Set<LandManaColor>()
-  
+
   for (const spell of spells) {
     if ((spell as SimSpell).manaCost) {
       const matches = (spell as SimSpell).manaCost!.match(/\{([WUBRG])\}/g) || []
-      matches.forEach(m => colorsNeeded.add(m.slice(1, -1) as LandManaColor))
+      matches.forEach((m) => colorsNeeded.add(m.slice(1, -1) as LandManaColor))
     }
   }
-  
-  if (colorsNeeded.size === 0) return true  // Colorless spells
-  
+
+  if (colorsNeeded.size === 0) return true // Colorless spells
+
   const colorsAvailable = new Set<LandManaColor>()
   for (const land of lands) {
-    (land as SimLand).producesColors?.forEach(c => colorsAvailable.add(c))
+    ;(land as SimLand).producesColors?.forEach((c) => colorsAvailable.add(c))
   }
-  
+
   // Need at least half the colors
   let matched = 0
   for (const c of colorsNeeded) {
     if (colorsAvailable.has(c)) matched++
   }
-  
+
   return matched >= Math.ceil(colorsNeeded.size / 2)
 }
 
@@ -909,55 +899,51 @@ function checkColorRequirements(
 /**
  * Play lands from hand
  */
-function playLandsPhase(
-  state: GameState,
-  strategy: string,
-  spell: ManaCost
-): void {
+function playLandsPhase(state: GameState, strategy: string, spell: ManaCost): void {
   while (!state.landDropUsed && state.landDropsPerTurn > 0) {
-    const landsInHand = state.hand.filter(c => c.isLand) as SimLand[]
+    const landsInHand = state.hand.filter((c) => c.isLand) as SimLand[]
     if (landsInHand.length === 0) break
-    
+
     // Choose land based on strategy
     let landToPlay: SimLand
-    
+
     if (strategy === 'untapped-first') {
       // Prefer untapped lands
-      const untapped = landsInHand.filter(l => !l.etbTapped)
+      const untapped = landsInHand.filter((l) => !l.etbTapped)
       landToPlay = untapped.length > 0 ? untapped[0] : landsInHand[0]
-      
     } else if (strategy === 'greedy-color') {
       // Prioritize colors needed for spells in hand
       const neededColors = getColorsNeededInHand(state.hand, spell)
-      const scored = landsInHand.map(land => ({
+      const scored = landsInHand.map((land) => ({
         land,
-        score: land.producesColors.filter(c => neededColors.has(c)).length +
-               (land.isMultiMana ? 2 : 0) +
-               (typeof land.etbTapped === 'boolean' && !land.etbTapped ? 1 : 0)
+        score:
+          land.producesColors.filter((c) => neededColors.has(c)).length +
+          (land.isMultiMana ? 2 : 0) +
+          (typeof land.etbTapped === 'boolean' && !land.etbTapped ? 1 : 0),
       }))
       scored.sort((a, b) => b.score - a.score)
       landToPlay = scored[0].land
-      
     } else {
       // first-available
       landToPlay = landsInHand[0]
     }
-    
+
     // Play the land
     const idx = state.hand.indexOf(landToPlay)
     state.hand.splice(idx, 1)
-    
-    const etbTapped = typeof landToPlay.etbTapped === 'function'
-      ? landToPlay.etbTapped(state)
-      : landToPlay.etbTapped
-    
+
+    const etbTapped =
+      typeof landToPlay.etbTapped === 'function'
+        ? landToPlay.etbTapped(state)
+        : landToPlay.etbTapped
+
     state.battlefield.push({
       card: landToPlay,
       tapped: etbTapped,
       summoningSick: false,
-      turnPlayed: state.turn
+      turnPlayed: state.turn,
     })
-    
+
     state.landDropUsed = true
   }
 }
@@ -965,15 +951,12 @@ function playLandsPhase(
 /**
  * Cast mana producers if possible
  */
-function castProducersPhase(
-  state: GameState,
-  ctx: AccelContext
-): void {
+function castProducersPhase(state: GameState, ctx: AccelContext): void {
   // Find castable producers in hand
-  const producersInHand = state.hand.filter(c => 
-    !c.isLand && (c as SimSpell).isProducer
+  const producersInHand = state.hand.filter(
+    (c) => !c.isLand && (c as SimSpell).isProducer
   ) as SimSpell[]
-  
+
   // Sort by priority: lower MV first, then by impact
   producersInHand.sort((a, b) => {
     const mvDiff = a.mv - b.mv
@@ -983,36 +966,36 @@ function castProducersPhase(
     const bOutput = b.producerDef?.producesAmount ?? 0
     return bOutput - aOutput
   })
-  
+
   for (const producer of producersInHand) {
     // Calculate available mana
     const manaAvailable = calculateManaAvailable(state)
-    
+
     // Check if we can cast this producer
     if (canPayCost(manaAvailable, producer.producerDef!)) {
       // Tap mana sources
       payManaCost(state, producer.producerDef!)
-      
+
       // Move to battlefield
       const idx = state.hand.indexOf(producer)
       state.hand.splice(idx, 1)
-      
+
       const isCreature = producer.producerDef!.isCreature
-      
+
       state.battlefield.push({
         card: producer,
         tapped: false,
         summoningSick: isCreature,
-        turnPlayed: state.turn
+        turnPlayed: state.turn,
       })
-      
+
       state.spellsCastThisTurn++
-      
+
       // Update dork count if it's a creature
       if (isCreature) {
         state.dorksOnBattlefield++
       }
-      
+
       // Track enhancers
       if (producer.producerDef!.type === 'ENHANCER') {
         state.enhancersOnBattlefield.push(state.battlefield[state.battlefield.length - 1])
@@ -1030,13 +1013,13 @@ function castProducersPhase(
  */
 function calculateManaAvailable(state: GameState): ManaPool {
   const pool: ManaPool = { ...EMPTY_MANA_POOL }
-  
+
   // Get enhancer effects
   const enhancerEffects = getEnhancerEffects(state)
-  
+
   for (const perm of state.battlefield) {
     if (perm.tapped) continue
-    
+
     if (perm.card.isLand) {
       // Land mana
       const land = perm.card as SimLand
@@ -1046,14 +1029,14 @@ function calculateManaAvailable(state: GameState): ManaPool {
     } else if ((perm.card as SimSpell).isProducer) {
       // Producer mana (if not summoning sick for creatures)
       const producer = (perm.card as SimSpell).producerDef!
-      
+
       if (producer.isCreature && perm.summoningSick) continue
-      if (producer.type === 'ENHANCER') continue  // Enhancers don't tap for mana
-      
+      if (producer.type === 'ENHANCER') continue // Enhancers don't tap for mana
+
       // Base mana
       const colors = colorsFromMask(producer.producesMask)
       const netMana = producer.producesAmount - producer.activationTax
-      
+
       if (netMana > 0) {
         if (producer.producesAny) {
           // Add to colorless, user can choose
@@ -1063,7 +1046,7 @@ function calculateManaAvailable(state: GameState): ManaPool {
           const color = colors[0] || 'C'
           pool[color] += netMana
         }
-        
+
         // Apply enhancer bonus for creatures
         if (producer.isCreature) {
           for (const effect of enhancerEffects) {
@@ -1078,7 +1061,7 @@ function calculateManaAvailable(state: GameState): ManaPool {
       }
     }
   }
-  
+
   return pool
 }
 
@@ -1087,19 +1070,19 @@ function calculateManaAvailable(state: GameState): ManaPool {
  */
 function getEnhancerEffects(state: GameState): EnhancerEffect[] {
   const effects: EnhancerEffect[] = []
-  
+
   for (const perm of state.enhancersOnBattlefield) {
-    if (perm.summoningSick) continue  // Enhancers also have summoning sickness
-    
+    if (perm.summoningSick) continue // Enhancers also have summoning sickness
+
     const def = (perm.card as SimSpell).producerDef!
     effects.push({
       sourceId: perm.card.id,
       bonusPerDork: def.enhancerBonus ?? 1,
       bonusMask: def.enhancerBonusMask ?? 0,
-      enhancesTypes: def.enhancesTypes ?? ['DORK']
+      enhancesTypes: def.enhancesTypes ?? ['DORK'],
     })
   }
-  
+
   return effects
 }
 
@@ -1116,7 +1099,7 @@ function calculateTotalManaAvailable(state: GameState): number {
  */
 function canPayCost(pool: ManaPool, def: ManaProducerDef): boolean {
   const available = { ...pool }
-  
+
   // Pay colored costs first
   for (const [color, count] of Object.entries(def.castCostColors)) {
     const c = color as LandManaColor
@@ -1124,7 +1107,7 @@ function canPayCost(pool: ManaPool, def: ManaProducerDef): boolean {
     if (available[c] < need) return false
     available[c] -= need
   }
-  
+
   // Pay generic with remaining
   const remaining = Object.values(available).reduce((a, b) => a + b, 0)
   return remaining >= def.castCostGeneric
@@ -1136,14 +1119,14 @@ function canPayCost(pool: ManaPool, def: ManaProducerDef): boolean {
 function payManaCost(state: GameState, def: ManaProducerDef): void {
   const colorNeeds = { ...def.castCostColors }
   let genericNeeds = def.castCostGeneric
-  
+
   // Tap lands first for colored mana
   for (const perm of state.battlefield) {
     if (perm.tapped || !perm.card.isLand) continue
-    
+
     const land = perm.card as SimLand
     let shouldTap = false
-    
+
     for (const color of land.producesColors) {
       if ((colorNeeds[color] ?? 0) > 0) {
         colorNeeds[color]! -= 1
@@ -1151,17 +1134,17 @@ function payManaCost(state: GameState, def: ManaProducerDef): void {
         break
       }
     }
-    
+
     if (shouldTap) {
       perm.tapped = true
     }
   }
-  
+
   // Tap remaining for generic
   for (const perm of state.battlefield) {
     if (perm.tapped) continue
     if (genericNeeds <= 0) break
-    
+
     if (perm.card.isLand) {
       perm.tapped = true
       genericNeeds -= (perm.card as SimLand).producesAmount
@@ -1180,13 +1163,13 @@ function payManaCost(state: GameState, def: ManaProducerDef): void {
  */
 function canCastSpell(state: GameState, spell: ManaCost): boolean {
   const pool = calculateManaAvailable(state)
-  
+
   // Check colored requirements
   for (const [color, need] of Object.entries(spell.pips)) {
     const c = color as LandManaColor
     if ((pool[c] ?? 0) < (need ?? 0)) return false
   }
-  
+
   // Check total mana >= MV
   const total = pool.W + pool.U + pool.B + pool.R + pool.G + pool.C
   return total >= spell.mv
@@ -1195,19 +1178,16 @@ function canCastSpell(state: GameState, spell: ManaCost): boolean {
 /**
  * Get colors needed for spells in hand
  */
-function getColorsNeededInHand(
-  hand: SimulationCard[],
-  targetSpell: ManaCost
-): Set<LandManaColor> {
+function getColorsNeededInHand(hand: SimulationCard[], targetSpell: ManaCost): Set<LandManaColor> {
   const needed = new Set<LandManaColor>()
-  
+
   // Add colors from target spell
   for (const [color, pips] of Object.entries(targetSpell.pips)) {
     if ((pips ?? 0) > 0) {
       needed.add(color as LandManaColor)
     }
   }
-  
+
   // Add colors from producers in hand
   for (const card of hand) {
     if ((card as SimSpell).producerDef) {
@@ -1219,7 +1199,7 @@ function getColorsNeededInHand(
       }
     }
   }
-  
+
   return needed
 }
 
@@ -1230,28 +1210,22 @@ function getColorsNeededInHand(
 /**
  * Apply removal to creatures
  */
-function applyRemoval(
-  state: GameState,
-  removalRate: number,
-  ctx: AccelContext
-): void {
+function applyRemoval(state: GameState, removalRate: number, ctx: AccelContext): void {
   const rockFactor = ctx.rockRemovalFactor ?? 0.3
-  
-  state.battlefield = state.battlefield.filter(perm => {
+
+  state.battlefield = state.battlefield.filter((perm) => {
     if (perm.card.isLand) return true
-    
+
     const producer = (perm.card as SimSpell).producerDef
     if (!producer) return true
-    
+
     // Calculate effective removal rate
-    const effectiveRate = producer.isCreature 
-      ? removalRate 
-      : removalRate * rockFactor
-    
+    const effectiveRate = producer.isCreature ? removalRate : removalRate * rockFactor
+
     // Survive?
     return Math.random() > effectiveRate
   })
-  
+
   // Update dork count
   updateDorkCount(state)
 }
@@ -1260,13 +1234,13 @@ function applyRemoval(
  * Update dork count on battlefield
  */
 function updateDorkCount(state: GameState): void {
-  state.dorksOnBattlefield = state.battlefield.filter(p => {
+  state.dorksOnBattlefield = state.battlefield.filter((p) => {
     if (p.card.isLand) return false
     const def = (p.card as SimSpell).producerDef
     return def?.isCreature && def?.type !== 'ENHANCER'
   }).length
-  
-  state.enhancersOnBattlefield = state.battlefield.filter(p => {
+
+  state.enhancersOnBattlefield = state.battlefield.filter((p) => {
     if (p.card.isLand) return false
     const def = (p.card as SimSpell).producerDef
     return def?.type === 'ENHANCER'
@@ -1286,25 +1260,25 @@ function aggregateResults(
   targetTurn: number
 ): SimulationResult {
   const n = runs.length
-  
+
   // Count successes by turn
   const successByTurn: Record<number, number> = {}
   for (let t = 1; t <= config.maxTurn; t++) {
     successByTurn[t] = 0
   }
-  
+
   let totalSuccesses = 0
   let totalTurnCast = 0
   let successCount = 0
-  
+
   const producerContributions: Record<string, number> = {}
-  
+
   let keepOnSeven = 0
   let keepOnSix = 0
   let keepOnFive = 0
   let mulliganToFour = 0
   let totalMulligans = 0
-  
+
   for (const run of runs) {
     if (run.success) {
       totalSuccesses++
@@ -1312,14 +1286,14 @@ function aggregateResults(
         successByTurn[run.turnCast] = (successByTurn[run.turnCast] || 0) + 1
         totalTurnCast += run.turnCast
         successCount++
-        
+
         // Track producer contributions
         for (const producer of run.producersUsed) {
           producerContributions[producer] = (producerContributions[producer] || 0) + 1
         }
       }
     }
-    
+
     // Mulligan stats
     totalMulligans += run.mulligansTaken
     if (run.mulligansTaken === 0) keepOnSeven++
@@ -1327,12 +1301,12 @@ function aggregateResults(
     else if (run.mulligansTaken === 2) keepOnFive++
     else mulliganToFour++
   }
-  
+
   // Calculate probability and confidence interval
   const p = totalSuccesses / n
-  const z = 1.96  // 95% confidence
+  const z = 1.96 // 95% confidence
   const se = Math.sqrt((p * (1 - p)) / n)
-  
+
   // Cumulative probabilities by turn
   const probabilityByTurn: Record<number, number> = {}
   let cumulative = 0
@@ -1340,21 +1314,21 @@ function aggregateResults(
     cumulative += successByTurn[t]
     probabilityByTurn[t] = cumulative / n
   }
-  
+
   // Key producers
   const keyProducers = Object.entries(producerContributions)
     .map(([name, count]) => ({
       name,
-      contributionRate: successCount > 0 ? count / successCount : 0
+      contributionRate: successCount > 0 ? count / successCount : 0,
     }))
     .sort((a, b) => b.contributionRate - a.contributionRate)
     .slice(0, 5)
-  
+
   return {
     probability: p,
     confidenceInterval: {
       lower: Math.max(0, p - z * se),
-      upper: Math.min(1, p + z * se)
+      upper: Math.min(1, p + z * se),
     },
     iterations: n,
     averageTurnCast: successCount > 0 ? totalTurnCast / successCount : 0,
@@ -1365,9 +1339,9 @@ function aggregateResults(
       keepOnSeven: keepOnSeven / n,
       keepOnSix: keepOnSix / n,
       keepOnFive: keepOnFive / n,
-      mulliganToFour: mulliganToFour / n
+      mulliganToFour: mulliganToFour / n,
     },
-    executionTimeMs: 0  // Will be set by caller
+    executionTimeMs: 0, // Will be set by caller
   }
 }
 
@@ -1402,7 +1376,7 @@ function buildManaCostFromSpell(spell: ManaCost): string {
 /**
  * Castability Service - Router
  * @version 1.1
- * 
+ *
  * Routes castability calculations to either:
  * - Analytic engine (O(1), instant mode) for simple cases
  * - Simulation engine (Monte Carlo) for complex cases
@@ -1413,11 +1387,11 @@ import type {
   AcceleratedCastabilityResult,
   DeckManaProfile,
   ManaCost,
-  ProducerInDeck
+  ProducerInDeck,
 } from '../../types/manaProducers'
 import {
   computeAcceleratedCastability as analyticCompute,
-  computeCastabilityByTurn as analyticByTurn
+  computeCastabilityByTurn as analyticByTurn,
 } from './acceleratedAnalyticEngine'
 import { runSimulation } from './simulationEngine'
 import type { SimulationConfig, SimulationResult } from './simulationTypes'
@@ -1433,14 +1407,14 @@ export function shouldUseSimulation(producers: ProducerInDeck[]): boolean {
   for (const { def } of producers) {
     // ENHANCERs require simulation
     if (def.type === 'ENHANCER') return true
-    
+
     // Conditional producers require simulation
     if (def.type === 'CONDITIONAL') return true
-    
+
     // Treasure generators require simulation
     if (def.type === 'TREASURE') return true
   }
-  
+
   return false
 }
 
@@ -1471,23 +1445,16 @@ export function computeAcceleratedCastability(
     simulationConfig?: Partial<SimulationConfig>
   }
 ): AcceleratedCastabilityResult {
-  const useSimulation = options?.forceSimulation || 
-                        shouldUseSimulation(producers) ||
-                        hasComplexMultiMana(deck)
-  
+  const useSimulation =
+    options?.forceSimulation || shouldUseSimulation(producers) || hasComplexMultiMana(deck)
+
   if (useSimulation) {
     // Run simulation and convert to AcceleratedCastabilityResult format
-    const simResult = runSimulation(
-      deck, 
-      spell, 
-      producers, 
-      ctx, 
-      options?.simulationConfig
-    )
-    
+    const simResult = runSimulation(deck, spell, producers, ctx, options?.simulationConfig)
+
     return convertSimulationResult(simResult, spell.mv)
   }
-  
+
   // Use fast analytic engine
   return analyticCompute(deck, spell, producers, ctx)
 }
@@ -1506,18 +1473,17 @@ export function computeCastabilityByTurn(
     simulationConfig?: Partial<SimulationConfig>
   }
 ) {
-  const useSimulation = options?.forceSimulation || 
-                        shouldUseSimulation(producers)
-  
+  const useSimulation = options?.forceSimulation || shouldUseSimulation(producers)
+
   if (useSimulation) {
     const simResult = runSimulation(deck, spell, producers, ctx, {
       ...options?.simulationConfig,
-      maxTurn
+      maxTurn,
     })
-    
+
     return convertSimulationToByTurn(simResult, maxTurn)
   }
-  
+
   return analyticByTurn(deck, spell, producers, ctx, maxTurn)
 }
 
@@ -1546,7 +1512,7 @@ function convertSimulationResult(
   targetTurn: number
 ): AcceleratedCastabilityResult {
   const baseProbAtTarget = sim.probabilityByTurn[targetTurn] ?? 0
-  
+
   // Find earliest turn with meaningful probability
   let acceleratedTurn: number | null = null
   for (let t = 1; t < targetTurn; t++) {
@@ -1555,19 +1521,19 @@ function convertSimulationResult(
       break
     }
   }
-  
+
   return {
     base: {
-      p1: baseProbAtTarget,  // Simulation doesn't separate P1/P2
-      p2: baseProbAtTarget
+      p1: baseProbAtTarget, // Simulation doesn't separate P1/P2
+      p2: baseProbAtTarget,
     },
     withAcceleration: {
       p1: sim.probability,
-      p2: sim.probability
+      p2: sim.probability,
     },
     accelerationImpact: sim.probability - baseProbAtTarget,
     acceleratedTurn,
-    keyAccelerators: sim.keyProducers.slice(0, 3).map(p => p.name)
+    keyAccelerators: sim.keyProducers.slice(0, 3).map((p) => p.name),
   }
 }
 
@@ -1577,18 +1543,22 @@ function convertSimulationResult(
 function convertSimulationToByTurn(
   sim: SimulationResult,
   maxTurn: number
-): Array<{ turn: number; base: { p1: number; p2: number }; withAcceleration: { p1: number; p2: number } }> {
+): Array<{
+  turn: number
+  base: { p1: number; p2: number }
+  withAcceleration: { p1: number; p2: number }
+}> {
   const results = []
-  
+
   for (let turn = 1; turn <= maxTurn; turn++) {
     const prob = sim.probabilityByTurn[turn] ?? 0
     results.push({
       turn,
       base: { p1: prob, p2: prob },
-      withAcceleration: { p1: prob, p2: prob }
+      withAcceleration: { p1: prob, p2: prob },
     })
   }
-  
+
   return results
 }
 
@@ -1608,7 +1578,7 @@ export type { SimulationConfig, SimulationResult } from './simulationTypes'
 
 interface AccelerationSettingsProps {
   // ... existing props
-  
+
   /** Enable simulation mode toggle */
   showSimulationToggle?: boolean
 }
@@ -1656,7 +1626,7 @@ export const SimulationResultsDisplay: React.FC<SimulationResultsDisplayProps> =
       <Typography variant="h6" gutterBottom>
         Simulation Results
       </Typography>
-      
+
       {/* Probability with confidence interval */}
       <Box mb={2}>
         <Typography variant="body2" color="text.secondary">
@@ -1666,11 +1636,11 @@ export const SimulationResultsDisplay: React.FC<SimulationResultsDisplayProps> =
           {(result.probability * 100).toFixed(1)}%
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          95% CI: [{(result.confidenceInterval.lower * 100).toFixed(1)}% - 
+          95% CI: [{(result.confidenceInterval.lower * 100).toFixed(1)}% -
           {(result.confidenceInterval.upper * 100).toFixed(1)}%]
         </Typography>
       </Box>
-      
+
       {/* Average turn cast */}
       <Box mb={2}>
         <Typography variant="body2" color="text.secondary">
@@ -1680,7 +1650,7 @@ export const SimulationResultsDisplay: React.FC<SimulationResultsDisplayProps> =
           T{result.averageTurnCast.toFixed(1)}
         </Typography>
       </Box>
-      
+
       {/* Key producers */}
       {result.keyProducers.length > 0 && (
         <Box mb={2}>
@@ -1697,7 +1667,7 @@ export const SimulationResultsDisplay: React.FC<SimulationResultsDisplayProps> =
           ))}
         </Box>
       )}
-      
+
       {/* Mulligan stats */}
       <Box>
         <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -1710,7 +1680,7 @@ export const SimulationResultsDisplay: React.FC<SimulationResultsDisplayProps> =
           Mull to 4: {(result.mulliganStats.mulliganToFour * 100).toFixed(0)}%
         </Typography>
       </Box>
-      
+
       {/* Execution time */}
       <Typography variant="caption" color="text.disabled" sx={{ mt: 1, display: 'block' }}>
         {result.iterations.toLocaleString()} iterations in {result.executionTimeMs.toFixed(0)}ms
@@ -1736,54 +1706,54 @@ describe('SimulationEngine', () => {
   const baseDeck: DeckManaProfile = {
     deckSize: 60,
     totalLands: 24,
-    landColorSources: { G: 20, C: 4 }
+    landColorSources: { G: 20, C: 4 },
   }
-  
+
   const simpleSpell: ManaCost = {
     mv: 3,
     generic: 1,
-    pips: { G: 2 }
+    pips: { G: 2 },
   }
-  
+
   const ctx: AccelContext = {
     playDraw: 'PLAY',
     removalRate: 0,
-    defaultRockSurvival: 0.98
+    defaultRockSurvival: 0.98,
   }
 
   describe('Basic functionality', () => {
     it('should return probability between 0 and 1', () => {
       const result = runSimulation(baseDeck, simpleSpell, [], ctx, {
-        iterations: 100
+        iterations: 100,
       })
-      
+
       expect(result.probability).toBeGreaterThanOrEqual(0)
       expect(result.probability).toBeLessThanOrEqual(1)
     })
-    
+
     it('should complete within reasonable time', () => {
       const result = runSimulation(baseDeck, simpleSpell, [], ctx, {
-        iterations: 1000
+        iterations: 1000,
       })
-      
+
       expect(result.executionTimeMs).toBeLessThan(1000)
     })
-    
+
     it('should be reproducible with same seed', () => {
       const result1 = runSimulation(baseDeck, simpleSpell, [], ctx, {
         iterations: 100,
-        seed: 12345
+        seed: 12345,
       })
-      
+
       const result2 = runSimulation(baseDeck, simpleSpell, [], ctx, {
         iterations: 100,
-        seed: 12345
+        seed: 12345,
       })
-      
+
       expect(result1.probability).toBe(result2.probability)
     })
   })
-  
+
   describe('ENHANCER handling', () => {
     const badgermoleCub: ProducerInDeck = {
       def: {
@@ -1800,11 +1770,11 @@ describe('SimulationEngine', () => {
         oneShot: false,
         enhancerBonus: 1,
         enhancerBonusMask: 16, // G
-        enhancesTypes: ['DORK']
+        enhancesTypes: ['DORK'],
       },
-      copies: 2
+      copies: 2,
     }
-    
+
     const llanowarElves: ProducerInDeck = {
       def: {
         name: 'Llanowar Elves',
@@ -1817,21 +1787,21 @@ describe('SimulationEngine', () => {
         activationTax: 0,
         producesMask: 16,
         producesAny: false,
-        oneShot: false
+        oneShot: false,
       },
-      copies: 4
+      copies: 4,
     }
-    
+
     it('should handle ENHANCERs increasing mana output', () => {
       // With enhancers, dorks produce more mana
       const withEnhancers = runSimulation(
-        baseDeck, 
+        baseDeck,
         { mv: 5, generic: 3, pips: { G: 2 } },
-        [badgermoleCub, llanowarElves], 
-        ctx, 
+        [badgermoleCub, llanowarElves],
+        ctx,
         { iterations: 500 }
       )
-      
+
       const withoutEnhancers = runSimulation(
         baseDeck,
         { mv: 5, generic: 3, pips: { G: 2 } },
@@ -1839,32 +1809,32 @@ describe('SimulationEngine', () => {
         ctx,
         { iterations: 500 }
       )
-      
+
       // With enhancers should have higher probability
       // (not guaranteed due to randomness, but should trend)
       console.log('With enhancers:', withEnhancers.probability)
       console.log('Without:', withoutEnhancers.probability)
     })
   })
-  
+
   describe('Mulligan handling', () => {
     it('should track mulligan statistics', () => {
       const result = runSimulation(baseDeck, simpleSpell, [], ctx, {
         iterations: 500,
-        mulliganStrategy: 'london'
+        mulliganStrategy: 'london',
       })
-      
+
       expect(result.mulliganStats.keepOnSeven).toBeGreaterThan(0)
       expect(result.mulliganStats.averageMulligans).toBeGreaterThanOrEqual(0)
     })
   })
-  
+
   describe('Confidence intervals', () => {
     it('should produce valid confidence intervals', () => {
       const result = runSimulation(baseDeck, simpleSpell, [], ctx, {
-        iterations: 1000
+        iterations: 1000,
       })
-      
+
       expect(result.confidenceInterval.lower).toBeLessThanOrEqual(result.probability)
       expect(result.confidenceInterval.upper).toBeGreaterThanOrEqual(result.probability)
       expect(result.confidenceInterval.lower).toBeGreaterThanOrEqual(0)
@@ -1881,30 +1851,28 @@ describe('SimulationEngine', () => {
 
 describe('Castability Router', () => {
   it('should route to simulation for ENHANCERs', () => {
-    const producers = [
-      { def: { type: 'ENHANCER', /* ... */ }, copies: 2 }
-    ]
-    
+    const producers = [{ def: { type: 'ENHANCER' /* ... */ }, copies: 2 }]
+
     expect(shouldUseSimulation(producers)).toBe(true)
   })
-  
+
   it('should use analytic for simple dorks/rocks', () => {
     const producers = [
-      { def: { type: 'DORK', /* ... */ }, copies: 4 },
-      { def: { type: 'ROCK', /* ... */ }, copies: 2 }
+      { def: { type: 'DORK' /* ... */ }, copies: 4 },
+      { def: { type: 'ROCK' /* ... */ }, copies: 2 },
     ]
-    
+
     expect(shouldUseSimulation(producers)).toBe(false)
   })
-  
+
   it('should produce similar results for simple cases', async () => {
     // Compare analytic vs simulation for simple case
     const analytic = computeAcceleratedCastability(deck, spell, producers, ctx)
     const simulation = computeAcceleratedCastability(deck, spell, producers, ctx, {
       forceSimulation: true,
-      simulationConfig: { iterations: 5000 }
+      simulationConfig: { iterations: 5000 },
     })
-    
+
     // Should be within 5% of each other
     const diff = Math.abs(analytic.withAcceleration.p2 - simulation.withAcceleration.p2)
     expect(diff).toBeLessThan(0.05)
@@ -1918,12 +1886,12 @@ describe('Castability Router', () => {
 
 ### 8.1 Target Metrics
 
-| Metric | Target | Acceptable |
-|--------|--------|------------|
-| N=1000 simulation time | < 300ms | < 500ms |
-| N=5000 simulation time | < 1.5s | < 2.5s |
-| Memory usage | < 50MB | < 100MB |
-| Accuracy (vs large N) | ±2% | ±5% |
+| Metric                 | Target  | Acceptable |
+| ---------------------- | ------- | ---------- |
+| N=1000 simulation time | < 300ms | < 500ms    |
+| N=5000 simulation time | < 1.5s  | < 2.5s     |
+| Memory usage           | < 50MB  | < 100MB    |
+| Accuracy (vs large N)  | ±2%     | ±5%        |
 
 ### 8.2 Optimization Opportunities
 
@@ -1938,6 +1906,7 @@ describe('Castability Router', () => {
 ## 9. Implementation Checklist
 
 ### Phase 1: Core Engine (2 days)
+
 - [ ] Create `simulationTypes.ts` with all type definitions
 - [ ] Implement `gameState.ts` with deck building and shuffling
 - [ ] Implement `simulationEngine.ts` core loop
@@ -1945,22 +1914,26 @@ describe('Castability Router', () => {
 - [ ] Basic land play strategy (greedy-color)
 
 ### Phase 2: ENHANCER Support (1 day)
+
 - [ ] Implement ENHANCER effect tracking
 - [ ] Modify mana calculation to include enhancer bonuses
 - [ ] Test with Badgermole Cub + Llanowar Elves
 
 ### Phase 3: Router Integration (0.5 day)
+
 - [ ] Update `index.ts` with routing logic
 - [ ] Add `shouldUseSimulation()` checks
 - [ ] Convert simulation results to standard format
 
 ### Phase 4: UI Integration (1 day)
+
 - [ ] Add simulation mode toggle
 - [ ] Create SimulationResultsDisplay component
 - [ ] Add loading indicator for simulation
 - [ ] Display confidence intervals
 
 ### Phase 5: Testing & Polish (0.5 day)
+
 - [ ] Unit tests for simulation engine
 - [ ] Integration tests for router
 - [ ] Performance benchmarks

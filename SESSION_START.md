@@ -1,91 +1,48 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date :** 2026-08-01  
-> **Branche live :** `main` @ **`7febc34`** · **v2.7.6** (vague F)  
-> **Prod :** https://www.manatuner.app/  
-> **Repo :** https://github.com/gbordes77/manatuner  
-> **Handoff prochaines étapes :** `HANDOFF_NEXT.md`
+> **Prod :** **v2.7.7** · SHA **`f0e5d7f`** · https://www.manatuner.app  
+> **Docs index :** [`docs/README.md`](docs/README.md) · **État produit :** [`docs/product/STATUS.md`](docs/product/STATUS.md)
 
-Lis ce fichier + `HANDOFF_NEXT.md` avant de coder.  
-Journal détaillé : `JOURNAL_AUDIT_IMPLEMENTATION.md`.
+## Ordre de lecture
 
----
+1. **Ce fichier**
+2. [`docs/session/HANDOFF_2026-08-01.md`](docs/session/HANDOFF_2026-08-01.md) — journée A→G
+3. [`docs/session/HANDOFF_NEXT.md`](docs/session/HANDOFF_NEXT.md) — suite
+4. [`LAUNCH.md`](LAUNCH.md) — **priorité business (utilisateurs)**
+5. [`docs/product/STATUS.md`](docs/product/STATUS.md) — vérité condensée
 
-## 0. Règles owner
+## Règles owner
 
 1. Local d’abord → `http://localhost:3000`
-2. Valider avec l’utilisateur
-3. **Prod uniquement si « go prod »** explicite (pas de chèque en blanc)
-4. Privacy client-side (pas de backend decklists / analytics decklist)
-5. `LAUNCH.md` : prioriser ce qui amène des utilisateurs
+2. Prod seulement si **« go prod »** explicite
+3. Privacy client-side (pas de decklist serveur)
+4. Prioriser ce qui amène des utilisateurs (`LAUNCH.md`)
+5. **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
 
----
-
-## 1. Stack & commandes
-
-- React 18 + TS + Vite + MUI · port **3000** · Vercel
-- Routes : `/`, `/analyzer`, `/my-analyses`, `/library`, `/guide`, `/mathematics`, `/land-glossary`
+## Stack & commandes
 
 ```bash
 cd "/Volumes/DataDisk/_Projects/Project Mana base V2"
-npm run dev
-npm run test:unit
-npx tsc --noEmit
-npx playwright test tests/e2e/core-flows/ tests/e2e/tabs/ \
-  tests/e2e/accessibility/a11y.spec.js --project=chromium
+npm run dev          # port 3000
+npm run test:unit    # 369 pass / 2 skip
+npm run build:vercel # prod Vercel (prerender soft-fail)
 ```
 
----
+Routes : `/` · `/analyzer` · `/my-analyses` · `/library` · `/guide` · `/mathematics` · `/land-glossary` · `/about` · `/privacy`
 
-## 2. Ce qui est en prod (vagues A–F)
+## Invariants
 
-| Vague | Contenu                                                     | Version   |
-| ----- | ----------------------------------------------------------- | --------- |
-| A     | Worker Mulligan, P1/P2 cast, Health Score, E2E              | 2.7.x     |
-| B     | Learn nav, feedback permanent, empty states                 |           |
-| C     | Auto-format EDH/Limited, play/draw, sideboard               | 2.7.3     |
-| D     | Karsten N/60, horizon EDH initial                           | 2.7.4     |
-| E     | Command zone + T4–T8                                        | 2.7.5     |
-| **F** | etbTapped bool, MC seed, archetype UX, a11y EN, cast mobile | **2.7.6** |
+- `etbTapped` **boolean** · `toCloneableDeckCards` · hypergeom SSOT · Karsten N/60 · EDH T4–T8 · P1≥P2 · Fisher-Yates
+- Sentry : SDK + Vite plugin installés ; **init off** sans `VITE_SENTRY_DSN` (voir `SECURITY.md`)
 
-### Vague F (détail)
+## Smoke prod
 
-- `DeckCard.etbTapped: boolean` (plus de fonction) + `landMetadata` conditionnels
-- `createSeededRng` / `analyzeWithArchetype(..., { seed })`
-- Mulligan archetype lisible + auto-suggest avg CMC
-- Footer contraste ; `a11y.spec.js` EN smoke
-- Castability mobile (padding + hint)
-
-**Tests F :** unit 362 · tsc OK · E2E 15 pass · build OK
-
----
-
-## 3. Fichiers critiques
-
-| Domaine                       | Fichiers                                    |
-| ----------------------------- | ------------------------------------------- |
-| Format / EDH / Karsten scale  | `src/utils/deckFormat.ts`                   |
-| Parse / etbTapped / commander | `src/services/deckAnalyzer.ts`              |
-| Mulligan + seed               | `src/services/mulliganSimulatorAdvanced.ts` |
-| Castabilité UI                | `ManaCostRow.tsx`, `CastabilityTab.tsx`     |
-| Archetype UI                  | `MulliganTab.tsx`                           |
-| Footer                        | `src/components/layout/Footer.tsx`          |
-
-**Invariant math :** Perfect drops (P1) ≥ Realistic lands-only (P2), même moteur.
-
----
-
-## 4. Backlog restant → voir `HANDOFF_NEXT.md`
-
----
-
-## 5. Smoke prod
-
-1. `/analyzer?sample=edh` → T4–T8, Command zone Atraxa
-2. Mulligan → archetypes lisibles
+1. `/analyzer?sample=edh` → Commander, T4–T8, Atraxa
+2. Try Example → 5 tabs + **Engine v2.7.7**
 3. Feedback header + footer
-4. Footer texte lisible (contraste)
 
----
+## Où est le reste des docs ?
 
-_Mets à jour ce fichier + HANDOFF_NEXT.md à chaque vague livrée._
+Tout le reste est sous **`docs/`** (engineering, math, archive, personas…).  
+Voir [`docs/README.md`](docs/README.md). Archives ≠ backlog ouvert.

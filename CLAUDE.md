@@ -1,5 +1,17 @@
 # ManaTuner - Instructions Claude
 
+## Latest (2026-08-01) — lire en premier
+
+- **Prod :** **v2.7.7** · SHA **`f0e5d7f`** · stamp **Engine v2.7.7** · https://www.manatuner.app
+- **Boot :** `SESSION_START.md` · **Index docs :** `docs/README.md` · **État :** `docs/product/STATUS.md`
+- **SSOT journée :** `docs/session/HANDOFF_2026-08-01.md` · suite : `docs/session/HANDOFF_NEXT.md`
+- **Priorité business :** `LAUNCH.md` (distribution) — pas de feature gratuite
+- **Personas :** `docs/personas/mtg-player-personas.md`
+- **Sentry :** `@sentry/react` + `@sentry/vite-plugin` installés ; **init off** sans `VITE_SENTRY_DSN` ; scrubber `beforeSend` prêt ; voir `SECURITY.md`
+- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side
+- **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
+- **Prerender :** soft-fail Vercel → SPA ; HTML crawler **pas** garanti en prod
+
 ## LANCEMENT — LIRE EN PREMIER
 
 **Lis `LAUNCH.md` a la racine du projet au debut de chaque session.** Avant de proposer un refactoring, une nouvelle feature, ou un audit : est-ce que ca aide a avoir des utilisateurs ? Si non, redirige vers le plan de lancement.
@@ -46,7 +58,7 @@ echo "Rafraîchis http://localhost:3000/[page-modifiée]"
 
 ## Personas Utilisateurs
 
-**Fichier** : `mtg-player-personas.md` (racine du projet)
+**Fichier** : `docs/personas/mtg-player-personas.md`
 
 **6 personas** joueurs MTG pour evaluer l'UX, du casual au Pro Tour + EDH pod :
 

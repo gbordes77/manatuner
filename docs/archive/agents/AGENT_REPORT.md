@@ -1,5 +1,10 @@
 # AGENT_REPORT.md — ManaTuner session 2026-08-01
 
+> ⚠️ **HISTORIQUE (classe B)** — Rapport **début de journée** (phase 0 + vagues A–B seulement).  
+> **Fin de journée réelle :** vagues **A–G** · **v2.7.7** · SHA **`f0e5d7f`**.  
+> **SSOT :** `HANDOFF_2026-08-01.md` · backlog restant honnête dans `JOURNAL_AUDIT_IMPLEMENTATION.md` §7.  
+> La section « Remaining backlog » ci-dessous est **obsolète** (P1-9, etbTapped bool, MC seed, etc. shippés après ce rapport).
+
 ## 1. External audit vs code (Phase 0)
 
 | ID                                   | Verdict                                                        | Outcome             |
@@ -68,14 +73,18 @@ Full verification table: `AGENT_PLAN.md`.
 | P3-1 | Soften absolute H1 marketing claim                            | Done   |
 | CI   | type-check fix on mulliganWorkerPayload test fixtures         | Done   |
 
-## 4. Remaining backlog (not done)
+## 4. Remaining backlog (as of **end of day** 2026-08-01 — supersedes early-session list)
 
-- P1-7 Moxfield URL import (defer — ToS/CORS)
-- P1-9 full EDH analyzer preset
-- Unify dual castability engines fully (inline vs SSOT — improved but hooks still dual)
-- Seeded Monte Carlo RNG for deterministic mulligan tests
-- Long-term: replace `etbTapped` function type on `DeckCard` with boolean + metadata only
-- Stale French E2E specs still in tree (`main-user-flows`, old `analyzer-tabs`) — rewrite or delete later
+**Shipped later same day (do not reopen as “not done”):** P1-9 EDH/Limited (C–E), etbTapped boolean + MC seed + archetype UX + a11y EN (F), prerender soft + polish (G). See `HANDOFF_2026-08-01.md`.
+
+**Still open / deferred:**
+
+- **P0 business:** distribution (`LAUNCH.md`)
+- P2-7 HTML prerendered **in prod** (code soft-fails to SPA on Vercel)
+- Unify dual castability engines fully (inline vs SSOT — still dual)
+- P1-7 Moxfield URL import (defer — ToS/CORS, no owner)
+- i18n FR / backend / Sentry DSN / analytics decklist (no owner)
+- P3 land suggestions
 
 ## 5. Risks / follow-ups
 

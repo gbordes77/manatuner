@@ -1,3 +1,5 @@
+> ⚠️ **ARCHIVE** — Conservé pour historique. Produit live : **v2.7.7** (`HANDOFF_2026-08-01.md`).
+
 # 🚀 Guide de Déploiement Production - ManaTuner
 
 ## 🎯 Vue d'ensemble

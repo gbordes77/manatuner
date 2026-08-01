@@ -10,18 +10,61 @@ import { PersistGate } from 'redux-persist/integration/react'
 import App from './App'
 import { persistor, store } from './store'
 
-// Sentry intentionally DISABLED in production (privacy decision 2026-04-12).
-// PrivacySettings.tsx:204 promises "Nothing is sent to any server" — that
-// claim must stay true. The `&& VITE_SENTRY_DSN` guard means: as long as the
-// env var is NOT set in Vercel, Sentry never initializes. Do NOT set the env
-// var without first (1) adding a `beforeSend` scrubber here that strips URLs,
-// breadcrumbs and PII, AND (2) updating PrivacySettings.tsx:204 to disclose
-// the anonymous crash reporting. EU/GDPR contradiction otherwise.
+/**
+ * Sentry privacy contract (2026-04-12, reinforced 2026-08-01)
+ * - @sentry/react + @sentry/vite-plugin installed
+ * - Init ONLY if PROD && VITE_SENTRY_DSN (default: DSN unset → no Sentry traffic)
+ * - beforeSend scrubber strips URL query (?d= decks), PII, heavy breadcrumbs
+ * - No session replay (would capture deck UI text)
+ * Before enabling DSN in Vercel: update PrivacySettings disclosure + GDPR opt-out.
+ */
+function scrubSentryEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
+  if (event.request?.url) {
+    try {
+      const u = new URL(event.request.url)
+      u.search = ''
+      u.hash = ''
+      event.request.url = u.toString()
+    } catch {
+      event.request.url = undefined
+    }
+  }
+  if (event.request) {
+    delete event.request.cookies
+    delete event.request.headers
+    delete event.request.data
+    delete event.request.query_string
+  }
+  for (const ex of event.exception?.values ?? []) {
+    if (ex.value && ex.value.length > 200) {
+      ex.value = `${ex.value.slice(0, 200)}…[truncated]`
+    }
+  }
+  if (event.breadcrumbs) {
+    event.breadcrumbs = event.breadcrumbs.slice(-20).map((b) => ({
+      ...b,
+      data: undefined,
+      message: b.message && b.message.length > 120 ? `${b.message.slice(0, 120)}…` : b.message,
+    }))
+  }
+  delete event.user
+  delete event.extra
+  if (event.contexts) {
+    delete event.contexts.state
+  }
+  return event
+}
+
 if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: 'production',
-    tracesSampleRate: 0.1,
+    environment: import.meta.env.MODE || 'production',
+    release: 'manatuner@2.7.7',
+    tracesSampleRate: 0.05,
+    sendDefaultPii: false,
+    beforeSend: scrubSentryEvent,
+    integrations: (defaults) =>
+      defaults.filter((i) => !/Replay|BrowserSession/i.test(i.name ?? '')),
   })
 }
 import './styles/contrast-fixes.css'

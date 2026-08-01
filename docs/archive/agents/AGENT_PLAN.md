@@ -1,5 +1,8 @@
 # AGENT_PLAN.md — ManaTuner Phase 0
 
+> ⚠️ **HISTORIQUE (classe B)** — Plan Phase 0 du **début** 2026-08-01. Les P0 listés comme “à faire” sont **shippés** (vagues A–G → **v2.7.7** / `f0e5d7f`).  
+> **SSOT :** `HANDOFF_2026-08-01.md` · `DOCS_AUDIT_REPORT_2026-08-01.md`. Ne pas ré-exécuter ce plan à l’aveugle.
+
 > **Date:** 2026-08-01  
 > **Branch / version:** local workspace `manatuner@2.7.1`  
 > **Ground truth:** source in this repo (not live site alone)  
