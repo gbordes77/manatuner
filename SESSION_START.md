@@ -1,7 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date de cut-over :** 2026-08-01  
-> **Branche live :** `main` (v2.7.5 — push en cours)  
+> **Branche live :** `main` @ **`9e90ffb`**  
 > **Version app :** **2.7.5**  
 > **Prod :** https://www.manatuner.app/  
 > **Repo :** https://github.com/gbordes77/manatuner
@@ -69,7 +69,7 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 ### Commits `main` (récent)
 
 ```
-(feat v2.7.5)  command zone detect + T4–T8 horizon
+9e90ffb  feat: EDH command zone detection + T4–T8 horizon  ← HEAD v2.7.5
 7d05d5c  feat: EDH horizon T5–T8, Karsten N/60 (v2.7.4)
 83efe90  feat: EDH/Limited auto-format…
 ```
