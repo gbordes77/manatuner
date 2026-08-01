@@ -530,14 +530,22 @@ const AnalyzerPage: React.FC = () => {
               '& .MuiAlert-message': { width: '100%' },
             }}
           >
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              👑 Commander preset active — 100-card singleton, horizon T5–T8, EDH-calibrated tier
-              bands.
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 600 }}
+              data-testid="commander-preset-banner"
+            >
+              👑 Commander mode — 100-card math, priority horizon T5–T8, Karsten targets scaled
+              N/60, EDH tier bands on the verdict.
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
-              Analyzer was opened from the Library's Commander Pod track. The Atraxa sample has been
-              pre-filled — paste your own 100-card list to replace it. Note: the command zone
-              (commander cast each game) is not yet modelled in these numbers.
+              Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
+              lists CMC 5–8 first; Manabase color checks use deck-size-scaled Karsten sources.
+              Command zone is <strong>not</strong> modelled — your commander is always castable but
+              not an extra free card in these odds. Rule 0 / multiplayer politics are out of scope.{' '}
+              <Box component="a" href="/guide#commander" sx={{ color: 'inherit', fontWeight: 600 }}>
+                Guide: Commander
+              </Box>
             </Typography>
           </Alert>
         )}
@@ -872,7 +880,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.3 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.4 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

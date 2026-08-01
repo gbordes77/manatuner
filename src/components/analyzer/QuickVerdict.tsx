@@ -193,8 +193,12 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           variant="caption"
           sx={{ display: 'block', mt: 0.5, opacity: 0.85, fontStyle: 'italic' }}
         >
-          Note: the command zone (your commander cast each game) is not yet modelled in these
-          numbers. EDH analysis lives at <code>/guide#commander</code>.
+          EDH: priority horizon T5–T8 · Karsten color targets scaled to {analysisResult.totalCards}{' '}
+          cards · command zone not modelled.{' '}
+          <a href="/guide#commander" style={{ color: 'inherit' }}>
+            Guide
+          </a>
+          .
         </Typography>
       )}
       {isLimited && (
@@ -202,9 +206,9 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           variant="caption"
           sx={{ display: 'block', mt: 0.5, opacity: 0.85, fontStyle: 'italic' }}
         >
-          Note: in Limited (40-card), Karsten&apos;s 60-card targets are a hard ceiling — a 2-pip
-          spell at 90 % reliability needs ~13 sources, which is most of your draft pool. Aim for 17
-          lands and at most a 10/7 colour split.
+          Note: in Limited (40-card), Karsten targets are scaled down from the 60-card tables (N/60)
+          — a 2-pip spell still eats most of a draft fixing pool. Aim for ~17 lands and at most a
+          10/7 colour split.
         </Typography>
       )}
     </Alert>

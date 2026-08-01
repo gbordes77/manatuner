@@ -127,9 +127,32 @@ Demandé explicitement : _“go pour les points 1 2 3 4 et surtout alimente bien
 
 - `src/utils/__tests__/deckFormat.test.ts`
 
-### Prod
+### Prod (vague C)
 
-- **Non poussé** tant que l’owner n’a pas dit “go prod” pour cette vague (après relecture locale).
+- Ship **`83efe90`** (v2.7.3) après “go prod” owner.
+
+---
+
+## 5b. Vague D — P1-9 suite EDH plus profond (2026-08-01)
+
+Owner : local → tests → **“go prod”**.
+
+| Changement                                                             | Fichier                                        |
+| ---------------------------------------------------------------------- | ---------------------------------------------- |
+| `castabilityHorizon` T5–T8 EDH / T1–T4 60c & Limited                   | `src/utils/deckFormat.ts`                      |
+| `scaleKarstenSources` (N/60), caveats command zone, singleton heads-up | idem                                           |
+| Manabase color targets scalés + tooltip                                | `KarstenTargetDelta.tsx`                       |
+| Sort + highlight horizon + note EDH                                    | `CastabilityTab.tsx`, `ManaCostRow.tsx`        |
+| Banner Commander honnête                                               | `AnalyzerPage.tsx`                             |
+| QuickVerdict + Guide caveats                                           | `QuickVerdict.tsx`, `GuidePage.tsx`            |
+| E2E P1-9                                                               | `tests/e2e/core-flows/p1-9-edh-verify.spec.js` |
+| Unit deckFormat +15                                                    | `src/utils/__tests__/deckFormat.test.ts`       |
+
+**Non fait (hors scope) :** command zone dans les odds ; tables EDH publiées (scaling N/60 = approximation).
+
+**Vérif avant prod :** unit 351 pass · tsc OK · Playwright audit 6/6 · P1-9 E2E 2/2.
+
+**Version :** **2.7.4**
 
 ---
 
@@ -142,10 +165,11 @@ Demandé explicitement : _“go pour les points 1 2 3 4 et surtout alimente bien
 
 ---
 
-## 7. Encore ouvert (hors points 1–4)
+## 7. Encore ouvert
 
 - P1-7 URL Moxfield (ToS/CORS)
-- Preset EDH encore plus profond (command zone, horizon T5–T8 hardcodé dans math)
+- Command zone **modélisée** dans les odds (disclaimer only aujourd’hui)
+- Option : élargir horizon EDH à T4–T8 (Atraxa CMC 4 hors chip)
 - Remplacer type `etbTapped: function` par boolean structurel
 - RNG seedé Monte Carlo
 - P2 design (table mobile, screenshot hero, a11y axe)
@@ -156,19 +180,18 @@ Demandé explicitement : _“go pour les points 1 2 3 4 et surtout alimente bien
 
 ## 8. Commits GitHub (prod connus)
 
-| SHA       | Résumé                                                |
-| --------- | ----------------------------------------------------- |
-| `25598c6` | P0 trust (worker, P1/P2 math, E2E, Health Score)      |
-| `9eef000` | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1) |
-| `3ff9b99` | Feedback footer après dismiss                         |
-| `08b80a5` | Feedback chips header + footer                        |
-
-Vague C : **implémentée en local** (version package **2.7.3**).  
-Commits / prod : **uniquement après “go prod”** de l’owner.
+| SHA        | Résumé                                                      |
+| ---------- | ----------------------------------------------------------- |
+| `25598c6`  | P0 trust (worker, P1/P2 math, E2E, Health Score)            |
+| `9eef000`  | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1)       |
+| `3ff9b99`  | Feedback footer après dismiss                               |
+| `08b80a5`  | Feedback chips header + footer                              |
+| `83efe90`  | Vague C — EDH/Limited format, play-draw, sideboard          |
+| _(push D)_ | Vague D — EDH horizon T5–T8, Karsten N/60, caveats (v2.7.4) |
 
 ---
 
-## 9. Comment revalider en local (vague C)
+## 9. Comment revalider en local (vague C + D)
 
 ```bash
 npm run dev

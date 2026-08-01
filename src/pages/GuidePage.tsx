@@ -904,8 +904,9 @@ export const GuidePage: React.FC = () => {
               <List dense sx={{ pl: 0 }}>
                 {[
                   'Command zone: your commander is always castable but is not modelled as an "extra card" in the probability math. Treat it as free value on top of the numbers.',
-                  'Karsten tables are published for 60-card decks. The Manabase tab still uses them — they’re a useful lower bound in EDH (if you miss them in EDH, you definitely miss them in Constructed).',
-                  'Multiplayer political variance (3 opponents, threat assessment, group hug) is out of scope — this tool is strictly a manabase / castability lens.',
+                  'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
+                  'Castability priority horizon is T5–T8 in Commander mode (CMC 5–8 listed first). Early rocks/dorks still appear below.',
+                  'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
                   'Partners, Backgrounds, and "one of two commanders" decks should be entered as a single commander line.',
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>

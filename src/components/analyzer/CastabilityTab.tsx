@@ -17,7 +17,13 @@ import { AnalysisResult } from '../../services/deckAnalyzer'
 import { manaProducerService, producerCacheService } from '../../services/manaProducerService'
 import type { Card } from '../../types'
 import type { ProducerInDeck, UnconditionalMultiManaGroup } from '../../types/manaProducers'
-import { landCountGuidance } from '../../utils/deckFormat'
+import {
+  castabilityHorizon,
+  commanderCaveats,
+  findSingletonViolations,
+  isInCastabilityHorizon,
+  landCountGuidance,
+} from '../../utils/deckFormat'
 import ManaCostRow from '../ManaCostRow'
 import { Term } from '../common/Term'
 import { AccelerationSettings } from './AccelerationSettings'
@@ -84,10 +90,28 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     [sideboardCards]
   )
 
-  // Filter out lands using Scryfall metadata from analysisResult
+  // Filter out lands; for EDH (and other families) sort priority horizon first
   const nonLandCards = useMemo(() => {
-    return effectiveCards.filter((card) => card.isLand !== true)
-  }, [effectiveCards])
+    const spells = effectiveCards.filter((card) => card.isLand !== true)
+    if (!detectedFamily) return spells
+    return [...spells].sort((a, b) => {
+      const aIn = isInCastabilityHorizon(a.cmc ?? 0, detectedFamily) ? 0 : 1
+      const bIn = isInCastabilityHorizon(b.cmc ?? 0, detectedFamily) ? 0 : 1
+      if (aIn !== bIn) return aIn - bIn
+      return (a.cmc ?? 0) - (b.cmc ?? 0)
+    })
+  }, [effectiveCards, detectedFamily])
+
+  const horizon = detectedFamily ? castabilityHorizon(detectedFamily) : null
+  const horizonCount = useMemo(() => {
+    if (!detectedFamily) return 0
+    return nonLandCards.filter((c) => isInCastabilityHorizon(c.cmc ?? 0, detectedFamily)).length
+  }, [nonLandCards, detectedFamily])
+
+  const singletonViolations = useMemo(() => {
+    if (detectedFamily !== 'edh') return []
+    return findSingletonViolations(effectiveCards)
+  }, [detectedFamily, effectiveCards])
 
   // Detect mana producers in the deck (sync seed/cache + async Scryfall fallback)
   const [producersInDeck, setProducersInDeck] = useState<ProducerInDeck[]>([])
@@ -254,8 +278,45 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               analysisResult.totalLands || 0,
               analysisResult.totalCards || 0
             )}
+            {horizon ? ` · Priority horizon ${horizon.label}` : ''}
           </Typography>
-          <Typography variant="caption" display="block" sx={{ mt: 0.25, opacity: 0.9 }}>
+          {horizon && (
+            <Typography variant="caption" display="block" sx={{ mt: 0.5, opacity: 0.9 }}>
+              {horizon.description}
+              {horizonCount > 0
+                ? ` ${horizonCount} spell line${horizonCount === 1 ? '' : 's'} in range listed first.`
+                : ''}
+            </Typography>
+          )}
+          {detectedFamily === 'edh' && (
+            <Typography
+              variant="caption"
+              display="block"
+              sx={{ mt: 0.5, opacity: 0.9, fontStyle: 'italic' }}
+              data-testid="edh-command-zone-note"
+            >
+              {commanderCaveats().commandZone}{' '}
+              <Box component="a" href="/guide#commander" sx={{ color: 'inherit' }}>
+                Details in the Guide
+              </Box>
+              .
+            </Typography>
+          )}
+          {singletonViolations.length > 0 && (
+            <Typography
+              variant="caption"
+              display="block"
+              sx={{ mt: 0.5, color: 'warning.dark' }}
+              data-testid="singleton-violations"
+            >
+              Singleton heads-up: {singletonViolations.slice(0, 5).join(', ')}
+              {singletonViolations.length > 5
+                ? ` (+${singletonViolations.length - 5} more)`
+                : ''}{' '}
+              appear more than once (basics excluded).
+            </Typography>
+          )}
+          <Typography variant="caption" display="block" sx={{ mt: 0.5, opacity: 0.9 }}>
             Format controls above set ramp/removal model. Change Format anytime; click the Auto chip
             if you locked a format and want detection again.
           </Typography>
@@ -409,6 +470,10 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               initialCardData={cardDataMap.get(card.name) ?? null}
               isCreature={card.isCreature}
               creatureOnlyExtraSources={creatureOnlyExtraSources}
+              inFormatHorizon={
+                !!detectedFamily && isInCastabilityHorizon(card.cmc ?? 0, detectedFamily)
+              }
+              horizonLabel={horizon?.label}
             />
           ))}
 

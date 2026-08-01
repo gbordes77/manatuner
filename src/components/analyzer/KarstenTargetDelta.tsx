@@ -3,6 +3,11 @@ import React, { useMemo } from 'react'
 import { MANA_COLOR_STYLES } from '../../constants/manaColors'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { KARSTEN_TABLES } from '../../types/maths'
+import {
+  detectDeckFormatFamily,
+  KARSTEN_REFERENCE_DECK_SIZE,
+  scaleKarstenSources,
+} from '../../utils/deckFormat'
 import { countPipsInCost, type KarstenColor } from '../../utils/manaCostParser'
 
 interface KarstenTargetDeltaProps {
@@ -16,7 +21,10 @@ export interface ColorDelta {
   color: KarstenColor
   maxPips: number
   pivotTurn: number
+  /** Sources needed after deck-size scaling (P1-9). */
   required: number
+  /** Raw Karsten-2022 value for 60-card before scaling. */
+  requiredUnscaled: number
   actual: number
   delta: number
   verdict: 'ok' | 'warn' | 'short'
@@ -27,13 +35,16 @@ export interface ColorDelta {
    * 1-3 pip range, and legendary cascade shells can blow past turn 10.
    */
   wasClamped: boolean
+  /** True when required ≠ requiredUnscaled (Limited / EDH deck sizes). */
+  wasScaled: boolean
 }
 
 /**
  * For each color used by non-land spells, compute:
  *   - maxPips: max count of this color in a single spell's cost
  *   - pivotTurn: CMC of the spell that set maxPips (proxy for when you need it)
- *   - required: KARSTEN_TABLES[maxPips][pivotTurn]
+ *   - requiredUnscaled: KARSTEN_TABLES[maxPips][pivotTurn] (60-card)
+ *   - required: scaleKarstenSources(..., totalCards)  // P1-9
  *   - actual: analysisResult.colorDistribution[color]
  *   - delta = actual - required
  *   - verdict: ok | warn | short
@@ -44,6 +55,7 @@ export interface ColorDelta {
 export function computeColorDeltas(analysisResult: AnalysisResult): ColorDelta[] {
   const result: ColorDelta[] = []
   const spells = analysisResult.cards.filter((c) => !c.isLand)
+  const deckSize = analysisResult.totalCards || KARSTEN_REFERENCE_DECK_SIZE
 
   for (const color of COLORS) {
     let maxPips = 0
@@ -61,12 +73,28 @@ export function computeColorDeltas(analysisResult: AnalysisResult): ColorDelta[]
     const clampedPips = Math.min(Math.max(maxPips, 1), 3)
     const clampedTurn = Math.min(Math.max(pivotTurn, 1), 10)
     const wasClamped = clampedPips !== maxPips || clampedTurn !== pivotTurn
-    const required = KARSTEN_TABLES[clampedPips]?.[clampedTurn] ?? 0
+    const requiredUnscaled = KARSTEN_TABLES[clampedPips]?.[clampedTurn] ?? 0
+    const required = scaleKarstenSources(requiredUnscaled, deckSize)
+    const wasScaled = required !== requiredUnscaled
     const actual = analysisResult.colorDistribution[color] || 0
     const delta = actual - required
-    const verdict: ColorDelta['verdict'] = delta >= 0 ? 'ok' : delta >= -2 ? 'warn' : 'short'
+    // EDH/Limited: wider "warn" band (±3) because scaled targets are approximate
+    const family = detectDeckFormatFamily(deckSize)
+    const warnSlack = family === 'constructed' ? -2 : -3
+    const verdict: ColorDelta['verdict'] = delta >= 0 ? 'ok' : delta >= warnSlack ? 'warn' : 'short'
 
-    result.push({ color, maxPips, pivotTurn, required, actual, delta, verdict, wasClamped })
+    result.push({
+      color,
+      maxPips,
+      pivotTurn,
+      required,
+      requiredUnscaled,
+      actual,
+      delta,
+      verdict,
+      wasClamped,
+      wasScaled,
+    })
   }
 
   return result
@@ -102,6 +130,9 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
   isMobile,
 }) => {
   const deltas = useMemo(() => computeColorDeltas(analysisResult), [analysisResult])
+  const deckSize = analysisResult.totalCards || KARSTEN_REFERENCE_DECK_SIZE
+  const family = detectDeckFormatFamily(deckSize)
+  const anyScaled = deltas.some((d) => d.wasScaled)
 
   if (deltas.length === 0) return null
 
@@ -116,9 +147,14 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
         sx={{ display: 'block', mb: 2, lineHeight: 1.5 }}
       >
         For each color, we compare how many lands producing that color you have against Frank
-        Karsten&apos;s 2022 recommended minimums for the toughest mana cost in your spells. Green:
-        you&apos;re fine. Orange: one or two sources short. Red: three or more short — you&apos;ll
-        miss a lot of casts.
+        Karsten&apos;s 2022 recommended minimums for the toughest mana cost in your spells
+        {anyScaled
+          ? ` — scaled from 60-card tables to your ${deckSize}-card ${
+              family === 'edh' ? 'Commander' : family === 'limited' ? 'Limited' : ''
+            } list (×${deckSize}/${KARSTEN_REFERENCE_DECK_SIZE}).`
+          : '.'}{' '}
+        Green: you&apos;re fine. Orange: a few sources short. Red: well short — you&apos;ll miss a
+        lot of casts.
       </Typography>
 
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
@@ -144,6 +180,9 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
                   </Typography>
                   <Typography variant="caption" sx={{ display: 'block' }}>
                     Karsten target: {d.required} sources
+                    {d.wasScaled
+                      ? ` (scaled from ${d.requiredUnscaled} @ 60-card → ${deckSize}-card)`
+                      : ''}
                   </Typography>
                   <Typography variant="caption" sx={{ display: 'block' }}>
                     Your deck: {d.actual} sources ({deltaLabel})
@@ -155,6 +194,14 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
                     >
                       ⚠ Requirement exceeds Karsten&apos;s published range — target is an
                       extrapolation, treat with extra caution.
+                    </Typography>
+                  )}
+                  {d.wasScaled && !d.wasClamped && (
+                    <Typography
+                      variant="caption"
+                      sx={{ display: 'block', mt: 0.5, fontStyle: 'italic', opacity: 0.85 }}
+                    >
+                      Scaled N/60 approximation — not a published EDH/Limited table.
                     </Typography>
                   )}
                 </Box>

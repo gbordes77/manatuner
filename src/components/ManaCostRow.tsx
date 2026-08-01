@@ -62,6 +62,10 @@ interface ManaCostRowProps {
    * Added to deckSources when isCreature is true.
    */
   creatureOnlyExtraSources?: Record<string, number>
+  /** P1-9: spell CMC is in the format priority horizon (e.g. T5–T8 EDH). */
+  inFormatHorizon?: boolean
+  /** Short horizon label for chip (e.g. "T5–T8"). */
+  horizonLabel?: string
 }
 
 // Keyrune mana symbol component
@@ -660,6 +664,8 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     initialCardData,
     isCreature,
     creatureOnlyExtraSources,
+    inFormatHorizon = false,
+    horizonLabel,
   }) => {
     const theme = useTheme()
     const isDark = theme.palette.mode === 'dark'
@@ -792,10 +798,21 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     return (
       <Fade in={true} timeout={300}>
         <Paper
+          data-horizon={inFormatHorizon ? 'priority' : undefined}
           sx={{
             p: 2,
             mb: 1.5,
             transition: 'all 0.2s ease',
+            ...(inFormatHorizon
+              ? {
+                  borderLeft: '3px solid',
+                  borderLeftColor: 'primary.main',
+                  bgcolor: (t) =>
+                    t.palette.mode === 'dark'
+                      ? 'rgba(25, 118, 210, 0.08)'
+                      : 'rgba(25, 118, 210, 0.04)',
+                }
+              : {}),
             '&:hover': {
               boxShadow: isDark ? '0 4px 12px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.1)',
             },
@@ -816,6 +833,25 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     }}
                   >
                     {quantity}x {cardData?.name || cardName}
+                    {inFormatHorizon && horizonLabel ? (
+                      <Typography
+                        component="span"
+                        variant="caption"
+                        sx={{
+                          ml: 0.75,
+                          px: 0.6,
+                          py: 0.15,
+                          borderRadius: 1,
+                          bgcolor: 'primary.main',
+                          color: 'primary.contrastText',
+                          fontWeight: 700,
+                          fontSize: '0.65rem',
+                          verticalAlign: 'middle',
+                        }}
+                      >
+                        {horizonLabel}
+                      </Typography>
+                    ) : null}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     Cost: {getManaCostFromCard(cardData) || '—'}
