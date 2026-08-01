@@ -13,8 +13,13 @@
  * Credits: curation driven by Guillaume Bordes + the Videre Discord
  * community. Archive.org recoveries by KaP and others.
  *
- * @version 1.3 (2026-04-18)
+ * @version 1.4 (2026-08-01)
  *
+ * 1.4 (2026-08-01): Library gap audit seed — +11 canonical articles
+ *   (Karsten hypergeometric; Reid Level One mulligan/sequencing/sideboard/
+ *   role/play-draw/limited; Chapin tempo). Track rebalance: lost PVDDR
+ *   mulligan off rcq track; sources-2022 + hypergeom on rcq; limited 3→6.
+ *   Wizards Level One URLs normalized to /en/news/feature/ (live 200).
  * 1.3 (2026-04-18): +1 video (Battle Chads "The MTG Study That Changes
  *   Everything", April 2026) in the metagame category. Fresh data-driven
  *   video flagged by the creator as essential.
@@ -31,7 +36,7 @@ import type { ReferenceArticle } from '../types/referenceArticle'
 
 export const articlesReferenceSeed: ReferenceArticle[] = [
   // ==========================================================================
-  // TRACK 1 — YOUR FIRST FNM (5 articles)
+  // TRACK 1 — YOUR FIRST FNM (7 articles)
   // ==========================================================================
 
   {
@@ -46,13 +51,15 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     medium: 'article-series',
     language: 'en',
     linkStatus: 'live',
-    primaryUrl:
-      'https://magic.wizards.com/en/articles/archive/level-one/building-mana-base-2014-11-24',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/building-mana-base-2014-11-24',
     description:
       "From Reid Duke's foundational Level One course on magic.wizards.com — the chapter that teaches you how to build a balanced, reliable mana base. Every concept built from the ground up, no gatekeeping, no jargon.",
     curatorNote:
       "If you only read ONE thing about manabase construction before your first FNM, make it this. Reid writes like he's patiently teaching his younger self — and the chapter is hosted directly on magic.wizards.com. It's THAT good.",
     curatorTrack: 'first-fnm',
+    seriesId: 'reid-level-one',
+    seriesPart: 1,
+    readingTimeMin: 12,
   },
 
   {
@@ -139,8 +146,54 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     seriesPart: 2,
   },
 
+  {
+    id: 'reid-duke-level-one-mulligans',
+    title: 'Level One: Mulligans',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'mulligan',
+    secondaryCategories: ['fundamentals'],
+    level: 'beginner',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/mulligans-2015-01-26',
+    description:
+      'The Level One chapter on mulligans: the "Two to Five Lands" default, when linear decks break that rule, and how to stop feel-drafting opening hands.',
+    curatorNote:
+      "Chapin gives you the philosophy. Reid gives you the default rule: keep 2–5 lands, ship the rest — then the exceptions. It's the safety net before you refine like a grinder. Read this the night before your first FNM.",
+    curatorTrack: 'first-fnm',
+    seriesId: 'reid-level-one',
+    seriesPart: 2,
+    readingTimeMin: 10,
+  },
+
+  {
+    id: 'reid-duke-level-one-sequencing',
+    title: 'Level One: Sequencing',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'mulligan',
+    secondaryCategories: ['fundamentals'],
+    level: 'beginner',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/sequencing-2015-02-16',
+    description:
+      'How to order spells and land drops to minimize dead turns, maximize mana use, and avoid free losses from bad sequencing.',
+    curatorNote:
+      'The Analyzer tells you whether you can cast a spell. Sequencing tells you in which order you should. Reid covers the skill without set spoilers — pure long-term fundamentals.',
+    curatorTrack: 'first-fnm',
+    seriesId: 'reid-level-one',
+    seriesPart: 3,
+    readingTimeMin: 12,
+  },
+
   // ==========================================================================
-  // TRACK 2 — PREPARING FOR AN RCQ (6 articles)
+  // TRACK 2 — PREPARING FOR AN RCQ (10 articles)
   // ==========================================================================
 
   {
@@ -192,15 +245,64 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     year: 2015,
     category: 'sideboard',
     level: 'intermediate',
-    medium: 'article',
+    medium: 'article-series',
     language: 'en',
     linkStatus: 'live',
-    primaryUrl: 'https://magic.wizards.com/en/articles/archive/level-one/sideboard-2015-08-10',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/sideboard-2015-08-10',
     description:
       "Reid's sideboarding chapter from the Level One course on magic.wizards.com. The framework for building and piloting a 15-card sideboard that actually wins games.",
     curatorNote:
       "FNM doesn't really use sideboards. RCQ does. This is the crash course you need before your first competitive event that goes multiple rounds with best-of-three matches.",
     curatorTrack: 'rcq',
+    seriesId: 'reid-level-one',
+    seriesPart: 4,
+    readingTimeMin: 12,
+  },
+
+  {
+    id: 'reid-duke-level-one-sideboard-plans',
+    title: 'Level One: Sideboard Plans',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'sideboard',
+    secondaryCategories: ['deckbuilding'],
+    level: 'intermediate',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/sideboard-plans-2015-03-09',
+    description:
+      'How to build and execute sideboard plans: unify 15-card construction with in-match decisions, matchup by matchup.',
+    curatorNote:
+      'Fifteen sideboard cards mean nothing without a written plan. Reid forces the link: what comes out, what comes in, and which role you play game two. Read this the night before your first RCQ.',
+    curatorTrack: 'rcq',
+    seriesId: 'reid-level-one',
+    seriesPart: 5,
+    readingTimeMin: 14,
+  },
+
+  {
+    id: 'reid-duke-mulligans-part-iii-constructed',
+    title: 'Level One: Mulligans Part III — Constructed',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'mulligan',
+    level: 'intermediate',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl:
+      'https://magic.wizards.com/en/news/feature/mulligans-part-iii-constructed-2015-06-29',
+    description:
+      'Mulligans in Constructed beyond the beginner heuristic: archetype exceptions, functional hands vs pretty hands, and linear-deck traps.',
+    curatorNote:
+      'The 2–5 land rule breaks as soon as your deck is linear. This is the chapter you re-read before an RCQ with a deck that loses if it misses a key piece — the live replacement for lost CFB mulligan theory.',
+    curatorTrack: 'rcq',
+    seriesId: 'reid-level-one',
+    seriesPart: 6,
+    readingTimeMin: 12,
   },
 
   {
@@ -282,8 +384,8 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     description:
       "PVDDR's decision tree for mulligan decisions in constructed formats. More actionable than Chapin's abstract framework — direct rules for real tournament hands.",
     curatorNote:
-      "Chapin's 'Art of the Mulligan' is the theory; this is the practice. Lost to link rot — no archive.org snapshot exists and no mirror has been found. If you have a copy (PDF, screenshot, text dump), please reach out on GitHub.",
-    curatorTrack: 'rcq',
+      "Chapin's 'Art of the Mulligan' is the theory; this is the practice. Lost to link rot — no archive.org snapshot exists and no mirror has been found. Until recovery, read Reid Level One Mulligans + Mulligans Part III (Constructed) in this library. If you have a copy, please reach out on GitHub.",
+    // Off curator tracks while lost (2026-08-01 gap audit) — stays in grid as community recovery call
   },
 
   // ==========================================================================
@@ -606,6 +708,34 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
       'https://www.tcgplayer.com/content/article/How-Many-Sources-Do-You-Need-to-Consistently-Cast-Your-Spells-A-2022-Update/dc23a7d2-0a16-4c0b-ad36-586fcca03ad8/',
     description:
       "The 2022 update of Karsten's canonical manabase tables. Adjusts for the London mulligan rule and modern format speeds. The working reference used by ManaTuner's engine.",
+    readingTimeMin: 20,
+    curatorTrack: 'rcq',
+    curatorNote:
+      "Land count is half the story — colored sources are the other half. This is the table ManaTuner's engine implements. Bring your decklist, open the Analyzer, and check every pip. Required before any multi-color RCQ list goes to print.",
+  },
+
+  {
+    id: 'karsten-hypergeometric-intro',
+    title: 'An Introduction to the Hypergeometric Distribution for Magic Players',
+    author: 'Frank Karsten',
+    publisher: 'ChannelFireball',
+    year: 2018,
+    category: 'manabase',
+    secondaryCategories: ['advanced'],
+    level: 'intermediate',
+    medium: 'article',
+    language: 'en',
+    linkStatus: 'archived',
+    primaryUrl:
+      'https://web.archive.org/web/20201107233402/https://www.channelfireball.com/articles/an-introduction-to-the-hypergeometric-distribution-for-magic-players/',
+    originalUrl:
+      'https://www.channelfireball.com/articles/an-introduction-to-the-hypergeometric-distribution-for-magic-players/',
+    description:
+      'Karsten explains the hypergeometric distribution applied to Magic decks — the math foundation behind land counts, colored sources, and probability tools like ManaTuner.',
+    readingTimeMin: 15,
+    curatorTrack: 'rcq',
+    curatorNote:
+      "If the Karsten tables are the GPS, this article is the cartography course. Hypergeometric without unnecessary jargon — exactly ManaTuner's contract. Read it before you argue with a percentage on the Analyzer.",
   },
 
   {
@@ -753,7 +883,7 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
   },
 
   // ==========================================================================
-  // TRACK — LIMITED (DRAFT & SEALED) (3 articles)
+  // TRACK — LIMITED (DRAFT & SEALED) (6 articles)
   // ==========================================================================
 
   {
@@ -820,7 +950,74 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     readingTimeMin: 12,
     curatorTrack: 'limited',
     curatorNote:
-      "A formative draft essay — LSV made 'reading signals' legible to a whole generation. If the Wayback snapshot doesn't open on your first try, the 17lands blog and Limited Resources episodes on signals cover the same ground with modern data.",
+      "A formative draft essay — LSV made 'reading signals' legible to a whole generation. If the Wayback snapshot doesn't open on your first try, use Reid's Signals chapter in this track — same lesson, stable Wizards host.",
+  },
+
+  {
+    id: 'reid-duke-signals-booster-draft',
+    title: 'Level One: Signals in Booster Draft',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'fundamentals',
+    level: 'beginner',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/signals-booster-draft-2015-01-19',
+    description:
+      'Reading draft signals: what neighbors pass, when colors are open, when to force, and when to pivot.',
+    readingTimeMin: 12,
+    curatorTrack: 'limited',
+    curatorNote:
+      "If LSV's archived classic doesn't load, start here. Same core lesson (signals, open colors, pivots) on a live Wizards URL that won't rot.",
+    seriesId: 'reid-level-one',
+    seriesPart: 7,
+  },
+
+  {
+    id: 'reid-duke-sideboarding-limited',
+    title: 'Level One: Sideboarding in Limited',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'sideboard',
+    secondaryCategories: ['fundamentals'],
+    level: 'beginner',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/sideboarding-limited-2015-01-12',
+    description:
+      'Sideboarding in Limited: using the remaining pool, answering bombs, and what changes between sealed and draft.',
+    readingTimeMin: 10,
+    curatorTrack: 'limited',
+    curatorNote:
+      'In Limited your sideboard is a pool, not a built 15. Reid kills the trap of bringing Constructed sideboard habits into sealed — essential before your first sealed RCQ or prerelease grind.',
+    seriesId: 'reid-level-one',
+    seriesPart: 8,
+  },
+
+  {
+    id: 'reid-duke-mulligans-part-ii-limited',
+    title: 'Level One: Mulligans Part II — Limited',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'mulligan',
+    level: 'intermediate',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/mulligans-part-ii-limited-2015-06-15',
+    description:
+      'Mulligans in Limited beyond the 2–5 land rule: splashy hands, sealed vs draft, and when "almost" is a ship.',
+    readingTimeMin: 12,
+    curatorTrack: 'limited',
+    curatorNote:
+      'Seventeen lands in sealed is not twenty-four in Standard. Reid walks keepable Limited hands when the beginner rule stops being enough.',
+    seriesId: 'reid-level-one',
+    seriesPart: 9,
   },
 
   // ==========================================================================
@@ -844,6 +1041,64 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
   },
 
   {
+    id: 'reid-duke-level-one-role-assignment',
+    title: 'Level One: Role Assignment',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'fundamentals',
+    secondaryCategories: ['sideboard'],
+    level: 'intermediate',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/role-assignment-2015-01-05',
+    description:
+      "Who's the beatdown in this matchup? Reid formalizes offense/defense role assignment and the traps of getting it wrong.",
+    readingTimeMin: 12,
+    seriesId: 'reid-level-one',
+    seriesPart: 10,
+  },
+
+  {
+    id: 'reid-duke-level-one-play-or-draw',
+    title: 'Level One: Play or Draw?',
+    author: 'Reid Duke',
+    publisher: 'Wizards of the Coast',
+    year: 2015,
+    category: 'mulligan',
+    secondaryCategories: ['fundamentals', 'manabase'],
+    level: 'intermediate',
+    medium: 'article-series',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://magic.wizards.com/en/news/feature/play-or-draw-2015-03-16',
+    description:
+      'Play or draw: how game length, curve, and mulligans change the die-roll decision — and when to reverse the usual choice.',
+    readingTimeMin: 10,
+    seriesId: 'reid-level-one',
+    seriesPart: 11,
+  },
+
+  {
+    id: 'chapin-next-level-magic-tempo',
+    title: 'Next Level Magic Preview — Tempo',
+    author: 'Patrick Chapin',
+    publisher: 'StarCityGames',
+    year: 2009,
+    category: 'advanced',
+    secondaryCategories: ['fundamentals'],
+    level: 'advanced',
+    medium: 'article',
+    language: 'en',
+    linkStatus: 'live',
+    primaryUrl: 'https://articles.starcitygames.com/articles/next-level-magic-preview-tempo/',
+    description:
+      'Excerpt from Next Level Magic on tempo: a framework linking mana resources, card economy, and initiative beyond "play on curve".',
+    readingTimeMin: 15,
+  },
+
+  {
     id: 'reid-duke-level-one-full-course',
     title: 'Level One: The Full Course',
     author: 'Reid Duke',
@@ -857,7 +1112,7 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     linkStatus: 'live',
     primaryUrl: 'https://magic.wizards.com/en/news/feature/level-one-full-course-2015-10-05',
     description:
-      "The complete index of Reid Duke's Level One course on magic.wizards.com. Every chapter linked from one page — the most comprehensive beginner-to-intermediate competitive curriculum in MTG history. Includes the manabase + sideboarding chapters featured in our First FNM and RCQ tracks.",
+      "The complete index of Reid Duke's Level One course on magic.wizards.com. Every chapter linked from one page — the most comprehensive beginner-to-intermediate competitive curriculum in MTG history. Featured chapters in this library: mana base, mulligans, sequencing, sideboarding, role assignment, play/draw, and Limited.",
   },
 
   {

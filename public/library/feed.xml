@@ -6,8 +6,8 @@
     <atom:link href="https://www.manatuner.app/library/feed.xml" rel="self" type="application/rss+xml" />
     <description>Recently curated articles on manabase math, mulligans, tournament mindset, Commander, and Limited. Updated when new picks land in the reading library.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 02 May 2026 11:00:24 GMT</lastBuildDate>
-    <pubDate>Sat, 02 May 2026 11:00:24 GMT</pubDate>
+    <lastBuildDate>Sat, 01 Aug 2026 17:32:21 GMT</lastBuildDate>
+    <pubDate>Sat, 01 Aug 2026 17:32:21 GMT</pubDate>
     <generator>ManaTuner prebuild</generator>
     <item>
       <title>Secrets to INSANE win rates? The MTG Study That Changes Everything</title>
@@ -270,6 +270,16 @@
       <source url="https://web.archive.org/web/20190208133353/https://www.channelfireball.com/articles/how-many-colored-mana-sources-do-you-need-to-consistently-cast-your-spells-a-guilds-of-ravnica-update/">ChannelFireball</source>
     </item>
     <item>
+      <title>An Introduction to the Hypergeometric Distribution for Magic Players</title>
+      <link>https://www.manatuner.app/library/karsten-hypergeometric-intro</link>
+      <guid isPermaLink="true">https://www.manatuner.app/library/karsten-hypergeometric-intro</guid>
+      <pubDate>Mon, 01 Jan 2018 00:00:00 GMT</pubDate>
+      <author>Frank Karsten</author>
+      <category>manabase</category>
+      <description>Karsten explains the hypergeometric distribution applied to Magic decks — the math foundation behind land counts, colored sources, and probability tools like ManaTuner.</description>
+      <source url="https://web.archive.org/web/20201107233402/https://www.channelfireball.com/articles/an-introduction-to-the-hypergeometric-distribution-for-magic-players/">ChannelFireball</source>
+    </item>
+    <item>
       <title>It&apos;s Better to Make One Mistake Everyone Sees Than Two Only You Know About</title>
       <link>https://www.manatuner.app/library/pvddr-one-mistake-archive</link>
       <guid isPermaLink="true">https://www.manatuner.app/library/pvddr-one-mistake-archive</guid>
@@ -296,18 +306,8 @@
       <pubDate>Thu, 01 Jan 2015 00:00:00 GMT</pubDate>
       <author>Reid Duke</author>
       <category>fundamentals</category>
-      <description>The complete index of Reid Duke&apos;s Level One course on magic.wizards.com. Every chapter linked from one page — the most comprehensive beginner-to-intermediate competitive curriculum in MTG history. Includes the manabase + sideboarding chapters featured in our First FNM and RCQ tracks.</description>
+      <description>The complete index of Reid Duke&apos;s Level One course on magic.wizards.com. Every chapter linked from one page — the most comprehensive beginner-to-intermediate competitive curriculum in MTG history. Featured chapters in this library: mana base, mulligans, sequencing, sideboarding, role assignment, play/draw, and Limited.</description>
       <source url="https://magic.wizards.com/en/news/feature/level-one-full-course-2015-10-05">Wizards of the Coast</source>
-    </item>
-    <item>
-      <title>EDHREC Articles</title>
-      <link>https://www.manatuner.app/library/edhrec-articles-hub</link>
-      <guid isPermaLink="true">https://www.manatuner.app/library/edhrec-articles-hub</guid>
-      <pubDate>Thu, 01 Jan 2015 00:00:00 GMT</pubDate>
-      <author>EDHREC Staff &amp; Contributors</author>
-      <category>metagame</category>
-      <description>The strategy hub behind EDHREC — inclusion rates, commander statistics, theme analyses, and weekly data-driven columns. The closest thing Commander has to 17lands.</description>
-      <source url="https://edhrec.com/articles">EDHREC</source>
     </item>
   </channel>
 </rss>
