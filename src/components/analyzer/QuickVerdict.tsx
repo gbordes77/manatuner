@@ -1,4 +1,4 @@
-import { Alert, Typography } from '@mui/material'
+import { Alert, Box, List, ListItem, ListItemText, Typography } from '@mui/material'
 import React from 'react'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 
@@ -133,6 +133,15 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
     ? `${headline} — ${tierLabel[tier]}, but ${colorClause}; ${mulliganRider}.`
     : `${headline} — ${tierLabel[tier]}; ${mulliganRider}.`
 
+  const healthBand =
+    consistencyPct >= 85
+      ? 'Excellent'
+      : consistencyPct >= 70
+        ? 'Good'
+        : consistencyPct >= 55
+          ? 'Average'
+          : 'Needs work'
+
   return (
     <Alert
       severity={severity}
@@ -144,10 +153,41 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
       }}
       role="status"
       aria-live="polite"
+      data-testid="quick-verdict"
     >
+      <Typography
+        variant="caption"
+        sx={{ display: 'block', fontWeight: 700, letterSpacing: 0.4, mb: 0.5, opacity: 0.9 }}
+      >
+        Health Score {consistencyPct}% · {healthBand}
+      </Typography>
       <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.5 }}>
         {phrase}
       </Typography>
+      {Array.isArray(analysisResult.recommendations) &&
+        analysisResult.recommendations.length > 0 && (
+          <Box sx={{ mt: 1.25 }} data-testid="top-recommendations">
+            <Typography
+              variant="caption"
+              sx={{ fontWeight: 700, letterSpacing: 0.3, display: 'block', mb: 0.25 }}
+            >
+              Top recommendations
+            </Typography>
+            <List dense disablePadding>
+              {analysisResult.recommendations.slice(0, 3).map((rec, i) => (
+                <ListItem key={i} disableGutters sx={{ py: 0.15, alignItems: 'flex-start' }}>
+                  <ListItemText
+                    primary={`${i + 1}. ${rec}`}
+                    primaryTypographyProps={{
+                      variant: 'caption',
+                      sx: { lineHeight: 1.4 },
+                    }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        )}
       {isEDH && (
         <Typography
           variant="caption"

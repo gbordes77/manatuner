@@ -82,7 +82,7 @@ export const GuidePage: React.FC = () => {
       icon: <AnalyticsIcon sx={{ fontSize: 32 }} />,
       title: 'Analysis',
       description:
-        'Three sub-tabs: Spells & Tempo (per-spell castability with tempo impact from tapped lands), Probabilities (mana curve chart, color distribution, land drop odds by turn), and Recommendations (prioritized fixes for your manabase).',
+        'Three sub-tabs under Analysis: Spells & Tempo (per-spell castability with tempo impact from tapped lands), Probabilities (mana curve chart, color distribution, land drop odds by turn), and Recommendations (prioritized fixes for your manabase). The Health Score is the consistency % shown in the verdict above the tabs.',
       color: '#ff9800',
     },
     {
@@ -178,7 +178,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What do Best Case and Realistic mean in Castability?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Best Case: probability of having the right colors assuming perfect land drops. Realistic: probability accounting for mana screw. Focus on Realistic.',
+                    text: 'Perfect drops (Best Case): probability of having the right colors assuming perfect land drops. Realistic: on-curve chance including mana screw (and ramp when enabled). Focus on Realistic.',
                   },
                 },
                 {
@@ -267,7 +267,7 @@ export const GuidePage: React.FC = () => {
                   '@type': 'HowToStep',
                   position: 2,
                   name: 'Read your Health Score',
-                  text: 'The Dashboard tab shows a Health Score from 0 to 100%. Above 85% = tournament-ready. Between 70 and 85% = minor adjustments. Below 70% = rebuild.',
+                  text: 'After Analyze, the Health Score (0–100%) sits above the result tabs with a plain-English verdict. Above 85% = strong. Between 70 and 85% = solid with room to improve. Below 70% = rebuild manabase priorities.',
                 },
                 {
                   '@type': 'HowToStep',
@@ -509,7 +509,7 @@ export const GuidePage: React.FC = () => {
             </Typography>
             <Paper sx={{ p: 2, bgcolor: '#e3f2fd', borderRadius: 2 }}>
               <Typography variant="body2" fontWeight={600} color="#1565c0">
-                💡 Tip: Click "Load Example" to see a sample deck and understand the format.
+                💡 Tip: Click "Try Example" to see a sample deck and understand the format.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -1035,7 +1035,7 @@ export const GuidePage: React.FC = () => {
           },
           {
             q: 'What do Best Case and Realistic mean in Castability?',
-            a: "Best Case: probability of having the right colors assuming you hit all your land drops on curve. Realistic: probability accounting for mana screw (not drawing enough lands). Focus on Realistic \u2014 it's the number that matters for deckbuilding.",
+            a: "Perfect drops (Best Case): probability of having the right colors assuming you hit all your land drops on curve. Realistic: on-curve cast chance including mana screw (and rocks/dorks when acceleration is on). Both numbers come from the same model so Perfect drops is always \u2265 Realistic. Focus on Realistic \u2014 it's the number that matters for deckbuilding.",
           },
           {
             q: "Why is my castability below 90% even when I follow Karsten's recommendations?",

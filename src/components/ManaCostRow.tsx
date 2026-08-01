@@ -409,42 +409,46 @@ const useProbabilityCalculation = (
       const turn = Math.max(1, Math.min(effectiveCmc, 10))
       const cardsSeen = cardsSeenByTurn(turn, playDraw)
 
-      // P1: "Perfect scenario" = assuming we have exactly `turn` lands in hand
-      // What's the probability those lands have the right colors?
-      // = P(at least pipsNeeded sources among turn lands drawn from landsInDeck pool)
-      let p1Probability = 1
+      // P2 (realistic): mixture over land counts — colors × mana given l lands.
+      // P1 (perfect drops): P(castable | lands ≥ turn) so P1 ≥ P2 always.
+      // (P0-3: old p1 = colors|l=turn under-counted extra-land draws → Realistic > Best.)
+      let p2Probability = 0
+      let pCastGivenEnough = 0
+      let pEnoughLands = 0
+      const maxLands = Math.min(landsInDeck, cardsSeen)
 
-      for (const [color, pipsNeeded] of Object.entries(colorCounts)) {
-        const colorSources = deckSources?.[color] || 0
-
-        if (colorSources === 0) {
-          p1Probability = 0
-          break
+      const colorsOkGivenL = (l: number): number => {
+        if (l <= 0) return 0
+        let p = 1
+        for (const [color, pipsNeeded] of Object.entries(colorCounts)) {
+          const colorSources = deckSources?.[color] || 0
+          if (colorSources === 0) return 0
+          p = Math.min(p, hypergeom.atLeast(landsInDeck, colorSources, l, pipsNeeded))
         }
-
-        // P(at least pipsNeeded of this color among turn lands)
-        const p1Color = hypergeom.atLeast(landsInDeck, colorSources, turn, pipsNeeded)
-        p1Probability = Math.min(p1Probability, p1Color)
+        for (const hybrid of hybridMana) {
+          const sources1 = deckSources?.[hybrid.color1] || 0
+          const sources2 = deckSources?.[hybrid.color2] || 0
+          const p1c = sources1 > 0 ? hypergeom.atLeast(landsInDeck, sources1, l, 1) : 0
+          const p2c = sources2 > 0 ? hypergeom.atLeast(landsInDeck, sources2, l, 1) : 0
+          p = Math.min(p, Math.max(p1c, p2c))
+        }
+        return p
       }
 
-      // Handle hybrid mana - use the BETTER of the two colors
-      for (const hybrid of hybridMana) {
-        const sources1 = deckSources?.[hybrid.color1] || 0
-        const sources2 = deckSources?.[hybrid.color2] || 0
-
-        // For hybrid, we need at least 1 of either color
-        const p1Color1 = sources1 > 0 ? hypergeom.atLeast(landsInDeck, sources1, turn, 1) : 0
-        const p1Color2 = sources2 > 0 ? hypergeom.atLeast(landsInDeck, sources2, turn, 1) : 0
-
-        // Player can choose either color, so take MAX
-        const p1Hybrid = Math.max(p1Color1, p1Color2)
-        p1Probability = Math.min(p1Probability, p1Hybrid)
+      for (let l = 0; l <= maxLands; l++) {
+        const pL = hypergeom.pmf(deckSize, landsInDeck, cardsSeen, l)
+        if (pL <= 0) continue
+        if (l >= turn) pEnoughLands += pL
+        // Need at least `turn` lands to cast an on-curve spell of CMC=turn
+        if (l < turn) continue
+        const pColors = colorsOkGivenL(l)
+        if (pColors <= 0) continue
+        const joint = pL * pColors
+        p2Probability += joint
+        pCastGivenEnough += joint
       }
 
-      // P2: Realistic = P1 × P(having at least `turn` lands among cardsSeen cards)
-      // This accounts for mana screw (not drawing enough lands)
-      const probHavingEnoughLands = hypergeom.atLeast(deckSize, landsInDeck, cardsSeen, turn)
-      const p2Probability = p1Probability * probHavingEnoughLands
+      const p1Probability = pEnoughLands > 0 ? pCastGivenEnough / pEnoughLands : 0
 
       // NaN-safe rounding with a 100% ceiling. The previous 99% cap suggested
       // "nothing is ever certain" which eroded user trust when a perfectly
@@ -915,7 +919,8 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
               </Box>
             </Grid>
 
-            {/* Realistic (primary) + Best Case (secondary reference) */}
+            {/* Realistic (primary) + Best case (secondary) — same engine for both.
+                P0-3: never mix acceleratedResult.p2 with inline probabilities.p1. */}
             <Grid item xs={8} md={6}>
               {showAcceleration && acceleratedResult ? (
                 <Box>
@@ -928,18 +933,18 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     tooltipContent={
                       <Box sx={{ p: 0.5 }}>
                         <Typography variant="body2" fontWeight="bold" gutterBottom>
-                          Castability with Mana Acceleration
+                          On-curve cast chance (with ramp)
                         </Typography>
                         <Typography variant="caption" component="div" sx={{ mb: 1 }}>
-                          Unlike basic calculators, ManaTuner factors in your mana rocks, dorks, and
-                          rituals with format-aware removal survival rates.
+                          Accounts for land count, colors, and mana rocks/dorks (format-aware
+                          removal). Primary number to optimize.
                         </Typography>
                         <Typography variant="caption" component="div">
-                          • Lands only: {Math.round(acceleratedResult.base.p2 * 100)}%
+                          • Lands only (realistic): {Math.round(acceleratedResult.base.p2 * 100)}%
                         </Typography>
                         <Typography variant="caption" component="div">
-                          • Lands + Rocks: {Math.round(acceleratedResult.withAcceleration.p2 * 100)}
-                          %
+                          • With ramp (realistic):{' '}
+                          {Math.round(acceleratedResult.withAcceleration.p2 * 100)}%
                         </Typography>
                         <Typography
                           variant="caption"
@@ -947,6 +952,9 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                           sx={{ color: 'success.light' }}
                         >
                           • Ramp bonus: +{Math.round(acceleratedResult.accelerationImpact * 100)}%
+                        </Typography>
+                        <Typography variant="caption" component="div" sx={{ mt: 0.5 }}>
+                          • Lands-only perfect drops: {Math.round(acceleratedResult.base.p1 * 100)}%
                         </Typography>
                         {acceleratedResult.acceleratedTurn !== null && (
                           <Typography
@@ -961,7 +969,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     }
                   />
                   <Tooltip
-                    title="Best case: probability assuming you hit all land drops on curve"
+                    title="Perfect drops (lands only): on-curve cast chance if you always have enough lands (ignores ramp). Always ≥ lands-only Realistic. With rocks/dorks, the primary Realistic bar can exceed this — ramp is helping, not a bug."
                     arrow
                   >
                     <Typography
@@ -969,7 +977,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                       color="text.disabled"
                       sx={{ mt: 0.5, display: 'block', fontSize: '0.65rem' }}
                     >
-                      Best case: {probabilities.p1}%
+                      Perfect drops (lands only): {Math.round(acceleratedResult.base.p1 * 100)}%
                     </Typography>
                   </Tooltip>
                 </Box>
@@ -980,7 +988,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                       Realistic:
                     </Typography>
                     <Tooltip
-                      title="Realistic: accounts for mana screw (not drawing enough lands)"
+                      title="On-curve cast chance: right colors AND enough lands by that turn (mana screw included). Primary number to optimize."
                       arrow
                     >
                       <HelpOutlineIcon
@@ -1016,7 +1024,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     }}
                   />
                   <Tooltip
-                    title="Best case: probability assuming you hit all land drops on curve"
+                    title="Perfect drops: chance of the right colors if you always hit your land drops on curve. Isolates color fixing from land count. Always ≥ Realistic (same model)."
                     arrow
                   >
                     <Typography
@@ -1024,7 +1032,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                       color="text.disabled"
                       sx={{ mt: 0.5, display: 'block', fontSize: '0.65rem' }}
                     >
-                      Best case: {probabilities.p1}%
+                      Perfect drops: {probabilities.p1}%
                     </Typography>
                   </Tooltip>
                 </Box>

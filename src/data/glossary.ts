@@ -25,12 +25,13 @@ export const GLOSSARY: Record<string, { short: string; long?: string }> = {
     long: 'A composite score combining land count, color source coverage, curve alignment, and Karsten compliance. 90%+ is Excellent, 70-89% is Good.',
   },
   'best-case': {
-    short: 'Chance of casting if you always have the right colors — only land count matters.',
-    long: 'P1 assumes every land you draw produces the color you need. It isolates the question: "Do I have enough lands total?"',
+    short: 'Perfect land drops: chance of the right colors if you hit a land every turn on curve.',
+    long: 'Also labeled “Perfect drops”. Isolates color fixing from land count — assumes you always have enough lands, then asks if those lands produce the colors you need. Always ≥ Realistic for the same model.',
   },
   realistic: {
-    short: 'Actual chance of casting, considering you might not draw the right color sources.',
-    long: 'P2 accounts for both having enough lands AND having the right colors among them. This is your real-world probability.',
+    short:
+      'On-curve cast chance including mana screw (and ramp when enabled). Primary number to optimize.',
+    long: 'Accounts for drawing enough lands by the turn AND the right colors among them (plus rocks/dorks when acceleration is on). This is your real-world probability.',
   },
   karsten: {
     short:

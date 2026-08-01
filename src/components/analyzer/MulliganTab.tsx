@@ -48,6 +48,7 @@ import {
   YAxis,
 } from 'recharts'
 import type { DeckCard } from '../../services/deckAnalyzer'
+import { toCloneableDeckCards } from '../../services/mulliganSimulatorAdvanced'
 import {
   ARCHETYPE_CONFIGS,
   SCORE_LEGEND,
@@ -853,8 +854,25 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
       }
       worker.addEventListener('message', handler)
 
-      const request: MulliganWorkerRequest = { id, cards, archetype, iterations }
-      worker.postMessage(request)
+      // P0-1: never post raw DeckCard[] — lands carry etbTapped: () => boolean
+      // which throws DataCloneError ("()=>!0 could not be cloned").
+      const request: MulliganWorkerRequest = {
+        id,
+        cards: toCloneableDeckCards(cards),
+        archetype,
+        iterations,
+      }
+      try {
+        worker.postMessage(request)
+      } catch (err) {
+        worker.removeEventListener('message', handler)
+        setIsAnalyzing(false)
+        setError(
+          err instanceof Error
+            ? `Failed to start mulligan analysis: ${err.message}`
+            : 'Failed to start mulligan analysis (worker message not cloneable)'
+        )
+      }
     }, [cards, archetype, iterations, totalCards])
 
     // Single auto-run effect (was previously two overlapping effects → M3 fix).

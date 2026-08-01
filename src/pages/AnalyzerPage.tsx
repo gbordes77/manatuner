@@ -878,18 +878,21 @@ const AnalyzerPage: React.FC = () => {
                       iconPosition="start"
                       label="Castability"
                       aria-label="Castability - Spell casting probabilities"
+                      data-testid="tab-castability"
                     />
                     <Tab
                       icon={<AnalyticsIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
                       label="Analysis"
                       aria-label="Analysis - Detailed spell analysis"
+                      data-testid="tab-analysis"
                     />
                     <Tab
                       icon={<CasinoIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
                       label="Mulligan"
                       aria-label="Mulligan - Hand simulation and strategy"
+                      data-testid="tab-mulligan"
                     />
                     <Tab
                       icon={<TerrainIcon sx={{ fontSize: 18 }} />}
@@ -921,6 +924,11 @@ const AnalyzerPage: React.FC = () => {
                                 bgcolor:
                                   manabaseVerdict.verdict === 'short' ? '#d32f2f' : '#ed6c02',
                               }}
+                              title={
+                                manabaseVerdict.verdict === 'short'
+                                  ? `${manabaseVerdict.shortCount} color(s) short of Karsten targets`
+                                  : `${manabaseVerdict.warnCount} color(s) close to Karsten targets`
+                              }
                               aria-label={
                                 manabaseVerdict.verdict === 'short'
                                   ? `${manabaseVerdict.shortCount} colors short`
@@ -962,12 +970,14 @@ const AnalyzerPage: React.FC = () => {
                             ? `Manabase — ${manabaseVerdict.warnCount} colors close to target`
                             : 'Manabase - Land breakdown'
                       }
+                      data-testid="tab-manabase"
                     />
                     <Tab
                       icon={<DownloadIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
                       label="Blueprint"
                       aria-label="Blueprint - Export analysis as PNG, PDF or JSON"
+                      data-testid="tab-blueprint"
                     />
                   </Tabs>
 

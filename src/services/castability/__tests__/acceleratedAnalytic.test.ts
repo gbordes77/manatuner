@@ -195,7 +195,7 @@ describe('computeBaseCastabilityAtTurn', () => {
     expect(result.p2).toBeLessThanOrEqual(1)
   })
 
-  it('p2 should be <= p1 (p2 accounts for land count uncertainty)', () => {
+  it('P0-3: p2 (realistic) should be <= p1 (perfect drops) for lands-only model', () => {
     const deck = makeGruulDeck()
     const spell = make4ManaGruulSpell()
     const ctx = makeGoldfishCtx()
@@ -463,6 +463,25 @@ describe('computeAcceleratedCastabilityAtTurn', () => {
 
     // With acceleration, p2 should be >= base p2
     expect(accel.p2).toBeGreaterThanOrEqual(base.p2 - 1e-9)
+  })
+
+  it('P0-3: lands-only perfect drops (base.p1) pairs with base.p2; UI uses same engine', () => {
+    // Regression: never mix acceleratedResult.withAcceleration.p2 with
+    // inline useProbabilityCalculation().p1 (unrelated engines).
+    // Display rule when ramp is on:
+    //   Realistic primary = withAcceleration.p2
+    //   Secondary caption  = base.p1 (lands-only perfect drops)
+    // Ramp Realistic may exceed base.p1 — intentional; tooltip explains it.
+    const deck = makeGruulDeck()
+    const spell = make1ManaGreenSpell()
+    const ctx = makeGoldfishCtx()
+    const producers = [makeLlanowarElves()]
+
+    const full = computeAcceleratedCastability(deck, spell, producers, ctx)
+    expect(full.base.p1).toBeGreaterThanOrEqual(full.base.p2 - 1e-9)
+    // 1-drop: ramp should not smash lands-only perfect drops into nonsense
+    expect(full.base.p1).toBeGreaterThan(0.5)
+    expect(full.withAcceleration.p2).toBeGreaterThan(0)
   })
 
   it('should respect kMax=0 and return base results', () => {

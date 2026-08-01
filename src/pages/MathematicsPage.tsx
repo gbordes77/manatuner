@@ -429,15 +429,17 @@ const MathematicsPage: React.FC = () => {
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, borderRadius: 3, height: '100%', border: '2px solid #2196f3' }}>
               <Typography variant="h6" fontWeight={700} gutterBottom sx={{ color: '#2196f3' }}>
-                Best case (secondary)
+                Perfect drops / Best case (secondary)
               </Typography>
               <Typography variant="body2" paragraph>
                 <strong>What it answers:</strong> "If I hit a land every turn, do I have the right
                 colors?"
               </Typography>
               <Typography variant="body2" paragraph>
-                Assumes perfect land drops, then checks color availability. Always higher than
-                Realistic because it assumes perfect land drops.
+                Assumes perfect land drops, then checks color availability. For the{' '}
+                <strong>same model</strong> (lands-only or lands+ramp), Perfect drops is always ≥
+                Realistic because it ignores mana screw. Do not compare Perfect drops from one
+                engine to Realistic from another.
               </Typography>
               <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
                 Use it to evaluate your color balance independently of your land count.

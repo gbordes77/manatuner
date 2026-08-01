@@ -250,10 +250,15 @@ function manaOkGivenLands(
  *
  * Proper conditioning: sum over all possible values of lands drawn
  *
- * P(castable at T) = Σₗ P(lands=l) × P(colors OK | l) × P(mana OK | l)
+ * P2 (realistic) = Σₗ P(lands=l) × P(colors OK | l) × P(mana OK | l)
  *
- * P1 (legacy): P(colors OK | l=T) assuming perfect land drops
- * P2 (realistic): full sum above
+ * P1 (perfect drops) = P(castable | lands ≥ turn)
+ *   = Σ_{l≥turn} P(l) × P(colors|l) × P(mana|l)  /  P(lands ≥ turn)
+ *
+ * Conditioning on lands ≥ turn (not lands = turn) is the correct “I always
+ * hit my land drops” upper bound. The old P(colors | l=turn) under-counted
+ * color odds when you draw extra lands, which made Realistic > Best case
+ * on 1-drops (P0-3 trust bug).
  */
 function computeBaseCastability(
   hg: Hypergeom,
@@ -263,19 +268,20 @@ function computeBaseCastability(
   ctx: AccelContext
 ): CastabilityResult {
   const cardsSeen = cardsSeenByTurn(turn, ctx.playDraw)
-
-  // P1 "legacy" (perfect drops): colors given l=turn
-  // This maintains UX compatibility with the original P1/P2 display
-  const p1 = colorsOkGivenLands(hg, deck, spell, turn)
-
-  // P2: Sum over all possible land counts
-  let p2 = 0
-
   const maxLands = Math.min(deck.totalLands, cardsSeen)
+
+  let p2 = 0
+  let pCastGivenEnoughMass = 0
+  let pEnoughLands = 0
+
   for (let l = 0; l <= maxLands; l++) {
     // P(exactly l lands in hand by turn T)
     const pL = hg.pmf(deck.deckSize, deck.totalLands, cardsSeen, l)
     if (pL <= 0) continue
+
+    if (l >= turn) {
+      pEnoughLands += pL
+    }
 
     // P(have required colors among those l lands)
     const pColors = colorsOkGivenLands(hg, deck, spell, l)
@@ -285,8 +291,14 @@ function computeBaseCastability(
     const pMana = manaOkGivenLands(hg, deck, spell.mv, l)
     if (pMana <= 0) continue
 
-    p2 += pL * pColors * pMana
+    const joint = pL * pColors * pMana
+    p2 += joint
+    if (l >= turn) {
+      pCastGivenEnoughMass += joint
+    }
   }
+
+  const p1 = pEnoughLands > 0 ? pCastGivenEnoughMass / pEnoughLands : 0
 
   return { p1: clamp01(p1), p2: clamp01(p2) }
 }

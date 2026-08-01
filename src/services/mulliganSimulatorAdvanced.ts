@@ -42,6 +42,20 @@ export interface SimulatedHand {
 // =============================================================================
 
 /**
+ * Strip non-structured-cloneable fields (e.g. `etbTapped` functions on
+ * DeckCard lands) so the payload can be sent to a Web Worker via postMessage.
+ *
+ * JSON round-trip drops functions/class instances while keeping landMetadata
+ * and other plain data. prepareDeckForSimulation already reads ETB from
+ * landMetadata, not from the etbTapped function.
+ *
+ * @see AGENT_PLAN P0-1 — DataCloneError `()=>!0 could not be cloned`
+ */
+export function toCloneableDeckCards(cards: DeckCard[]): DeckCard[] {
+  return JSON.parse(JSON.stringify(cards)) as DeckCard[]
+}
+
+/**
  * Convert DeckCards to SimulatedCards for the simulation
  */
 export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {

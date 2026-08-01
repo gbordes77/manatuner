@@ -276,7 +276,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                   Probabilities
                 </Typography>
                 <Tooltip
-                  title="Realistic = chance of casting on curve (accounts for land count). Best case = chance if you have perfect mana. Click 'Probabilities' for the full explanation."
+                  title="Realistic = on-curve cast chance (land count + colors [+ ramp]). Perfect drops = right colors if you hit every land drop (same model). Click Mathematics for the full explanation."
                   arrow
                   placement="top"
                 >
@@ -344,9 +344,9 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         >
           <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <strong>
-              <Term id="best-case">Best Case</Term>
+              <Term id="best-case">Perfect drops</Term>
             </strong>
-            &nbsp;= All lands on curve
+            &nbsp;= right colors if lands on curve
           </Box>
           <Box component="span" sx={{ mx: 1 }}>
             |
@@ -355,8 +355,8 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
             <strong>
               <Term id="realistic">Realistic</Term>
             </strong>
-            &nbsp;= Accounts for mana screw
-            {producersInDeck.length > 0 ? ' + mana rocks/dorks' : ''}
+            &nbsp;= mana screw
+            {producersInDeck.length > 0 ? ' + rocks/dorks' : ''} (optimize this)
           </Box>
         </Typography>
       </Box>
