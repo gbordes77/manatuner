@@ -1,7 +1,11 @@
+import FeedbackIcon from '@mui/icons-material/Feedback'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import { Box, Container, Divider, Grid, Link, Typography, useTheme } from '@mui/material'
+import { Box, Chip, Container, Divider, Grid, Link, Typography, useTheme } from '@mui/material'
 import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
+
+/** Same Tally form as BetaBanner / Library — permanent feedback entry point. */
+export const FEEDBACK_URL = 'https://tally.so/r/A7KRkN'
 
 // WUBRG signature row
 const WUBRGSignature: React.FC = () => {
@@ -118,30 +122,42 @@ export const Footer: React.FC = () => {
               ))}
             </Box>
 
-            {/* External links */}
+            {/* External links — Feedback as chip so it stays scannable after banner dismiss */}
             <Box
               sx={{
                 display: 'flex',
-                gap: 2,
+                gap: 1.5,
+                alignItems: 'center',
                 justifyContent: { xs: 'flex-start', md: 'flex-end' },
                 flexWrap: 'wrap',
               }}
             >
-              <Link
-                href="https://tally.so/r/A7KRkN"
+              <Chip
+                component="a"
+                href={FEEDBACK_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                color="inherit"
+                clickable
+                icon={<FeedbackIcon />}
+                label="Give Feedback"
+                color="primary"
+                variant="outlined"
+                size="small"
                 sx={{
-                  fontWeight: 600,
-                  transition: 'color 0.2s ease',
-                  '&:hover': { color: theme.palette.primary.main },
+                  fontWeight: 700,
+                  height: 28,
+                  borderWidth: 1.5,
+                  '& .MuiChip-icon': { fontSize: '1rem' },
+                  '&:hover': {
+                    bgcolor: 'primary.main',
+                    color: 'primary.contrastText',
+                    borderColor: 'primary.main',
+                    '& .MuiChip-icon': { color: 'inherit' },
+                  },
                 }}
-              >
-                Feedback
-              </Link>
+              />
 
-              <Divider orientation="vertical" flexItem />
+              <Divider orientation="vertical" flexItem sx={{ mx: 0.5 }} />
 
               <Link
                 href="https://github.com/gbordes77/manatuner"

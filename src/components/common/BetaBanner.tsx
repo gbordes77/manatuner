@@ -2,6 +2,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import FeedbackIcon from '@mui/icons-material/Feedback'
 import { Alert, Box, Chip, Container, IconButton, Link, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { FEEDBACK_URL } from '../layout/Footer'
 
 /** Bump this when a major release should re-show the banner after dismiss. */
 const BANNER_KEY = 'manatuner-feedback-banner-dismissed-v1'
@@ -92,7 +93,7 @@ export const BetaBanner: React.FC = () => {
               size="small"
               clickable
               component={Link}
-              href="https://tally.so/r/A7KRkN"
+              href={FEEDBACK_URL}
               target="_blank"
               rel="noopener noreferrer"
               sx={{

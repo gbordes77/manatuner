@@ -2,6 +2,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics'
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import FeedbackIcon from '@mui/icons-material/Feedback'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import GuideIcon from '@mui/icons-material/MenuBook'
@@ -15,6 +16,7 @@ import {
   AppBar,
   Box,
   Button,
+  Chip,
   Divider,
   Drawer,
   IconButton,
@@ -35,6 +37,7 @@ import {
 import React, { useState } from 'react'
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../common/NotificationProvider'
+import { FEEDBACK_URL } from './Footer'
 
 // Mana symbol component using Keyrune font
 const ManaSymbol: React.FC<{ color: 'w' | 'u' | 'b' | 'r' | 'g'; size?: number }> = ({
@@ -305,6 +308,47 @@ export const Header: React.FC = () => {
           </Box>
         )}
 
+        {/* Feedback — permanent entry (survives banner dismiss). Desktop: chip; mobile: icon. */}
+        {!isMobile ? (
+          <Chip
+            component="a"
+            href={FEEDBACK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            clickable
+            icon={<FeedbackIcon sx={{ fontSize: '1rem !important' }} />}
+            label="Feedback"
+            size="small"
+            sx={{
+              ml: 1,
+              height: 28,
+              fontWeight: 700,
+              color: '#fff',
+              border: '1px solid rgba(255,255,255,0.55)',
+              bgcolor: 'rgba(255,255,255,0.12)',
+              '& .MuiChip-icon': { color: '#fff' },
+              '&:hover': {
+                bgcolor: 'rgba(255,255,255,0.22)',
+                borderColor: 'rgba(255,255,255,0.85)',
+              },
+            }}
+          />
+        ) : (
+          <Tooltip title="Give feedback">
+            <IconButton
+              color="inherit"
+              component="a"
+              href={FEEDBACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Give feedback"
+              sx={{ ml: 0.5 }}
+            >
+              <FeedbackIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         {/* GitHub link */}
         <Tooltip title="View source code on GitHub">
           <IconButton
@@ -314,7 +358,7 @@ export const Header: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="View source code on GitHub"
-            sx={{ ml: 1 }}
+            sx={{ ml: 0.5 }}
           >
             <GitHubIcon />
           </IconButton>
@@ -481,6 +525,23 @@ export const Header: React.FC = () => {
         <Divider sx={{ my: 1 }} />
 
         <List>
+          <ListItem disablePadding>
+            <ListItemButton
+              component="a"
+              href={FEEDBACK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ py: 1.5 }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: 'primary.main' }}>
+                <FeedbackIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Give Feedback"
+                primaryTypographyProps={{ fontWeight: 700, color: 'primary.main' }}
+              />
+            </ListItemButton>
+          </ListItem>
           <ListItem disablePadding>
             <ListItemButton
               component="a"
