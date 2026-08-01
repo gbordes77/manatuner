@@ -1,8 +1,8 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date de cut-over :** 2026-08-01  
-> **Branche live :** `main` @ **`2753751`** (feature **`7d05d5c`**)  
-> **Version app :** **2.7.4**  
+> **Branche live :** `main` (v2.7.5 — push en cours)  
+> **Version app :** **2.7.5**  
 > **Prod :** https://www.manatuner.app/  
 > **Repo :** https://github.com/gbordes77/manatuner
 
@@ -44,49 +44,48 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 
 ## 2. Mémoire — ce qui a été fait (audit 2026-08-01)
 
-### Phase 0 → Vague A/B/C → **prod**
+### Vagues A–D → **prod**
 
 | Vague | Contenu                                             | Ship                |
 | ----- | --------------------------------------------------- | ------------------- |
 | A     | Worker Mulligan, P1/P2 cast, Health Score, E2E      | `25598c6`           |
 | B     | Learn nav, feedback permanent, empty states, hero   | `9eef000`…`08b80a5` |
 | C     | Auto-format EDH/Limited, play/draw, sideboard scope | `83efe90` (v2.7.3)  |
+| D     | Horizon EDH + Karsten N/60 + caveats                | `7d05d5c` (v2.7.4)  |
 
-### Vague D — P1-9 EDH plus profond → **prod v2.7.4** (go prod owner)
+### Vague E — Command zone + T4–T8 → **prod v2.7.5**
 
-| Item      | Détail                                                                 |
-| --------- | ---------------------------------------------------------------------- |
-| Horizon   | EDH **T5–T8** sort + chip + highlight ; Constructed/Limited T1–T4      |
-| Karsten   | `scaleKarstenSources(K, N)` = round(K × N/60) sur Manabase color check |
-| Caveats   | Command zone **non** modélisée ; Rule 0 / multiplayer out of scope     |
-| Singleton | Heads-up non-basics qty > 1                                            |
-| Tests     | unit deckFormat 15 ; E2E `p1-9-edh-verify.spec.js`                     |
+| Item      | Détail                                                         |
+| --------- | -------------------------------------------------------------- |
+| Horizon   | EDH **T4–T8** (Atraxa CMC 4 inclus)                            |
+| Détection | `*CMDR*` · section `Commander` · fallback 1er non-land 99–100  |
+| Library   | Castabilité `effectiveLibrarySize` = N − copies commander      |
+| UI        | Chip **Command zone**, pin first, note “Commander detected: …” |
+| Sample    | `1 Atraxa, Praetors' Voice *CMDR*`                             |
+| Tests     | unit 355 · E2E core 9 pass · build OK                          |
 
-**Nuance connue :** Atraxa est CMC 4 → hors chip T5–T8 (option future T4–T8).
+**Note a11y :** `tests/e2e/accessibility/` 16 fails (specs FR stale + contraste footer) — dette P2-6, pas regresseur E.
 
-### Commits `main` (ordre récent attendu)
+### Commits `main` (récent)
 
 ```
-7d05d5c  feat: EDH horizon T5–T8, Karsten N/60, command-zone caveats  ← HEAD v2.7.4
-83efe90  feat: EDH/Limited auto-format, clear play-draw, sideboard scope
-08b80a5  feat: Feedback CTA header + footer
-…
+(feat v2.7.5)  command zone detect + T4–T8 horizon
+7d05d5c  feat: EDH horizon T5–T8, Karsten N/60 (v2.7.4)
+83efe90  feat: EDH/Limited auto-format…
 ```
 
 ---
 
 ## 3. Architecture — fichiers critiques
 
-| Domaine                          | Fichiers                                                         |
-| -------------------------------- | ---------------------------------------------------------------- |
-| Format / horizon / Karsten scale | `src/utils/deckFormat.ts`                                        |
-| Parse / enrich                   | `src/services/deckAnalyzer.ts` (`etbTapped` encore **fonction**) |
-| Hypergeom SSOT                   | `src/services/castability/hypergeom.ts`                          |
-| Ramp K=3                         | `src/services/castability/acceleratedAnalyticEngine.ts`          |
-| UI cast %                        | `src/components/ManaCostRow.tsx`                                 |
-| Manabase Karsten deltas          | `src/components/analyzer/KarstenTargetDelta.tsx`                 |
-| Format / play-draw               | `AccelerationContext.tsx`, `AccelerationSettings.tsx`            |
-| Mulligan worker                  | `mulliganArchetype.worker.ts` + `toCloneableDeckCards`           |
+| Domaine                                           | Fichiers                                                         |
+| ------------------------------------------------- | ---------------------------------------------------------------- |
+| Format / horizon / Karsten / command zone helpers | `src/utils/deckFormat.ts`                                        |
+| Parse + `isCommander`                             | `src/services/deckAnalyzer.ts` (`etbTapped` encore **fonction**) |
+| Castability sort / library size                   | `CastabilityTab.tsx`, `ManaCostRow.tsx`                          |
+| Hypergeom SSOT                                    | `src/services/castability/hypergeom.ts`                          |
+| Ramp K=3                                          | `acceleratedAnalyticEngine.ts`                                   |
+| Manabase Karsten deltas                           | `KarstenTargetDelta.tsx`                                         |
 
 **Invariants math :** Perfect drops (P1) ≥ Realistic lands-only (P2) **même moteur**.
 
@@ -96,22 +95,20 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 
 ### Priorité haute
 
-| ID                     | Travail                                                    |
-| ---------------------- | ---------------------------------------------------------- |
-| **Command zone model** | Inclure commander dans les odds (pas seulement disclaimer) |
-| **Horizon T4–T8?**     | Capturer CMC-4 commanders (Atraxa)                         |
-| **Dette `etbTapped`**  | `() => boolean` → bool + landMetadata                      |
-| **Monte Carlo seed**   | RNG seedable pour tests stables                            |
-| **P1-4 suite**         | Archetype aggro/mid/control plus lisible                   |
+| ID                    | Travail                                     |
+| --------------------- | ------------------------------------------- |
+| **Dette `etbTapped`** | `() => boolean` → bool + landMetadata       |
+| **Monte Carlo seed**  | RNG seedable pour tests stables             |
+| **P1-4 suite**        | Archetype aggro/mid/control plus lisible    |
+| **P2-6 a11y**         | Moderniser specs FR → EN + contraste footer |
 
 ### Priorité moyenne
 
-| ID          | Travail                       |
-| ----------- | ----------------------------- |
-| P2-5        | Castability mobile            |
-| P2-6 / a11y | Tooltips jargon + live region |
-| P2-7        | Prerender / SSG marketing     |
-| P2-1        | Polish visuel                 |
+| ID   | Travail                   |
+| ---- | ------------------------- |
+| P2-5 | Castability mobile        |
+| P2-7 | Prerender / SSG marketing |
+| P2-1 | Polish visuel             |
 
 ### Différé
 
@@ -138,11 +135,10 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 
 ## 5. Smoke prod
 
-1. `/analyzer` → Try Example → Analyze → 5 tabs, Mulligan OK
-2. `/analyzer?sample=edh` → Commander banner, Castability T5–T8 first, Manabase targets scaled
-3. `/analyzer?format=commander` → Atraxa + banner
-4. `/analyzer?sample=limited` → Limited
-5. Feedback header + footer
+1. `/analyzer?sample=edh` → Commander banner T4–T8, Atraxa **Command zone**, library note 99
+2. `/analyzer?format=commander` → Atraxa + banner
+3. `/analyzer` Try Example → 5 tabs
+4. Feedback header + footer
 
 ---
 
@@ -151,8 +147,8 @@ npx playwright test tests/e2e/core-flows/analyzer-happy-path.spec.js \
 ```
 Lis SESSION_START.md à la racine ManaTuner.
 Respecte local → validation → go prod.
-Ne re-fixe pas les vagues A–D déjà en prod sauf régression.
-Propose 1–2 items du backlog §4, ou continue la priorité haute.
+Ne re-fixe pas les vagues A–E déjà en prod sauf régression.
+Propose 1–2 items du backlog §4.
 Mets à jour SESSION_START.md + JOURNAL en fin de session.
 ```
 

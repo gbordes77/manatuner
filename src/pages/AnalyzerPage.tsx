@@ -171,7 +171,7 @@ const SAMPLE_DECKS: Record<string, { name: string; list: string }> = {
   // Thibault persona ask #1: "stop pretending 60-card is the only format".
   edh: {
     name: "Atraxa, Praetors' Voice — Superfriends (Commander)",
-    list: `1 Atraxa, Praetors' Voice
+    list: `1 Atraxa, Praetors' Voice *CMDR*
 1 Sol Ring
 1 Arcane Signet
 1 Talisman of Progress
@@ -535,14 +535,15 @@ const AnalyzerPage: React.FC = () => {
               sx={{ fontWeight: 600 }}
               data-testid="commander-preset-banner"
             >
-              👑 Commander mode — 100-card math, priority horizon T5–T8, Karsten targets scaled
-              N/60, EDH tier bands on the verdict.
+              👑 Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled
+              N/60, command zone detection, EDH tier bands.
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
               Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
-              lists CMC 5–8 first; Manabase color checks use deck-size-scaled Karsten sources.
-              Command zone is <strong>not</strong> modelled — your commander is always castable but
-              not an extra free card in these odds. Rule 0 / multiplayer politics are out of scope.{' '}
+              pins the commander first and prioritizes CMC 4–8; library size excludes the commander
+              for other spells when detected (*CMDR*, Commander section, or first non-land).
+              Manabase uses deck-size-scaled Karsten sources. Rule 0 / multiplayer politics are out
+              of scope.{' '}
               <Box component="a" href="/guide#commander" sx={{ color: 'inherit', fontWeight: 600 }}>
                 Guide: Commander
               </Box>
@@ -880,7 +881,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.4 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.5 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

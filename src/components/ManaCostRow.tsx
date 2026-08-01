@@ -62,10 +62,12 @@ interface ManaCostRowProps {
    * Added to deckSources when isCreature is true.
    */
   creatureOnlyExtraSources?: Record<string, number>
-  /** P1-9: spell CMC is in the format priority horizon (e.g. T5–T8 EDH). */
+  /** P1-9: spell CMC is in the format priority horizon (e.g. T4–T8 EDH). */
   inFormatHorizon?: boolean
-  /** Short horizon label for chip (e.g. "T5–T8"). */
+  /** Short horizon label for chip (e.g. "T4–T8" or "Command zone"). */
   horizonLabel?: string
+  /** EDH: card lives in the command zone (always available). */
+  isCommander?: boolean
 }
 
 // Keyrune mana symbol component
@@ -666,6 +668,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     creatureOnlyExtraSources,
     inFormatHorizon = false,
     horizonLabel,
+    isCommander = false,
   }) => {
     const theme = useTheme()
     const isDark = theme.palette.mode === 'dark'
@@ -799,20 +802,30 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
       <Fade in={true} timeout={300}>
         <Paper
           data-horizon={inFormatHorizon ? 'priority' : undefined}
+          data-commander={isCommander ? 'true' : undefined}
           sx={{
             p: 2,
             mb: 1.5,
             transition: 'all 0.2s ease',
-            ...(inFormatHorizon
+            ...(isCommander
               ? {
                   borderLeft: '3px solid',
-                  borderLeftColor: 'primary.main',
+                  borderLeftColor: 'secondary.main',
                   bgcolor: (t) =>
                     t.palette.mode === 'dark'
-                      ? 'rgba(25, 118, 210, 0.08)'
-                      : 'rgba(25, 118, 210, 0.04)',
+                      ? 'rgba(156, 39, 176, 0.12)'
+                      : 'rgba(156, 39, 176, 0.06)',
                 }
-              : {}),
+              : inFormatHorizon
+                ? {
+                    borderLeft: '3px solid',
+                    borderLeftColor: 'primary.main',
+                    bgcolor: (t) =>
+                      t.palette.mode === 'dark'
+                        ? 'rgba(25, 118, 210, 0.08)'
+                        : 'rgba(25, 118, 210, 0.04)',
+                  }
+                : {}),
             '&:hover': {
               boxShadow: isDark ? '0 4px 12px rgba(0,0,0,0.3)' : '0 4px 12px rgba(0,0,0,0.1)',
             },
@@ -833,7 +846,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     }}
                   >
                     {quantity}x {cardData?.name || cardName}
-                    {inFormatHorizon && horizonLabel ? (
+                    {(isCommander || inFormatHorizon) && horizonLabel ? (
                       <Typography
                         component="span"
                         variant="caption"
@@ -842,8 +855,8 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                           px: 0.6,
                           py: 0.15,
                           borderRadius: 1,
-                          bgcolor: 'primary.main',
-                          color: 'primary.contrastText',
+                          bgcolor: isCommander ? 'secondary.main' : 'primary.main',
+                          color: isCommander ? 'secondary.contrastText' : 'primary.contrastText',
                           fontWeight: 700,
                           fontSize: '0.65rem',
                           verticalAlign: 'middle',

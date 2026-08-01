@@ -148,11 +148,27 @@ Owner : local → tests → **“go prod”**.
 | E2E P1-9                                                               | `tests/e2e/core-flows/p1-9-edh-verify.spec.js` |
 | Unit deckFormat +15                                                    | `src/utils/__tests__/deckFormat.test.ts`       |
 
-**Non fait (hors scope) :** command zone dans les odds ; tables EDH publiées (scaling N/60 = approximation).
+**Vérif vague D :** unit 351 pass · tsc OK · Playwright audit 6/6 · P1-9 E2E 2/2. Ship **2.7.4**.
 
-**Vérif avant prod :** unit 351 pass · tsc OK · Playwright audit 6/6 · P1-9 E2E 2/2.
+---
 
-**Version :** **2.7.4**
+## 5c. Vague E — Command zone + horizon T4–T8 (2026-08-01)
+
+Owner : local → tests complets → **“go prod”**.
+
+| Changement                                                               | Fichier                                                 |
+| ------------------------------------------------------------------------ | ------------------------------------------------------- |
+| Horizon EDH **T4–T8**                                                    | `deckFormat.ts`                                         |
+| `isCommander` parse (_CMDR_, section Commander, fallback first non-land) | `deckAnalyzer.ts`                                       |
+| `effectiveLibrarySize` N−cmd pour castabilité                            | `deckFormat.ts`, `CastabilityTab.tsx`                   |
+| Chip Command zone + pin first                                            | `ManaCostRow.tsx`, `CastabilityTab.tsx`                 |
+| Sample Atraxa `*CMDR*` + copy banner/Guide                               | `AnalyzerPage.tsx`, `GuidePage.tsx`, `QuickVerdict.tsx` |
+| E2E + unit                                                               | `p1-9-edh-verify.spec.js`, `deckFormat.test.ts`         |
+
+**Vérif :** unit 355 · tsc OK · E2E core+tabs 9 pass · build OK.  
+A11y suite 16 fails = dette specs FR (hors scope E).
+
+**Version :** **2.7.5**
 
 ---
 
@@ -168,11 +184,11 @@ Owner : local → tests → **“go prod”**.
 ## 7. Encore ouvert
 
 - P1-7 URL Moxfield (ToS/CORS)
-- Command zone **modélisée** dans les odds (disclaimer only aujourd’hui)
-- Option : élargir horizon EDH à T4–T8 (Atraxa CMC 4 hors chip)
 - Remplacer type `etbTapped: function` par boolean structurel
 - RNG seedé Monte Carlo
-- P2 design (table mobile, screenshot hero, a11y axe)
+- P1-4 archetype lisible
+- P2-6 a11y (specs EN + contraste footer)
+- P2 design (table mobile, screenshot hero)
 - P2-7 prerender marketing
 - P3 suggestions de lands, analytics privacy-friendly
 
@@ -180,15 +196,16 @@ Owner : local → tests → **“go prod”**.
 
 ## 8. Commits GitHub (prod connus)
 
-| SHA       | Résumé                                                      |
-| --------- | ----------------------------------------------------------- |
-| `25598c6` | P0 trust (worker, P1/P2 math, E2E, Health Score)            |
-| `9eef000` | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1)       |
-| `3ff9b99` | Feedback footer après dismiss                               |
-| `08b80a5` | Feedback chips header + footer                              |
-| `83efe90` | Vague C — EDH/Limited format, play-draw, sideboard          |
-| `7d05d5c` | Vague D — EDH horizon T5–T8, Karsten N/60, caveats (v2.7.4) |
-| `2753751` | docs: SESSION_START ship SHA                                |
+| SHA        | Résumé                                                      |
+| ---------- | ----------------------------------------------------------- |
+| `25598c6`  | P0 trust (worker, P1/P2 math, E2E, Health Score)            |
+| `9eef000`  | P1/P2 UX wave (Learn, banner, empty, hero, stamp, H1)       |
+| `3ff9b99`  | Feedback footer après dismiss                               |
+| `08b80a5`  | Feedback chips header + footer                              |
+| `83efe90`  | Vague C — EDH/Limited format, play-draw, sideboard          |
+| `7d05d5c`  | Vague D — EDH horizon T5–T8, Karsten N/60, caveats (v2.7.4) |
+| `2753751`  | docs: SESSION_START ship SHA                                |
+| _(v2.7.5)_ | Vague E — command zone detect + T4–T8 (push this session)   |
 
 ---
 

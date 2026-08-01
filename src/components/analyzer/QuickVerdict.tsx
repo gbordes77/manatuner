@@ -193,8 +193,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           variant="caption"
           sx={{ display: 'block', mt: 0.5, opacity: 0.85, fontStyle: 'italic' }}
         >
-          EDH: priority horizon T5–T8 · Karsten color targets scaled to {analysisResult.totalCards}{' '}
-          cards · command zone not modelled.{' '}
+          EDH: priority horizon T4–T8 · Karsten color targets scaled to {analysisResult.totalCards}{' '}
+          cards · command zone detected when marked / first non-land.{' '}
           <a href="/guide#commander" style={{ color: 'inherit' }}>
             Guide
           </a>

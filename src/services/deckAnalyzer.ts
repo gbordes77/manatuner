@@ -57,6 +57,11 @@ export interface DeckCard {
   cmc: number
   // Card type detection (from Scryfall type_line)
   isCreature?: boolean
+  /**
+   * EDH command zone: card sits outside the library (always castable).
+   * Set via *CMDR*, a Commander: section, or first non-land fallback on 99–100 lists.
+   */
+  isCommander?: boolean
   // Sideboard detection
   isSideboard?: boolean
   // Enhanced land properties from reference project
@@ -553,6 +558,8 @@ export class DeckAnalyzer {
     const lines = deckList.split('\n')
     const cards: DeckCard[] = []
     let isSideboardSection = false
+    /** Moxfield / Arena "Commander" header — following cards until Deck/Main */
+    let isCommanderSection = false
 
     // Pre-scan: detect sideboard start line for blank-line-separated lists
     const sideboardStartLine = detectSideboardStartLine(lines)
@@ -613,11 +620,31 @@ export class DeckAnalyzer {
         isSideboardSection = true
       }
 
-      // Skip other section markers (Deck, Maybeboard, etc.)
+      // Commander section (Moxfield / Archidekt style)
       if (
-        /^(deck|maybeboard|commander|companion):?$/i.test(trimmedLine) ||
-        /^\/\/\s*(deck|maybeboard)/i.test(trimmedLine)
+        /^(commander|commanders):?$/i.test(trimmedLine) ||
+        /^\/\/\s*commander/i.test(trimmedLine)
       ) {
+        isCommanderSection = true
+        isSideboardSection = false
+        continue
+      }
+
+      // Deck / mainboard ends commander section; companion is neither
+      if (
+        /^(deck|mainboard|main\s*board|main):?$/i.test(trimmedLine) ||
+        /^\/\/\s*(deck|mainboard|main)/i.test(trimmedLine)
+      ) {
+        isCommanderSection = false
+        continue
+      }
+
+      // Skip other section markers (Maybeboard, Companion header alone, etc.)
+      if (
+        /^(maybeboard|companion):?$/i.test(trimmedLine) ||
+        /^\/\/\s*(maybeboard|companion)/i.test(trimmedLine)
+      ) {
+        isCommanderSection = false
         continue
       }
 
@@ -642,6 +669,8 @@ export class DeckAnalyzer {
       }
 
       if (match && quantity > 0) {
+        // Detect Arena *CMDR* before name normalization strips it
+        const isCmdrMarker = /\*CMDR\*/i.test(name)
         // Clean card name by removing MTGA set codes like "(TDM) 33" or "(RNA) 245"
         name = this.cleanCardName(name)
 
@@ -693,6 +722,7 @@ export class DeckAnalyzer {
           colors,
           isLand,
           isCreature: isCreature || undefined,
+          isCommander: isCmdrMarker || isCommanderSection || undefined,
           producedMana,
           cmc,
           isSideboard: forceIsSideboard || isSideboardSection,
@@ -703,7 +733,21 @@ export class DeckAnalyzer {
       }
     }
 
-    return cards
+    // EDH fallback: first maindeck non-land if nothing marked
+    return this.applyCommanderFallback(cards)
+  }
+
+  /**
+   * If no card was marked commander but the list is 99–100 cards, treat the
+   * first maindeck non-land as the commander (common export style).
+   */
+  private static applyCommanderFallback(cards: DeckCard[]): DeckCard[] {
+    if (cards.some((c) => c.isCommander)) return cards
+    const total = cards.reduce((s, c) => s + (c.quantity || 1), 0)
+    if (total < 99) return cards
+    const first = cards.find((c) => !c.isLand && !c.isSideboard)
+    if (!first) return cards
+    return cards.map((c) => (c === first ? { ...c, isCommander: true } : c))
   }
 
   /**

@@ -1,12 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import {
+  applyCommanderFallback,
   castabilityHorizon,
+  commanderCaveats,
   detectDeckFormatFamily,
+  effectiveLibrarySize,
   findSingletonViolations,
   formatFamilyLabel,
   isBasicLandName,
   isInCastabilityHorizon,
   landCountGuidance,
+  lineHasCommanderMarker,
   scaleKarstenSources,
   suggestedFormatPreset,
 } from '../deckFormat'
@@ -47,12 +51,12 @@ describe('labels & guidance', () => {
   })
 })
 
-describe('castabilityHorizon (P1-9)', () => {
-  it('uses T5–T8 for Commander', () => {
+describe('castabilityHorizon (P1-9 / T4–T8)', () => {
+  it('uses T4–T8 for Commander (includes CMC-4 commanders)', () => {
     const h = castabilityHorizon('edh')
-    expect(h.minTurn).toBe(5)
+    expect(h.minTurn).toBe(4)
     expect(h.maxTurn).toBe(8)
-    expect(h.label).toMatch(/T5/)
+    expect(h.label).toMatch(/T4/)
   })
 
   it('uses T1–T4 for Constructed and Limited', () => {
@@ -61,10 +65,51 @@ describe('castabilityHorizon (P1-9)', () => {
   })
 
   it('classifies CMC into horizon', () => {
+    expect(isInCastabilityHorizon(4, 'edh')).toBe(true) // Atraxa
     expect(isInCastabilityHorizon(6, 'edh')).toBe(true)
     expect(isInCastabilityHorizon(2, 'edh')).toBe(false)
     expect(isInCastabilityHorizon(2, 'constructed')).toBe(true)
     expect(isInCastabilityHorizon(7, 'constructed')).toBe(false)
+  })
+})
+
+describe('command zone helpers', () => {
+  it('detects *CMDR* marker', () => {
+    expect(lineHasCommanderMarker("Atraxa, Praetors' Voice *CMDR*")).toBe(true)
+    expect(lineHasCommanderMarker('Sol Ring')).toBe(false)
+  })
+
+  it('reduces library size when commander is in the list', () => {
+    expect(effectiveLibrarySize(100, 1, 'edh')).toBe(99)
+    expect(effectiveLibrarySize(100, 0, 'edh')).toBe(100)
+    expect(effectiveLibrarySize(60, 1, 'constructed')).toBe(60)
+  })
+
+  it('falls back to first non-land on 100-card lists', () => {
+    const cards: Array<{
+      name: string
+      quantity: number
+      isLand: boolean
+      isCommander?: boolean
+    }> = [
+      { name: "Atraxa, Praetors' Voice", quantity: 1, isLand: false },
+      { name: 'Sol Ring', quantity: 1, isLand: false },
+      { name: 'Forest', quantity: 98, isLand: true },
+    ]
+    // total 100
+    const out = applyCommanderFallback(cards)
+    expect(out[0].isCommander).toBe(true)
+    expect(out[1].isCommander).toBeFalsy()
+  })
+
+  it('names commander in caveats when provided', () => {
+    const c = commanderCaveats({
+      commanderNames: ["Atraxa, Praetors' Voice"],
+      librarySize: 99,
+      listSize: 100,
+    })
+    expect(c.commandZone).toMatch(/Atraxa/)
+    expect(c.commandZone).toMatch(/99/)
   })
 })
 

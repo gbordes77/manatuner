@@ -81,16 +81,16 @@ export interface CastabilityHorizon {
 /**
  * Turns that matter most when reading castability for a format family.
  * - Constructed / Limited: early curve (T1–T4)
- * - Commander: mid-game (T5–T8) — ramp, commander, haymakers
+ * - Commander: mid-game (T4–T8) — includes CMC-4 commanders (Atraxa, etc.)
  */
 export function castabilityHorizon(family: DeckFormatFamily): CastabilityHorizon {
   if (family === 'edh') {
     return {
-      minTurn: 5,
+      minTurn: 4,
       maxTurn: 8,
-      label: 'T5–T8',
+      label: 'T4–T8',
       description:
-        'Commander games resolve later — priority spells are CMC 5–8 (commander, ramp payoffs, haymakers). Early dorks still listed below.',
+        'Commander games resolve mid-curve — priority spells are CMC 4–8 (commander, ramp payoffs, haymakers). Early rocks/dorks still listed below.',
     }
   }
   if (family === 'limited') {
@@ -149,19 +149,81 @@ export function scaleKarstenSources(
  * Honest EDH caveats (Rule 0 / command zone). Keep short for banners.
  * Longer copy lives on /guide#commander.
  */
-export function commanderCaveats(): {
+export function commanderCaveats(opts?: {
+  commanderNames?: string[]
+  librarySize?: number
+  listSize?: number
+}): {
   commandZone: string
   karstenScaled: string
   multiplayer: string
 } {
+  const names = opts?.commanderNames?.filter(Boolean) ?? []
+  const librarySize = opts?.librarySize
+  const listSize = opts?.listSize
+
+  let commandZone: string
+  if (names.length > 0) {
+    const who = names.slice(0, 2).join(' + ')
+    const more = names.length > 2 ? ` (+${names.length - 2})` : ''
+    const libNote =
+      librarySize != null && listSize != null && librarySize < listSize
+        ? ` Library for other spells uses ${librarySize} cards (commander(s) excluded from the draw pile).`
+        : ' Treated as always available (command zone), not drawn from the library.'
+    commandZone = `Commander detected: ${who}${more}.${libNote}`
+  } else {
+    commandZone =
+      'No commander marker found — paste with *CMDR* or a Commander section, or put the commander first in a 100-card list. Until then, odds treat the full list as the library.'
+  }
+
   return {
-    commandZone:
-      'Command zone is not modelled — your commander is always available to cast, but these odds treat the list as a pure library (no free commander draw).',
+    commandZone,
     karstenScaled:
       'Karsten source targets are scaled from the 60-card tables by deck size (N/60). Useful guide, not a published EDH table.',
     multiplayer:
       'Multiplayer politics and Rule 0 are out of scope — this is a manabase / castability lens only.',
   }
+}
+
+/** Arena / export marker for commander on a card line (before cleanCardName). */
+export function lineHasCommanderMarker(rawCardToken: string): boolean {
+  return /\*CMDR\*/i.test(rawCardToken)
+}
+
+/**
+ * Effective library size for hypergeom when commander(s) sit in the command zone.
+ * If the user included commander(s) in a 100-card paste, other spells should use N−cmd.
+ */
+export function effectiveLibrarySize(
+  listSize: number,
+  commanderCopiesInList: number,
+  family: DeckFormatFamily
+): number {
+  if (family !== 'edh') return listSize
+  if (!Number.isFinite(listSize) || listSize <= 0) return listSize
+  if (!Number.isFinite(commanderCopiesInList) || commanderCopiesInList <= 0) return listSize
+  return Math.max(1, listSize - commanderCopiesInList)
+}
+
+/**
+ * EDH fallback: if nothing marked *CMDR* / Commander section, treat the first
+ * maindeck non-land as commander (common export style: commander on line 1).
+ */
+export function applyCommanderFallback<
+  T extends {
+    name: string
+    quantity?: number
+    isLand?: boolean
+    isSideboard?: boolean
+    isCommander?: boolean
+  },
+>(cards: T[]): T[] {
+  if (cards.some((c) => c.isCommander)) return cards
+  const total = cards.reduce((s, c) => s + (c.quantity ?? 1), 0)
+  if (detectDeckFormatFamily(total) !== 'edh') return cards
+  const first = cards.find((c) => !c.isLand && !c.isSideboard)
+  if (!first) return cards
+  return cards.map((c) => (c === first ? { ...c, isCommander: true } : c))
 }
 
 /** Basic land names (incl. snow / wastes) — allowed qty > 1 in singleton formats. */

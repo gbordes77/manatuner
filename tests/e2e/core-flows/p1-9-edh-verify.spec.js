@@ -24,7 +24,7 @@ test.describe('P1-9 EDH deeper', () => {
 
     // Banner on hydrate (before analyze)
     await expect(page.getByTestId('commander-preset-banner')).toBeVisible({ timeout: 10000 })
-    await expect(page.getByTestId('commander-preset-banner')).toContainText(/T5|horizon|Commander/i)
+    await expect(page.getByTestId('commander-preset-banner')).toContainText(/T4|horizon|Commander/i)
 
     await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 90000 })
@@ -33,18 +33,19 @@ test.describe('P1-9 EDH deeper', () => {
     const qv = page.getByTestId('quick-verdict')
     await expect(qv).toBeVisible()
     await expect(qv).toContainText(/EDH|100/i)
-    await expect(qv).toContainText(/command zone|T5|scaled/i)
+    await expect(qv).toContainText(/command zone|T4|scaled/i)
 
     // Castability format banner + horizon + command zone note
     await page.getByTestId('tab-castability').click()
     const banner = page.getByTestId('format-family-banner')
     await expect(banner).toBeVisible({ timeout: 20000 })
     await expect(banner).toContainText(/Commander/i)
-    await expect(banner).toContainText(/T5/i)
+    await expect(banner).toContainText(/T4/i)
     await expect(page.getByTestId('edh-command-zone-note')).toBeVisible()
-    await expect(page.getByTestId('edh-command-zone-note')).toContainText(/command zone/i)
+    await expect(page.getByTestId('edh-command-zone-note')).toContainText(/Atraxa|Commander detected|command zone/i)
 
-    // At least one priority horizon row
+    // Commander row + at least one priority horizon row
+    await expect(page.locator('[data-commander="true"]').first()).toBeVisible({ timeout: 20000 })
     await expect(page.locator('[data-horizon="priority"]').first()).toBeVisible({ timeout: 15000 })
 
     // Manabase: scaled language if any color delta shows

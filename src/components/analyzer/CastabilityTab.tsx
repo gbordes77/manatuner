@@ -20,6 +20,7 @@ import type { ProducerInDeck, UnconditionalMultiManaGroup } from '../../types/ma
 import {
   castabilityHorizon,
   commanderCaveats,
+  effectiveLibrarySize,
   findSingletonViolations,
   isInCastabilityHorizon,
   landCountGuidance,
@@ -90,11 +91,34 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     [sideboardCards]
   )
 
-  // Filter out lands; for EDH (and other families) sort priority horizon first
+  // Command zone cards in effective board
+  const commanderCards = useMemo(
+    () => effectiveCards.filter((c) => c.isCommander && !c.isLand),
+    [effectiveCards]
+  )
+  const commanderCopies = useMemo(
+    () => commanderCards.reduce((s, c) => s + (c.quantity || 1), 0),
+    [commanderCards]
+  )
+  const commanderNames = useMemo(() => commanderCards.map((c) => c.name), [commanderCards])
+
+  const listSize = analysisResult?.totalCards || 60
+  const librarySize = useMemo(() => {
+    if (!detectedFamily) return listSize
+    return effectiveLibrarySize(listSize, commanderCopies, detectedFamily)
+  }, [listSize, commanderCopies, detectedFamily])
+
+  // Filter out lands; commanders first, then format horizon, then CMC
   const nonLandCards = useMemo(() => {
     const spells = effectiveCards.filter((card) => card.isLand !== true)
-    if (!detectedFamily) return spells
+    if (!detectedFamily) {
+      return [...spells].sort((a, b) => {
+        if (!!a.isCommander !== !!b.isCommander) return a.isCommander ? -1 : 1
+        return (a.cmc ?? 0) - (b.cmc ?? 0)
+      })
+    }
     return [...spells].sort((a, b) => {
+      if (!!a.isCommander !== !!b.isCommander) return a.isCommander ? -1 : 1
       const aIn = isInCastabilityHorizon(a.cmc ?? 0, detectedFamily) ? 0 : 1
       const bIn = isInCastabilityHorizon(b.cmc ?? 0, detectedFamily) ? 0 : 1
       if (aIn !== bIn) return aIn - bIn
@@ -112,6 +136,15 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     if (detectedFamily !== 'edh') return []
     return findSingletonViolations(effectiveCards)
   }, [detectedFamily, effectiveCards])
+
+  const edhCaveat = useMemo(() => {
+    if (detectedFamily !== 'edh') return null
+    return commanderCaveats({
+      commanderNames,
+      librarySize,
+      listSize,
+    })
+  }, [detectedFamily, commanderNames, librarySize, listSize])
 
   // Detect mana producers in the deck (sync seed/cache + async Scryfall fallback)
   const [producersInDeck, setProducersInDeck] = useState<ProducerInDeck[]>([])
@@ -288,14 +321,14 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                 : ''}
             </Typography>
           )}
-          {detectedFamily === 'edh' && (
+          {detectedFamily === 'edh' && edhCaveat && (
             <Typography
               variant="caption"
               display="block"
               sx={{ mt: 0.5, opacity: 0.9, fontStyle: 'italic' }}
               data-testid="edh-command-zone-note"
             >
-              {commanderCaveats().commandZone}{' '}
+              {edhCaveat.commandZone}{' '}
               <Box component="a" href="/guide#commander" sx={{ color: 'inherit' }}>
                 Details in the Guide
               </Box>
@@ -462,7 +495,9 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               quantity={card.quantity || 1}
               deckSources={analysisResult?.colorDistribution}
               totalLands={analysisResult?.totalLands || 0}
-              totalCards={analysisResult?.totalCards || 60}
+              // Commander sits in the command zone: library size excludes commander copies
+              // for all castability rows (including the commander row — mana-only odds).
+              totalCards={librarySize}
               producers={producersInDeck}
               accelContext={accelContext}
               showAcceleration={settings.showAcceleration && producersInDeck.length > 0}
@@ -470,10 +505,12 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               initialCardData={cardDataMap.get(card.name) ?? null}
               isCreature={card.isCreature}
               creatureOnlyExtraSources={creatureOnlyExtraSources}
+              isCommander={!!card.isCommander}
               inFormatHorizon={
-                !!detectedFamily && isInCastabilityHorizon(card.cmc ?? 0, detectedFamily)
+                !!card.isCommander ||
+                (!!detectedFamily && isInCastabilityHorizon(card.cmc ?? 0, detectedFamily))
               }
-              horizonLabel={horizon?.label}
+              horizonLabel={card.isCommander ? 'Command zone' : horizon?.label}
             />
           ))}
 

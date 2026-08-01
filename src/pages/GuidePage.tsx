@@ -903,11 +903,11 @@ export const GuidePage: React.FC = () => {
               </Typography>
               <List dense sx={{ pl: 0 }}>
                 {[
-                  'Command zone: your commander is always castable but is not modelled as an "extra card" in the probability math. Treat it as free value on top of the numbers.',
+                  'Command zone: detected via *CMDR*, a Commander section, or the first non-land on a 99–100 list. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
                   'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
-                  'Castability priority horizon is T5–T8 in Commander mode (CMC 5–8 listed first). Early rocks/dorks still appear below.',
+                  'Castability priority horizon is T4–T8 in Commander mode (CMC 4–8 listed after the commander). Early rocks/dorks still appear below.',
                   'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
-                  'Partners, Backgrounds, and "one of two commanders" decks should be entered as a single commander line.',
+                  'Partners, Backgrounds, and "one of two commanders" decks should be entered as a single commander line (or two lines under Commander:).',
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
                     <ListItemIcon sx={{ minWidth: 30 }}>
