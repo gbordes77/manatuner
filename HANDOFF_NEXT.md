@@ -1,107 +1,63 @@
 # HANDOFF — Prochaines étapes ManaTuner
 
-> **À jour :** 2026-08-01 · **Live :** v2.7.6 · **Prod :** https://www.manatuner.app/  
-> **Repo :** https://github.com/gbordes77/manatuner
+> **À jour :** 2026-08-01 fin de journée · **Live :** **v2.7.7** · **SHA :** `f0e5d7f`  
+> **Prod :** https://www.manatuner.app/ · **Repo :** https://github.com/gbordes77/manatuner  
+> **Handoff journée complète (source de vérité) :** **`HANDOFF_2026-08-01.md`**
 
 ---
 
 ## Phrase à copier-coller (nouvelle conversation)
 
 ```
-Lis SESSION_START.md et HANDOFF_NEXT.md à la racine de ManaTuner
-(/Volumes/DataDisk/_Projects/Project Mana base V2).
+Lis en premier et en entier HANDOFF_2026-08-01.md à la racine de ManaTuner
+(/Volumes/DataDisk/_Projects/Project Mana base V2). C’est le handoff ULTRA-PRÉCIS
+de TOUTE la journée 2026-08-01 (vagues A→G + fix deploy), pas seulement une session.
 
-Contexte : ManaTuner v2.7.6 est en prod (React/Vite/MUI, port 3000, 100% client-side).
-Vagues A–F déjà shippées : trust P0, UX, EDH/Limited format, Karsten N/60, command zone T4–T8,
-etbTapped boolean, Monte Carlo seed, archetype mulligan lisible, a11y smoke EN, cast mobile.
+Ensuite : AUDIT DOCUMENTAIRE TOTAL — ne code pas de feature tant que ce n’est pas fait.
 
-Règles owner : local d’abord → valider → push/prod UNIQUEMENT si je dis « go prod ».
-Privacy : pas de backend decklists, pas d’analytics decklist, pas de Sentry DSN sans scrubber.
+PÉRIMÈTRE = TOUTES les docs du dossier projet, pas une shortlist.
+1) Inventorie EXHAUSTIVEMENT tous les fichiers documentation dans
+   /Volumes/DataDisk/_Projects/Project Mana base V2 :
+   - tous les *.md, *.mdx, *.txt (et README* / CHANGELOG* / HANDOFF* / *AUDIT* / *JOURNAL*)
+   - racine + sous-dossiers (docs/, public/ si docs, .claude/ si md de process projet, etc.)
+   - EXCLURE seulement : node_modules/, .git/, dist/, coverage/, playwright-report/,
+     test-results/, .claude/worktrees/ (copies isolées, pas la vérité produit)
+2) Classe chaque doc : (A) état produit / session / handoff, (B) historique archive,
+   (C) tooling/agent générique, (D) légal/contrib, (E) obsolète/dupliqué.
+3) Pour TOUTE doc de classe A (et toute doc B/C qui affirme version, SHA, feature “faite”,
+   “encore ouvert”, “en prod”, scores, routes, privacy) : croise avec réalité via
+   git log / origin/main, package.json, code (grep + lecture), live https://www.manatuner.app.
+4) Produis un rapport d’écarts doc-par-doc (claim → vrai/faux → preuve → action).
+5) METS À JOUR les docs pour aligner sur la réalité : v2.7.7, SHA f0e5d7f, vagues A–G,
+   backlog restant, invariants. Marque explicitement les archives obsolètes ou corrige-les.
+   Ne laisse pas de claim faux “encore ouvert” pour des items déjà shippés le 2026-08-01.
+6) Ne rouvre pas Moxfield URL, i18n FR, backend, Sentry DSN, analytics decklist sans owner.
+7) Après alignement docs : priorité business = LAUNCH.md (distribution), pas features gratuites.
 
-Priorités suggérées (choisir 1–2 par session) :
-1) Distribution / LAUNCH.md (fireshoes, Discord, créateurs) — le produit est shippable, manque d’utilisateurs
-2) P2-7 prerender marketing (scripts/prerender.mjs)
-3) P2-1 polish UI (moins MUI default / emoji)
-4) A11y plus profond si besoin (suite smoke existe ; pas un audit WCAG 0-violation)
-5) Ne PAS rouvrir Moxfield URL, i18n FR, backend, Sentry prod, analytics decklist sans décision owner
-
-Commence par git status + npm run test:unit pour confirmer l’état, puis propose la tranche et attends mon OK avant de coder large.
-Mets à jour SESSION_START.md + HANDOFF_NEXT.md + JOURNAL_AUDIT_IMPLEMENTATION.md en fin de session.
+Confirme l’alignement doc↔code↔prod (inventaire exhaustif fait) avant toute nouvelle tranche de code.
 ```
 
 ---
 
-## État produit (résumé 30 s)
+## État 30 s
 
-|             |                                                                              |
-| ----------- | ---------------------------------------------------------------------------- |
-| **Quoi**    | Analyzeur de manabase MTG (lands + rocks/dorks K=3 + mulligan Bellman)       |
-| **Diff**    | Compte les producteurs non-land ; 100 % local                                |
-| **Formats** | 40c Limited · 60c Constructed · 100c Commander (horizon T4–T8, command zone) |
-| **Tests**   | ~362 unit · E2E core/tabs/a11y smoke chromium verts au ship F                |
-
----
-
-## Backlog priorisé pour la suite
-
-### P0 distribution (recommandé par LAUNCH.md)
-
-Le produit est prêt. Priorité business = utilisateurs, pas features gratuites.
-
-1. Contenu / RT @fireshoes (deck 5-0 + screenshot castabilité)
-2. Discord MTG existants (répondre “combien de lands ?” avec lien)
-3. DMs créateurs (LegenVD, etc.)
-4. SEO long terme (article “How many lands…”)
-
-### P1 produit (optionnel)
-
-| ID        | Travail                         | Notes                                |
-| --------- | ------------------------------- | ------------------------------------ |
-| P2-7      | Prerender / SSG pages marketing | `scripts/prerender.mjs`              |
-| P2-1      | Polish visuel                   | Moins générique MUI                  |
-| P2-5+     | Castabilité mobile              | Base faite en F ; itérer si feedback |
-| A11y deep | Violations axe non-critical     | Smoke EN en place                    |
-
-### Différé / ne pas faire sans owner
-
-- Import URL Moxfield (ToS/CORS)
-- i18n FR
-- Backend decks / Sentry prod / analytics decklist
+|             |                                                               |
+| ----------- | ------------------------------------------------------------- |
+| **Version** | **2.7.7** live (`Engine v2.7.7`)                              |
+| **SHA**     | `f0e5d7f` (fix deploy) · feature G `ac8371e`                  |
+| **Tests**   | ~369 unit · E2E core/tabs/a11y chromium verts fin G           |
+| **Journée** | Vagues **A→G** shippées — détail dans `HANDOFF_2026-08-01.md` |
 
 ---
 
-## Points techniques à ne pas casser
+## Priorités suite
 
-- `etbTapped` = **boolean** sur `DeckCard` (jamais une fonction)
-- Worker mulligan : toujours `toCloneableDeckCards` avant `postMessage`
-- Hypergeom SSOT : `src/services/castability/hypergeom.ts`
-- Karsten 100c : scale N/60 via `scaleKarstenSources` dans `deckFormat.ts`
-- Command zone : `*CMDR*` / section Commander / premier non-land 99–100
-- P1 ≥ P2 même moteur castabilité
+1. **Audit + alignement docs** (mission phrase ci-dessus)
+2. **Distribution** (`LAUNCH.md`) — utilisateurs
+3. Optionnel : prerender HTML réel sur Vercel (deps Chromium) ; polish UI plus large ; a11y deep
 
----
-
-## Smoke checklist prod
-
-```
-/analyzer?sample=edh     → Commander, T4–T8, Atraxa Command zone
-/analyzer?format=commander
-/analyzer                → Try Example → 5 tabs + Mulligan archetypes
-Footer                   → Feedback + contraste OK
-```
+**Ne pas** sans owner : Moxfield URL, i18n FR, backend, Sentry prod, analytics decklist.
 
 ---
 
-## Fichiers d’entrée session
-
-| Fichier                           | Rôle                       |
-| --------------------------------- | -------------------------- |
-| `SESSION_START.md`                | État technique + règles    |
-| `HANDOFF_NEXT.md`                 | Ce fichier + phrase coller |
-| `LAUNCH.md`                       | Plan distribution          |
-| `JOURNAL_AUDIT_IMPLEMENTATION.md` | Historique vagues A–F      |
-| `Claude.md`                       | Conventions projet         |
-
----
-
-_Fin handoff. Après chaque vague : mettre à jour la phrase coller si les priorités changent._
+_Voir `HANDOFF_2026-08-01.md` pour le détail commit-par-commit et fichier-par-fichier._
