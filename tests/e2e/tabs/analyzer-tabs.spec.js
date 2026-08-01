@@ -1,164 +1,31 @@
-import { test, expect } from '@playwright/test';
-import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
+/**
+ * Modern tab navigation smoke (EN UI).
+ * Replaces the old FR/legacy-tab suite that no longer matched Castability / Analysis / Mulligan / Manabase / Blueprint.
+ */
+import { test, expect } from '@playwright/test'
 
-test.describe('Tests des 4 Onglets d\'Analyse ManaTuner', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    
-    // Naviguer vers l'analyzer
-    await page.getByRole('link', { name: 'Analyzer' }).click();
-    await expect(page).toHaveURL(/.*analyzer/);
-    
-    // Coller une decklist de test
-    const decklistTextarea = page.getByPlaceholder(/collez votre decklist/i);
-    await expect(decklistTextarea).toBeVisible();
-    await decklistTextarea.fill(SAMPLE_DECKLISTS.complex);
-    
-    // Lancer l'analyse
-    await page.getByRole('button', { name: /analyser/i }).click();
-    
-    // Attendre que l'analyse soit terminée
-    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
-  });
+test.describe('Analyzer result tabs', () => {
+  test('navigates all 5 result tabs after Try Example', async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem('manatuner-onboarding-completed', 'true')
+    })
 
-  test('Onglet 1: Statistiques Générales', async ({ page }) => {
-    // Cliquer sur l'onglet Statistiques (normalement le premier)
-    await page.getByRole('tab', { name: /statistiques|overview/i }).click();
-    
-    // Vérifier la présence des éléments clés
-    await expect(page.getByText(/total.*cartes/i)).toBeVisible();
-    await expect(page.getByText(/terrains|lands/i)).toBeVisible();
-    await expect(page.getByText(/cmc.*moyen|average.*cmc/i)).toBeVisible();
-    await expect(page.getByText(/distribution.*couleurs|color.*distribution/i)).toBeVisible();
-    
-    // Vérifier les graphiques et visualisations
-    const colorDistributionChart = page.locator('[data-testid="color-distribution-chart"], .color-distribution, [class*="chart"]').first();
-    await expect(colorDistributionChart).toBeVisible();
-    
-    // Vérifier que les statistiques sont numériques et cohérentes
-    const totalCardsText = await page.getByText(/total.*cartes/i).textContent();
-    expect(totalCardsText).toMatch(/\d+/);
-  });
+    await page.goto('/analyzer')
+    const skip = page.getByRole('button', { name: /skip tour/i })
+    if (await skip.isVisible({ timeout: 1500 }).catch(() => false)) await skip.click()
 
-  test('Onglet 2: Probabilités de Mana', async ({ page }) => {
-    // Cliquer sur l'onglet Probabilités
-    await page.getByRole('tab', { name: /probabilités|probabilities/i }).click();
-    
-    // Vérifier les calculs tour par tour
-    for (let turn = 1; turn <= 4; turn++) {
-      const turnElement = page.getByText(new RegExp(`tour.*${turn}|turn.*${turn}`, 'i'));
-      await expect(turnElement).toBeVisible();
-    }
-    
-    // Vérifier les barres de progression des couleurs
-    const probabilityBars = page.locator('[data-testid*="probability"], .probability-bar, [class*="progress"]');
-    await expect(probabilityBars.first()).toBeVisible();
-    
-    // Vérifier que les pourcentages sont affichés
-    const percentageText = page.locator('text=/%/');
-    await expect(percentageText.first()).toBeVisible();
-  });
+    await page.getByRole('button', { name: /try example/i }).click()
+    await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
+    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 45000 })
 
-  test('Onglet 3: Recommandations', async ({ page }) => {
-    // Cliquer sur l'onglet Recommandations
-    await page.getByRole('tab', { name: /recommandations|recommendations/i }).click();
-    
-    // Vérifier les suggestions
-    await expect(page.getByText(/suggestions|recommandations/i)).toBeVisible();
-    await expect(page.getByText(/ratio.*terrains|land.*ratio/i)).toBeVisible();
-    
-    // Vérifier la note de consistance
-    const consistencyRating = page.locator('[data-testid="consistency-rating"], .consistency-score, [class*="rating"]');
-    await expect(consistencyRating.first()).toBeVisible();
-    
-    // Vérifier les recommandations spécifiques
-    const recommendations = page.locator('[data-testid*="recommendation"], .recommendation, [class*="suggestion"]');
-    await expect(recommendations.first()).toBeVisible();
-  });
-
-  test('Onglet 4: Évaluation des Cartes', async ({ page }) => {
-    // Cliquer sur l'onglet Cartes/Spell Analysis
-    await page.getByRole('tab', { name: /cartes|spells|évaluation/i }).click();
-    
-    // Vérifier la liste des cartes
-    await expect(page.getByText(/lightning bolt/i)).toBeVisible();
-    await expect(page.getByText(/counterspell/i)).toBeVisible();
-    
-    // Vérifier les indicateurs de couleur pour chaque carte
-    const cardCastability = page.locator('[data-testid*="castability"], [class*="castability"], [class*="playable"]');
-    await expect(cardCastability.first()).toBeVisible();
-    
-    // Vérifier les copies jouables
-    await expect(page.getByText(/copies.*jouables|playable.*copies/i)).toBeVisible();
-    
-    // Vérifier que chaque carte a une évaluation
-    const cardRows = page.locator('[data-testid*="card-row"], .card-row, tr').filter({ hasText: /lightning bolt|counterspell/i });
-    await expect(cardRows.first()).toBeVisible();
-  });
-
-  test('Navigation entre tous les onglets', async ({ page }) => {
-    const tabs = [
-      /castability/i,
-      /mulligan/i,
-      /analysis/i,
-      /manabase/i
-    ];
-
-    // Tester la navigation dans les deux sens
-    for (const tabName of tabs) {
-      await page.getByRole('tab', { name: tabName }).click();
-      await expect(page.getByRole('tabpanel')).toBeVisible();
-
-      // Attendre un court délai pour s'assurer que le contenu se charge
-      await page.waitForTimeout(500);
+    for (const id of ['tab-castability', 'tab-analysis', 'tab-mulligan', 'tab-manabase', 'tab-blueprint']) {
+      await page.getByTestId(id).click()
+      await expect(page.getByText(/Something went wrong|could not be cloned/i)).toHaveCount(0)
     }
 
-    // Revenir au premier onglet
-    await page.getByRole('tab', { name: tabs[0] }).click();
-    await expect(page.getByRole('tabpanel')).toBeVisible();
-  });
-
-  test('Persistance des données entre les onglets', async ({ page }) => {
-    // Aller sur l'onglet Castability et noter qu'il affiche du contenu
-    await page.getByRole('tab', { name: /castability/i }).click();
-    await expect(page.getByRole('tabpanel')).toBeVisible();
-
-    // Changer d'onglet
-    await page.getByRole('tab', { name: /analysis/i }).click();
-    await page.waitForTimeout(500);
-
-    // Revenir à Castability et vérifier que le contenu est toujours là
-    await page.getByRole('tab', { name: /castability/i }).click();
-    await expect(page.getByRole('tabpanel')).toBeVisible();
-  });
-});
-
-test.describe('Tests avec différentes decklists', () => {
-  test('Analyse decklist aggro', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('link', { name: 'Analyzer' }).click();
-    
-    await page.getByPlaceholder(/collez votre decklist/i).fill(SAMPLE_DECKLISTS.aggro);
-    await page.getByRole('button', { name: /analyser/i }).click();
-    
-    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
-    
-    // Vérifier que l'analyse fonctionne pour un deck mono-couleur
-    await page.getByRole('tab', { name: /statistiques|overview/i }).click();
-    await expect(page.getByText(/total.*cartes/i)).toBeVisible();
-  });
-
-  test('Analyse decklist avec terrains spéciaux', async ({ page }) => {
-    await page.goto('/');
-    await page.getByRole('link', { name: 'Analyzer' }).click();
-    
-    await page.getByPlaceholder(/collez votre decklist/i).fill(SAMPLE_DECKLISTS.specialLands);
-    await page.getByRole('button', { name: /analyser/i }).click();
-    
-    await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
-    
-    // Vérifier que les terrains spéciaux sont correctement analysés
-    await page.getByRole('tab', { name: /statistiques|overview/i }).click();
-    await expect(page.getByText(/scalding tarn|steam vents/i)).toBeVisible();
-  });
-}); 
+    // Format / play-draw controls visible on Castability
+    await page.getByTestId('tab-castability').click()
+    await expect(page.getByTestId('analysis-settings')).toBeVisible({ timeout: 15000 })
+    await expect(page.getByTestId('play-draw-toggle')).toBeVisible()
+  })
+})

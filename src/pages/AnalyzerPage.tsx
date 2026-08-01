@@ -63,6 +63,8 @@ import {
   setIsDeckMinimized,
   showSnackbar,
 } from '../store/slices/analyzerSlice'
+import { useAcceleration } from '../contexts/AccelerationContext'
+import { detectDeckFormatFamily, formatFamilyLabel, landCountGuidance } from '../utils/deckFormat'
 import { buildShareUrl, parseShareParams } from '../utils/urlCodec'
 // Lazy-load Onboarding (includes react-joyride ~50KB)
 const Onboarding = React.lazy(() => import('../components/Onboarding'))
@@ -281,6 +283,7 @@ const AnalyzerPage: React.FC = () => {
   // info banner so Thibault sees the preset is actually active, and auto-
   // loads the Atraxa EDH sample if no deck is in state yet.
   const [commanderPreset, setCommanderPreset] = useState(false)
+  const { suggestFromDeckSize, unlockFormatAuto } = useAcceleration()
 
   // URL share: hydrate deck from URL params on mount (once).
   // Also handles ?sample=1 shortcut from HomePage to auto-load the sample
@@ -300,9 +303,8 @@ const AnalyzerPage: React.FC = () => {
     const formatParam = params.get('format')
     if (formatParam === 'commander') {
       setCommanderPreset(true)
-      // Only pre-fill the sample if the user isn't already mid-analysis.
-      // A returning user with a saved deck still gets the Commander banner
-      // but keeps their work.
+      unlockFormatAuto()
+      suggestFromDeckSize(100)
       const sample = SAMPLE_DECKS.edh
       if (sample) {
         dispatch(setDeckList(sample.list))
@@ -313,14 +315,22 @@ const AnalyzerPage: React.FC = () => {
     }
 
     // ?sample=1 → default sample (back-compat with HomePage link).
-    // ?sample=aggro|control|midrange → specific archetype sample.
+    // ?sample=aggro|control|midrange|edh|limited → specific archetype sample.
     const sampleParam = params.get('sample')
     if (sampleParam) {
       const sample = sampleParam === '1' ? SAMPLE_DECKS.midrange : SAMPLE_DECKS[sampleParam]
       if (sample) {
         dispatch(setDeckList(sample.list))
         dispatch(setDeckName(sample.name))
-        if (sampleParam === 'edh') setCommanderPreset(true)
+        unlockFormatAuto()
+        if (sampleParam === 'edh') {
+          setCommanderPreset(true)
+          suggestFromDeckSize(100)
+        } else if (sampleParam === 'limited') {
+          suggestFromDeckSize(40)
+        } else {
+          suggestFromDeckSize(60)
+        }
         window.history.replaceState({}, '', '/analyzer')
         return
       }
@@ -331,10 +341,9 @@ const AnalyzerPage: React.FC = () => {
       dispatch(setDeckList(shared.deckList))
       if (shared.deckName) dispatch(setDeckName(shared.deckName))
       if (shared.tab > 0) dispatch(setActiveTab(shared.tab))
-      // Clean URL without reloading
       window.history.replaceState({}, '', '/analyzer')
     }
-  }, [dispatch])
+  }, [dispatch, unlockFormatAuto, suggestFromDeckSize])
 
   const handleShare = useCallback(() => {
     if (!deckList.trim()) return
@@ -367,6 +376,13 @@ const AnalyzerPage: React.FC = () => {
 
     try {
       const result = await DeckAnalyzer.analyzeDeck(deckList)
+      // P1-9: auto Format (removal model) from actual card count
+      if (result?.totalCards) {
+        suggestFromDeckSize(result.totalCards)
+        if (detectDeckFormatFamily(result.totalCards) === 'edh') {
+          setCommanderPreset(true)
+        }
+      }
       dispatch(setAnalysisResult(result))
 
       // Auto-minimize deck on mobile to show results
@@ -423,7 +439,7 @@ const AnalyzerPage: React.FC = () => {
     } finally {
       dispatch(setIsAnalyzing(false))
     }
-  }, [deckList, deckName, dispatch])
+  }, [deckList, deckName, dispatch, suggestFromDeckSize])
 
   const handleClear = useCallback(() => {
     dispatch(clearAnalyzer())
@@ -856,7 +872,7 @@ const AnalyzerPage: React.FC = () => {
                       opacity: 0.85,
                     }}
                   >
-                    Engine v2.7.2 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
+                    Engine v2.7.3 · Karsten tables · hypergeom + ramp K=3 · London mulligan /
                     Bellman
                   </Typography>
 

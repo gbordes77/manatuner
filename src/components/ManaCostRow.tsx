@@ -556,16 +556,14 @@ const useAcceleratedCastability = (
   unconditionalMultiMana?: UnconditionalMultiManaGroup
 ) => {
   return useMemo(() => {
-    // Return null if acceleration is disabled or no producers
-    if (!showAcceleration || !producers || producers.length === 0 || !accelContext) {
-      return null
-    }
+    // Always compute SSOT base path when we have context (unifies dual engines).
+    // Ramp path only differs when producers exist and showAcceleration is on.
+    if (!accelContext) return null
 
     const manaCost = getManaCostFromCard(cardData) || getSimulatedManaCost(cardName)
     if (!manaCost) return null
 
     try {
-      // Parse mana cost into ProducerManaCost format
       const colorCounts: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0 }
       let generic = 0
 
@@ -575,13 +573,10 @@ const useAcceleratedCastability = (
         if (/^\d+$/.test(clean)) {
           generic += parseInt(clean)
         } else if (clean === 'X') {
-          // For X spells, assume X=2 for calculation
           generic += 2
         } else if (['W', 'U', 'B', 'R', 'G'].includes(clean)) {
           colorCounts[clean]++
         } else if (clean.includes('/')) {
-          // Hybrid mana (e.g., {R/G}) — player can pay with either color.
-          // Assign to the color with more sources in the deck for best approximation.
           const parts = clean.split('/')
           const colorParts = parts.filter((p): p is 'W' | 'U' | 'B' | 'R' | 'G' =>
             ['W', 'U', 'B', 'R', 'G'].includes(p)
@@ -610,8 +605,6 @@ const useAcceleratedCastability = (
         },
       }
 
-      // Build deck mana profile from sources
-      // v1.1: Multi-mana lands handled probabilistically via unconditionalMultiMana
       const deckProfile: DeckManaProfile = {
         deckSize: totalCards || 60,
         totalLands: totalLands || 24,
@@ -623,21 +616,19 @@ const useAcceleratedCastability = (
           G: deckSources?.G || 0,
           C: deckSources?.C || 0,
         },
-        // v1.1: Probabilistic multi-mana land handling
         unconditionalMultiMana: unconditionalMultiMana,
       }
 
-      // Build acceleration context
       const ctx: AccelContext = {
         playDraw: accelContext.playDraw,
         removalRate: accelContext.removalRate,
         defaultRockSurvival: accelContext.defaultRockSurvival,
       }
 
-      // Compute accelerated castability
-      const result = computeAcceleratedCastability(deckProfile, spellCost, producers, ctx)
+      const producersForEngine =
+        showAcceleration && producers && producers.length > 0 ? producers : []
 
-      return result
+      return computeAcceleratedCastability(deckProfile, spellCost, producersForEngine, ctx)
     } catch (error) {
       console.error('Error calculating accelerated castability:', error)
       return null
@@ -919,57 +910,85 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
               </Box>
             </Grid>
 
-            {/* Realistic (primary) + Best case (secondary) — same engine for both.
-                P0-3: never mix acceleratedResult.p2 with inline probabilities.p1. */}
+            {/* Realistic + Perfect drops — prefer SSOT accelerated engine (base always). */}
             <Grid item xs={8} md={6}>
-              {showAcceleration && acceleratedResult ? (
+              {acceleratedResult ? (
                 <Box>
-                  <SegmentedProbabilityBar
-                    baseProbability={Math.round(acceleratedResult.base.p2 * 100)}
-                    totalProbability={Math.round(acceleratedResult.withAcceleration.p2 * 100)}
-                    height={8}
-                    showLabels={true}
-                    label="Realistic:"
-                    tooltipContent={
-                      <Box sx={{ p: 0.5 }}>
-                        <Typography variant="body2" fontWeight="bold" gutterBottom>
-                          On-curve cast chance (with ramp)
-                        </Typography>
-                        <Typography variant="caption" component="div" sx={{ mb: 1 }}>
-                          Accounts for land count, colors, and mana rocks/dorks (format-aware
-                          removal). Primary number to optimize.
-                        </Typography>
-                        <Typography variant="caption" component="div">
-                          • Lands only (realistic): {Math.round(acceleratedResult.base.p2 * 100)}%
-                        </Typography>
-                        <Typography variant="caption" component="div">
-                          • With ramp (realistic):{' '}
-                          {Math.round(acceleratedResult.withAcceleration.p2 * 100)}%
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          component="div"
-                          sx={{ color: 'success.light' }}
-                        >
-                          • Ramp bonus: +{Math.round(acceleratedResult.accelerationImpact * 100)}%
-                        </Typography>
-                        <Typography variant="caption" component="div" sx={{ mt: 0.5 }}>
-                          • Lands-only perfect drops: {Math.round(acceleratedResult.base.p1 * 100)}%
-                        </Typography>
-                        {acceleratedResult.acceleratedTurn !== null && (
+                  {showAcceleration &&
+                  producers &&
+                  producers.length > 0 &&
+                  acceleratedResult.accelerationImpact > 0.001 ? (
+                    <SegmentedProbabilityBar
+                      baseProbability={Math.round(acceleratedResult.base.p2 * 100)}
+                      totalProbability={Math.round(acceleratedResult.withAcceleration.p2 * 100)}
+                      height={8}
+                      showLabels={true}
+                      label="Realistic:"
+                      tooltipContent={
+                        <Box sx={{ p: 0.5 }}>
+                          <Typography variant="body2" fontWeight="bold" gutterBottom>
+                            On-curve cast chance (with ramp)
+                          </Typography>
+                          <Typography variant="caption" component="div">
+                            • Lands only: {Math.round(acceleratedResult.base.p2 * 100)}%
+                          </Typography>
+                          <Typography variant="caption" component="div">
+                            • With ramp: {Math.round(acceleratedResult.withAcceleration.p2 * 100)}%
+                          </Typography>
                           <Typography
                             variant="caption"
                             component="div"
-                            sx={{ mt: 1, color: 'success.light' }}
+                            sx={{ color: 'success.light' }}
                           >
-                            Accelerated turn: {acceleratedResult.acceleratedTurn}
+                            • Ramp bonus: +{Math.round(acceleratedResult.accelerationImpact * 100)}%
                           </Typography>
-                        )}
+                        </Box>
+                      }
+                    />
+                  ) : (
+                    <Box>
+                      <Box display="flex" alignItems="center" gap={0.5} mb={0.5}>
+                        <Typography variant="caption" color="text.secondary">
+                          Realistic:
+                        </Typography>
+                        <Box
+                          sx={{
+                            bgcolor: getProbabilityColor(
+                              Math.round(acceleratedResult.base.p2 * 100),
+                              theme
+                            ),
+                            color: '#fff',
+                            px: 1,
+                            py: 0.25,
+                            borderRadius: 1,
+                            fontSize: '0.75rem',
+                            fontWeight: 'bold',
+                            ml: 'auto',
+                          }}
+                        >
+                          {Math.round(acceleratedResult.base.p2 * 100)}%
+                        </Box>
                       </Box>
-                    }
-                  />
+                      <LinearProgress
+                        variant="determinate"
+                        value={Math.round(acceleratedResult.base.p2 * 100)}
+                        sx={{
+                          height: 8,
+                          borderRadius: 4,
+                          bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                          '& .MuiLinearProgress-bar': {
+                            borderRadius: 4,
+                            bgcolor: getProbabilityColor(
+                              Math.round(acceleratedResult.base.p2 * 100),
+                              theme
+                            ),
+                          },
+                        }}
+                      />
+                    </Box>
+                  )}
                   <Tooltip
-                    title="Perfect drops (lands only): on-curve cast chance if you always have enough lands (ignores ramp). Always ≥ lands-only Realistic. With rocks/dorks, the primary Realistic bar can exceed this — ramp is helping, not a bug."
+                    title="Perfect drops (lands only, SSOT engine): cast if you always have enough lands. Always ≥ lands-only Realistic."
                     arrow
                   >
                     <Typography
@@ -977,7 +996,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                       color="text.disabled"
                       sx={{ mt: 0.5, display: 'block', fontSize: '0.65rem' }}
                     >
-                      Perfect drops (lands only): {Math.round(acceleratedResult.base.p1 * 100)}%
+                      Perfect drops: {Math.round(acceleratedResult.base.p1 * 100)}%
                     </Typography>
                   </Tooltip>
                 </Box>

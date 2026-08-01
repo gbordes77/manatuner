@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { HelmetProvider } from 'react-helmet-async'
 import analyzerReducer from '../src/store/slices/analyzerSlice'
+import { AccelerationProvider } from '../src/contexts/AccelerationContext'
 
 // Créer un store de test
 const createTestStore = (preloadedState = {}) => {
@@ -26,7 +27,9 @@ export const renderWithProviders = (
 ) => {
   const Wrapper = ({ children }) => (
     <HelmetProvider>
-      <Provider store={store}>{children}</Provider>
+      <Provider store={store}>
+        <AccelerationProvider>{children}</AccelerationProvider>
+      </Provider>
     </HelmetProvider>
   )
 

@@ -12,6 +12,11 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import type { AccelContext, FormatPreset } from '../types/manaProducers'
 import { FORMAT_REMOVAL_RATES } from '../types/manaProducers'
+import {
+  detectDeckFormatFamily,
+  suggestedFormatPreset,
+  type DeckFormatFamily,
+} from '../utils/deckFormat'
 
 // =============================================================================
 // TYPES
@@ -29,6 +34,12 @@ interface AccelerationSettings {
 
   /** Whether to show acceleration data in UI */
   showAcceleration: boolean
+
+  /**
+   * 'auto' = next suggestFromDeckSize may update format.
+   * 'user' = user picked a format; auto-detect will not override.
+   */
+  formatSource: 'auto' | 'user'
 }
 
 interface AccelerationContextValue {
@@ -41,7 +52,10 @@ interface AccelerationContextValue {
   /** Current effective removal rate */
   removalRate: number
 
-  /** Update format */
+  /** Last auto-detected family (null until a deck size is applied) */
+  detectedFamily: DeckFormatFamily | null
+
+  /** Update format (marks source = user) */
   setFormat: (format: FormatPreset) => void
 
   /** Update play/draw */
@@ -52,6 +66,15 @@ interface AccelerationContextValue {
 
   /** Toggle acceleration display */
   setShowAcceleration: (show: boolean) => void
+
+  /**
+   * If formatSource is auto, set format from deck size (Commander / Limited / Modern).
+   * Always updates detectedFamily for UI banners.
+   */
+  suggestFromDeckSize: (totalCards: number) => void
+
+  /** Allow auto format again (e.g. after loading a new sample) */
+  unlockFormatAuto: () => void
 
   /** Reset to defaults */
   resetToDefaults: () => void
@@ -65,7 +88,8 @@ const DEFAULT_SETTINGS: AccelerationSettings = {
   format: 'modern',
   playDraw: 'PLAY',
   customRemovalRate: null,
-  showAcceleration: true
+  showAcceleration: true,
+  formatSource: 'auto',
 }
 
 // =============================================================================
@@ -89,13 +113,25 @@ export const AccelerationProvider: React.FC<AccelerationProviderProps> = ({ chil
       const stored = localStorage.getItem('manatuner_acceleration_settings')
       if (stored) {
         const parsed = JSON.parse(stored)
-        return { ...DEFAULT_SETTINGS, ...parsed }
+        // Migrate older saves missing formatSource / limited preset
+        const format: FormatPreset =
+          parsed.format && parsed.format in FORMAT_REMOVAL_RATES
+            ? parsed.format
+            : DEFAULT_SETTINGS.format
+        return {
+          ...DEFAULT_SETTINGS,
+          ...parsed,
+          format,
+          formatSource: parsed.formatSource === 'user' ? 'user' : 'auto',
+        }
       }
     } catch (e) {
       console.warn('Failed to load acceleration settings:', e)
     }
     return DEFAULT_SETTINGS
   })
+
+  const [detectedFamily, setDetectedFamily] = useState<DeckFormatFamily | null>(null)
 
   // Persist settings to localStorage
   const persistSettings = useCallback((newSettings: AccelerationSettings) => {
@@ -111,44 +147,93 @@ export const AccelerationProvider: React.FC<AccelerationProviderProps> = ({ chil
     if (settings.customRemovalRate !== null) {
       return settings.customRemovalRate
     }
-    return FORMAT_REMOVAL_RATES[settings.format]
+    return FORMAT_REMOVAL_RATES[settings.format] ?? FORMAT_REMOVAL_RATES.modern
   }, [settings.format, settings.customRemovalRate])
 
   // Build AccelContext for calculations
-  const accelContext = useMemo<AccelContext>(() => ({
-    playDraw: settings.playDraw,
-    removalRate,
-    defaultRockSurvival: 0.98
-  }), [settings.playDraw, removalRate])
+  const accelContext = useMemo<AccelContext>(
+    () => ({
+      playDraw: settings.playDraw,
+      removalRate,
+      defaultRockSurvival: 0.98,
+    }),
+    [settings.playDraw, removalRate]
+  )
 
-  // Setters
-  const setFormat = useCallback((format: FormatPreset) => {
-    setSettings(prev => {
-      const updated = { ...prev, format, customRemovalRate: null }
-      persistSettings(updated)
-      return updated
-    })
-  }, [persistSettings])
+  // Setters — explicit format pick locks auto
+  const setFormat = useCallback(
+    (format: FormatPreset) => {
+      setSettings((prev) => {
+        const updated: AccelerationSettings = {
+          ...prev,
+          format,
+          customRemovalRate: null,
+          formatSource: 'user',
+        }
+        persistSettings(updated)
+        return updated
+      })
+    },
+    [persistSettings]
+  )
 
-  const setPlayDraw = useCallback((playDraw: 'PLAY' | 'DRAW') => {
-    setSettings(prev => {
-      const updated = { ...prev, playDraw }
-      persistSettings(updated)
-      return updated
-    })
-  }, [persistSettings])
+  const setPlayDraw = useCallback(
+    (playDraw: 'PLAY' | 'DRAW') => {
+      setSettings((prev) => {
+        const updated = { ...prev, playDraw }
+        persistSettings(updated)
+        return updated
+      })
+    },
+    [persistSettings]
+  )
 
-  const setCustomRemovalRate = useCallback((rate: number | null) => {
-    setSettings(prev => {
-      const updated = { ...prev, customRemovalRate: rate }
-      persistSettings(updated)
-      return updated
-    })
-  }, [persistSettings])
+  const setCustomRemovalRate = useCallback(
+    (rate: number | null) => {
+      setSettings((prev) => {
+        const updated = { ...prev, customRemovalRate: rate }
+        persistSettings(updated)
+        return updated
+      })
+    },
+    [persistSettings]
+  )
 
-  const setShowAcceleration = useCallback((show: boolean) => {
-    setSettings(prev => {
-      const updated = { ...prev, showAcceleration: show }
+  const setShowAcceleration = useCallback(
+    (show: boolean) => {
+      setSettings((prev) => {
+        const updated = { ...prev, showAcceleration: show }
+        persistSettings(updated)
+        return updated
+      })
+    },
+    [persistSettings]
+  )
+
+  const suggestFromDeckSize = useCallback(
+    (totalCards: number) => {
+      const family = detectDeckFormatFamily(totalCards)
+      setDetectedFamily(family)
+      setSettings((prev) => {
+        if (prev.formatSource === 'user') return prev
+        const format = suggestedFormatPreset(family)
+        if (prev.format === format) return prev
+        const updated: AccelerationSettings = {
+          ...prev,
+          format,
+          customRemovalRate: null,
+          formatSource: 'auto',
+        }
+        persistSettings(updated)
+        return updated
+      })
+    },
+    [persistSettings]
+  )
+
+  const unlockFormatAuto = useCallback(() => {
+    setSettings((prev) => {
+      const updated: AccelerationSettings = { ...prev, formatSource: 'auto' }
       persistSettings(updated)
       return updated
     })
@@ -156,25 +241,40 @@ export const AccelerationProvider: React.FC<AccelerationProviderProps> = ({ chil
 
   const resetToDefaults = useCallback(() => {
     setSettings(DEFAULT_SETTINGS)
+    setDetectedFamily(null)
     persistSettings(DEFAULT_SETTINGS)
   }, [persistSettings])
 
-  const value = useMemo<AccelerationContextValue>(() => ({
-    settings,
-    accelContext,
-    removalRate,
-    setFormat,
-    setPlayDraw,
-    setCustomRemovalRate,
-    setShowAcceleration,
-    resetToDefaults
-  }), [settings, accelContext, removalRate, setFormat, setPlayDraw, setCustomRemovalRate, setShowAcceleration, resetToDefaults])
-
-  return (
-    <AccelerationContext.Provider value={value}>
-      {children}
-    </AccelerationContext.Provider>
+  const value = useMemo<AccelerationContextValue>(
+    () => ({
+      settings,
+      accelContext,
+      removalRate,
+      detectedFamily,
+      setFormat,
+      setPlayDraw,
+      setCustomRemovalRate,
+      setShowAcceleration,
+      suggestFromDeckSize,
+      unlockFormatAuto,
+      resetToDefaults,
+    }),
+    [
+      settings,
+      accelContext,
+      removalRate,
+      detectedFamily,
+      setFormat,
+      setPlayDraw,
+      setCustomRemovalRate,
+      setShowAcceleration,
+      suggestFromDeckSize,
+      unlockFormatAuto,
+      resetToDefaults,
+    ]
   )
+
+  return <AccelerationContext.Provider value={value}>{children}</AccelerationContext.Provider>
 }
 
 // =============================================================================

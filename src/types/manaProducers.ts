@@ -254,6 +254,7 @@ export interface DeckManaProfile {
 export type FormatPreset =
   | 'goldfish' // 0% removal (testing only)
   | 'casual_edh' // ~10% removal
+  | 'limited' // ~15% Limited / draft
   | 'standard' // ~20% removal
   | 'modern' // ~35% removal (Bolt the Bird)
   | 'legacy' // ~40% removal
@@ -265,6 +266,7 @@ export type FormatPreset =
 export const FORMAT_REMOVAL_RATES: Record<FormatPreset, number> = {
   goldfish: 0.0,
   casual_edh: 0.1,
+  limited: 0.15,
   standard: 0.2,
   modern: 0.35,
   legacy: 0.4,

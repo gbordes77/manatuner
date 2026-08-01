@@ -1,11 +1,23 @@
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
-import { Box, Grid, IconButton, Paper, Tooltip, Typography } from '@mui/material'
+import {
+  Alert,
+  Box,
+  Chip,
+  Grid,
+  IconButton,
+  Paper,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import { useAcceleration } from '../../contexts/AccelerationContext'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { manaProducerService, producerCacheService } from '../../services/manaProducerService'
 import type { Card } from '../../types'
 import type { ProducerInDeck, UnconditionalMultiManaGroup } from '../../types/manaProducers'
+import { landCountGuidance } from '../../utils/deckFormat'
 import ManaCostRow from '../ManaCostRow'
 import { Term } from '../common/Term'
 import { AccelerationSettings } from './AccelerationSettings'
@@ -15,12 +27,21 @@ interface CastabilityTabProps {
   analysisResult: AnalysisResult
 }
 
+type BoardScope = 'main' | 'postboard'
+
 export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisResult }) => {
   // Get acceleration context
-  const { settings, accelContext } = useAcceleration()
+  const { settings, accelContext, detectedFamily, suggestFromDeckSize } = useAcceleration()
 
-  // Sideboard swap state
+  // P1-8: board scope — main only vs post-board (swaps)
+  const [boardScope, setBoardScope] = useState<BoardScope>('main')
   const [activeSwaps, setActiveSwaps] = useState<SideboardSwap[]>([])
+
+  // P1-9: auto format from analyzed deck size
+  useEffect(() => {
+    const n = analysisResult?.totalCards
+    if (n && n > 0) suggestFromDeckSize(n)
+  }, [analysisResult?.totalCards, suggestFromDeckSize])
 
   // Separate maindeck and sideboard cards
   const maindeckCards = useMemo(
@@ -32,19 +53,17 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     [analysisResult?.cards]
   )
 
-  // Apply sideboard swaps to get the post-board card list
+  // Apply sideboard swaps only in post-board scope
   const effectiveCards = useMemo(() => {
-    if (activeSwaps.length === 0) return maindeckCards
+    if (boardScope === 'main' || activeSwaps.length === 0) return maindeckCards
     const cardMap = new Map(maindeckCards.map((c) => [c.name, { ...c }]))
 
     for (const swap of activeSwaps) {
-      // Remove OUT cards
       const outCard = cardMap.get(swap.cardOut)
       if (outCard) {
         outCard.quantity = Math.max(0, (outCard.quantity || 1) - swap.quantity)
         if (outCard.quantity === 0) cardMap.delete(swap.cardOut)
       }
-      // Add IN cards (find from sideboard for metadata)
       const sbCard = sideboardCards.find((c) => c.name === swap.cardIn)
       const existing = cardMap.get(swap.cardIn)
       if (existing) {
@@ -54,7 +73,16 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       }
     }
     return Array.from(cardMap.values())
-  }, [maindeckCards, sideboardCards, activeSwaps])
+  }, [maindeckCards, sideboardCards, activeSwaps, boardScope])
+
+  const mainCount = useMemo(
+    () => maindeckCards.reduce((s, c) => s + (c.quantity || 1), 0),
+    [maindeckCards]
+  )
+  const sbCount = useMemo(
+    () => sideboardCards.reduce((s, c) => s + (c.quantity || 1), 0),
+    [sideboardCards]
+  )
 
   // Filter out lands using Scryfall metadata from analysisResult
   const nonLandCards = useMemo(() => {
@@ -65,7 +93,8 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   const [producersInDeck, setProducersInDeck] = useState<ProducerInDeck[]>([])
 
   useEffect(() => {
-    if (!analysisResult?.cards) {
+    // Use effective board (main or post-board), not raw analysis list
+    if (!effectiveCards.length) {
       setProducersInDeck([])
       return
     }
@@ -74,7 +103,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     const syncProducers: ProducerInDeck[] = []
     const unknownCards: { name: string; quantity: number }[] = []
 
-    for (const card of analysisResult.cards) {
+    for (const card of effectiveCards) {
       if (card.isLand) continue
       const cached = producerCacheService.get(card.name)
       if (cached) {
@@ -109,18 +138,18 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     return () => {
       cancelled = true
     }
-  }, [analysisResult?.cards])
+  }, [effectiveCards])
 
   // v1.1: Extract unconditional multi-mana lands for probabilistic handling
   // Groups lands by their delta (bonus mana per land)
   // e.g., Ancient Tomb (δ=1), Bounce lands (δ=1)
   const unconditionalMultiMana = useMemo<UnconditionalMultiManaGroup | undefined>(() => {
-    if (!analysisResult?.cards) return undefined
+    if (!effectiveCards.length) return undefined
 
     let totalCount = 0
     let totalDelta = 0
 
-    for (const card of analysisResult.cards) {
+    for (const card of effectiveCards) {
       if (!card.isLand || !card.landMetadata) continue
 
       const producesAmount = card.landMetadata.producesAmount ?? 1
@@ -134,40 +163,34 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
 
     if (totalCount === 0) return undefined
 
-    // Weighted average delta for the group
     const avgDelta = totalDelta / totalCount
 
     return {
       count: totalCount,
       delta: avgDelta,
     }
-  }, [analysisResult?.cards])
+  }, [effectiveCards])
 
   // Calculate extra colored sources available only for creature spells
-  // (from lands like Cavern of Souls, Unclaimed Territory, etc.)
   const creatureOnlyExtraSources = useMemo<Record<string, number>>(() => {
     const extra: Record<string, number> = {}
-    if (!analysisResult?.cards) return extra
+    if (!effectiveCards.length) return extra
 
     const deckColors = new Set<string>()
-    // Detect which colors the deck needs
-    for (const card of analysisResult.cards) {
+    for (const card of effectiveCards) {
       if (!card.isLand) {
         for (const c of card.colors) deckColors.add(c)
       }
     }
 
-    // Count creature-only-any lands
     const LAND_COLORS = ['W', 'U', 'B', 'R', 'G', 'C'] as const
     const isLandManaColor = (c: string): c is (typeof LAND_COLORS)[number] =>
       (LAND_COLORS as readonly string[]).includes(c)
-    for (const card of analysisResult.cards) {
+    for (const card of effectiveCards) {
       if (!card.isLand || !card.landMetadata) continue
       if (card.landMetadata.producesAny && card.landMetadata.producesAnyForCreaturesOnly) {
         const qty = card.quantity || 1
-        // These lands can produce any color, so add for each deck color
         for (const color of deckColors) {
-          // Only add if the land doesn't already produce this color in its base produces
           if (isLandManaColor(color) && !card.landMetadata.produces.includes(color)) {
             extra[color] = (extra[color] || 0) + qty
           }
@@ -176,13 +199,12 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     }
 
     return extra
-  }, [analysisResult?.cards])
+  }, [effectiveCards])
 
   // Build Card objects from DeckCard to pass as initialCardData (avoids N+1 Scryfall calls)
   const cardDataMap = useMemo(() => {
     const map = new Map<string, Card>()
-    if (!analysisResult?.cards) return map
-    for (const card of analysisResult.cards) {
+    for (const card of effectiveCards) {
       if (card.isLand) continue
       map.set(card.name, {
         id: '',
@@ -200,7 +222,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       })
     }
     return map
-  }, [analysisResult?.cards])
+  }, [effectiveCards])
 
   return (
     <>
@@ -216,6 +238,85 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         producersInDeck={producersInDeck}
         deckSize={analysisResult?.totalCards || 60}
       />
+
+      {detectedFamily && analysisResult && (
+        <Alert severity="info" sx={{ mb: 2 }} data-testid="format-family-banner">
+          <Typography variant="body2" fontWeight={600}>
+            Detected:{' '}
+            {detectedFamily === 'edh'
+              ? 'Commander'
+              : detectedFamily === 'limited'
+                ? 'Limited'
+                : 'Constructed'}{' '}
+            —{' '}
+            {landCountGuidance(
+              detectedFamily,
+              analysisResult.totalLands || 0,
+              analysisResult.totalCards || 0
+            )}
+          </Typography>
+          <Typography variant="caption" display="block" sx={{ mt: 0.25, opacity: 0.9 }}>
+            Format controls above set ramp/removal model. Change Format anytime; click the Auto chip
+            if you locked a format and want detection again.
+          </Typography>
+        </Alert>
+      )}
+
+      {/* P1-8: Main vs post-board scope */}
+      {sideboardCards.length > 0 && (
+        <Paper
+          sx={{ p: 1.5, mb: 2, border: 1, borderColor: 'divider' }}
+          data-testid="sideboard-scope"
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 1.5,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box>
+              <Typography variant="subtitle2" fontWeight={700}>
+                Board analyzed
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Sideboard auto-detected: {mainCount} main · {sbCount} side
+              </Typography>
+            </Box>
+            <ToggleButtonGroup
+              exclusive
+              size="small"
+              value={boardScope}
+              onChange={(_, v) => {
+                if (v) {
+                  setBoardScope(v)
+                  if (v === 'main') setActiveSwaps([])
+                }
+              }}
+              aria-label="Main deck or post-board analysis"
+            >
+              <ToggleButton value="main" sx={{ textTransform: 'none' }}>
+                Main only
+              </ToggleButton>
+              <ToggleButton value="postboard" sx={{ textTransform: 'none' }}>
+                Post-board
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+          {boardScope === 'postboard' && (
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+              Define IN/OUT swaps below. Castability uses the post-board 60 (or 100) after swaps.
+            </Typography>
+          )}
+          {boardScope === 'main' && (
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+              Showing maindeck only — sideboard cards are ignored for odds.
+            </Typography>
+          )}
+        </Paper>
+      )}
 
       {/* Ramp detection banner */}
       {producersInDeck.length > 0 && (
@@ -311,21 +412,29 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
             />
           ))}
 
-          {/* Sideboard swap editor */}
-          {sideboardCards.length > 0 && (
+          {/* Sideboard swap editor — only when analyzing post-board */}
+          {sideboardCards.length > 0 && boardScope === 'postboard' && (
             <SideboardSwapEditor
               maindeckCards={maindeckCards}
               sideboardCards={sideboardCards}
               onSwapsChange={setActiveSwaps}
             />
           )}
-          {activeSwaps.length > 0 && (
+          {boardScope === 'postboard' && activeSwaps.length > 0 && (
             <Box sx={{ mt: 1, p: 1.5, bgcolor: 'info.main', borderRadius: 1, opacity: 0.9 }}>
               <Typography variant="caption" color="info.contrastText" fontWeight={600}>
-                Showing post-board castability ({activeSwaps.reduce((s, sw) => s + sw.quantity, 0)}{' '}
-                swaps applied)
+                Post-board castability — {activeSwaps.reduce((s, sw) => s + sw.quantity, 0)} card(s)
+                swapped in from sideboard
               </Typography>
             </Box>
+          )}
+          {boardScope === 'postboard' && activeSwaps.length === 0 && sideboardCards.length > 0 && (
+            <Chip
+              size="small"
+              sx={{ mt: 1 }}
+              label="Post-board mode: add swaps below, or odds stay maindeck-identical"
+              variant="outlined"
+            />
           )}
         </Box>
       ) : (
