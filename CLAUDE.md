@@ -2,7 +2,7 @@
 
 ## Latest (2026-08-01) — lire en premier
 
-- **Code :** **v2.7.9** · stamp **Engine v2.7.9** · https://www.manatuner.app (prod peut lag jusqu’au ship)
+- **Prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app
 - **Boot :** `SESSION_START.md` · **Index docs :** `docs/README.md` · **État :** `docs/product/STATUS.md`
 - **SSOT journée :** `docs/session/HANDOFF_2026-08-01.md` · suite : `docs/session/HANDOFF_NEXT.md`
 - **Ship 2.7.8 :** persona P0/P1 — Joyride non-bloquant · EDH 4 colors · légende Perfect/Realistic · Share Discord

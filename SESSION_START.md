@@ -1,8 +1,7 @@
 # SESSION_START — ManaTuner (lire en premier)
 
 > **Date :** 2026-08-01  
-> **Code :** **v2.7.9** · stamp **Engine v2.7.9**  
-> **Prod :** https://www.manatuner.app (peut encore afficher 2.7.8 jusqu’au ship 2.7.9)  
+> **Prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app  
 > **Docs index :** [`docs/README.md`](docs/README.md) · **État produit :** [`docs/product/STATUS.md`](docs/product/STATUS.md)  
 > **Sécu :** [`docs/session/SECURITY_AUDIT_2026-08-01.md`](docs/session/SECURITY_AUDIT_2026-08-01.md)
 

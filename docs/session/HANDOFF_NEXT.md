@@ -1,10 +1,9 @@
 # HANDOFF — Prochaines étapes ManaTuner
 
-> **À jour :** 2026-08-01 · **Code local :** **v2.7.9** · stamp **Engine v2.7.9**  
-> **Prod live (tant que non shippé) :** peut encore afficher **v2.7.8**  
+> **À jour :** 2026-08-01 · **Live prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`**  
 > **Prod URL :** https://www.manatuner.app/  
 > **SSOT journée :** [`HANDOFF_2026-08-01.md`](./HANDOFF_2026-08-01.md)  
-> **Sécu :** [`SECURITY_AUDIT_2026-08-01.md`](./SECURITY_AUDIT_2026-08-01.md) — remédiations **code done**, deploy = owner  
+> **Sécu :** [`SECURITY_AUDIT_2026-08-01.md`](./SECURITY_AUDIT_2026-08-01.md) — remédiations **shippées prod**  
 > **État produit :** [`../product/STATUS.md`](../product/STATUS.md) · **Index docs :** [`../README.md`](../README.md)
 
 ---
@@ -55,11 +54,11 @@ Ne pas rouvrir Moxfield URL, i18n FR, backend, analytics decklist sans owner.
 
 |                       |                                                                                                     |
 | --------------------- | --------------------------------------------------------------------------------------------------- |
-| **Version code**      | **2.7.9** (`Engine v2.7.9`) — sécu remédiée localement                                              |
+| **Version**           | **2.7.9** live (`Engine v2.7.9`) · SHA **`fdef163`**                                                |
 | **Tests**             | **404** unit pass / 2 skip                                                                          |
-| **Audit sécu**        | Rapport + fixes SEC-01→05 · residual npm : RSC CSRF advisory N/A SPA                                |
+| **Audit sécu**        | Rapport + fixes SEC-01→05 **en prod** · residual npm RSC advisory N/A SPA                           |
 | **Audit UX baseline** | 6 personas v2.7.7 · moy **4.00/5** · [`PERSONA_AUDIT_2026-08-01.md`](./PERSONA_AUDIT_2026-08-01.md) |
-| **Prod deploy 2.7.9** | **Pas encore** (sauf si ship après ce handoff)                                                      |
+| **Prod deploy 2.7.9** | **FAIT** Vercel Production success                                                                  |
 
 ---
 
@@ -67,7 +66,7 @@ Ne pas rouvrir Moxfield URL, i18n FR, backend, analytics decklist sans owner.
 
 1. ~~Audit multi-personas v2.7.7~~ **FAIT**
 2. ~~Phase 4 fixes P0/P1~~ **FAIT** → **v2.7.8**
-3. ~~Audit sécu + remédiations~~ **FAIT code** → **v2.7.9** (deploy = owner)
+3. ~~Audit sécu + remédiations + ship~~ **FAIT** → **v2.7.9** prod `fdef163`
 4. **P0-DIST** — `LAUNCH.md` (@fireshoes + Discord) — **pas de code**
 5. Re-audit personas comparatif (optionnel)
 6. Optionnel « go suite » : P1-3 Critical label · P1-4 empty My Analyses
