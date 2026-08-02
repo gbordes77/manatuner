@@ -27,7 +27,7 @@ function maybeSentryPlugin(): PluginOption[] {
   ]
 }
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), ...maybeSentryPlugin()],
   resolve: {
     alias: {
@@ -48,16 +48,33 @@ export default defineConfig({
     sourcemap: Boolean(process.env.SENTRY_AUTH_TOKEN),
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-mui': [
-            '@mui/material',
-            '@mui/icons-material',
-            '@emotion/react',
-            '@emotion/styled',
-          ],
-          'vendor-charts': ['recharts'],
-          'vendor-redux': ['@reduxjs/toolkit', 'react-redux'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // T12: keep icons out of the eager MUI material chunk
+            if (id.includes('@mui/icons-material')) {
+              return 'vendor-mui-icons'
+            }
+            if (
+              id.includes('@mui/material') ||
+              id.includes('@emotion/react') ||
+              id.includes('@emotion/styled')
+            ) {
+              return 'vendor-mui'
+            }
+            if (id.includes('react-dom') || id.includes('react-router') || id.includes('/react/')) {
+              return 'vendor-react'
+            }
+            if (id.includes('recharts')) {
+              return 'vendor-charts'
+            }
+            if (
+              id.includes('@reduxjs/toolkit') ||
+              id.includes('react-redux') ||
+              id.includes('redux')
+            ) {
+              return 'vendor-redux'
+            }
+          }
         },
       },
     },
@@ -73,19 +90,13 @@ export default defineConfig({
     host: true,
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@mui/material',
-      '@mui/icons-material',
-      'recharts',
-    ],
+    include: ['react', 'react-dom', 'react-router-dom', '@mui/material', 'recharts'],
   },
+  // T14: drop console/debugger only in production builds (keep logs in dev)
   esbuild: {
-    drop: ['console', 'debugger'],
+    drop: mode === 'production' ? (['console', 'debugger'] as ('console' | 'debugger')[]) : [],
   },
   worker: {
     format: 'es',
   },
-})
+}))

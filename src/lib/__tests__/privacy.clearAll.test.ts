@@ -1,10 +1,17 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PrivacyStorage } from '../privacy'
+
+const clearIdb = vi.fn(async () => undefined)
+
+vi.mock('../../services/scryfallPersistentCache', () => ({
+  clearPersistentScryfallCache: () => clearIdb(),
+}))
 
 describe('PrivacyStorage.clearAllLocalData (SEC-2026-08-02)', () => {
   beforeEach(() => {
     localStorage.clear()
     sessionStorage.clear()
+    clearIdb.mockClear()
   })
 
   it('removes analyses, redux persist, caches, and prefs', () => {
@@ -42,5 +49,13 @@ describe('PrivacyStorage.clearAllLocalData (SEC-2026-08-02)', () => {
     localStorage.setItem('manatuner-future-feature', 'x')
     PrivacyStorage.clearAllLocalData()
     expect(localStorage.getItem('manatuner-future-feature') == null).toBe(true)
+  })
+
+  it('T11 kicks off clearPersistentScryfallCache (IDB) without blocking', async () => {
+    PrivacyStorage.clearAllLocalData()
+    // Dynamic import + allSettled
+    await vi.waitFor(() => {
+      expect(clearIdb).toHaveBeenCalled()
+    })
   })
 })

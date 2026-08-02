@@ -76,7 +76,11 @@ export function buildShareUrl(params: {
   }
 }
 
-/** Parse share params from current URL (hash first, then legacy query). */
+/**
+ * Parse share params from current URL (hash first, then legacy query).
+ * T15: if only legacy `?d=` is present, rewrite to `#d=` and strip query `d`
+ * so the decklist leaves edge/CDN request logs after first read.
+ */
 export function parseShareParams(): {
   deckList: string
   deckName: string
@@ -90,5 +94,31 @@ export function parseShareParams(): {
     if (fromHash) return fromHash
   }
 
-  return readShareFromParams(new URLSearchParams(window.location.search))
+  const searchParams = new URLSearchParams(window.location.search)
+  const fromQuery = readShareFromParams(searchParams)
+  if (!fromQuery) return null
+
+  // T15: migrate legacy ?d= → #d= and strip d/name/tab from query
+  try {
+    const hash = new URLSearchParams()
+    const encoded = searchParams.get('d')
+    if (encoded) hash.set('d', encoded)
+    if (fromQuery.deckName) hash.set('name', fromQuery.deckName)
+    if (fromQuery.tab > 0) hash.set('tab', String(fromQuery.tab))
+
+    const next = new URL(window.location.href)
+    next.searchParams.delete('d')
+    next.searchParams.delete('name')
+    next.searchParams.delete('tab')
+    next.hash = hash.toString()
+    window.history.replaceState(
+      {},
+      '',
+      `${next.pathname}${next.search}${next.hash ? `#${next.hash}` : ''}`
+    )
+  } catch {
+    // history may be unavailable in some test envs
+  }
+
+  return fromQuery
 }

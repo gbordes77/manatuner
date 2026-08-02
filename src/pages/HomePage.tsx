@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatedContainer } from '../components/common/AnimatedContainer'
 import { SEO } from '../components/common/SEO'
 import { Term } from '../components/common/Term'
+import { prefetchAnalyzerChunk, scheduleIdlePrefetch } from '../utils/prefetchRoute'
 
 // Mana symbol component using Keyrune font
 const ManaSymbol: React.FC<{
@@ -74,11 +75,15 @@ const FloatingManaSymbols: React.FC = () => {
           sx={{
             position: 'absolute',
             ...symbol,
-            animation: `float ${4 + index * 0.5}s ease-in-out infinite`,
+            // T13: single shared keyframe name + respect reduced motion
+            animation: `mtFloat ${4 + index * 0.5}s ease-in-out infinite`,
             animationDelay: `${symbol.delay}s`,
-            '@keyframes float': {
+            '@keyframes mtFloat': {
               '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
               '50%': { transform: 'translateY(-20px) rotate(5deg)' },
+            },
+            '@media (prefers-reduced-motion: reduce)': {
+              animation: 'none',
             },
           }}
         >
@@ -93,6 +98,11 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate()
   const theme = useTheme()
   const isDark = theme.palette.mode === 'dark'
+
+  // QW2: idle-prefetch Analyzer chunk so first CTA click is near-instant
+  React.useEffect(() => {
+    scheduleIdlePrefetch(() => prefetchAnalyzerChunk())
+  }, [])
 
   // Features displayed on the home page
   const features = [
@@ -381,6 +391,8 @@ export const HomePage: React.FC = () => {
                 variant="contained"
                 size="large"
                 onClick={() => navigate('/analyzer')}
+                onMouseEnter={() => prefetchAnalyzerChunk()}
+                onFocus={() => prefetchAnalyzerChunk()}
                 startIcon={<AnalyticsIcon />}
                 sx={{
                   px: 5,
@@ -409,6 +421,8 @@ export const HomePage: React.FC = () => {
                 variant="outlined"
                 size="large"
                 onClick={() => navigate('/analyzer?sample=midrange')}
+                onMouseEnter={() => prefetchAnalyzerChunk()}
+                onFocus={() => prefetchAnalyzerChunk()}
                 sx={{
                   px: 3,
                   py: 1.8,
@@ -1362,6 +1376,8 @@ export const HomePage: React.FC = () => {
           variant="contained"
           size="large"
           onClick={() => navigate('/analyzer')}
+          onMouseEnter={() => prefetchAnalyzerChunk()}
+          onFocus={() => prefetchAnalyzerChunk()}
           startIcon={<AnalyticsIcon />}
           sx={{
             px: 5,

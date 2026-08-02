@@ -1,10 +1,60 @@
 import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
-import { fetchWithTimeout } from './http'
+import {
+  batchFetchFromScryfall,
+  fetchCardFromScryfall as resolveCardFromScryfall,
+  fetchCardFromScryfallWithMeta as resolveCardFromScryfallWithMeta,
+} from './cardResolver'
+import { hypergeom } from './castability/hypergeom'
+import {
+  applyCommanderFallback as applyCommanderFallbackPure,
+  cleanCardName as cleanCardNamePure,
+  detectSideboardStartLine,
+} from './deckParser'
 import { landService } from './landService'
 import { analyzeSpellCastability, compareTempoImpact } from './manaCalculator'
-import { BoundedMap } from './scryfall'
+
+// Re-export pure parser helpers so existing imports keep working (T08).
+export { cleanCardName, detectSideboardStartLine, parseDecklistLine } from './deckParser'
+export {
+  batchFetchFromScryfall,
+  clearCardResolverCache,
+  fetchCardFromScryfall,
+  fetchCardFromScryfallWithMeta,
+} from './cardResolver'
+
+/** How many spells between main-thread yields during tempo analysis (T06). */
+export const TEMPO_YIELD_EVERY = 10
+
+/**
+ * Yield to the event loop so the UI can paint during long tempo loops (T06).
+ * Prefer scheduler.yield when available; otherwise setTimeout(0).
+ */
+export async function yieldToMain(): Promise<void> {
+  const sched = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler
+  if (sched?.yield) {
+    await sched.yield()
+    return
+  }
+  await new Promise<void>((resolve) => setTimeout(resolve, 0))
+}
+
+/** Error thrown when a newer analyzeDeck supersedes this run (T06). */
+export class AnalysisCancelledError extends Error {
+  constructor(message = 'Analysis cancelled') {
+    super(message)
+    this.name = 'AnalysisCancelledError'
+  }
+}
+
+/** Monotonic generation so a new analyzeDeck aborts the previous tempo loop. */
+let analysisGeneration = 0
+
+/** Test / UI helper: cancel any in-flight analyzeDeck tempo phase. */
+export function cancelInFlightAnalysis(): void {
+  analysisGeneration += 1
+}
 
 /**
  * Count active WUBRG colors in a land colorDistribution map.
@@ -35,52 +85,6 @@ export function countActiveWubrgFromSpells(
     }
   }
   return active.size
-}
-
-// Cache pour éviter les appels répétés à Scryfall.
-// Audit fix H4 (2026-04-13): use BoundedMap (LRU, cap 500) instead of unbounded
-// Map to prevent memory growth on long sessions where a power user analyses
-// dozens of distinct decks. Each ScryfallCard is ~5-10 KB → cap ≈ 5 MB heap.
-const scryfallCache = new BoundedMap<string, ScryfallCard>(500)
-
-// Batch fetch up to 75 cards at once via Scryfall /cards/collection
-async function batchFetchFromScryfall(cardNames: string[]): Promise<void> {
-  // Filter out cards already in cache
-  const uncached = cardNames.filter((name) => !scryfallCache.has(name))
-  if (uncached.length === 0) return
-
-  // Scryfall /cards/collection accepts max 75 identifiers per request
-  const BATCH_SIZE = 75
-  for (let i = 0; i < uncached.length; i += BATCH_SIZE) {
-    const batch = uncached.slice(i, i + BATCH_SIZE)
-    const identifiers = batch.map((name) => ({ name }))
-
-    try {
-      const response = await fetchWithTimeout(
-        'https://api.scryfall.com/cards/collection',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ identifiers }),
-        },
-        { timeoutMs: 8000, retries: 1 }
-      )
-
-      if (response.ok) {
-        const data = await response.json()
-        for (const card of data.data || []) {
-          scryfallCache.set(card.name, card)
-        }
-      }
-    } catch (error) {
-      console.warn('Scryfall batch fetch failed, falling back to individual calls', error)
-    }
-
-    // Respect Scryfall rate limit (100ms between requests)
-    if (i + BATCH_SIZE < uncached.length) {
-      await new Promise((r) => setTimeout(r, 100))
-    }
-  }
 }
 
 export interface DeckCard {
@@ -192,176 +196,17 @@ export interface AnalysisResult {
   cards: DeckCard[]
 }
 
-/**
- * Detect which line index marks the start of the sideboard section,
- * using a pre-scan heuristic when no explicit marker is present.
- *
- * Handles:
- * - Explicit markers: "Sideboard", "Sideboard:", "// Sideboard", "SB:", "# Sideboard"
- * - Inline SB: prefix: "SB: 2 Rest in Peace"
- * - Blank-line separation: a blank line between a main block (40-100 cards) and a tail block (1-15 cards)
- *
- * Returns the 0-based line index where sideboard starts, or -1 if no sideboard detected.
- */
-export function detectSideboardStartLine(lines: string[]): number {
-  const cardPatterns = [/^(\d+)\s+(.+)$/, /^(\d+)x\s+(.+)$/i, /^(.+)\s+x(\d+)$/i]
-  const sideboardMarkers = [/^sideboard:?$/i, /^\/\/\s*sideboard/i, /^sb:?$/i, /^#\s*sideboard/i]
-  const sectionMarkers = [
-    ...sideboardMarkers,
-    /^(deck|maybeboard|commander|companion):?$/i,
-    /^\/\/\s*(deck|maybeboard)/i,
-  ]
-
-  // Check for explicit sideboard marker first
-  for (let i = 0; i < lines.length; i++) {
-    const trimmed = lines[i].trim()
-    if (sideboardMarkers.some((m) => m.test(trimmed))) {
-      return i
-    }
-  }
-
-  // Check for inline SB: prefix (e.g., "SB: 2 Rest in Peace")
-  for (let i = 0; i < lines.length; i++) {
-    if (/^sb:\s*\d+/i.test(lines[i].trim())) {
-      return i
-    }
-  }
-
-  // No explicit marker — look for blank-line separation
-  const parseQty = (line: string): number => {
-    const trimmed = line.trim()
-    if (!trimmed) return 0
-    if (sectionMarkers.some((m) => m.test(trimmed))) return 0
-    for (const pattern of cardPatterns) {
-      const m = trimmed.match(pattern)
-      if (m) {
-        return pattern === cardPatterns[2] ? parseInt(m[2]) : parseInt(m[1])
-      }
-    }
-    return 0
-  }
-
-  // Collect blank-line positions
-  const blankLineIndices: number[] = []
-
-  for (let i = 0; i < lines.length; i++) {
-    if (!lines[i].trim()) {
-      blankLineIndices.push(i)
-    }
-  }
-
-  // Canonical complete-deck sizes that should NOT be treated as main+sideboard
-  // splits when no explicit marker is present. This kills the false positive
-  // on MTGGoldfish/Moxfield category-grouped exports (audit C3, 2026-04-13)
-  // where blank lines separate Creatures / Spells / Lands sections inside a
-  // single 60-card main deck.
-  const CANONICAL_TOTAL_NO_SIDEBOARD = new Set([40, 60, 80, 99, 100])
-
-  // Try each blank line as a potential main/side split (prefer the last valid one)
-  for (let b = blankLineIndices.length - 1; b >= 0; b--) {
-    const splitIdx = blankLineIndices[b]
-
-    let cardsBefore = 0
-    let cardsAfter = 0
-
-    for (let i = 0; i < splitIdx; i++) {
-      cardsBefore += parseQty(lines[i])
-    }
-    for (let i = splitIdx + 1; i < lines.length; i++) {
-      cardsAfter += parseQty(lines[i])
-    }
-
-    // Heuristic: main deck is 40-100 cards, sideboard is 1-15 cards
-    if (cardsBefore >= 40 && cardsBefore <= 100 && cardsAfter >= 1 && cardsAfter <= 15) {
-      // Reject if the total looks like a complete deck (no sideboard expected).
-      // Standard/Pioneer/Modern with sideboard = 75. Limited with sideboard = 55-90.
-      // Commander = 100 (no SB), Limited deck = 40 (no SB), Standard no-SB = 60.
-      if (CANONICAL_TOTAL_NO_SIDEBOARD.has(cardsBefore + cardsAfter)) {
-        continue
-      }
-      return splitIdx
-    }
-  }
-
-  return -1 // No sideboard detected
-}
-
 export class DeckAnalyzer {
-  /**
-   * Fetch a card from Scryfall with:
-   * - In-memory cache
-   * - 8-second timeout via AbortController (prevents hung spinners)
-   * - Fuzzy fallback when exact match fails (handles minor typos/DFCs that
-   *   escaped cleanCardName)
-   * - Single retry with exponential backoff on 429/500/503
-   *
-   * Returns `null` on genuine not-found or network failure.
-   */
+  /** @deprecated Use cardResolver.fetchCardFromScryfall — kept as thin delegate (T08). */
   private static async fetchCardFromScryfall(cardName: string): Promise<ScryfallCard | null> {
-    const { data } = await this.fetchCardFromScryfallWithMeta(cardName)
-    return data
+    return resolveCardFromScryfall(cardName)
   }
 
-  /**
-   * Like fetchCardFromScryfall but distinguishes definitive not-found (404)
-   * from transient network/rate-limit failures so garbage hard-fail does not
-   * treat Scryfall blips as invented card names.
-   */
+  /** @deprecated Use cardResolver.fetchCardFromScryfallWithMeta — thin delegate (T08). */
   private static async fetchCardFromScryfallWithMeta(
     cardName: string
   ): Promise<{ data: ScryfallCard | null; notFound: boolean }> {
-    if (scryfallCache.has(cardName)) {
-      return { data: scryfallCache.get(cardName)!, notFound: false }
-    }
-
-    const encodedName = encodeURIComponent(cardName)
-    const exactUrl = `https://api.scryfall.com/cards/named?exact=${encodedName}`
-    const fuzzyUrl = `https://api.scryfall.com/cards/named?fuzzy=${encodedName}`
-
-    type Attempt = { kind: 'ok'; data: ScryfallCard } | { kind: 'not_found' } | { kind: 'error' }
-
-    const tryFetch = async (url: string): Promise<Attempt> => {
-      try {
-        // Shared helper: 8s timeout, retry once on 429/5xx (Retry-After aware)
-        const response = await fetchWithTimeout(url, {}, { timeoutMs: 8000, retries: 1 })
-
-        if (response.ok) {
-          return { kind: 'ok', data: (await response.json()) as ScryfallCard }
-        }
-
-        if (response.status === 404) {
-          return { kind: 'not_found' }
-        }
-
-        return { kind: 'error' }
-      } catch (error) {
-        console.warn(`Scryfall fetch failed for "${cardName}":`, error)
-        return { kind: 'error' }
-      }
-    }
-
-    // Try exact first (fastest, most predictable)
-    let result = await tryFetch(exactUrl)
-
-    // Fall back to fuzzy for DFCs/typos that slipped through cleanCardName
-    if (result.kind !== 'ok') {
-      const fuzzy = await tryFetch(fuzzyUrl)
-      // Prefer a successful fuzzy hit; else keep not_found only if both were 404
-      if (fuzzy.kind === 'ok') {
-        result = fuzzy
-      } else if (result.kind === 'error' || fuzzy.kind === 'error') {
-        result = { kind: 'error' }
-      } else {
-        result = { kind: 'not_found' }
-      }
-    }
-
-    if (result.kind === 'ok') {
-      scryfallCache.set(cardName, result.data)
-      return { data: result.data, notFound: false }
-    }
-
-    return { data: null, notFound: result.kind === 'not_found' }
+    return resolveCardFromScryfallWithMeta(cardName)
   }
 
   // Fonction améliorée pour détecter les terrains via Scryfall
@@ -658,6 +503,10 @@ export class DeckAnalyzer {
     }
     await batchFetchFromScryfall(cardNames)
 
+    // T07: batch-prefetch land metadata for names absent from seed/cache
+    // so the per-card detectLand loop is mostly sync (zero extra for full-seed decks).
+    await landService.prefetchUnknownLands(cardNames)
+
     for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
       let trimmedLine = lines[lineIdx].trim()
 
@@ -834,50 +683,17 @@ export class DeckAnalyzer {
     return this.applyCommanderFallback(cards)
   }
 
-  /**
-   * If no card was marked commander but the list is 99–100 cards, treat the
-   * first maindeck non-land as the commander (common export style).
-   */
+  /** Thin delegate → deckParser.applyCommanderFallback (T08). */
   private static applyCommanderFallback(cards: DeckCard[]): DeckCard[] {
-    if (cards.some((c) => c.isCommander)) return cards
-    const total = cards.reduce((s, c) => s + (c.quantity || 1), 0)
-    if (total < 99) return cards
-    const first = cards.find((c) => !c.isLand && !c.isSideboard)
-    if (!first) return cards
-    return cards.map((c) => (c === first ? { ...c, isCommander: true } : c))
+    return applyCommanderFallbackPure(cards)
   }
 
   /**
-   * Normalize card names from any source (MTGA, MTGO, Moxfield, manual input)
-   * into the front-face name that Scryfall's `exact=` endpoint accepts.
-   *
-   * Handles:
-   * - MTGA set codes and collector numbers: "Card (SET) 123"
-   * - Arena markers: "*CMDR*", "*F*", "*E*", "*CMP*", "*COMPANION*"
-   * - Adventure/DFC split notation: "Front // Back" → "Front"
-   * - Arena rebalanced "A-" prefix
-   * - Unicode whitespace (nbsp, ideographic space)
+   * Thin delegate → deckParser.cleanCardName (T08).
+   * Kept as private static for existing tests that bracket-access DeckAnalyzer.
    */
   private static cleanCardName(name: string): string {
-    return (
-      name
-        // Normalize unicode whitespace to regular space
-        .replace(/[\u00A0\u2000-\u200B\u3000]/g, ' ')
-        // Strip Arena markers (*CMDR*, *F*, *E*, *CMP*, *COMPANION*, etc.)
-        .replace(/\s*\*[A-Z]+\*\s*/gi, ' ')
-        // Remove MTGA set codes and collector numbers: "(SET) 123", "(SET) 123a"
-        .replace(/\s*\([A-Z0-9]{2,4}\)\s*\d+[a-z★]?\s*$/i, '')
-        // Remove "A-" prefix for Arena rebalanced cards
-        .replace(/^A-/, '')
-        // Take only the front face for DFC/adventure/split cards: "Front // Back"
-        // Scryfall `exact=` rejects the full "//" form for DFCs like
-        // "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki". The front
-        // face alone is always accepted.
-        .split(/\s*\/\/\s*/)[0]
-        // Collapse runs of whitespace and trim
-        .replace(/\s+/g, ' ')
-        .trim()
-    )
+    return cleanCardNamePure(name)
   }
 
   private static getSimulatedManaCost(name: string): string {
@@ -1048,49 +864,17 @@ export class DeckAnalyzer {
     return []
   }
 
+  /**
+   * P(X >= observedSuccesses) via SSOT log-space hypergeom (T09).
+   * Replaces the private float combination loop.
+   */
   private static calculateHypergeometric(
     populationSize: number,
     successStates: number,
     sampleSize: number,
     observedSuccesses: number
   ): number {
-    // Improved hypergeometric calculation
-    if (successStates === 0 || populationSize === 0) return 0
-    if (observedSuccesses === 0) return 1
-    if (observedSuccesses > sampleSize || observedSuccesses > successStates) return 0
-    if (sampleSize > populationSize) return 0
-
-    // Calculate probability of getting AT LEAST observedSuccesses
-    let probability = 0
-
-    for (let k = observedSuccesses; k <= Math.min(sampleSize, successStates); k++) {
-      // P(X = k) using hypergeometric formula
-      const numerator =
-        this.combination(successStates, k) *
-        this.combination(populationSize - successStates, sampleSize - k)
-      const denominator = this.combination(populationSize, sampleSize)
-
-      if (denominator > 0) {
-        probability += numerator / denominator
-      }
-    }
-
-    return Math.min(1, Math.max(0, probability))
-  }
-
-  private static combination(n: number, k: number): number {
-    if (k > n || k < 0) return 0
-    if (k === 0 || k === n) return 1
-
-    // Use the more efficient formula: C(n,k) = C(n,n-k)
-    k = Math.min(k, n - k)
-
-    let result = 1
-    for (let i = 0; i < k; i++) {
-      result = (result * (n - i)) / (i + 1)
-    }
-
-    return Math.round(result)
+    return hypergeom.atLeast(populationSize, successStates, sampleSize, observedSuccesses)
   }
 
   private static calculateColorProbabilities(
@@ -1286,8 +1070,22 @@ export class DeckAnalyzer {
     }
   }
 
-  public static async analyzeDeck(deckList: string): Promise<AnalysisResult> {
+  public static async analyzeDeck(
+    deckList: string,
+    options?: { signal?: AbortSignal }
+  ): Promise<AnalysisResult> {
+    // Bump generation so any prior tempo loop aborts at its next yield (T06).
+    const myGeneration = ++analysisGeneration
+    const signal = options?.signal
+    const throwIfCancelled = () => {
+      if (signal?.aborted || myGeneration !== analysisGeneration) {
+        throw new AnalysisCancelledError()
+      }
+    }
+    throwIfCancelled()
+
     const cards = await this.parseDeckList(deckList)
+    throwIfCancelled()
     this.assertCardResolution(cards)
 
     const totalCards = cards.reduce((sum, card) => sum + card.quantity, 0)
@@ -1407,13 +1205,16 @@ export class DeckAnalyzer {
       }
     })
 
-    // NEW: Calculate tempo-aware spell analysis
+    // NEW: Calculate tempo-aware spell analysis (sync math + yield every N — T06)
     const tempoSpellAnalysis: Record<string, TempoSpellAnalysis> = {}
 
     if (landMetadataList.length > 0) {
+      let spellIndex = 0
       for (const spell of nonLands) {
+        throwIfCancelled()
         try {
-          const tempoResult = await analyzeSpellCastability(
+          // Synchronous pure math (analyzeSpellCastability is no longer async)
+          const tempoResult = analyzeSpellCastability(
             {
               name: spell.name,
               manaCost: spell.manaCost,
@@ -1465,6 +1266,8 @@ export class DeckAnalyzer {
             rating: tempoResult.rating,
           }
         } catch (error) {
+          // Cancellation must propagate; per-spell math errors must not stop the loop
+          if (error instanceof AnalysisCancelledError) throw error
           console.warn(`[DeckAnalyzer] Error analyzing tempo for ${spell.name}:`, error)
           // Fallback to basic analysis
           tempoSpellAnalysis[spell.name] = {
@@ -1476,6 +1279,12 @@ export class DeckAnalyzer {
             scenarios: { aggressive: 100, conservative: 100, balanced: 100 },
             rating: 'good',
           }
+        }
+
+        spellIndex += 1
+        if (spellIndex % TEMPO_YIELD_EVERY === 0) {
+          await yieldToMain()
+          throwIfCancelled()
         }
       }
     }
@@ -1554,28 +1363,11 @@ export class DeckAnalyzer {
   } {
     const handSize = 7
 
-    // Helper: Calculate hypergeometric probability P(X = k)
-    // P(X = k) = C(K,k) * C(N-K, n-k) / C(N,n)
-    const hypergeometricProbability = (N: number, K: number, n: number, k: number): number => {
-      if (k > K || k > n || n - k > N - K || k < 0) return 0
-
-      const binomial = (a: number, b: number): number => {
-        if (b > a || b < 0) return 0
-        if (b === 0 || b === a) return 1
-        let result = 1
-        for (let i = 0; i < b; i++) {
-          result = (result * (a - i)) / (i + 1)
-        }
-        return result
-      }
-
-      return (binomial(K, k) * binomial(N - K, n - k)) / binomial(N, n)
-    }
-
+    // T09: SSOT hypergeom.pmf (log-space) — replaces local float binomial
     // Calculate probability of getting exactly k lands in opening hand
     const landProbs: number[] = []
     for (let k = 0; k <= handSize; k++) {
-      landProbs[k] = hypergeometricProbability(deckSize, landCount, handSize, k)
+      landProbs[k] = hypergeom.pmf(deckSize, landCount, handSize, k)
     }
 
     // Count early game spells (CMC 0-2) for "perfect hand" calculation
@@ -1587,7 +1379,7 @@ export class DeckAnalyzer {
       if (earlySpells === 0 || totalSpells === 0) return 0
       if (spellsDrawn <= 0) return 0
       // P(at least 1 early spell) = 1 - P(0 early spells)
-      const probNoEarly = hypergeometricProbability(totalSpells, earlySpells, spellsDrawn, 0)
+      const probNoEarly = hypergeom.pmf(totalSpells, earlySpells, spellsDrawn, 0)
       return 1 - probNoEarly
     }
 

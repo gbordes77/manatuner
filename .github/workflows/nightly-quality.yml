@@ -1,0 +1,61 @@
+# AM6 — non-blocking nightly a11y / visual / e2e core (chromium).
+# Does not gate PR merges; surfaces drift on main.
+name: Nightly quality
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # 04:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: nightly-quality
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  e2e-core:
+    name: E2E core flows (chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Core flows
+        run: npx playwright test tests/e2e/core-flows/ --project=chromium
+        continue-on-error: true
+
+  a11y:
+    name: Accessibility suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: a11y
+        run: npm run test:accessibility
+        continue-on-error: true
+
+  visual:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: visual
+        run: npm run test:visual
+        continue-on-error: true

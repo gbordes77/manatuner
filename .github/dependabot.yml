@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # npm — weekly, grouped minors/patches; ignore sensitive majors
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -18,8 +18,35 @@ updates:
     labels:
       - "dependencies"
       - "automated"
-    
-  # Enable version updates for GitHub Actions
+    groups:
+      production-minor-patch:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+      development-minor-patch:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Major UI / React upgrades need a dedicated migration PR
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-router-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@mui/material"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@mui/icons-material"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@emotion/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@emotion/styled"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -36,4 +63,4 @@ updates:
       include: "scope"
     labels:
       - "github-actions"
-      - "automated" 
+      - "automated"

@@ -50,6 +50,21 @@ describe('urlCodec', () => {
     expect(shared?.tab).toBe(3)
   })
 
+  it('T15 rewrites legacy ?d= to #d= and strips query d', () => {
+    const encoded = encodeDeck(sampleDeck)
+    window.history.replaceState(
+      {},
+      '',
+      `/analyzer?d=${encoded}&name=${encodeURIComponent('Legacy')}&tab=2`
+    )
+    const shared = parseShareParams()
+    expect(shared?.deckList).toBe(sampleDeck)
+    // After parse, URL should be hash-based without query d=
+    expect(window.location.search).not.toMatch(/[?&]d=/)
+    expect(window.location.hash).toContain('d=')
+    expect(window.location.hash).toContain('name=Legacy')
+  })
+
   it('decodeDeck returns empty string on garbage input', () => {
     expect(decodeDeck('%%%not-base64%%%')).toBe('')
   })

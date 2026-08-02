@@ -41,13 +41,49 @@ export interface MulliganWorkerFailure {
 
 export type MulliganWorkerResponse = MulliganWorkerSuccess | MulliganWorkerFailure
 
+/** T15: hard bounds on Monte Carlo iterations (worker isolation). */
+export const MULLIGAN_ITERATIONS_MIN = 1000
+export const MULLIGAN_ITERATIONS_MAX = 200_000
+
+export function clampMulliganIterations(raw: number): {
+  iterations: number
+  warning?: string
+} {
+  if (!Number.isFinite(raw)) {
+    return {
+      iterations: MULLIGAN_ITERATIONS_MIN,
+      warning: `iterations non-finite; clamped to ${MULLIGAN_ITERATIONS_MIN}`,
+    }
+  }
+  const n = Math.floor(raw)
+  if (n < MULLIGAN_ITERATIONS_MIN) {
+    return {
+      iterations: MULLIGAN_ITERATIONS_MIN,
+      warning: `iterations ${n} < ${MULLIGAN_ITERATIONS_MIN}; clamped`,
+    }
+  }
+  if (n > MULLIGAN_ITERATIONS_MAX) {
+    return {
+      iterations: MULLIGAN_ITERATIONS_MAX,
+      warning: `iterations ${n} > ${MULLIGAN_ITERATIONS_MAX}; clamped`,
+    }
+  }
+  return { iterations: n }
+}
+
 const ctx = self as unknown as DedicatedWorkerGlobalScope
 
 ctx.addEventListener('message', (event: MessageEvent<MulliganWorkerRequest>) => {
-  const { id, cards, archetype, iterations } = event.data
+  const { id, cards, archetype, iterations: rawIterations } = event.data
   try {
+    const { iterations, warning } = clampMulliganIterations(rawIterations)
     const result = analyzeWithArchetype(cards, archetype, iterations)
-    const response: MulliganWorkerSuccess = { id, ok: true, result }
+    const response: MulliganWorkerSuccess & { warning?: string } = {
+      id,
+      ok: true,
+      result,
+      ...(warning ? { warning } : {}),
+    }
     ctx.postMessage(response)
   } catch (err) {
     const response: MulliganWorkerFailure = {

@@ -204,6 +204,10 @@ export class PrivacyStorage {
    * Callers that own React state should also dispatch `clearAnalyzer` / purge
    * the persistor so in-memory UI matches storage.
    */
+  /**
+   * Clears localStorage/sessionStorage keys. Also kicks off an async IDB wipe
+   * for the Scryfall persistent cache (T11) — local wipe never waits on IDB.
+   */
   static clearAllLocalData(): void {
     if (typeof window === 'undefined') return
 
@@ -236,6 +240,13 @@ export class PrivacyStorage {
         // ignore
       }
     }
+
+    // T11: wipe Scryfall IndexedDB cache without blocking localStorage wipe
+    void Promise.allSettled([
+      import('../services/scryfallPersistentCache')
+        .then((m) => m.clearPersistentScryfallCache())
+        .catch(() => undefined),
+    ])
   }
 
   /**

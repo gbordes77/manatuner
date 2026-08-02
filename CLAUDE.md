@@ -1,19 +1,22 @@
 # ManaTuner - Instructions Claude
 
-## Latest (2026-08-01) — lire en premier
+## Latest (2026-08-02) — lire en premier
 
-- **Prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app
+- **Prod live :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app
+- **Code `main` :** **`332501d`** — audit evolutions **T02–T05 FAIT** (hygiène ; **pas** encore en prod sauf « go prod »)
 - **Boot :** `SESSION_START.md` · **Index docs :** `docs/README.md` · **État :** `docs/product/STATUS.md`
-- **SSOT journée :** `docs/session/HANDOFF_2026-08-01.md` · suite : `docs/session/HANDOFF_NEXT.md`
+- **SSOT session tech :** `docs/session/HANDOFF_2026-08-02.md` · suite : `docs/session/HANDOFF_NEXT.md`
+- **SSOT journée produit 08-01 :** `docs/session/HANDOFF_2026-08-01.md`
+- **Audit evolutions journal :** `AUDIT_EVOLUTIONS.md` §7 — T02 purge · T03 SSOT lands · T04 cache batch · T05 `fetchWithTimeout` = **FAIT**
 - **Ship 2.7.8 :** persona P0/P1 — Joyride non-bloquant · EDH 4 colors · légende Perfect/Realistic · Share Discord
-- **Ship 2.7.9 (sécu) :** share URL **hash `#d=`** · wipe localStorage **complet** · `SECURITY.md` CSP = vercel.json · `react-router-dom@7.18.2` · tests **404**
-- **Audit sécu :** `docs/session/SECURITY_AUDIT_2026-08-01.md` (remédiations code done)
-- **Baseline audit personas v2.7.7 :** `docs/session/PERSONA_AUDIT_2026-08-01.md` (moy 4.00)
+- **Ship 2.7.9 (sécu) :** share URL **hash `#d=`** · wipe localStorage **complet** · `SECURITY.md` CSP = vercel.json · `react-router-dom@7.18.2`
+- **Tests unit :** **384** pass / 2 skip
 - **Priorité business :** `LAUNCH.md` (distribution) — pas de feature gratuite
 - **Personas :** `docs/personas/mtg-player-personas.md`
 - **Sentry :** `@sentry/react` + `@sentry/vite-plugin` installés ; **init off** sans `VITE_SENTRY_DSN` ; scrubber `beforeSend` prêt ; **CSP sans** `*.ingest.sentry.io` tant que DSN unset — voir `SECURITY.md`
-- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side ; multi-color = WUBRG spells ; share hash ; wipe complet
+- **Invariants :** `etbTapped` boolean ; `toCloneableDeckCards` ; Karsten N/60 ; EDH T4–T8 ; P1≥P2 ; privacy client-side ; multi-color = WUBRG spells ; share hash ; wipe complet ; **land SSOT** `landService`+`landSeed` ; **Scryfall** via `src/services/http.ts` ; **SW killer** `public/sw.js` **conservé**
 - **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
+- **Ne pas démarrer T06+** sans ordre explicite (`AUDIT_EVOLUTIONS.md`)
 - **Prerender :** soft-fail Vercel → SPA ; HTML crawler **pas** garanti en prod
 
 ## LANCEMENT — LIRE EN PREMIER

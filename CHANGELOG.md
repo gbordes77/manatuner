@@ -7,6 +7,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Refactor (2026-08-02) — Audit evolutions T01 + T06–T15 + QW/AM (working tree, **pas de commit**)
+
+Suite hygiène pure (aucune feature produit P01–P04 / IN\*). Validation : **440** unit pass / 2 skip · type-check · lint · build · budget bundle.
+
+| ID    | Résumé                                                                              |
+| ----- | ----------------------------------------------------------------------------------- |
+| T01   | redux-persist v2 exclut `analysisResult` ; debounce 300 ms decklist + flush analyze |
+| QW1   | Cache-Control `s-maxage=86400, swr=604800` sur library/feeds/llms/sitemap           |
+| T06   | tempo sync + yield 10 + annulation AbortSignal/génération                           |
+| T07   | batch lands inconnus (collection chunks 75)                                         |
+| T09   | hypergeom SSOT dans deckAnalyzer + mulligan pmf                                     |
+| T08   | `deckParser.ts` + `cardResolver.ts`                                                 |
+| T10   | parse qty 1–99 / nom 1–200 ; rehydrate zod slim ; cardSchema max(4) deprecated      |
+| T11   | presentation → `tools/` ; wipe IDB Scryfall ; COEP workers retiré ; doc CSP Sentry  |
+| T12   | chunk `vendor-mui-icons` séparé ; fonts sans onload inline                          |
+| T13   | landDataCache BoundedMap ; useCardImage cleanup ; NotificationProvider memo         |
+| T14   | esbuild drop console **prod only**                                                  |
+| T15   | dependabot groups ; clamp iterations worker ; `?d=`→`#d=` rewrite                   |
+| QW2/3 | prefetch Analyzer idle/hover ; budget CI `check-bundle-budget.mjs`                  |
+| AM1/6 | audit critical prod bloquant ; nightly e2e/a11y/visual                              |
+
+**npm audit (prod `--omit=dev`) :** 0 critical · high `react-router` (advisory RSC — non applicable SPA ; fix force = downgrade, **non appliqué**).
+
+### Refactor (2026-08-02) — Audit evolutions T02–T05 · code `332501d`
+
+Hygiene-only (no product feature, no package version bump). Full journal: `AUDIT_EVOLUTIONS.md` §7 · handoff: `docs/session/HANDOFF_2026-08-02.md`.
+
+#### T02 — Dead code & orphan deps
+
+- Removed dead modules (land detection forks, advancedMaths, mulliganSimulator compat, unused analysis/performance UI, public legacy workers)
+- Removed React Query infrastructure from `main.tsx`
+- Dropped deps: `@tanstack/react-query`, `@tanstack/react-query-devtools`, `@mui/lab`, `react-window`, `react-virtualized-auto-sizer`, `@types/react-window`
+- Deleted dead manaCalculator helpers (`calculateProbabilityByTurn`, `analyzeDeckConsistency`, `calculateOptimalLandCount`)
+- Migrated `londonMulligan` tests to `mulliganSimulatorAdvanced`; merged manaCalculator test suites
+- **Kept** `public/sw.js` (SW killer — not dead code)
+
+#### T03 — Land detection SSOT
+
+- Single entry: `landService` + `landSeed` (`getLandSync` / `isLandSync` / `getCategoryLabelSync`)
+- `landUtils` rewritten as thin wrappers; removed hardcoded name lists + keyword heuristics
+- `deckAnalyzer` tempo land typing via seed categories (`shock` / `fast` / turn-threshold / producesAny)
+- Seed expanded **210 → 259** for legacy list non-regression
+- Tests: SSOT fixture + landUtils label alignment (Utility Land, not legacy “Rainbow Land”)
+
+#### T04 — landCacheService batched writes
+
+- Load localStorage once into memory Maps; O(1) `get`/`has`
+- `set` marks dirty; single flush after `preloadFromSeed`; deferred flush (debounce 500 ms + `requestIdleCallback`); sync flush on `beforeunload` / `visibilitychange` (hidden)
+- QuotaExceeded → evict oldest + one retry; corrupt JSON → empty cache
+
+#### T05 — Shared `fetchWithTimeout`
+
+- New `src/services/http.ts` (`HttpTimeoutError`, `HttpError`, 8 s timeout, 429/5xx retry, Retry-After, external signal)
+- All Scryfall paths in `scryfall.ts`, `deckAnalyzer.ts`, `manaProducerService.ts` use the helper
+
+### Tests
+
+- Unit: **384** pass / 2 skip (post T02–T05)
+
+### Notes
+
+- Prod live remains **v2.7.9** @ `fdef163` until explicit deploy of `332501d`
+- Do not start T06+ without owner order
+
 ## [2.7.9] - 2026-08-01 — Security audit remediations (privacy wipe, share hash, deps)
 
 ### Security

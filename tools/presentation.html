@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManaTuner — Advanced MTG Manabase Analyzer & Competitive Reading Library</title>
+    
+    <!-- Meta tags for SEO & social previews -->
+    <meta name="description" content="ManaTuner is a client-side Magic: The Gathering mana calculator. Exact hypergeometric probabilities, Monte Carlo mulligan simulations, and a curated library of competitive MTG articles.">
+    <meta property="og:title" content="ManaTuner — Advanced MTG Manabase Analyzer">
+    <meta property="og:description" content="Cast your spells on curve. Calculate exact hypergeometric probabilities and run Monte Carlo mulligan simulations.">
+    <meta property="og:image" content="https://www.manatuner.app/og-image-v4.jpg">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Mana Font for MTG Symbols -->
+    <link href="https://cdn.jsdelivr.net/npm/mana-font@1.18.0/css/mana.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        /* Modern Reset and Design System */
+        :root {
+            --bg-base: #0D0D11;
+            --bg-surface: rgba(22, 22, 30, 0.7);
+            --bg-surface-hover: rgba(30, 30, 42, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(107, 63, 160, 0.3);
+            
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+            
+            --color-white: #FFFFFF;
+            --color-blue: #0E68AB;
+            --color-black: #150B00;
+            --color-red: #D32F2F;
+            --color-green: #388E3C;
+            
+            --accent-gold: linear-gradient(135deg, #FFB300 0%, #E65100 100%);
+            --accent-gradient: linear-gradient(135deg, #0E68AB 0%, #6B3FA0 100%);
+            --purple-glow: rgba(107, 63, 160, 0.2);
+            --blue-glow: rgba(14, 104, 171, 0.2);
+            
+            --font-display: 'Cinzel', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Background Elements */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 50%;
+            height: 60%;
+            background: radial-gradient(circle, var(--purple-glow) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: 10%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Container Utilities */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(13, 13, 17, 0.8);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 4.5rem;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-symbol {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.8rem;
+            animation: pulse-slow 4s ease-in-out infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-gold);
+            color: var(--bg-base);
+            box-shadow: 0 4px 14px rgba(230, 81, 0, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 81, 0, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        #hero {
+            padding: 8rem 0 5rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            background: rgba(107, 63, 160, 0.15);
+            border: 1px solid rgba(107, 63, 160, 0.3);
+            color: #C084FC;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 2rem;
+            animation: fade-in-up 0.8s ease-out;
+        }
+
+        #hero h1 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            animation: fade-in-up 1s ease-out;
+        }
+
+        #hero h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-lead {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2.5rem auto;
+            font-weight: 300;
+            animation: fade-in-up 1.2s ease-out;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: fade-in-up 1.4s ease-out;
+        }
+
+        /* Interactive Floating MTG Mana Symbols */
+        .hero-background-symbols {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -2;
+        }
+
+        .floating-symbol {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.08;
+            filter: blur(1px);
+        }
+
+        /* Value Proposition Grid (Features) */
+        #features {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem auto;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: var(--bg-surface-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 12px 30px rgba(107, 63, 160, 0.15);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tech {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #C084FC;
+            background: rgba(107, 63, 160, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Interactive Demo Section */
+        #demo {
+            padding: 5rem 0;
+            background: rgba(13, 13, 17, 0.4);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .demo-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .demo-inputs {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input-wrapper:focus-within {
+            border-color: #C084FC;
+            box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.2);
+        }
+
+        .form-input-wrapper input, .form-input-wrapper select {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.8rem 0;
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            outline: none;
+        }
+
+        .radio-toggle {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .radio-toggle button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.6rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .radio-toggle button.active {
+            background: var(--accent-gradient);
+            color: var(--text-primary);
+        }
+
+        .demo-output {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .probability-dial {
+            width: 220px;
+            height: 220px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .probability-dial svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .probability-dial circle {
+            fill: none;
+            stroke-width: 12;
+        }
+
+        .dial-track {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        .dial-fill {
+            stroke: url(#dial-gradient);
+            stroke-linecap: round;
+            stroke-dasharray: 628;
+            stroke-dashoffset: 628;
+            transition: stroke-dashoffset 0.5s ease-out;
+        }
+
+        .dial-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dial-percentage {
+            font-size: 2.75rem;
+            font-weight: 800;
+            font-family: var(--font-sans);
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dial-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: -0.25rem;
+        }
+
+        .verdict-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .verdict-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .verdict-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* User Personas interactive section */
+        #personas {
+            padding: 5rem 0;
+        }
+
+        .persona-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .persona-tab {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.25rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .persona-tab.active, .persona-tab:hover {
+            background: rgba(107, 63, 160, 0.15);
+            border-color: #C084FC;
+            color: var(--text-primary);
+        }
+
+        .persona-content-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            display: none;
+            animation: fade-in 0.5s ease-out forwards;
+        }
+
+        .persona-content-box.active {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .persona-bio h3 {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .persona-role {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #C084FC;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .persona-metric {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.25rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .metric-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Tech Architecture section */
+        #architecture {
+            padding: 5rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .arch-diagram {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        .mermaid-mock {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mermaid-step {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem 2rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .mermaid-step::after {
+            content: '↓';
+            position: absolute;
+            bottom: -1.75rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .mermaid-step:last-child::after {
+            display: none;
+        }
+
+        .step-num {
+            background: var(--accent-gradient);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .step-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .step-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* CTA Section */
+        #cta {
+            padding: 6rem 0;
+            text-align: center;
+            background: radial-gradient(circle, rgba(107, 63, 160, 0.2) 0%, transparent 60%);
+        }
+
+        #cta h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        #cta p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0;
+            background: #09090C;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .footer-links h4 {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        /* Animations */
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.2); }
+        }
+
+        @keyframes fade-in-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 968px) {
+            #hero h1 {
+                font-size: 2.75rem;
+            }
+            
+            .demo-layout, .persona-content-box.active {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .persona-content-box {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #hero h1 {
+                font-size: 2.25rem;
+            }
+            .hero-actions {
+                flex-direction: column;
+            }
+            .persona-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG gradient definition for the circular probability dial -->
+    <svg style="width:0;height:0;position:absolute;" aria-hidden="true">
+        <defs>
+            <linearGradient id="dial-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0E68AB" />
+                <stop offset="100%" stop-color="#6B3FA0" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container nav-container">
+            <a href="https://manatuner.app" class="logo" id="nav-logo">
+                <span class="logo-symbol">⟠</span> ManaTuner
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#demo">Interactive Calculator</a></li>
+                <li><a href="#personas">User Cases</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="https://manatuner.app/analyzer" class="btn btn-primary" id="header-cta-btn">Launch App</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-background-symbols" id="floating-bg"></div>
+        <div class="container">
+            <div class="hero-badge">100% CLIENT-SIDE & PRIVACY-FIRST</div>
+            <h1>Will your deck cast its spells <span>on curve?</span></h1>
+            <p class="hero-lead">An advanced client-side Magic: The Gathering manabase analyzer. Paste your decklist, get exact probabilities, model mana accelerators, and optimize your mulligans instantly.</p>
+            <div class="hero-actions">
+                <a href="https://manatuner.app/analyzer" class="btn btn-primary" id="hero-primary-btn">Start Analyzing Free</a>
+                <a href="#demo" class="btn btn-secondary">Try Live Calculator</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Advanced Mathematics. Zero friction.</h2>
+                <p>ManaTuner combines exact probability calculations with advanced MTG rules modeling.</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Hypergeometric -->
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="ms ms-u"></i></span>
+                    <h3>Hypergeometric Math</h3>
+                    <p>Calculates the exact probability of drawing enough colored mana sources by turn N, play vs. draw, using log-factorials for numerical stability.</p>
+                    <span class="feature-tech">hypergeom.ts</span>
+                </div>
+
+                <!-- Mulligan -->
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="ms ms-r"></i></span>
+                    <h3>Mulligan Simulator</h3>
+                    <p>Simulates 10,000+ opening hands in a background thread using Web Workers and backward induction to compute optimal mulligan thresholds.</p>
+                    <span class="feature-tech">mulliganSimulatorAdvanced.ts</span>
+                </div>
+
+                <!-- Acceleration -->
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="ms ms-g"></i></span>
+                    <h3>Ramp Acceleration (K=3)</h3>
+                    <p>Supports 13 ramp types (mana dorks, rocks, land auras, rituals, doublers, enhancers) to calculate tempo-adjusted curves accurately.</p>
+                    <span class="feature-tech">manaProducerService.ts</span>
+                </div>
+
+                <!-- Lands -->
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="ms ms-w"></i></span>
+                    <h3>Intelligent Land Logic</h3>
+                    <p>Models land properties (Fetchlands, Shocklands, Checklands, Fastlands) and conditional ETB effects based on your deck's specific composition.</p>
+                    <span class="feature-tech">landService.ts</span>
+                </div>
+
+                <!-- Creature-Only -->
+                <div class="feature-card">
+                    <span class="feature-icon"><i class="ms ms-b"></i></span>
+                    <h3>Creature-Only Sources</h3>
+                    <p>Detects and accurately processes special lands (Cavern of Souls, Ancient Ziggurat) that only yield colored mana for creature spells.</p>
+                    <span class="feature-tech">deckAnalyzer.ts</span>
+                </div>
+
+                <!-- Privacy -->
+                <div class="feature-card">
+                    <span class="feature-icon">🔒</span>
+                    <h3>100% Client-Side Privacy</h3>
+                    <p>Runs entirely in your web browser. Zero server uploads, zero accounts required, no tracking scripts. Your decklists stay yours.</p>
+                    <span class="feature-tech">localStorage</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo">
+        <div class="container">
+            <div class="section-header">
+                <h2>Live Hypergeometric Calculator</h2>
+                <p>Experience the exact mathematical engine powering ManaTuner in real-time below.</p>
+            </div>
+
+            <div class="demo-layout">
+                <!-- Inputs -->
+                <div class="demo-inputs">
+                    <div class="form-group">
+                        <label for="input-n">Total Deck Size (N)</label>
+                        <div class="form-input-wrapper">
+                            <input type="number" id="input-n" value="60" min="40" max="250">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-k">Colored Mana Sources in Deck (K)</label>
+                        <div class="form-input-wrapper">
+                            <input type="number" id="input-k" value="14" min="0" max="100">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Play vs. Draw</label>
+                        <div class="radio-toggle">
+                            <button type="button" id="btn-play" class="active">On the Play</button>
+                            <button type="button" id="btn-draw">On the Draw</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-turn">Target Turn (n = cards seen)</label>
+                        <div class="form-input-wrapper">
+                            <select id="input-turn">
+                                <option value="1">Turn 1 (7 cards)</option>
+                                <option value="2">Turn 2 (8 cards)</option>
+                                <option value="3">Turn 3 (9 cards)</option>
+                                <option value="4" selected>Turn 4 (10 cards)</option>
+                                <option value="5">Turn 5 (11 cards)</option>
+                                <option value="6">Turn 6 (12 cards)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-req">Colored Symbols Required (k)</label>
+                        <div class="form-input-wrapper">
+                            <input type="number" id="input-req" value="1" min="1" max="5">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outputs -->
+                <div class="demo-output">
+                    <div class="probability-dial">
+                        <svg>
+                            <circle class="dial-track" cx="110" cy="110" r="100"></circle>
+                            <circle class="dial-fill" id="dial-indicator" cx="110" cy="110" r="100"></circle>
+                        </svg>
+                        <div class="dial-content">
+                            <div class="dial-percentage" id="calc-percentage">86.1%</div>
+                            <div class="dial-label">Probability</div>
+                        </div>
+                    </div>
+
+                    <div class="verdict-box">
+                        <div class="verdict-title" id="verdict-header">Good Stability</div>
+                        <div class="verdict-desc" id="verdict-body">Meets standard competitive recommendations for on-curve casting.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Cases / Personas Section -->
+    <section id="personas">
+        <div class="container">
+            <div class="section-header">
+                <h2>Designed for Every MTG Player</h2>
+                <p>We calibrate our user experience against six distinct MTG player personas, from beginners to Pro Tour grinders.</p>
+            </div>
+
+            <!-- Tab Selectors -->
+            <div class="persona-tabs">
+                <button class="persona-tab active" data-persona="karim">Karim (The Tactician)</button>
+                <button class="persona-tab" data-persona="natsuki">Natsuki (The Pro Grinder)</button>
+                <button class="persona-tab" data-persona="thibault">Thibault (Commander General)</button>
+                <button class="persona-tab" data-persona="leo">Léo (The Curious Arena Player)</button>
+            </div>
+
+            <!-- Karim -->
+            <div class="persona-content-box active" id="p-karim">
+                <div class="persona-bio">
+                    <h3>Karim</h3>
+                    <div class="persona-role">RCQ Grinder / Competitor</div>
+                    <p>Needs detailed, exact data to optimize his modern or pioneer decklists for local tournaments. Wants to download layouts to share and compare.</p>
+                </div>
+                <div class="persona-grid">
+                    <div class="persona-metric">
+                        <div class="metric-title">Primary Focus</div>
+                        <div class="metric-value">Fine Data & Exports</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Core Benefit</div>
+                        <div class="metric-value">Sideboard Post-board swaps</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Verification Needed</div>
+                        <div class="metric-value">Frank Karsten 90% Thresholds</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Favorite Feature</div>
+                        <div class="metric-value">Mana Blueprint Export (PNG/PDF)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Natsuki -->
+            <div class="persona-content-box" id="p-natsuki">
+                <div class="persona-bio">
+                    <h3>Natsuki</h3>
+                    <div class="persona-role">Pro Tour Qualifier</div>
+                    <p>Thinks purely in terms of expected value, equity, and mathematical odds. Demands high performance and no lag during calculation.</p>
+                </div>
+                <div class="persona-grid">
+                    <div class="persona-metric">
+                        <div class="metric-title">Primary Focus</div>
+                        <div class="metric-value">Mathematical Rigor</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Core Benefit</div>
+                        <div class="metric-value">Monte Carlo Mulligan Engine</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Verification Needed</div>
+                        <div class="metric-value">Exact binomial values (kMax=3)</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Favorite Feature</div>
+                        <div class="metric-value">Bellman Equation Induction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thibault -->
+            <div class="persona-content-box" id="p-thibault">
+                <div class="persona-bio">
+                    <h3>Thibault</h3>
+                    <div class="persona-role">Commander Enthusiast</div>
+                    <p>Builds complex 100-card EDH decks. Needs custom settings to analyze ramp cards and compute probabilities on longer turn horizons (turns 5 to 8).</p>
+                </div>
+                <div class="persona-grid">
+                    <div class="persona-metric">
+                        <div class="metric-title">Primary Focus</div>
+                        <div class="metric-value">100-card Singleton curves</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Core Benefit</div>
+                        <div class="metric-value">Dynamic hypergeom scaling</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Verification Needed</div>
+                        <div class="metric-value">Creature-aware source models</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Favorite Feature</div>
+                        <div class="metric-value">Commander track in library</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leo -->
+            <div class="persona-content-box" id="p-leo">
+                <div class="persona-bio">
+                    <h3>Léo</h3>
+                    <div class="persona-role">Casual Arena Player</div>
+                    <p>Plays mainly MTG Arena. Dislikes complex jargon. Wants a clear, visual verdict on whether his manabase is solid or needs adjustments.</p>
+                </div>
+                <div class="persona-grid">
+                    <div class="persona-metric">
+                        <div class="metric-title">Primary Focus</div>
+                        <div class="metric-value">Simple verdicts & colors</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Core Benefit</div>
+                        <div class="metric-value">Health Score & Diagnostics</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Verification Needed</div>
+                        <div class="metric-value">No intimidating mathematical formulas</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="metric-title">Favorite Feature</div>
+                        <div class="metric-value">QuickVerdict visual panel</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Technical Architecture -->
+    <section id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <h2>High-Level Data Flow</h2>
+                <p>Understanding how ManaTuner processes your decklists in real-time, client-side.</p>
+            </div>
+
+            <div class="arch-diagram">
+                <div class="mermaid-mock">
+                    <div class="mermaid-step">
+                        <div class="step-num">1</div>
+                        <div class="step-info">
+                            <h4>Deck Parser & Scryfall Enrichment</h4>
+                            <p>Decklists are parsed locally. Card types, mana symbols, and produced mana are loaded and cached via Bounded LRU cache.</p>
+                        </div>
+                    </div>
+                    <div class="mermaid-step">
+                        <div class="step-num">2</div>
+                        <div class="step-info">
+                            <h4>Mana Acceleration & Land Analyzer</h4>
+                            <p>Models complex lands (ETB tapped conditions) and 13 ramp behaviors (dorks, rocks, doublers) dynamically based on the current deck context.</p>
+                        </div>
+                    </div>
+                    <div class="mermaid-step">
+                        <div class="step-num">3</div>
+                        <div class="step-info">
+                            <h4>Hypergeometric & Monte Carlo Engines</h4>
+                            <p>Runs dynamic hypergeometric distributions for base odds, and delegates 10,000+ hand simulations to Web Workers for mulligan calculations.</p>
+                        </div>
+                    </div>
+                    <div class="mermaid-step">
+                        <div class="step-num">4</div>
+                        <div class="step-info">
+                            <h4>Redux Store & Interactive Dashboard</h4>
+                            <p>Calculated probabilities are saved into the Redux state to render responsive charts, curves, and actionable land Recommendations.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta">
+        <div class="container">
+            <h2>Ready to optimize your manabase?</h2>
+            <p>Paste your deck list now. No account required. All calculations run instantly in your browser.</p>
+            <a href="https://manatuner.app/analyzer" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;" id="cta-btn">Launch ManaTuner Free</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="https://manatuner.app" class="footer-logo">⟠ ManaTuner</a>
+                    <p>Advanced manabase calculations built client-side. Fast, secure, and privacy-first.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Application</h4>
+                    <ul>
+                        <li><a href="https://manatuner.app/analyzer">Deck Analyzer</a></li>
+                        <li><a href="https://manatuner.app/land-glossary">Land Glossary</a></li>
+                        <li><a href="https://manatuner.app/library">Reading Library</a></li>
+                        <li><a href="https://manatuner.app/guide">User Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Mathematics</h4>
+                    <ul>
+                        <li><a href="https://manatuner.app/mathematics">Mathematical Foundations</a></li>
+                        <li><a href="https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/how-many-lands-do-you-need-to-consistently-hit-your-land-drops/">Frank Karsten Articles</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Project</h4>
+                    <ul>
+                        <li><a href="https://github.com/gbordes77/manatuner">GitHub Repository</a></li>
+                        <li><a href="https://github.com/gbordes77/manatuner/blob/main/LICENSE">MIT License</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>© 2026 Guillaume Bordes. All rights reserved. Magic: The Gathering is property of Wizards of the Coast.</div>
+                <div>Created with ♥ for the MTG community</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Logic Scripts -->
+    <script>
+        // --- 1. Interactive Hypergeometric Calculator Logic ---
+        
+        // Log factorial lookup table for mathematical stability
+        let logFactorials = new Float64Array(201);
+        for (let i = 1; i <= 200; i++) {
+            logFactorials[i] = logFactorials[i - 1] + Math.log(i);
+        }
+
+        function ensureCapacity(n) {
+            if (n < logFactorials.length) return;
+            const target = Math.max(n, Math.ceil(logFactorials.length * 1.5));
+            const lf = new Float64Array(target + 1);
+            for (let i = 1; i <= target; i++) {
+                lf[i] = lf[i - 1] + Math.log(i);
+            }
+            logFactorials = lf;
+        }
+
+        function logChoose(n, k) {
+            if (k < 0 || k > n) return -Infinity;
+            ensureCapacity(n);
+            return logFactorials[n] - logFactorials[k] - logFactorials[n - k];
+        }
+
+        function pmf(N, K, n, k) {
+            if (N < 0 || K < 0 || n < 0 || K > N || n > N) return 0;
+            const kMin = Math.max(0, n - (N - K));
+            const kMax = Math.min(K, n);
+            if (k < kMin || k > kMax) return 0;
+            const logP = logChoose(K, k) + logChoose(N - K, n - k) - logChoose(N, n);
+            return Math.exp(logP);
+        }
+
+        function cumulativeProbability(N, K, n, kMin) {
+            const kMax = Math.min(K, n);
+            if (kMin <= 0) return 1.0;
+            if (kMin > kMax) return 0.0;
+            let sum = 0;
+            for (let k = kMin; k <= kMax; k++) {
+                sum += pmf(N, K, n, k);
+            }
+            return Math.max(0, Math.min(1, sum));
+        }
+
+        // DOM Elements
+        const inputN = document.getElementById('input-n');
+        const inputK = document.getElementById('input-k');
+        const inputTurn = document.getElementById('input-turn');
+        const inputReq = document.getElementById('input-req');
+        const btnPlay = document.getElementById('btn-play');
+        const btnDraw = document.getElementById('btn-draw');
+        
+        const calcPercentage = document.getElementById('calc-percentage');
+        const dialIndicator = document.getElementById('dial-indicator');
+        const verdictHeader = document.getElementById('verdict-header');
+        const verdictBody = document.getElementById('verdict-body');
+
+        let playDrawMode = 'PLAY';
+
+        // Play/Draw toggles
+        btnPlay.addEventListener('click', () => {
+            btnPlay.classList.add('active');
+            btnDraw.classList.remove('active');
+            playDrawMode = 'PLAY';
+            updateCalculator();
+        });
+
+        btnDraw.addEventListener('click', () => {
+            btnDraw.classList.add('active');
+            btnPlay.classList.remove('active');
+            playDrawMode = 'DRAW';
+            updateCalculator();
+        });
+
+        // Trigger updates on input change
+        [inputN, inputK, inputTurn, inputReq].forEach(el => {
+            el.addEventListener('input', updateCalculator);
+        });
+
+        function getCardsSeen(turn, mode) {
+            const t = parseInt(turn);
+            return mode === 'PLAY' ? 7 + Math.max(0, t - 1) : 7 + t;
+        }
+
+        function updateCalculator() {
+            const N = parseInt(inputN.value) || 60;
+            const K = parseInt(inputK.value) || 0;
+            const turn = parseInt(inputTurn.value) || 1;
+            const k = parseInt(inputReq.value) || 1;
+            
+            const n = getCardsSeen(turn, playDrawMode);
+            const prob = cumulativeProbability(N, K, n, k);
+            
+            // Format percentage display
+            const percentage = (prob * 100).toFixed(1);
+            calcPercentage.textContent = `${percentage}%`;
+            
+            // Update SVG dial fill
+            // Circumference of radius 100 circle is 2 * PI * 100 = 628.3
+            const dashoffset = 628 - (prob * 628);
+            dialIndicator.style.strokeDashoffset = dashoffset;
+
+            // Update Verdict message
+            if (prob >= 0.90) {
+                verdictHeader.textContent = "Excellent Stability";
+                verdictHeader.style.color = "#388E3C";
+                verdictBody.textContent = "Meets or exceeds Frank Karsten's 90% target. Highly reliable.";
+            } else if (prob >= 0.80) {
+                verdictHeader.textContent = "Good Stability";
+                verdictHeader.style.color = "#81C784";
+                verdictBody.textContent = "Very consistent. Meets standard competitive play requirements.";
+            } else if (prob >= 0.65) {
+                verdictHeader.textContent = "Average Stability";
+                verdictHeader.style.color = "#FFB300";
+                verdictBody.textContent = "Occasional mana screw. Consider adding 1-2 more sources.";
+            } else {
+                verdictHeader.textContent = "Weak / Risky Base";
+                verdictHeader.style.color = "#D32F2F";
+                verdictBody.textContent = "Highly prone to color starvation. Add more lands or mana sources.";
+            }
+        }
+
+        // --- 2. Interactive Personas Switcher Logic ---
+        const personaTabs = document.querySelectorAll('.persona-tab');
+        const personaBoxes = document.querySelectorAll('.persona-content-box');
+
+        personaTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetPersona = tab.getAttribute('data-persona');
+                
+                // Toggle tabs
+                personaTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Toggle boxes
+                personaBoxes.forEach(box => {
+                    box.classList.remove('active');
+                    if (box.id === `p-${targetPersona}`) {
+                        box.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // --- 3. Dynamic background symbols generation ---
+        const floatingBg = document.getElementById('floating-bg');
+        const symbolsList = ['w', 'u', 'b', 'r', 'g', 'c'];
+        
+        for (let i = 0; i < 15; i++) {
+            const sym = document.createElement('i');
+            const randomSymbol = symbolsList[Math.floor(Math.random() * symbolsList.length)];
+            sym.className = `ms ms-${randomSymbol} floating-symbol`;
+            
+            // Random positioning & styling
+            sym.style.left = `${Math.random() * 100}%`;
+            sym.style.top = `${Math.random() * 90 + 5}%`;
+            sym.style.fontSize = `${Math.random() * 2 + 1.5}rem`;
+            sym.style.animation = `pulse-slow ${Math.random() * 5 + 4}s ease-in-out infinite`;
+            sym.style.animationDelay = `${Math.random() * 3}s`;
+            
+            floatingBg.appendChild(sym);
+        }
+
+        // Initialize calculator on mount
+        updateCalculator();
+    </script>
+</body>
+</html>

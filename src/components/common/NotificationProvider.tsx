@@ -1,6 +1,14 @@
 import { Alert, AlertColor, CssBaseline, Snackbar } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { darkTheme, lightTheme } from '../../theme'
 
 interface NotificationContextType {
@@ -64,28 +72,38 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     localStorage.setItem('manatuner-theme', isDark ? 'dark' : 'light')
   }, [isDark])
 
-  const showNotification = (message: string, severity: AlertColor = 'info') => {
+  const showNotification = useCallback((message: string, severity: AlertColor = 'info') => {
     setNotification({
       open: true,
       message,
       severity,
     })
-  }
+  }, [])
 
-  const toggleTheme = () => {
-    setIsDark((prev) => !prev)
-    showNotification(`${!isDark ? 'Dark' : 'Light'} theme enabled`, 'success')
-  }
+  const toggleTheme = useCallback(() => {
+    setIsDark((prev) => {
+      const next = !prev
+      // Defer snackbar to after state commit
+      queueMicrotask(() => {
+        showNotification(`${next ? 'Dark' : 'Light'} theme enabled`, 'success')
+      })
+      return next
+    })
+  }, [showNotification])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setNotification((prev) => ({ ...prev, open: false }))
-  }
+  }, [])
 
-  const contextValue: CombinedContextType = {
-    showNotification,
-    isDark,
-    toggleTheme,
-  }
+  // T13: stable context value
+  const contextValue: CombinedContextType = useMemo(
+    () => ({
+      showNotification,
+      isDark,
+      toggleTheme,
+    }),
+    [showNotification, isDark, toggleTheme]
+  )
 
   return (
     <CombinedContext.Provider value={contextValue}>

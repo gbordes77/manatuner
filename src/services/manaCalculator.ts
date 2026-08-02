@@ -17,14 +17,14 @@ interface ProbabilityResult {
 // Karsten tables — unified from types/maths.ts (single source of truth)
 import { KARSTEN_TABLES } from '../types/maths'
 
+/** Cumulative P(X >= successesWanted) — direct SSOT hypergeom (T09). */
 export const calculateHypergeometric = (params: {
   deckSize: number
   successStates: number
   sampleSize: number
   successesWanted: number
 }): number => {
-  const calculator = new ManaCalculator()
-  return calculator.cumulativeHypergeometric(
+  return hypergeom.atLeast(
     params.deckSize,
     params.successStates,
     params.sampleSize,
@@ -386,13 +386,14 @@ function calculateWithStrategy(
 
 /**
  * Analyze a spell's castability with tempo considerations.
+ * Synchronous (T06): no I/O — pure hypergeometric over land metadata.
  *
  * @param spell - The spell to analyze
  * @param lands - Array of land metadata in the deck
  * @param totalCards - Total cards in deck
  * @returns Analysis result for each color required
  */
-export async function analyzeSpellCastability(
+export function analyzeSpellCastability(
   spell: {
     name: string
     manaCost: string
@@ -400,7 +401,7 @@ export async function analyzeSpellCastability(
   },
   lands: LandMetadata[],
   totalCards: number
-): Promise<{
+): {
   spell: string
   cmc: number
   colorRequirements: Array<{
@@ -417,7 +418,7 @@ export async function analyzeSpellCastability(
   }>
   overallCastability: number
   rating: 'excellent' | 'good' | 'average' | 'weak' | 'critical'
-}> {
+} {
   // Parse mana cost to extract color requirements
   const colorRequirements = parseManaCostColors(spell.manaCost)
 

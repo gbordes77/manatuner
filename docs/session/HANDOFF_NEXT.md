@@ -1,81 +1,57 @@
 # HANDOFF — Prochaines étapes ManaTuner
 
-> **À jour :** 2026-08-01 · **Live prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`**  
+> **À jour :** 2026-08-02 (soir) · **Live prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`**  
+> **Code `main` remote :** **`332501d`** (T02–T05)  
+> **Working tree local :** **T01 + T06–T15 + QW1–3 + AM1/AM6 FAIT** — **AUCUN commit** (attente ordre owner)  
 > **Prod URL :** https://www.manatuner.app/  
-> **SSOT journée :** [`HANDOFF_2026-08-01.md`](./HANDOFF_2026-08-01.md)  
-> **Sécu :** [`SECURITY_AUDIT_2026-08-01.md`](./SECURITY_AUDIT_2026-08-01.md) — remédiations **shippées prod**  
-> **État produit :** [`../product/STATUS.md`](../product/STATUS.md) · **Index docs :** [`../README.md`](../README.md)
+> **Audit journal :** [`../../AUDIT_EVOLUTIONS.md`](../../AUDIT_EVOLUTIONS.md) §7  
+> **État produit :** [`../product/STATUS.md`](../product/STATUS.md)
 
 ---
 
-## Phrase à copier-coller (nouvelle conversation)
+## Phrase à copier-coller
 
-### A — Ship / valider sécu 2.7.9 (si pas encore en prod)
-
-```
-Lis docs/session/SECURITY_AUDIT_2026-08-01.md + CHANGELOG [2.7.9].
-Code local v2.7.9 : wipe privacy, share #d=, SECURITY.md CSP, react-router 7.18.2, tests 404.
-Vérifie stamp Engine v2.7.9, Network Analyze = Scryfall only, Reset wipe persist:root.
-Si OK et créateur dit « go prod » : push + deploy Vercel.
-Sinon priorité = LAUNCH.md (distribution).
-```
-
-### B — Re-audit multi-personas **comparatif** (post v2.7.8 / 2.7.9)
+### A — Commit hygiène tech (quand owner dit « commit »)
 
 ```
-Lis et exécute en entier docs/session/PROMPT_PERSONA_AUDIT_NEXT.md
-(ManaTuner, prod https://www.manatuner.app).
-
-Mission = AUDIT UX multi-personas IDENTIQUE au protocole de
-docs/session/PERSONA_AUDIT_2026-08-01.md (baseline v2.7.7, moy 4.00),
-avec comparaison obligatoire des notes.
-
-Contraintes :
-- 6 personas, même grille 1–5.
-- Prod live (noter Engine stamp réel). Ne code pas tant que je ne dis pas « go fix ».
-- Vérifier fixes 2.7.8 + sécu 2.7.9 (Share toast deck honesty, Reset wipe).
-- Rapport en français.
+Review working tree: T01 + T06–T15 + QW/AM (AUDIT_EVOLUTIONS §7.7).
+440 unit pass, type-check, lint, build, bundle budget green.
+Commit hygiène only if I say « commit ». No push/deploy without order.
 ```
 
-### C — Session générique (produit / docs)
+### B — Distribution (priorité business)
 
 ```
-Lis SESSION_START.md puis docs/product/STATUS.md et docs/session/HANDOFF_NEXT.md
-(ManaTuner v2.7.9 code / prod peut lag). Docs sous docs/ — index docs/README.md.
-
-Priorité business = LAUNCH.md (distribution). Pas de feature gratuite.
-Ne pas activer VITE_SENTRY_DSN sans checklist privacy (SECURITY.md).
-Ne pas rouvrir Moxfield URL, i18n FR, backend, analytics decklist sans owner.
+Lis LAUNCH.md — P0-DIST @fireshoes + Discord. Pas de feature gratuite.
+Prod reste v2.7.9 @ fdef163 jusqu’à « go prod ».
 ```
 
 ---
 
 ## État 30 s
 
-|                       |                                                                                                     |
-| --------------------- | --------------------------------------------------------------------------------------------------- |
-| **Version**           | **2.7.9** live (`Engine v2.7.9`) · SHA **`fdef163`**                                                |
-| **Tests**             | **404** unit pass / 2 skip                                                                          |
-| **Audit sécu**        | Rapport + fixes SEC-01→05 **en prod** · residual npm RSC advisory N/A SPA                           |
-| **Audit UX baseline** | 6 personas v2.7.7 · moy **4.00/5** · [`PERSONA_AUDIT_2026-08-01.md`](./PERSONA_AUDIT_2026-08-01.md) |
-| **Prod deploy 2.7.9** | **FAIT** Vercel Production success                                                                  |
+|                       |                                                  |
+| --------------------- | ------------------------------------------------ |
+| **Prod live**         | **v2.7.9** · `fdef163`                           |
+| **Remote main**       | **`332501d`** T02–T05                            |
+| **Local uncommitted** | T01, T06–T15, QW, AM CI — **ready to commit**    |
+| **Tests unit**        | **440** pass / 2 skip                            |
+| **Build**             | ✓ · vendor-mui ~365 KB · vendor-mui-icons ~37 KB |
 
 ---
 
 ## Priorités suite
 
-1. ~~Audit multi-personas v2.7.7~~ **FAIT**
-2. ~~Phase 4 fixes P0/P1~~ **FAIT** → **v2.7.8**
-3. ~~Audit sécu + remédiations + ship~~ **FAIT** → **v2.7.9** prod `fdef163`
-4. **P0-DIST** — `LAUNCH.md` (@fireshoes + Discord) — **pas de code**
-5. Re-audit personas comparatif (optionnel)
-6. Optionnel « go suite » : P1-3 Critical label · P1-4 empty My Analyses
+1. **Owner :** review + « commit » (ou amends) puis éventuellement « go prod »
+2. **P0-DIST** — `LAUNCH.md` (pas de code)
+3. ~~T02–T05~~ FAIT · ~~T01+T06–T15 tech reste~~ FAIT local
+4. Re-audit personas optionnel
 
 ---
 
 ## Wins à ne pas casser
 
-Health Score + QuickVerdict · Free no signup · K=3 · EDH first-class · Engine stamp · Share URL **hash** · Reset wipe complet · Library 5 tracks · Feedback Tally · Joyride non-bloquant · 4 colors Atraxa · légende Perfect/Realistic · CSP sans Sentry tant que DSN unset
+Health Score · Free no signup · K=3 · EDH · Share **hash `#d=`** · Reset wipe + **IDB Scryfall** · land SSOT · fetchWithTimeout · SW killer · hypergeom SSOT · persist sans analysisResult · batch lands · budget bundle CI
 
 ---
 

@@ -21,7 +21,7 @@ import type {
 import { LAND_CATEGORY_NAMES } from '@/types/lands'
 import { LAND_SEED } from '../data/landSeed'
 import { landCacheService } from './landCacheService'
-import { fetchLandData, type ScryfallLandData } from './scryfall'
+import { fetchLandData, fetchLandDataBatch, type ScryfallLandData } from './scryfall'
 
 // =============================================================================
 // CONSTANTS
@@ -288,6 +288,44 @@ class LandService implements ILandService {
     landCacheService.set(cardName, metadata, 'scryfall')
 
     return metadata
+  }
+
+  /**
+   * Prefetch unknown land names via Scryfall collection batch (T07).
+   * Names already in seed/landCache are skipped (zero network for full-seed decks).
+   * Populates landCacheService so subsequent detectLand/getLandSync are sync hits.
+   *
+   * @returns number of names actually batched (after seed/cache filter + dedupe)
+   */
+  async prefetchUnknownLands(cardNames: string[]): Promise<number> {
+    const unknown: string[] = []
+    const seen = new Set<string>()
+
+    for (const raw of cardNames) {
+      const name = raw?.trim()
+      if (!name) continue
+      const key = name.toLowerCase()
+      if (seen.has(key)) continue
+      seen.add(key)
+      if (this.getLandSync(name)) continue
+      unknown.push(name)
+    }
+
+    if (unknown.length === 0) return 0
+
+    const batch = await fetchLandDataBatch(unknown)
+    for (const [name, landData] of batch) {
+      if (!landData) continue
+      // Skip if another path already filled landCache (race-safe)
+      if (this.getLandSync(name) || this.getLandSync(landData.name)) continue
+      const metadata = this.analyzeFromScryfall(landData)
+      landCacheService.set(name, metadata, 'scryfall')
+      if (landData.name && landData.name.toLowerCase() !== name.toLowerCase()) {
+        landCacheService.set(landData.name, metadata, 'scryfall')
+      }
+    }
+
+    return unknown.length
   }
 
   /**

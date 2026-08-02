@@ -51,7 +51,7 @@ const ManabaseFullTab = React.lazy(() =>
 )
 const ManaBlueprint = React.lazy(() => import('../components/export/ManaBlueprint'))
 import { PrivacyStorage } from '../lib/privacy'
-import { DeckAnalyzer } from '../services/deckAnalyzer'
+import { AnalysisCancelledError, DeckAnalyzer } from '../services/deckAnalyzer'
 import { AppDispatch, RootState } from '../store'
 import {
   clearAnalyzer,
@@ -229,95 +229,120 @@ const AnalyzerPage: React.FC = () => {
     return summarizeColorDeltas(deltas)
   }, [analysisResult])
 
-  // Memoized analyze handler to prevent unnecessary re-renders
-  const handleAnalyze = useCallback(async () => {
-    if (!deckList.trim()) return
+  // AbortController for superseding in-flight analyzes (T06).
+  const analyzeAbortRef = useRef<AbortController | null>(null)
 
-    dispatch(setIsAnalyzing(true))
+  // Memoized analyze handler. Optional `listOverride` is the flushed local
+  // draft from DeckInputSection (T01 debounce) so we never analyze a stale
+  // redux value still waiting on the 300 ms persist debounce.
+  const handleAnalyze = useCallback(
+    async (listOverride?: string) => {
+      const list = (listOverride ?? deckList).trim()
+      if (!list) return
 
-    try {
-      const result = await DeckAnalyzer.analyzeDeck(deckList)
-      // P1-9: auto Format from main deck size (exclude sideboard so 60+15 ≠ 75)
-      const mainSize =
-        result?.cards?.filter((c) => !c.isSideboard).reduce((s, c) => s + (c.quantity || 1), 0) ||
-        result?.totalCards
-      if (mainSize && mainSize > 0) {
-        suggestFromDeckSize(mainSize)
-        if (detectDeckFormatFamily(mainSize) === 'edh') {
-          markCommanderPreset()
-        }
-      }
-      dispatch(setAnalysisResult(result))
-
-      // Auto-minimize deck on mobile to show results
-      if (isMobile) {
-        dispatch(setIsDeckMinimized(true))
+      // Keep redux in sync when called with a flushed draft
+      if (listOverride !== undefined && listOverride !== deckList) {
+        dispatch(setDeckList(listOverride))
       }
 
-      // P2-11: move focus to verdict for keyboard / SR users after analysis
-      requestAnimationFrame(() => {
-        const el = document.getElementById('quick-verdict')
-        if (!el) return
-        if (typeof el.focus === 'function') {
-          el.focus({ preventScroll: false })
-        }
-        if (typeof el.scrollIntoView === 'function') {
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-        }
-      })
+      // Cancel previous analysis (generation + AbortSignal)
+      analyzeAbortRef.current?.abort()
+      const abortController = new AbortController()
+      analyzeAbortRef.current = abortController
 
-      // Auto-save to PrivacyStorage
+      dispatch(setIsAnalyzing(true))
+
       try {
-        // Generate a descriptive name from colors if user didn't set one
-        const colorNames: Record<string, string> = {
-          W: 'White',
-          U: 'Blue',
-          B: 'Black',
-          R: 'Red',
-          G: 'Green',
+        const result = await DeckAnalyzer.analyzeDeck(list, { signal: abortController.signal })
+        // P1-9: auto Format from main deck size (exclude sideboard so 60+15 ≠ 75)
+        const mainSize =
+          result?.cards?.filter((c) => !c.isSideboard).reduce((s, c) => s + (c.quantity || 1), 0) ||
+          result?.totalCards
+        if (mainSize && mainSize > 0) {
+          suggestFromDeckSize(mainSize)
+          if (detectDeckFormatFamily(mainSize) === 'edh') {
+            markCommanderPreset()
+          }
         }
-        // WUBRG only — never count colorless as a deck color (P0-EDH-1)
-        const activeColors = result.colorDistribution
-          ? (['W', 'U', 'B', 'R', 'G'] as const)
-              .filter((k) => (result.colorDistribution[k] || 0) > 0)
-              .map((k) => colorNames[k] || k)
-          : []
-        const colorLabel =
-          activeColors.length > 0 ? `${activeColors.length}C ${activeColors.join('/')}` : 'Deck'
-        const saveName = deckName.trim() || `${colorLabel} - ${new Date().toLocaleDateString()}`
-        PrivacyStorage.saveAnalysis({
-          deckName: saveName,
-          deckList,
-          analysis: result,
-          consistency: result.consistency,
-        })
-      } catch (saveErr) {
-        // Auto-save failed (most likely quota exceeded). Warn the user
-        // — silently losing history is worse than a polite message.
-        const msg =
-          saveErr instanceof Error && saveErr.name === 'QuotaExceededError'
-            ? 'Browser storage full. Analysis shown but not saved to history. Clear old analyses in Privacy Settings.'
-            : 'Could not save analysis to local history.'
-        dispatch(showSnackbar({ message: msg, severity: 'warning' }))
-      }
-    } catch (error) {
-      dispatch(setAnalysisResult(null))
-      // Surface a more helpful error message when possible.
-      const rawMessage = error instanceof Error ? error.message : ''
-      const userMessage = rawMessage
-        ? `Failed to analyze deck: ${rawMessage}. Check the format and try again.`
-        : 'Failed to analyze deck. Please check the format and try again.'
-      dispatch(
-        showSnackbar({
-          message: userMessage,
-          severity: 'error',
-        })
-      )
-    } finally {
-      dispatch(setIsAnalyzing(false))
-    }
-  }, [deckList, deckName, dispatch, suggestFromDeckSize, markCommanderPreset, isMobile])
+        dispatch(setAnalysisResult(result))
 
+        // Auto-minimize deck on mobile to show results
+        if (isMobile) {
+          dispatch(setIsDeckMinimized(true))
+        }
+
+        // P2-11: move focus to verdict for keyboard / SR users after analysis
+        requestAnimationFrame(() => {
+          const el = document.getElementById('quick-verdict')
+          if (!el) return
+          if (typeof el.focus === 'function') {
+            el.focus({ preventScroll: false })
+          }
+          if (typeof el.scrollIntoView === 'function') {
+            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          }
+        })
+
+        // Auto-save to PrivacyStorage
+        try {
+          // Generate a descriptive name from colors if user didn't set one
+          const colorNames: Record<string, string> = {
+            W: 'White',
+            U: 'Blue',
+            B: 'Black',
+            R: 'Red',
+            G: 'Green',
+          }
+          // WUBRG only — never count colorless as a deck color (P0-EDH-1)
+          const activeColors = result.colorDistribution
+            ? (['W', 'U', 'B', 'R', 'G'] as const)
+                .filter((k) => (result.colorDistribution[k] || 0) > 0)
+                .map((k) => colorNames[k] || k)
+            : []
+          const colorLabel =
+            activeColors.length > 0 ? `${activeColors.length}C ${activeColors.join('/')}` : 'Deck'
+          const saveName = deckName.trim() || `${colorLabel} - ${new Date().toLocaleDateString()}`
+          PrivacyStorage.saveAnalysis({
+            deckName: saveName,
+            deckList: list,
+            analysis: result,
+            consistency: result.consistency,
+          })
+        } catch (saveErr) {
+          // Auto-save failed (most likely quota exceeded). Warn the user
+          // — silently losing history is worse than a polite message.
+          const msg =
+            saveErr instanceof Error && saveErr.name === 'QuotaExceededError'
+              ? 'Browser storage full. Analysis shown but not saved to history. Clear old analyses in Privacy Settings.'
+              : 'Could not save analysis to local history.'
+          dispatch(showSnackbar({ message: msg, severity: 'warning' }))
+        }
+      } catch (error) {
+        // Superseded by a newer Analyze click — leave UI as-is (T06)
+        if (error instanceof AnalysisCancelledError || abortController.signal.aborted) {
+          return
+        }
+        dispatch(setAnalysisResult(null))
+        // Surface a more helpful error message when possible.
+        const rawMessage = error instanceof Error ? error.message : ''
+        const userMessage = rawMessage
+          ? `Failed to analyze deck: ${rawMessage}. Check the format and try again.`
+          : 'Failed to analyze deck. Please check the format and try again.'
+        dispatch(
+          showSnackbar({
+            message: userMessage,
+            severity: 'error',
+          })
+        )
+      } finally {
+        // Only clear analyzing if this controller is still the active one
+        if (analyzeAbortRef.current === abortController) {
+          dispatch(setIsAnalyzing(false))
+        }
+      }
+    },
+    [deckList, deckName, dispatch, suggestFromDeckSize, markCommanderPreset, isMobile]
+  )
   const handleClear = useCallback(() => {
     setCommanderPreset(false)
     clearCommanderPresetFlag()

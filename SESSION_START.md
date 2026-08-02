@@ -1,18 +1,22 @@
 # SESSION_START — ManaTuner (lire en premier)
 
-> **Date :** 2026-08-01  
-> **Prod :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app  
+> **Date :** 2026-08-02  
+> **Prod live :** **v2.7.9** · stamp **Engine v2.7.9** · SHA **`fdef163`** · https://www.manatuner.app  
+> **Code remote main :** **`332501d`** (T02–T05) · **working tree :** T01+T06–T15+QW/AM **FAIT local, pas de commit**  
 > **Docs index :** [`docs/README.md`](docs/README.md) · **État produit :** [`docs/product/STATUS.md`](docs/product/STATUS.md)  
+> **Audit evolutions journal :** [`AUDIT_EVOLUTIONS.md`](AUDIT_EVOLUTIONS.md) §7  
 > **Sécu :** [`docs/session/SECURITY_AUDIT_2026-08-01.md`](docs/session/SECURITY_AUDIT_2026-08-01.md)
 
 ## Ordre de lecture
 
 1. **Ce fichier**
 2. [`docs/session/HANDOFF_NEXT.md`](docs/session/HANDOFF_NEXT.md) — suite immédiate
-3. [`docs/session/HANDOFF_2026-08-01.md`](docs/session/HANDOFF_2026-08-01.md) — journée A→I
-4. [`LAUNCH.md`](LAUNCH.md) — **priorité business (utilisateurs)**
-5. [`docs/product/STATUS.md`](docs/product/STATUS.md) — vérité condensée
-6. [`SECURITY.md`](SECURITY.md) — privacy + CSP
+3. [`docs/session/HANDOFF_2026-08-02.md`](docs/session/HANDOFF_2026-08-02.md) — session tech T02–T05
+4. [`AUDIT_EVOLUTIONS.md`](AUDIT_EVOLUTIONS.md) §7 — journal T02–T05 FAIT / reste T06+
+5. [`LAUNCH.md`](LAUNCH.md) — **priorité business (utilisateurs)**
+6. [`docs/product/STATUS.md`](docs/product/STATUS.md) — vérité condensée
+7. [`SECURITY.md`](SECURITY.md) — privacy + CSP
+8. [`docs/session/HANDOFF_2026-08-01.md`](docs/session/HANDOFF_2026-08-01.md) — journée produit A→I
 
 **Audit UX 6 personas (relançable) :**  
 [`docs/session/PROMPT_PERSONA_AUDIT_NEXT.md`](docs/session/PROMPT_PERSONA_AUDIT_NEXT.md)
@@ -24,13 +28,14 @@
 3. Privacy client-side (pas de decklist serveur ManaTuner) ; share = hash `#d=`
 4. Prioriser ce qui amène des utilisateurs (`LAUNCH.md`)
 5. **Ne pas rouvrir sans owner :** Moxfield URL, i18n FR, backend, **Sentry DSN**, analytics decklist
+6. Tech audit T01+T06–T15 livré en working tree — **commit seulement sur ordre owner**
 
 ## Stack & commandes
 
 ```bash
 cd "/Volumes/DataDisk/_Projects/Project Mana base V2"
 npm run dev          # port 3000
-npm run test:unit    # 404 pass / 2 skip
+npm run test:unit    # 440 pass / 2 skip (post T01+T06–T15 local)
 npm run build:vercel # prod Vercel (prerender soft-fail)
 ```
 

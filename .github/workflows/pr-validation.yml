@@ -55,6 +55,13 @@ jobs:
             fi
           done
 
-      - name: Security audit
-        run: npm audit --audit-level=high
+      - name: Bundle budget gate (QW3)
+        run: node scripts/check-bundle-budget.mjs
+
+      # AM1: production graph only — vercel CLI / ESLint majors are tooling noise
+      - name: Security audit (critical — blocking, prod deps)
+        run: npm audit --omit=dev --audit-level=critical
+
+      - name: Security audit (high — report only)
+        run: npm audit --audit-level=high --omit=dev
         continue-on-error: true

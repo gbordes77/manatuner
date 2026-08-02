@@ -1025,11 +1025,60 @@ _Si P04 n'est pas priorisé, l'alternative recommandée est IN2 (moteur de sugge
 
 ---
 
-## 7. État d'Avancement & Consignes d'Exécution (2026-08-01)
+## 7. État d'Avancement & Consignes d'Exécution
 
-> **PÉRIMÈTRE STRICT : implémenter UNIQUEMENT les tâches T02, T03, T04 et T05, dans cet ordre. Ne pas démarrer T06-T15 ni les tâches produit P01-P04. Après CHAQUE tâche, exécuter et faire passer : `npm run type-check`, `npm run test:unit`, `npm run lint` (plus `npm run build` pour T02). En cas d'échec : corriger AVANT de passer à la tâche suivante, ne jamais empiler deux tâches sur un arbre rouge.**
+> **Mis à jour :** 2026-08-02 (soir) · Code **non commité** — session tech T01+T06–T15+QW/AM.  
+> Base antérieure : commit **`332501d`** (T02–T05) sur `origin/main`.  
+> **Aucun commit/push/deploy** tant que l’owner n’a pas dit « commit » / « go prod ».
 
-### 7.1 T02 — Déjà appliqué (ne pas refaire)
+### 7.0 Verdict exécution — **T02–T05 FAIT (commit) · T01 + T06–T15 + QW/AM FAIT (working tree)**
+
+| Tâche                                                     | Statut                          | Validation                                               |
+| --------------------------------------------------------- | ------------------------------- | -------------------------------------------------------- |
+| **T02** purge code mort + deps                            | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit · **build**                |
+| **T03** SSOT terrains landService/landSeed                | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
+| **T04** batch landCacheService                            | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
+| **T05** fetchWithTimeout Scryfall                         | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
+| **T01** redux-persist + debounce decklist                 | ✅ **FAIT** (working tree)      | type-check · lint · test:unit + tests transform/debounce |
+| **QW1 / AM4** cache headers library/feeds                 | ✅ **FAIT**                     | `vercel.json` only                                       |
+| **T06** tempo non bloquant                                | ✅ **FAIT**                     | type-check · lint · test:unit · mtg-logic · mana-calc    |
+| **T07** batch lands inconnus                              | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **T09** hypergeom SSOT                                    | ✅ **FAIT**                     | type-check · lint · test:unit · mtg-logic · mana-calc    |
+| **T08** split deckParser/cardResolver                     | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **T10** zod safe EDH + rehydrate                          | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **T11** presentation hors public, wipe IDB, COEP, CSP doc | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **T15** audit, dependabot, clamp worker, `?d=`→`#d=`      | ✅ **FAIT**                     | type-check · lint · test:unit · build budget             |
+| **T12** icons chunk + fonts CSP                           | ✅ **FAIT**                     | type-check · lint · test:unit · **build** + tailles      |
+| **T13** BoundedMap caches + React memo/cleanup            | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **T14** esbuild drop prod-only + notes tsconfig           | ✅ **FAIT**                     | type-check · lint · test:unit · build                    |
+| **QW2** prefetch idle/hover Analyzer                      | ✅ **FAIT**                     | type-check · lint · test:unit                            |
+| **QW3** budget bundle CI                                  | ✅ **FAIT**                     | `scripts/check-bundle-budget.mjs` + workflows            |
+| **AM1** audit critical prod + e2e nightly                 | ✅ **FAIT**                     | CI/PR + nightly-quality.yml                              |
+| **AM6** nightly a11y/visual                               | ✅ **FAIT**                     | `.github/workflows/nightly-quality.yml`                  |
+| P01–P04 · IN\* · AM2/AM3/AM5                              | ⏸ **EXCLUS** (features produit) | —                                                        |
+
+**Arbre final session (working tree) :** unit **440** pass / 2 skip · lint **0 errors** (25 warnings préexistants) · type-check ✓ · **build ✓** · bundle budget ✓.
+
+### 7.7 Session tech T01 + T06–T15 (2026-08-02) — **FAIT local, pas de commit**
+
+**Gate non-régression :** type-check + lint + test:unit après **chaque** ID (mtg-logic/mana-calc quand moteur touché ; build pour vite/chunks).
+
+**Highlights :**
+
+- Persist v2 : `analysisResult` jamais sérialisé ; debounce 300 ms saisie + flush analyze
+- Tempo : `analyzeSpellCastability` sync ; yield tous les 10 sorts ; AbortSignal + génération
+- Lands : `prefetchUnknownLands` + `fetchLandDataBatch` chunks 75
+- Hypergeom : deckAnalyzer délègue à `hypergeom` SSOT
+- Archi : `deckParser.ts` + `cardResolver.ts` ; réexports stables
+- Privacy wipe appelle IDB Scryfall ; `presentation.html` → `tools/` ; COEP `/workers/*` retiré
+- Bundle : `vendor-mui` ~365 KB · `vendor-mui-icons` ~37 KB (séparé)
+- npm audit prod : **0 critical** (`--omit=dev`) ; high `react-router` (RSC, N/A SPA — pas de downgrade force)
+
+**Suite :** owner review → « commit » / « go prod » ; business = `LAUNCH.md`.
+
+---
+
+### 7.1 T02 — Purge code mort — phase 1 (déjà appliquée avant session 7.2)
 
 Fichiers supprimés (références vérifiées par grep exhaustif avant suppression) :
 
@@ -1042,29 +1091,116 @@ Fichiers supprimés (références vérifiées par grep exhaustif avant suppressi
 
 **Correction à l'audit (sections 1-3) : `public/sw.js` et ses headers `vercel.json:60-71` ont été CONSERVÉS.** Ce n'est pas du code mort : c'est le « SW killer » volontaire (désenregistre les anciens service workers et purge les caches — documenté dans `CLAUDE.md` et `docs/security/SECURITY_AUDIT_REPORT.md`). Le retirer casserait l'éviction de cache chez les utilisateurs ayant un ancien SW enregistré. La tâche T02 de la section 3 est donc amendée sur ce point.
 
-### 7.2 T02 — RESTE À FAIRE (obligatoire, en premier — l'arbre est actuellement CASSÉ)
+---
 
-⚠️ **L'état actuel du dépôt ne compile pas / les tests échouent** : `src/services/__tests__/londonMulligan.test.ts` importe encore `../mulliganSimulator` (supprimé). Appliquer impérativement ces 5 actions avant toute autre chose :
+### 7.2 T02 — Phase 2 — **FAIT (2026-08-02)** · commit `332501d`
 
-1. **`src/services/manaCalculator.ts`** — supprimer les fonctions mortes prouvées (consommées uniquement par les tests) : `calculateProbabilityByTurn`, `analyzeDeckConsistency`, `calculateOptimalLandCount`, ainsi que les interfaces devenues inutilisées (`DeckCardForProbability`, `ColorBalance`). Elles occupaient les lignes ~35 à ~310 du fichier d'origine, entre l'export `calculateHypergeometric` (à CONSERVER) et `export class ManaCalculator` (à CONSERVER). Après suppression, nettoyer tout import devenu inutilisé en tête de fichier (vérifier notamment si `KARSTEN_TABLES` est encore utilisé plus bas — le garder si oui).
-2. **`src/services/__tests__/londonMulligan.test.ts`** — migrer les imports : `chooseBottom` et `prepareDeckForSimulation` doivent venir de `../mulliganSimulatorAdvanced` (ce sont des ré-exports directs, comportement identique). Supprimer l'import `analyzeMulliganStrategy` et réécrire le test qui l'utilisait (ligne ~264 : `analyzeMulliganStrategy(deckCards, 100)`) avec `analyzeWithArchetype(deckCards, 'midrange', 100)` — adapter les assertions à la forme `AdvancedMulliganResult` (`expectedScores`, `distributions`, `thresholds`) au lieu de l'ancienne forme (`values.length === 4`).
-3. **Fusion des suites manaCalculator** — dans `src/services/__tests__/manaCalculator.test.ts`, conserver uniquement les `describe` couvrant `calculateHypergeometric` et la conformité Karsten (supprimer ceux des 3 fonctions supprimées au point 1), les réécrire au format du projet (prettier : sans point-virgule, guillemets simples), les fusionner dans `src/services/manaCalculator.test.ts`, puis supprimer `src/services/__tests__/manaCalculator.test.ts`.
-4. **`src/main.tsx`** — retirer React Query (infrastructure morte, aucun `useQuery`/`useMutation` dans `src/`) : imports lignes 3-4, le bloc `const queryClient = new QueryClient({...})` (lignes ~97-119), le wrapper `<QueryClientProvider client={queryClient}>` dans le render, `{isDevelopment && <ReactQueryDevtools ... />}`, et la variable `isDevelopment` si elle devient inutilisée.
-5. **`package.json`** — retirer les dépendances mortes : `@tanstack/react-query`, `@tanstack/react-query-devtools`, `@mui/lab`, `react-window`, `react-virtualized-auto-sizer`, `@types/react-window`. Puis `npm install` pour régénérer le lockfile.
+⚠️ Historique : l'arbre était cassé (`londonMulligan.test.ts` → `../mulliganSimulator` supprimé). **Réparé.** Les 5 actions sont **toutes appliquées** :
 
-**Validation T02 (bloquante) :** `npm run type-check` ✓ · `npm run lint` ✓ · `npm run test:unit` ✓ · `npm run build` ✓ · vérifier que `dist/` ne contient plus `workers/` ni les chunks des deps retirées.
+| #   | Action                                     | Statut | Détail livré                                                                                                                                                                                                                                                                                          |
+| --- | ------------------------------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Purge fonctions mortes `manaCalculator.ts` | ✅     | Supprimé `calculateProbabilityByTurn`, `analyzeDeckConsistency`, `calculateOptimalLandCount` + interfaces `DeckCardForProbability`, `ColorBalance`. Conservé `calculateHypergeometric`, `ManaCalculator`, `KARSTEN_TABLES`. Heuristiques `name.includes('Tarn'/'Vents')` disparues avec le code mort. |
+| 2   | Migrer `londonMulligan.test.ts`            | ✅     | Imports → `mulliganSimulatorAdvanced` (`chooseBottom`, `prepareDeckForSimulation`, `analyzeWithArchetype`). Test strategy → `analyzeWithArchetype(..., 'midrange', 100)` + assertions `expectedScores` / `distributions` / `thresholds`.                                                              |
+| 3   | Fusion suites `manaCalculator`             | ✅     | `calculateHypergeometric` + Karsten methodology mergés dans `src/services/manaCalculator.test.ts` (format projet). Supprimé `src/services/__tests__/manaCalculator.test.ts`.                                                                                                                          |
+| 4   | Retirer React Query de `main.tsx`          | ✅     | Plus de `QueryClient` / `QueryClientProvider` / `ReactQueryDevtools` / `isDevelopment` lié RQ.                                                                                                                                                                                                        |
+| 5   | Deps mortes `package.json` + lockfile      | ✅     | Retiré `@tanstack/react-query`, `@tanstack/react-query-devtools`, `@mui/lab`, `react-window`, `react-virtualized-auto-sizer`, `@types/react-window`. `npm install` → −14 packages.                                                                                                                    |
 
-### 7.3 T03, T04, T05 — À implémenter ensuite
+**Fixes type-check collatéraux (bloquants, hors prompt mais nécessaires pour arbre vert) :**
 
-Appliquer les prompts des sections 3 (T03, T04, T05) tels quels, dans l'ordre, avec la batterie de validation après chacune. Notes de coordination issues de 7.1 :
+- `src/pages/MyAnalysesPage.tsx` — `colorFilter` typé `Array<'W'\|'U'\|'B'\|'R'\|'G'>` + `toggleColor`
+- `src/services/__tests__/assertCardResolution.test.ts` — clés dupliquées `resolved`/`resolution` dans le helper `card()`
 
-- **T03** : `src/utils/landDetection.ts` n'existe plus (déjà supprimé en 7.1) — la consolidation porte donc sur les 3 copies restantes : `src/components/analyzer/landUtils.ts:43`, `src/services/deckAnalyzer.ts:1660-1702`, `src/services/manaCalculator.ts` (les heuristiques `name.includes` des fonctions mortes ont disparu avec elles au point 7.2.1 — vérifier qu'il ne reste aucune heuristique de ce type dans le fichier). La non-régression doit couvrir la liste complète des noms des anciennes copies (récupérable via `git show HEAD:src/utils/landDetection.ts` si besoin).
-- **T04** : aucune interaction avec 7.1.
-- **T05** : `src/utils/hybridLandDetection.ts` cité dans le périmètre initial n'existe plus ; le périmètre réel est `src/services/scryfall.ts`, `src/services/manaProducerService.ts`, `src/services/deckAnalyzer.ts`.
+**Validation T02 :** type-check ✓ · lint ✓ (0 err) · test:unit ✓ (368→ puis croît) · **build ✓** · `dist/workers/` **absent** · chunks deps retirées **NONE** dans `dist/assets` · `public/sw.js` **conservé** (amendement 7.1).
 
-### 7.4 Interdictions pendant cette exécution
+**Tailles `dist/assets` avant → après T02 build :**
+
+| Chunk                |       Avant |       Après |                                                 Δ |
+| -------------------- | ----------: | ----------: | ------------------------------------------------: |
+| `index-*.js`         |   140 935 B |   116 897 B |                             **−24 038 B (−17 %)** |
+| `vendor-mui-*.js`    |   518 614 B |   518 605 B |                                                ~0 |
+| `vendor-react-*.js`  |    20 750 B |    37 707 B | +16 957 B (répartition chunks Vite post-purge RQ) |
+| `vendor-redux-*.js`  |    31 314 B |    31 314 B |                                                 0 |
+| `vendor-charts-*.js` |   430 916 B |   430 916 B |                                                 0 |
+| **Total assets**     | 2 589 155 B | 2 599 367 B |                       +~10 KB (artefacts/hashing) |
+
+Gain principal : chunk eager `index` allégé (React Query hors chemin critique).
+
+---
+
+### 7.3 T03 · T04 · T05 — **FAIT (2026-08-02)** · même commit `332501d` (+ docs session à suivre)
+
+Notes de coordination issues de 7.1 **respectées** à l'exécution.
+
+#### T03 (P1 Archi) — SSOT détection terrains — ✅ FAIT
+
+**Périmètre réel :** 3 copies restantes (pas 4 — `landDetection.ts` déjà parti en 7.1).
+
+| Fichier                                                | Action livrée                                                                                              |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `src/services/landService.ts`                          | API sync : `getLandSync`, `isLandSync`, `getCategoryLabelSync` + index seed case-insensitive               |
+| `src/components/analyzer/landUtils.ts`                 | Réécrit en wrappers fins sur `landService` (listes hardcodées + keywords **supprimés**)                    |
+| `src/services/deckAnalyzer.ts`                         | Shock / fast / turn-threshold / rainbow via `category` + `etbBehavior` seed (listes inline **supprimées**) |
+| `src/services/manaCalculator.ts`                       | Heuristiques `name.includes` déjà absentes post-T02.1 (vérifié grep)                                       |
+| `src/data/landSeed.ts`                                 | **+49** terrains manquants legacy → **259** entrées seed                                                   |
+| `src/components/analyzer/__tests__/landUtils.test.ts`  | « Rainbow Land » → « Utility Land » (label seed correct)                                                   |
+| `src/services/__tests__/landDetection.ssot.test.ts`    | **Créé** — non-régression 179 noms uniques                                                                 |
+| `src/services/__tests__/fixtures/legacyLandNames.json` | **Créé** — dump listes legacy                                                                              |
+
+**Validation T03 :** type-check ✓ · test:unit ✓ · lint ✓ (0 err).
+
+**Écarts vs prompt §3 :** label UI « Rainbow Land » abandonné au profit de **Utility Land** (catégorie seed SSOT) — tests réécrits volontairement.
+
+#### T04 (P2 Perf) — Batch landCacheService — ✅ FAIT
+
+| Fichier                                           | Action livrée                                                                                                                                                                                                                                                                      |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/services/landCacheService.ts`                | Load 1× en mémoire (`entries` Map) ; `set` → dirty ; flush batch fin `preloadFromSeed` / debounce 500 ms + `requestIdleCallback` / `beforeunload` + `visibilitychange` ; TTL + éviction conservés ; try/catch JSON.parse (cache vide) + QuotaExceeded (éviction oldest + retry 1×) |
+| `src/services/__tests__/landCacheService.test.ts` | **Créé** — batch 1 setItem, deferred set, corrupt JSON, quota, persistance inter-instances                                                                                                                                                                                         |
+
+**Validation T04 :** type-check ✓ · test:unit ✓ · lint ✓.
+
+**Écarts :** tests installent un backend mémoire car `tests/setup.js` mocke `localStorage` avec des `vi.fn()` sans store (sinon aucun `setItem` réel).
+
+#### T05 (P2 Sec/Perf) — fetchWithTimeout unifié — ✅ FAIT
+
+| Fichier                               | Action livrée                                                                                                                                               |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/services/http.ts`                | **Créé** — `fetchWithTimeout`, `HttpTimeoutError`, `HttpError` ; timeout 8 s ; retry 429/5xx ; `Retry-After` ; signal externe ; cleanup timers tous chemins |
+| `src/services/scryfall.ts`            | 5 chemins `fetch` → helper                                                                                                                                  |
+| `src/services/deckAnalyzer.ts`        | batch collection + `fetchCardFromScryfallWithMeta`                                                                                                          |
+| `src/services/manaProducerService.ts` | 1 fetch fuzzy                                                                                                                                               |
+| `src/services/__tests__/http.test.ts` | **Créé** — timeout, 429→OK, no retry 404, abort, Retry-After                                                                                                |
+
+**Périmètre réel §7.3 :** `hybridLandDetection.ts` absent → non touché. Zéro `fetch(` restant dans `src/services/` hors `http.ts`.
+
+**Validation T05 :** type-check ✓ · test:unit ✓ (**384** pass / 2 skip) · lint ✓ (0 err).
+
+**Écarts :** retry réseau générique (hors 429/5xx) du vieux `tryFetch` deckAnalyzer **non** repris — aligné prompt « retry uniquement sur 429 et 5xx ».
+
+---
+
+### 7.4 Historique consignes d'exécution (session 2026-08-01 → 02)
+
+**Périmètre strict respecté :** uniquement T02–T05. **Non démarré :** T06–T15, P01–P04, quick wins §6.
+
+**Interdictions respectées pendant l'implémentation code :** pas de touch `.env` / `.vercel` / secrets ; pas de nouvelles deps hors purge T02. Commit/push code **`332501d`** fait **sur demande explicite** utilisateur (2026-08-01 soir / session exécution).
+
+**Commit code de référence :**
+
+| SHA              | Message                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------- |
+| **`332501d`**    | `refactor: T02–T05 purge dead code, SSOT lands, batch cache, fetchWithTimeout`            |
+| parent prod live | **`fdef163`** · v2.7.9 (sécu) — **pas encore** de deploy de `332501d` sauf décision owner |
+
+**Suite logique (hors session sauf ordre) :** T06 (tempo non bloquant) → T07 (batch lands inconnus) → … ou **P0-DIST** `LAUNCH.md` (priorité business).
+
+### 7.5 Interdictions permanentes (rappel)
 
 - Ne pas faire de `git commit` / `git push` sans demande explicite.
 - Ne pas toucher à `.env`, `.vercel/`, ni aux secrets.
-- Ne pas démarrer T06-T15, P01-P04, ni les quick wins de la section 6.
-- Ne pas « corriger » d'erreurs lint préexistantes sans rapport avec la tâche en cours (les noter à la fin du rapport).
+- Ne pas démarrer T06-T15 / P01-P04 sans ordre.
+- Ne pas « corriger » d'erreurs lint préexistantes hors scope (les lister en rapport).
+
+### 7.6 Warnings lint préexistants (hors scope — non corrigés)
+
+~27 warnings stables, **0 errors**. Exemples : `react-refresh/only-export-components` (`main.tsx`, SEO, NotificationProvider…) ; unused vars (`EnhancedCharts.cards`, `SideboardSwapEditor.theme`, `AnalyzerPage.formatFamilyLabel/landCountGuidance`, `deckAnalyzer.unavailableQty`, `store` snackbar destructure, `londonMulligan.londonScore`, `turnPlan.TurnPlan`, `MyAnalysesPage.onClose`).

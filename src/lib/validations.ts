@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
 // 🃏 VALIDATION DECK MAGIC: THE GATHERING
+/**
+ * @deprecated T10 — `quantity.max(4)` breaks EDH/singleton (qty 1–99 needed).
+ * Do NOT use for the main parser. Prefer `parseDecklistText` (scryfall.ts)
+ * and `persistedAnalyzerSchema` for redux-persist rehydrate.
+ */
 export const cardSchema = z.object({
   name: z.string().min(1, 'Card name is required').max(100, 'Card name too long'),
   quantity: z.number().int().min(1, 'Minimum 1 card').max(4, 'Maximum 4 copies per card'),
@@ -10,6 +15,30 @@ export const cardSchema = z.object({
   type_line: z.string().optional(),
   cmc: z.number().optional(),
 })
+
+/**
+ * T10 — slim redux-persist analyzer shape (no analysisResult payload).
+ * Used on rehydrate; failure → initial state + purge corrupt key.
+ * `analysisResult` is accepted as any and discarded (T01 always null).
+ */
+export const persistedAnalyzerSchema = z
+  .object({
+    deckList: z.string().max(20000).default(''),
+    deckName: z.string().max(200).default(''),
+    activeTab: z.number().int().min(0).max(20).default(0),
+    isDeckMinimized: z.boolean().default(false),
+    isAnalyzing: z.boolean().optional().default(false),
+    // Present on old blobs — discarded after parse
+    analysisResult: z.unknown().optional(),
+    snackbar: z
+      .object({
+        open: z.boolean(),
+        message: z.string(),
+        severity: z.enum(['success', 'warning', 'error', 'info']),
+      })
+      .optional(),
+  })
+  .strip()
 
 export const deckSchema = z.object({
   name: z.string().min(1, 'Deck name is required').max(100, 'Deck name too long'),
@@ -71,6 +100,7 @@ export const analysisResultSchema = z.object({
 })
 
 // 🔐 VALIDATION USER & AUTH
+/** @deprecated T10 — no backend/auth; zero product call sites. Kept for type export only. */
 export const userProfileSchema = z.object({
   username: z
     .string()

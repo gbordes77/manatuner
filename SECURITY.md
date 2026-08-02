@@ -34,6 +34,11 @@ ManaTuner is a **100% client-side application**. There is no backend, no databas
 
 Until then: **no crash reports leave the browser** — PrivacySettings copy stays accurate.
 
+**CSP note (T11):** production `connect-src` intentionally omits `https://*.ingest.sentry.io`.
+Activating `VITE_SENTRY_DSN` **requires** adding that host to CSP in `vercel.json` first,
+otherwise the browser will block Sentry uploads. Do not widen CSP until the privacy
+checklist above is complete and the DSN is deliberately set.
+
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability:

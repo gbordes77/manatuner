@@ -223,8 +223,16 @@ export const searchCardsByCollection = async (cardNames: string[]): Promise<Card
   }
 }
 
+/** T10: qty bounds — EDH bulk safe (not constructed max(4)). */
+export const DECKLIST_QTY_MIN = 1
+export const DECKLIST_QTY_MAX = 99
+/** T10: card name length after sanitize. */
+export const DECKLIST_NAME_MIN = 1
+export const DECKLIST_NAME_MAX = 200
+
 /**
- * Parse une decklist au format standard
+ * Parse une decklist au format standard (Arena / Moxfield-ish lines).
+ * T10: qty 1–99, name 1–200 after sanitize; invalid lines skipped.
  */
 export const parseDecklistText = (text: string): { name: string; quantity: number }[] => {
   const lines = text
@@ -250,14 +258,20 @@ export const parseDecklistText = (text: string): { name: string; quantity: numbe
     if (match) {
       const quantity = parseInt(match[1], 10)
       const name = sanitizeString(match[2])
-
-      if (quantity > 0 && name.length > 0) {
+      if (
+        Number.isFinite(quantity) &&
+        quantity >= DECKLIST_QTY_MIN &&
+        quantity <= DECKLIST_QTY_MAX &&
+        name.length >= DECKLIST_NAME_MIN &&
+        name.length <= DECKLIST_NAME_MAX
+      ) {
         cards.push({ name, quantity })
       }
+      // else: skip invalid qty/name (T10)
     } else {
       // Assume quantité 1 si pas de nombre
       const name = sanitizeString(line)
-      if (name.length > 0) {
+      if (name.length >= DECKLIST_NAME_MIN && name.length <= DECKLIST_NAME_MAX) {
         cards.push({ name, quantity: 1 })
       }
     }
@@ -388,8 +402,8 @@ export interface ScryfallLandData {
   }>
 }
 
-/** Cache for land-specific data */
-const landDataCache = new Map<string, ScryfallLandData | null>()
+/** Cache for land-specific data — BoundedMap (T13), cap 300. */
+const landDataCache = new BoundedMap<string, ScryfallLandData | null>(300)
 
 /**
  * Fetch land-specific data from Scryfall with oracle_text and card_faces.
@@ -477,9 +491,13 @@ const processLandData = (data: ScryfallCard, cacheKey: string): ScryfallLandData
   return landData
 }
 
+/** Scryfall /cards/collection accepts at most 75 identifiers (T07). */
+export const SCRYFALL_COLLECTION_CHUNK_SIZE = 75
+
 /**
  * Batch fetch land data for multiple cards.
- * Uses the collection endpoint for efficiency.
+ * Uses the collection endpoint in chunks of 75; not_found → /cards/named fallback;
+ * whole-batch failure → sequential fetchLandData (T07).
  *
  * @param cardNames - Array of card names to look up
  * @returns Map of card names to their land data (or null if not a land)
@@ -504,49 +522,82 @@ export const fetchLandDataBatch = async (
     return results
   }
 
-  try {
-    await ensureRateLimit()
+  // Chunk at Scryfall collection limit
+  for (let i = 0; i < toFetch.length; i += SCRYFALL_COLLECTION_CHUNK_SIZE) {
+    const chunk = toFetch.slice(i, i + SCRYFALL_COLLECTION_CHUNK_SIZE)
+    try {
+      await ensureRateLimit()
 
-    const identifiers = toFetch.map((name) => ({ name: name.trim() }))
+      const identifiers = chunk.map((name) => ({ name: name.trim() }))
 
-    const response = await fetchWithTimeout(
-      `${SCRYFALL_API_BASE}/cards/collection`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ identifiers }),
-      },
-      { timeoutMs: 8000, retries: 1 }
-    )
+      const response = await fetchWithTimeout(
+        `${SCRYFALL_API_BASE}/cards/collection`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifiers }),
+        },
+        { timeoutMs: 8000, retries: 1 }
+      )
 
-    if (!response.ok) {
-      throw new Error(`Scryfall collection API error: ${response.status}`)
-    }
-
-    const data: ScryfallResponse<ScryfallCard> = await response.json()
-
-    // Process found cards
-    for (const card of data.data || []) {
-      const landData = processLandData(card, card.name.toLowerCase().trim())
-      results.set(card.name, landData)
-    }
-
-    // Mark not found cards
-    const foundNames = new Set((data.data || []).map((c) => c.name.toLowerCase()))
-    for (const name of toFetch) {
-      if (!foundNames.has(name.toLowerCase())) {
-        landDataCache.set(name.toLowerCase().trim(), null)
-        results.set(name, null)
+      if (!response.ok) {
+        throw new Error(`Scryfall collection API error: ${response.status}`)
       }
-    }
-  } catch (error) {
-    console.error('[Scryfall] Batch land data fetch failed:', error)
 
-    // Fallback: fetch individually
-    for (const name of toFetch) {
-      if (!results.has(name)) {
-        const landData = await fetchLandData(name)
-        results.set(name, landData)
+      const data: ScryfallResponse<ScryfallCard> = await response.json()
+
+      // Index returned cards by lowercased name for matching request keys
+      const byLower = new Map<string, ScryfallCard>()
+      for (const card of data.data || []) {
+        byLower.set(card.name.toLowerCase().trim(), card)
+      }
+
+      // not_found from API (explicit) — fall back to /cards/named (exact→fuzzy)
+      const notFoundFromApi = new Set(
+        (data.not_found || [])
+          .map((nf: { name?: string }) => (nf?.name || '').toLowerCase().trim())
+          .filter(Boolean)
+      )
+
+      for (const name of chunk) {
+        const lower = name.toLowerCase().trim()
+        const card = byLower.get(lower)
+        if (card) {
+          const landData = processLandData(card, lower)
+          // Store under the request name so callers can key by input
+          results.set(name, landData)
+          continue
+        }
+
+        // Partial match: Scryfall may normalize names (punctuation)
+        let matched: ScryfallCard | undefined
+        for (const [key, c] of byLower) {
+          if (key === lower || c.name.toLowerCase().trim() === lower) {
+            matched = c
+            break
+          }
+        }
+        if (matched) {
+          const landData = processLandData(matched, lower)
+          results.set(name, landData)
+          continue
+        }
+
+        // not_found or unmatched → individual named lookup (T07)
+        if (notFoundFromApi.has(lower) || !byLower.has(lower)) {
+          const landData = await fetchLandData(name)
+          results.set(name, landData)
+        }
+      }
+    } catch (error) {
+      console.error('[Scryfall] Batch land data fetch failed (chunk):', error)
+
+      // Fallback: sequential named fetch for this chunk
+      for (const name of chunk) {
+        if (!results.has(name)) {
+          const landData = await fetchLandData(name)
+          results.set(name, landData)
+        }
       }
     }
   }

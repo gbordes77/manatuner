@@ -80,10 +80,9 @@ const ManaBar: React.FC = () => (
   </Box>
 )
 
-// Prefetch AnalyzerPage on hover for faster navigation
-const prefetchAnalyzer = () => {
-  import('../../pages/AnalyzerPage')
-}
+// QW2: shared hover/idle prefetch (deduped)
+import { prefetchAnalyzerChunk } from '../../utils/prefetchRoute'
+const prefetchAnalyzer = () => prefetchAnalyzerChunk()
 
 export const Header: React.FC = () => {
   const muiTheme = useMuiTheme()

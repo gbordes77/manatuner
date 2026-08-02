@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { BoundedMap } from '../services/scryfall'
 
 interface CardImageData {
   imageUrl: string | null
@@ -6,8 +7,8 @@ interface CardImageData {
   error: boolean
 }
 
-// Cache global pour éviter les requêtes répétées
-const imageCache = new Map<string, string>()
+// T13: bounded image URL cache (cap 200)
+const imageCache = new BoundedMap<string, string>(200)
 
 export const useCardImage = (cardName: string) => {
   const [data, setData] = useState<CardImageData>({
@@ -18,24 +19,41 @@ export const useCardImage = (cardName: string) => {
 
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
   const abortControllerRef = useRef<AbortController>()
+  const mountedRef = useRef(true)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (abortControllerRef.current) abortControllerRef.current.abort()
+    }
+  }, [])
+
+  // Reset display when card name changes
+  useEffect(() => {
+    setData({
+      imageUrl: imageCache.get(cardName) || null,
+      loading: false,
+      error: false,
+    })
+  }, [cardName])
 
   const fetchImage = useCallback(async () => {
-    // Si déjà en cache, pas besoin de refetch
     if (imageCache.has(cardName)) {
-      setData((prev) => ({ ...prev, imageUrl: imageCache.get(cardName)! }))
+      if (mountedRef.current) {
+        setData((prev) => ({ ...prev, imageUrl: imageCache.get(cardName)!, loading: false }))
+      }
       return
     }
 
-    // Si déjà en cours de chargement, ne pas relancer
-    if (data.loading) return
+    if (mountedRef.current) {
+      setData((prev) => ({ ...prev, loading: true, error: false }))
+    }
 
-    setData((prev) => ({ ...prev, loading: true, error: false }))
-
-    // Annuler la requête précédente si elle existe
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
-
     abortControllerRef.current = new AbortController()
 
     try {
@@ -49,8 +67,6 @@ export const useCardImage = (cardName: string) => {
       }
 
       const card = await response.json()
-
-      // Priorité : image normale > image des faces de carte > image petite
       const imageUrl =
         card.image_uris?.normal ||
         card.card_faces?.[0]?.image_uris?.normal ||
@@ -58,37 +74,30 @@ export const useCardImage = (cardName: string) => {
         card.card_faces?.[0]?.image_uris?.small
 
       if (imageUrl) {
-        // Mettre en cache
         imageCache.set(cardName, imageUrl)
-        setData({ imageUrl, loading: false, error: false })
+        if (mountedRef.current) {
+          setData({ imageUrl, loading: false, error: false })
+        }
       } else {
         throw new Error('No image found')
       }
     } catch (error: unknown) {
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error(`Erreur lors du chargement de l'image pour ${cardName}:`, error)
+      if (error instanceof Error && error.name !== 'AbortError' && mountedRef.current) {
         setData({ imageUrl: null, loading: false, error: true })
       }
     }
-  }, [cardName, data.loading])
+  }, [cardName])
 
   const startFetch = useCallback(() => {
-    // Délai de 300ms pour éviter le flickering
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => {
-      fetchImage()
+      void fetchImage()
     }, 300)
   }, [fetchImage])
 
   const cancelFetch = useCallback(() => {
-    // Annuler le timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-
-    // Annuler la requête en cours
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort()
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    if (abortControllerRef.current) abortControllerRef.current.abort()
   }, [])
 
   return {

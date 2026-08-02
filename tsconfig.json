@@ -18,10 +18,13 @@
 
     /* Linting - Enhanced for type safety */
     "strict": true,
+    /* T14: keep noUnusedLocals off (many intentional exports/tests); parameters
+       unused should be prefixed with `_` (eslint already enforces). */
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
+    "noUncheckedIndexedAccess": false,
 
     /* Path aliases */
     "baseUrl": ".",

@@ -12,12 +12,12 @@
  */
 
 import { describe, it, expect } from 'vitest'
+import { cleanCardName } from '../deckParser'
 import { DeckAnalyzer } from '../deckAnalyzer'
 
-// TypeScript `private` is a compile-time annotation — at runtime the method
-// is a normal static on DeckAnalyzer. Bracket access bypasses the visibility
-// check and lets us test the private surface without changing the class.
-const clean = (name: string): string =>
+// T08: SSOT is deckParser.cleanCardName; DeckAnalyzer still delegates.
+const clean = (name: string): string => cleanCardName(name)
+const cleanViaAnalyzer = (name: string): string =>
   (DeckAnalyzer as unknown as Record<string, (n: string) => string>)['cleanCardName'](name)
 
 describe('cleanCardName', () => {
@@ -108,6 +108,20 @@ describe('cleanCardName', () => {
     })
     it('handles name with apostrophe', () => {
       expect(clean("Urza's Saga")).toBe("Urza's Saga")
+    })
+  })
+
+  describe('T08 DeckAnalyzer delegate parity', () => {
+    it('matches free function cleanCardName', () => {
+      const samples = [
+        'Lightning Bolt (M21) 199',
+        'Fable of the Mirror-Breaker // Reflection of Kiki-Jiki',
+        'A-Llanowar Elves',
+        'Bolt *CMDR*',
+      ]
+      for (const s of samples) {
+        expect(cleanViaAnalyzer(s)).toBe(cleanCardName(s))
+      }
     })
   })
 })

@@ -4,8 +4,11 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck'
 import SpeedIcon from '@mui/icons-material/Speed'
 import { Box, Button, LinearProgress, Paper, TextField, Typography } from '@mui/material'
-import React, { memo } from 'react'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { AnalysisResult } from '../../services/deckAnalyzer'
+
+/** Debounce before writing decklist keystrokes into redux-persist (T01). */
+export const DECKLIST_PERSIST_DEBOUNCE_MS = 300
 
 interface DeckInputSectionProps {
   deckList: string
@@ -16,7 +19,8 @@ interface DeckInputSectionProps {
   analysisResult: AnalysisResult | null
   isDeckMinimized: boolean
   setIsDeckMinimized: (value: boolean) => void
-  onAnalyze: () => void
+  /** Receives the flushed local draft so analyze never runs on a stale redux value. */
+  onAnalyze: (deckList: string) => void
   onClear: () => void
   onLoadSample: () => void
   isMobile: boolean
@@ -39,6 +43,57 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
     isMobile,
     isSmallMobile: _isSmallMobile,
   }) => {
+    // Local draft for immediate TextField feedback; Redux/persist lags by 300 ms.
+    const [localDeckList, setLocalDeckList] = useState(deckList)
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+    // Track last value pushed to parent to avoid redundant dispatches.
+    const lastFlushedRef = useRef(deckList)
+
+    // Sync from parent when external sources update deckList (sample, clear, share URL).
+    useEffect(() => {
+      setLocalDeckList(deckList)
+      lastFlushedRef.current = deckList
+    }, [deckList])
+
+    useEffect(() => {
+      return () => {
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+      }
+    }, [])
+
+    const flushDeckList = useCallback(
+      (value: string) => {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+          debounceRef.current = null
+        }
+        if (value !== lastFlushedRef.current) {
+          lastFlushedRef.current = value
+          setDeckList(value)
+        }
+      },
+      [setDeckList]
+    )
+
+    const handleDeckListChange = useCallback(
+      (value: string) => {
+        setLocalDeckList(value)
+        if (debounceRef.current) clearTimeout(debounceRef.current)
+        debounceRef.current = setTimeout(() => {
+          debounceRef.current = null
+          lastFlushedRef.current = value
+          setDeckList(value)
+        }, DECKLIST_PERSIST_DEBOUNCE_MS)
+      },
+      [setDeckList]
+    )
+
+    const handleAnalyzeClick = useCallback(() => {
+      const value = localDeckList
+      flushDeckList(value)
+      onAnalyze(value)
+    }, [localDeckList, flushDeckList, onAnalyze])
+
     return (
       <Paper
         sx={{
@@ -91,8 +146,8 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
               rows={isMobile ? 10 : 12}
               label="Deck List"
               placeholder="Paste your decklist here...&#10;Format: 4 Lightning Bolt&#10;3 Counterspell&#10;..."
-              value={deckList}
-              onChange={(e) => setDeckList(e.target.value)}
+              value={localDeckList}
+              onChange={(e) => handleDeckListChange(e.target.value)}
               // Audit fix UX/WCAG (2026-04-13): proper accessibility labels for
               // screen readers + maxLength to prevent multi-MB paste pathology.
               inputProps={{
@@ -123,8 +178,8 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
               <Button
                 variant="contained"
                 size={isMobile ? 'medium' : 'large'}
-                onClick={onAnalyze}
-                disabled={!deckList.trim() || isAnalyzing}
+                onClick={handleAnalyzeClick}
+                disabled={!localDeckList.trim() || isAnalyzing}
                 startIcon={isAnalyzing ? <SpeedIcon /> : <AnalyticsIcon />}
                 sx={{
                   flexGrow: 1,
@@ -211,3 +266,5 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
     )
   }
 )
+
+DeckInputSection.displayName = 'DeckInputSection'
