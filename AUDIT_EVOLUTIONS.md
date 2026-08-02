@@ -1029,35 +1029,35 @@ _Si P04 n'est pas priorisé, l'alternative recommandée est IN2 (moteur de sugge
 
 > **Mis à jour :** 2026-08-02 · **Ship tech** `10845c7` (T01+T06–T15+QW/AM) · Dependabot **off** `0ae8295`.  
 > Prod Vercel a déployé `10845c7`. Priorité business = `LAUNCH.md`.  
-> **Reste ouvert = produit / angles morts AM2–AM3–AM5 + résidus CI optionnels** — voir prompt  
-> `docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`.
+> **Priorisation expert du reste :** **§7.8** (analyse seule, croisée code — pas d’impl).  
+> Prompt source : `docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`.
 
 ### 7.0 Verdict exécution — **T01–T15 + QW + AM1/AM4/AM6 = FAIT (ship `10845c7`)**
 
-| Tâche                                                     | Statut                                       | Validation                                                          |
-| --------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------- |
-| **T02** purge code mort + deps                            | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit · **build**                           |
-| **T03** SSOT terrains landService/landSeed                | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
-| **T04** batch landCacheService                            | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
-| **T05** fetchWithTimeout Scryfall                         | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
-| **T01** redux-persist + debounce decklist                 | ✅ **FAIT** (`10845c7`)                      | type-check · lint · test:unit + tests transform/debounce            |
-| **QW1 / AM4** cache headers library/feeds                 | ✅ **FAIT**                                  | `vercel.json` only                                                  |
-| **T06** tempo non bloquant                                | ✅ **FAIT**                                  | type-check · lint · test:unit · mtg-logic · mana-calc               |
-| **T07** batch lands inconnus                              | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **T09** hypergeom SSOT                                    | ✅ **FAIT**                                  | type-check · lint · test:unit · mtg-logic · mana-calc               |
-| **T08** split deckParser/cardResolver                     | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **T10** zod safe EDH + rehydrate                          | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **T11** presentation hors public, wipe IDB, COEP, CSP doc | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **T15** audit, dependabot, clamp worker, `?d=`→`#d=`      | ✅ **FAIT**                                  | type-check · lint · test:unit · build budget                        |
-| **T12** icons chunk + fonts CSP                           | ✅ **FAIT**                                  | type-check · lint · test:unit · **build** + tailles                 |
-| **T13** BoundedMap caches + React memo/cleanup            | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **T14** esbuild drop prod-only + notes tsconfig           | ✅ **FAIT**                                  | type-check · lint · test:unit · build                               |
-| **QW2** prefetch idle/hover Analyzer                      | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
-| **QW3** budget bundle CI                                  | ✅ **FAIT**                                  | `scripts/check-bundle-budget.mjs` + workflows                       |
-| **AM1** audit critical prod + e2e nightly                 | ✅ **FAIT** (partiel vs brief max)           | budget + audit critical prod ; e2e/a11y **nightly** non bloquant PR |
-| **AM6** nightly a11y/visual                               | ✅ **FAIT**                                  | `.github/workflows/nightly-quality.yml`                             |
-| **Dependabot**                                            | ⛔ **OFF** (`0ae8295`)                       | `dependabot.yml` supprimé — updates manuelles                       |
-| P01–P04 · IN\* · AM2/AM3/AM5                              | ⏸ **NON FAIT** (produit / out of scope tech) | priorisation : prompt expert                                        |
+| Tâche                                                     | Statut                                   | Validation                                                          |
+| --------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------- |
+| **T02** purge code mort + deps                            | ✅ **FAIT** (commit `332501d`)           | type-check · lint · test:unit · **build**                           |
+| **T03** SSOT terrains landService/landSeed                | ✅ **FAIT** (commit `332501d`)           | type-check · lint · test:unit                                       |
+| **T04** batch landCacheService                            | ✅ **FAIT** (commit `332501d`)           | type-check · lint · test:unit                                       |
+| **T05** fetchWithTimeout Scryfall                         | ✅ **FAIT** (commit `332501d`)           | type-check · lint · test:unit                                       |
+| **T01** redux-persist + debounce decklist                 | ✅ **FAIT** (`10845c7`)                  | type-check · lint · test:unit + tests transform/debounce            |
+| **QW1 / AM4** cache headers library/feeds                 | ✅ **FAIT**                              | `vercel.json` only                                                  |
+| **T06** tempo non bloquant                                | ✅ **FAIT**                              | type-check · lint · test:unit · mtg-logic · mana-calc               |
+| **T07** batch lands inconnus                              | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **T09** hypergeom SSOT                                    | ✅ **FAIT**                              | type-check · lint · test:unit · mtg-logic · mana-calc               |
+| **T08** split deckParser/cardResolver                     | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **T10** zod safe EDH + rehydrate                          | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **T11** presentation hors public, wipe IDB, COEP, CSP doc | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **T15** audit, dependabot, clamp worker, `?d=`→`#d=`      | ✅ **FAIT**                              | type-check · lint · test:unit · build budget                        |
+| **T12** icons chunk + fonts CSP                           | ✅ **FAIT**                              | type-check · lint · test:unit · **build** + tailles                 |
+| **T13** BoundedMap caches + React memo/cleanup            | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **T14** esbuild drop prod-only + notes tsconfig           | ✅ **FAIT**                              | type-check · lint · test:unit · build                               |
+| **QW2** prefetch idle/hover Analyzer                      | ✅ **FAIT**                              | type-check · lint · test:unit                                       |
+| **QW3** budget bundle CI                                  | ✅ **FAIT**                              | `scripts/check-bundle-budget.mjs` + workflows                       |
+| **AM1** audit critical prod + e2e nightly                 | ✅ **FAIT** (partiel vs brief max)       | budget + audit critical prod ; e2e/a11y **nightly** non bloquant PR |
+| **AM6** nightly a11y/visual                               | ✅ **FAIT**                              | `.github/workflows/nightly-quality.yml`                             |
+| **Dependabot**                                            | ⛔ **OFF** (`0ae8295`)                   | `dependabot.yml` supprimé — updates manuelles                       |
+| P01–P04 · IN\* · AM2/AM3/AM5                              | 📋 **PRIORISÉ** (§7.8) — pas d’impl auto | P0 = `LAUNCH.md` ; code conditionnel seulement                      |
 
 **Arbre ship :** unit **440** pass / 2 skip · lint **0 err** · type-check ✓ · build ✓ · budget ✓ · prod `10845c7`.
 
@@ -1076,8 +1076,115 @@ _Si P04 n'est pas priorisé, l'alternative recommandée est IN2 (moteur de sugge
 - Bundle : `vendor-mui` ~365 KB · `vendor-mui-icons` ~37 KB (séparé)
 - npm audit prod : **0 critical** (`--omit=dev`) ; high `react-router` (RSC, N/A SPA — pas de downgrade force)
 
-**Suite :** business = `LAUNCH.md` ; reste audit = priorisation expert  
-(`docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`) — pas d’impl auto.
+**Suite :** business = `LAUNCH.md` ; détail décisionnel reste audit = **§7.8**.
+
+### 7.8 Priorisation expert du reste (2026-08-02) — **ANALYSE SEULE**
+
+> **Rôle :** staff product + tech lead. **Pas d’implémentation.**  
+> **Méthode :** lecture `SESSION_START` · `LAUNCH.md` · `docs/product/STATUS.md` · `SECURITY.md` · §5–§6 · prompt `PROMPT_AUDIT_RESTE_PRIORISATION.md` + **grep code réel** (EDH, share, Sentry, PWA, export).  
+> **Hors scope :** re-faire T01–T15 / QW1–3 / AM4 / AM6 / Dependabot ON.  
+> **Métriques d’usage :** quasi absentes — scores **qualitatifs**, pas « data-driven ».
+
+#### A. Verdict (5 lignes)
+
+1. **Meilleur ROI = hors code** : exécuter `LAUNCH.md` (distribution / créateurs / Discord) avant toute feature d’audit.
+2. **Ne pas reconstruire P02** : Commander est **largement livré** en v2.7.x (auto-format, T4–T8, Karsten N/60, command zone, banner, samples, share).
+3. **Ne pas ouvrir** IN3 / IN4 / AM5, IN5 (freeze owner), AM2 Sentry DSN, AM3 PWA, P04 OCR, Dependabot, ni re-faire la vague tech.
+4. **Seul item audit codable encore justifié pour la distro** : **P03 lite** (carte PNG partageable) — **après** ou **en soutien** de posts réels, pas en remplacement de LAUNCH.
+5. **Après premiers utilisateurs** : **IN2** (prescription de terrains) bat P01 / OCR / collab sur différenciation réelle.
+
+#### B. Matrice reste non fait / partiel
+
+Échelles **1–5** : **Impact** utilisateurs · **Effort** solo (5 = lourd) · **Priv** privacy/frugalité · **Launch** acquisition · **Risque** tech/RGPD (5 = dangereux) · **Diff** différenciation manabase MTG.
+
+| ID                        | Statut réel (code)                                                                                   | Imp   | Eff   | Priv | Launch | Risque | Diff  | Recommandation                  | Pourquoi                                                                                   |
+| ------------------------- | ---------------------------------------------------------------------------------------------------- | ----- | ----- | ---- | ------ | ------ | ----- | ------------------------------- | ------------------------------------------------------------------------------------------ |
+| **P01** UX profils        | **Non fait** (pas de `PlayerProfileContext`)                                                         | 3     | 4     | 5    | 2      | 2      | 2     | **Différer**                    | Packaging sans audience ; Joyride + guides existent ; complexité UI non prouvée            |
+| **P02** EDH monolithe     | **Déjà largement livré** (v2.7.x) ; résidus mineurs                                                  | 2\*   | 2–3\* | 5    | 2      | 2      | 3\*   | **Re-scoper / différer**        | \*scores = **gap résiduel** seulement — pas greenfield                                     |
+| **P03** Mana Stats Card   | **Partiel** : Share `#d=` + toast Discord + `ManaBlueprint` PNG/PDF/JSON ; **pas** carte OG 1200×630 | 4     | 3     | 5    | **4**  | 2      | 3     | **Faire conditionnel**          | Seul levier audit **aligné distro** ; OG dynamique par deck **impossible** sans serverless |
+| **P04 / IN1** OCR         | **Non fait** (0 Tesseract) ; CSP `camera=()`                                                         | 3     | 5     | 4    | 1      | 3      | 4     | **Différer / quasi-abandonner** | Spectaculaire non prouvé ; +2–4 MB ; friction saisie non mesurée                           |
+| **IN2** sub. terrains     | **Non fait**                                                                                         | **5** | 4–5   | 5    | 2      | 3      | **5** | **Différer (post-users)**       | Diagnostic→prescription ; ROI produit max **après** utilisateurs                           |
+| **IN3** meta scrape       | **Non fait**                                                                                         | 3     | 5     | 1    | 1      | **5**  | 2     | **Abandonner** (court terme)    | Backend / ToS / anti-frugalité                                                             |
+| **IN4** WebLLM            | **Non fait**                                                                                         | 2     | 5     | 2    | 1      | 3      | 2     | **Abandonner**                  | Poids Go, mobile ; templates couvrent le besoin                                            |
+| **IN5** Moxfield URL      | **Non fait** + **freeze owner**                                                                      | 3     | 2–3   | 3    | 3      | 3      | 2     | **Freeze**                      | Commodité, pas moat ; seulement si cas d’usage **prouvé**                                  |
+| **AM2** observabilité     | **Partiel** : Sentry installé, **init off** ; pas de web-vitals                                      | 2     | 2–3   | 2–4† | 1      | 4†     | 1     | **Différer**                    | †DSN = checklist `SECURITY.md` **obligatoire** ; sans users, RUM = bruit                   |
+| **AM3** PWA offline       | **Non fait volontaire** : SW killer + unregister SW                                                  | 3     | 4     | 4    | 1      | **5**  | 2     | **Différer strict**             | Casser `public/sw.js` sans plan d’éviction = cache zombie                                  |
+| **AM5** collab temps réel | **Non fait (by design)**                                                                             | 2     | 5     | 1    | 1      | 4      | 2     | **Abandonner** (sauf preuve)    | Backend ou P2P vs zéro backend                                                             |
+| **AM1** e2e PR gate       | **Partiel** : e2e/a11y **nightly** ; budget+audit critical **OK**                                    | 2     | 3     | 5    | 1      | 3      | 1     | **Différer**                    | Flaky e2e en gate PR coûteux en solo                                                       |
+| **Coverage gate %**       | **Non fait** (coverage sans seuil)                                                                   | 1     | 2     | 5    | 1      | 2      | 1     | **Différer**                    | Vanité sans churn feature                                                                  |
+| **T14 tooling big-bang**  | **Partiel** : notes T14 ; `moduleResolution: node`, `noUnusedLocals: false`                          | 1     | 4     | 5    | 0      | 3      | 0     | **Différer**                    | Tooling sans users = procrastination                                                       |
+| **Fonts non-block**       | **Partiel** : T12 icons OK ; `mana.css` encore render-blocking                                       | 2     | 2     | 5    | 1      | 1      | 0     | **Différer** (micro)            | LCP marginal non prouvé                                                                    |
+| **Slim deckAnalyzer**     | **Partiel** : T08 parser/resolver ; god file encore ~1480 L                                          | 1     | 4     | 5    | 0      | 2      | 0     | **Différer**                    | Dette lisibilité, pas produit                                                              |
+| **react-router high**     | **Connu, N/A SPA** (advisory RSC)                                                                    | 1     | 2–4   | 5    | 0      | 2      | 0     | **Laisser**                     | Pas de force-downgrade ; audit prod **0 critical**                                         |
+
+**P02 — preuve code (ne pas traiter comme rebuild) :**
+
+- `src/utils/deckFormat.ts` : `detectDeckFormatFamily` (99–100 → `edh`), horizon **T4–T8**, `scaleKarstenSources`, land guidance 36–38
+- `AnalyzerPage` : banner Commander, `?format=commander`, `?sample=edh`, Share `#d=`
+- `ManaCostRow` / `CastabilityTab` : chips horizon + command zone
+- Library track Commander + CTA analyzer
+- **Gaps résiduels possibles un jour** (tickets, pas monolithe) : free mulligan EDH vs London ; métriques dédiées accès couleurs commandant T1–T3
+
+**P03 — preuve code (partiel) :**
+
+- `buildShareUrl` / `parseShareParams` (`urlCodec.ts`) — hash privacy
+- Chip Share + toast Discord (`AnalyzerPage`)
+- `ManaBlueprint` : export PNG/PDF/JSON via `html2canvas` lazy
+- Manquant vs brief P03 : composant Stats Card 1200×630 + flux « un clic » dédié
+
+#### C. Top 3 ordonné (+ quick win)
+
+| #     | Item                        | Justification                                                | Go                                                        | No-go                                                   |
+| ----- | --------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- | ------------------------------------------------------- |
+| **0** | **`LAUNCH.md` (hors code)** | Goulot = distribution, pas feature                           | Toujours                                                  | Remplacer par une feature « pour lancer »               |
+| **1** | **P03 lite**                | Seul levier audit aligné distro ; réutilise html2canvas lazy | Posts réels + PNG Blueprint trop lourd/moche pour Discord | Remplace LAUNCH ; ou OG dynamique par deck (serverless) |
+| **2** | **IN2** sub. terrains       | Différenciation max (prescription) ; 100 % algo local        | Retours « j’ai analysé, et maintenant ? »                 | Avant le 1er utilisateur ; sans tests quantifiés        |
+| **3** | **P02 résiduel ciblé**      | Free mulligan EDH / couleurs commandant **si** feedback      | Ticket EDH précis                                         | Rebuild « mode Commander » ; hypergeom hors SSOT        |
+
+**Quick win :** non-code — 1 analyse deck 5-0 MTGO + screenshot Castability + lien (`LAUNCH.md` P1, ~30 min).
+
+#### D. Anti-top (ne pas toucher maintenant)
+
+| Ne pas faire                            | Pourquoi                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------- |
+| Re-livrer T01–T15 / QW / AM4 / AM6      | Ship `10845c7` — régression pure                                          |
+| P02 « from zero »                       | EDH first-class déjà en prod                                              |
+| P01 complet                             | Effort UI transversal ; 0 preuve surcharge ; ne recrute pas               |
+| P04 / IN1 OCR                           | Bundle / camera CSP ; friction non prouvée                                |
+| IN3 meta                                | Backend + ToS                                                             |
+| IN4 WebLLM                              | Rejeté (poids, mobile)                                                    |
+| IN5 Moxfield URL                        | Freeze owner                                                              |
+| AM2 `VITE_SENTRY_DSN`                   | Sans checklist 4 points `SECURITY.md` + CSP ingest = fausse claim privacy |
+| AM3 PWA Workbox                         | SW killer = invariant ; offline = migration multi-versions                |
+| AM5 collab                              | Contredit zéro backend                                                    |
+| e2e gate PR + coverage % + T14 big-bang | Coût solo / flaky / tooling sans ROI distro                               |
+| Dependabot ON                           | Choix owner                                                               |
+| Force-fix react-router                  | Advisory RSC hors chemin SPA                                              |
+
+#### E. Prérequis / pièges si code un jour
+
+| Zone      | Piège                                                                                                                            |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Privacy   | Share **uniquement** `#d=` ; wipe localStorage + **IDB Scryfall** ; pas d’analytics decklist ; Sentry = scrubber + opt-out + CSP |
+| Bundle    | Libs lourdes en **dynamic import** ; budget CI déjà en place — ne pas régresser eager                                            |
+| EDH       | Singleton ; horizon **T4–T8** ; Karsten **N/60** ; `etbTapped` boolean ; command zone ≠ odds de draw                             |
+| SW killer | `public/sw.js` **conservé** + unregister `main.tsx` — PWA réelle = plan d’éviction multi-versions                                |
+| IN2       | Hypergeom SSOT ; pas de % inventés ; messages actionnables                                                                       |
+| P03       | OG image **par deck** impossible en SPA pure ; ne pas introduire serverless « pour un aperçu »                                   |
+| OCR       | `Permissions-Policy: camera=()` → rouvrir explicitement ; modèles self-host si possible                                          |
+
+#### F. Phrase owner
+
+> **La prochaine action est d’exécuter `LAUNCH.md` (1 post créateur + screenshots Castability), pas d’implémenter le reste de l’audit.**
+
+#### Décision owner (1 case)
+
+| Choix                       | Action                                           |
+| --------------------------- | ------------------------------------------------ |
+| **A — recommandé**          | LAUNCH only 1–2 semaines                         |
+| **B**                       | P03 lite uniquement (si friction partage réelle) |
+| **C**                       | IN2 (si retours « et maintenant ? »)             |
+| **D — interdit sans ordre** | IN5, Sentry DSN, PWA, OCR, backend, i18n FR      |
 
 ---
 
