@@ -1027,39 +1027,41 @@ _Si P04 n'est pas priorisé, l'alternative recommandée est IN2 (moteur de sugge
 
 ## 7. État d'Avancement & Consignes d'Exécution
 
-> **Mis à jour :** 2026-08-02 (soir) · Code **non commité** — session tech T01+T06–T15+QW/AM.  
-> Base antérieure : commit **`332501d`** (T02–T05) sur `origin/main`.  
-> **Aucun commit/push/deploy** tant que l’owner n’a pas dit « commit » / « go prod ».
+> **Mis à jour :** 2026-08-02 · **Ship tech** `10845c7` (T01+T06–T15+QW/AM) · Dependabot **off** `0ae8295`.  
+> Prod Vercel a déployé `10845c7`. Priorité business = `LAUNCH.md`.  
+> **Reste ouvert = produit / angles morts AM2–AM3–AM5 + résidus CI optionnels** — voir prompt  
+> `docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`.
 
-### 7.0 Verdict exécution — **T02–T05 FAIT (commit) · T01 + T06–T15 + QW/AM FAIT (working tree)**
+### 7.0 Verdict exécution — **T01–T15 + QW + AM1/AM4/AM6 = FAIT (ship `10845c7`)**
 
-| Tâche                                                     | Statut                          | Validation                                               |
-| --------------------------------------------------------- | ------------------------------- | -------------------------------------------------------- |
-| **T02** purge code mort + deps                            | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit · **build**                |
-| **T03** SSOT terrains landService/landSeed                | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
-| **T04** batch landCacheService                            | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
-| **T05** fetchWithTimeout Scryfall                         | ✅ **FAIT** (commit `332501d`)  | type-check · lint · test:unit                            |
-| **T01** redux-persist + debounce decklist                 | ✅ **FAIT** (working tree)      | type-check · lint · test:unit + tests transform/debounce |
-| **QW1 / AM4** cache headers library/feeds                 | ✅ **FAIT**                     | `vercel.json` only                                       |
-| **T06** tempo non bloquant                                | ✅ **FAIT**                     | type-check · lint · test:unit · mtg-logic · mana-calc    |
-| **T07** batch lands inconnus                              | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **T09** hypergeom SSOT                                    | ✅ **FAIT**                     | type-check · lint · test:unit · mtg-logic · mana-calc    |
-| **T08** split deckParser/cardResolver                     | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **T10** zod safe EDH + rehydrate                          | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **T11** presentation hors public, wipe IDB, COEP, CSP doc | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **T15** audit, dependabot, clamp worker, `?d=`→`#d=`      | ✅ **FAIT**                     | type-check · lint · test:unit · build budget             |
-| **T12** icons chunk + fonts CSP                           | ✅ **FAIT**                     | type-check · lint · test:unit · **build** + tailles      |
-| **T13** BoundedMap caches + React memo/cleanup            | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **T14** esbuild drop prod-only + notes tsconfig           | ✅ **FAIT**                     | type-check · lint · test:unit · build                    |
-| **QW2** prefetch idle/hover Analyzer                      | ✅ **FAIT**                     | type-check · lint · test:unit                            |
-| **QW3** budget bundle CI                                  | ✅ **FAIT**                     | `scripts/check-bundle-budget.mjs` + workflows            |
-| **AM1** audit critical prod + e2e nightly                 | ✅ **FAIT**                     | CI/PR + nightly-quality.yml                              |
-| **AM6** nightly a11y/visual                               | ✅ **FAIT**                     | `.github/workflows/nightly-quality.yml`                  |
-| P01–P04 · IN\* · AM2/AM3/AM5                              | ⏸ **EXCLUS** (features produit) | —                                                        |
+| Tâche                                                     | Statut                                       | Validation                                                          |
+| --------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------- |
+| **T02** purge code mort + deps                            | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit · **build**                           |
+| **T03** SSOT terrains landService/landSeed                | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
+| **T04** batch landCacheService                            | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
+| **T05** fetchWithTimeout Scryfall                         | ✅ **FAIT** (commit `332501d`)               | type-check · lint · test:unit                                       |
+| **T01** redux-persist + debounce decklist                 | ✅ **FAIT** (`10845c7`)                      | type-check · lint · test:unit + tests transform/debounce            |
+| **QW1 / AM4** cache headers library/feeds                 | ✅ **FAIT**                                  | `vercel.json` only                                                  |
+| **T06** tempo non bloquant                                | ✅ **FAIT**                                  | type-check · lint · test:unit · mtg-logic · mana-calc               |
+| **T07** batch lands inconnus                              | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **T09** hypergeom SSOT                                    | ✅ **FAIT**                                  | type-check · lint · test:unit · mtg-logic · mana-calc               |
+| **T08** split deckParser/cardResolver                     | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **T10** zod safe EDH + rehydrate                          | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **T11** presentation hors public, wipe IDB, COEP, CSP doc | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **T15** audit, dependabot, clamp worker, `?d=`→`#d=`      | ✅ **FAIT**                                  | type-check · lint · test:unit · build budget                        |
+| **T12** icons chunk + fonts CSP                           | ✅ **FAIT**                                  | type-check · lint · test:unit · **build** + tailles                 |
+| **T13** BoundedMap caches + React memo/cleanup            | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **T14** esbuild drop prod-only + notes tsconfig           | ✅ **FAIT**                                  | type-check · lint · test:unit · build                               |
+| **QW2** prefetch idle/hover Analyzer                      | ✅ **FAIT**                                  | type-check · lint · test:unit                                       |
+| **QW3** budget bundle CI                                  | ✅ **FAIT**                                  | `scripts/check-bundle-budget.mjs` + workflows                       |
+| **AM1** audit critical prod + e2e nightly                 | ✅ **FAIT** (partiel vs brief max)           | budget + audit critical prod ; e2e/a11y **nightly** non bloquant PR |
+| **AM6** nightly a11y/visual                               | ✅ **FAIT**                                  | `.github/workflows/nightly-quality.yml`                             |
+| **Dependabot**                                            | ⛔ **OFF** (`0ae8295`)                       | `dependabot.yml` supprimé — updates manuelles                       |
+| P01–P04 · IN\* · AM2/AM3/AM5                              | ⏸ **NON FAIT** (produit / out of scope tech) | priorisation : prompt expert                                        |
 
-**Arbre final session (working tree) :** unit **440** pass / 2 skip · lint **0 errors** (25 warnings préexistants) · type-check ✓ · **build ✓** · bundle budget ✓.
+**Arbre ship :** unit **440** pass / 2 skip · lint **0 err** · type-check ✓ · build ✓ · budget ✓ · prod `10845c7`.
 
-### 7.7 Session tech T01 + T06–T15 (2026-08-02) — **FAIT local, pas de commit**
+### 7.7 Session tech T01 + T06–T15 (2026-08-02) — **SHIP `10845c7`**
 
 **Gate non-régression :** type-check + lint + test:unit après **chaque** ID (mtg-logic/mana-calc quand moteur touché ; build pour vite/chunks).
 
@@ -1074,7 +1076,8 @@ _Si P04 n'est pas priorisé, l'alternative recommandée est IN2 (moteur de sugge
 - Bundle : `vendor-mui` ~365 KB · `vendor-mui-icons` ~37 KB (séparé)
 - npm audit prod : **0 critical** (`--omit=dev`) ; high `react-router` (RSC, N/A SPA — pas de downgrade force)
 
-**Suite :** owner review → « commit » / « go prod » ; business = `LAUNCH.md`.
+**Suite :** business = `LAUNCH.md` ; reste audit = priorisation expert  
+(`docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`) — pas d’impl auto.
 
 ---
 

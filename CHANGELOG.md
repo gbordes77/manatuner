@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Refactor (2026-08-02) — Audit evolutions T01 + T06–T15 + QW/AM (working tree, **pas de commit**)
+### Chore (2026-08-02) — Dependabot off · docs sync · prompt priorisation reste
+
+- Supprimé `.github/dependabot.yml` (`0ae8295`) — plus de PR / mails auto
+- Journal audit §7 + SESSION/HANDOFF/STATUS alignés sur ship **`10845c7`**
+- Nouveau prompt expert (analyse only) : `docs/session/PROMPT_AUDIT_RESTE_PRIORISATION.md`
+
+### Refactor (2026-08-02) — Audit evolutions T01 + T06–T15 + QW/AM · **`10845c7`**
 
 Suite hygiène pure (aucune feature produit P01–P04 / IN\*). Validation : **440** unit pass / 2 skip · type-check · lint · build · budget bundle.
 

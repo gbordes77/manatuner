@@ -10,11 +10,10 @@
 | --------------------- | ------------------------------------------------------------------------------------ |
 | **Version prod live** | **2.7.9** (`package.json` inchangé — pas de bump version pour hygiène pure)          |
 | **Engine stamp UI**   | `Engine v2.7.9`                                                                      |
-| **SHA prod live**     | **`fdef163`** (Vercel Production success sécu)                                       |
-| **SHA code main**     | **`332501d`** (T02–T05) · working tree **T01+T06–T15** hygiène **non commité**       |
-| **Live**              | https://www.manatuner.app · **v2.7.9 live**                                          |
+| **SHA prod / main**   | **`10845c7`** (T01–T15+QW/AM) · Dependabot off **`0ae8295`**                         |
+| **Live**              | https://www.manatuner.app                                                            |
 | **Repo**              | https://github.com/gbordes77/manatuner                                               |
-| **Tests unit**        | **440** pass / 2 skip (post T01+T06–T15 local)                                       |
+| **Tests unit**        | **440** pass / 2 skip                                                                |
 | **Sécu**              | [`../session/SECURITY_AUDIT_2026-08-01.md`](../session/SECURITY_AUDIT_2026-08-01.md) |
 | **Hébergement**       | Vercel · build `npm run build:vercel`                                                |
 | **Mode crawl**        | SPA (HTML prerender **pas** garanti en prod si Chromium absent)                      |
@@ -35,18 +34,19 @@ Analyseur manabase MTG **100 % client-side** :
 
 ## Vagues
 
-| Vague | Version / SHA            | Contenu                                                                                                                    |
-| ----- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| A–B   | 2.7.x                    | P0 trust, UX Learn/Feedback, Health Score                                                                                  |
-| C     | 2.7.3                    | EDH/Limited first-class                                                                                                    |
-| D     | 2.7.4                    | Karsten N/60                                                                                                               |
-| E     | 2.7.5                    | Command zone + T4–T8                                                                                                       |
-| F     | 2.7.6                    | etbTapped boolean, MC seed, archetype, a11y                                                                                |
-| G     | 2.7.7                    | Prerender soft, polish, E2E harden                                                                                         |
-| H     | **2.7.8**                | Persona audit P0/P1 (Joyride, EDH colors, legend, Share)                                                                   |
-| I     | **2.7.9** · `fdef163`    | Security (share hash, wipe, CSP docs, deps)                                                                                |
-| J     | code **`332501d`**       | Audit evolutions **T02–T05** — purge dead code, SSOT lands, cache batch, fetch timeout                                     |
-| K     | working tree (no commit) | Audit **T01 + T06–T15 + QW/AM** — persist, tempo yield, batch lands, hypergeom SSOT, split parser, zod/privacy, bundle, CI |
+| Vague | Version / SHA         | Contenu                                                                                |
+| ----- | --------------------- | -------------------------------------------------------------------------------------- |
+| A–B   | 2.7.x                 | P0 trust, UX Learn/Feedback, Health Score                                              |
+| C     | 2.7.3                 | EDH/Limited first-class                                                                |
+| D     | 2.7.4                 | Karsten N/60                                                                           |
+| E     | 2.7.5                 | Command zone + T4–T8                                                                   |
+| F     | 2.7.6                 | etbTapped boolean, MC seed, archetype, a11y                                            |
+| G     | 2.7.7                 | Prerender soft, polish, E2E harden                                                     |
+| H     | **2.7.8**             | Persona audit P0/P1 (Joyride, EDH colors, legend, Share)                               |
+| I     | **2.7.9** · `fdef163` | Security (share hash, wipe, CSP docs, deps)                                            |
+| J     | code **`332501d`**    | Audit evolutions **T02–T05** — purge dead code, SSOT lands, cache batch, fetch timeout |
+| K     | **`10845c7`**         | Audit **T01 + T06–T15 + QW/AM** shippé                                                 |
+| L     | **`0ae8295`**         | Dependabot **OFF**                                                                     |
 
 ## Invariants
 
