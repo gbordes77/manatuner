@@ -1,0 +1,161 @@
+
+> manatuner@2.7.9 build:vercel
+> vite build && node scripts/prerender.mjs
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2512 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+dist/index.html                                    12.45 kB │ gzip:   3.93 kB
+dist/assets/mulliganArchetype.worker-6DQT9pGx.js   13.90 kB
+dist/assets/index-qsdYYaTe.css                     16.39 kB │ gzip:   4.16 kB
+dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+dist/assets/FloatingManaSymbols-CGGG-Ofw.js         1.20 kB │ gzip:   0.65 kB
+dist/assets/CardImageTooltip-0SwpRa2q.js            1.35 kB │ gzip:   0.70 kB
+dist/assets/privacy-D_k-WINA.js                     3.67 kB │ gzip:   1.61 kB
+dist/assets/AuthorPage-BvOgwIHP.js                  3.90 kB │ gzip:   1.77 kB
+dist/assets/PrivacySettings-DhCROuKx.js             5.17 kB │ gzip:   2.13 kB
+dist/assets/ArticleDetailPage-C3U8-6DG.js           7.71 kB │ gzip:   2.91 kB
+dist/assets/EnhancedCharts-BoiJusXY.js              8.80 kB │ gzip:   2.57 kB
+dist/assets/AnalysisTab-CqjlWkpc.js                 9.03 kB │ gzip:   3.01 kB
+dist/assets/StaticPages-BwGEsHou.js                 9.13 kB │ gzip:   3.13 kB
+dist/assets/EnhancedSpellAnalysis-Cxx9rCkK.js      12.88 kB │ gzip:   3.82 kB
+dist/assets/ManabaseFullTab-BEDt-GU2.js            13.40 kB │ gzip:   4.69 kB
+dist/assets/LandGlossaryPage-BEDd_Q76.js           13.66 kB │ gzip:   5.06 kB
+dist/assets/ManaBlueprint-Bj1X8FyB.js              15.43 kB │ gzip:   4.83 kB
+dist/assets/MyAnalysesPage-iqx8pyvK.js             18.13 kB │ gzip:   5.48 kB
+dist/assets/MulliganTab-C623OGS9.js                24.71 kB │ gzip:   8.23 kB
+dist/assets/GuidePage-BO2WEV_d.js                  26.12 kB │ gzip:   8.15 kB
+dist/assets/MathematicsPage-CHwTF5d3.js            26.24 kB │ gzip:   7.51 kB
+dist/assets/ReferenceArticlesPage-CHatQgi3.js      28.17 kB │ gzip:   8.37 kB
+dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+dist/assets/vendor-mui-icons-CXd-WJEu.js           37.33 kB │ gzip:  11.34 kB
+dist/assets/PaymentPolicyPanel-CQ8ve-G3.js         44.15 kB │ gzip:   6.35 kB
+dist/assets/vendor-redux-Bc1t3V2X.js               46.95 kB │ gzip:  15.76 kB
+dist/assets/useLibraryProgress-K-1aJgXE.js         63.40 kB │ gzip:  19.06 kB
+dist/assets/CastabilityTab-DbdyISYM.js             72.68 kB │ gzip:  18.96 kB
+dist/assets/Onboarding-BYzdDrPn.js                101.80 kB │ gzip:  31.58 kB
+dist/assets/AnalyzerPage-Nzbot76T.js              129.83 kB │ gzip:  35.57 kB
+dist/assets/index-CzHA4Ziz.js                     153.86 kB │ gzip:  43.08 kB
+dist/assets/index.es-DmCRpKFg.js                  157.96 kB │ gzip:  52.59 kB
+dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+dist/assets/vendor-mui-CPNqbaNh.js                370.11 kB │ gzip: 111.38 kB
+dist/assets/jspdf.es.min-DxZNJsLa.js              385.89 kB │ gzip: 124.85 kB
+dist/assets/vendor-charts-Cry7PZGj.js             430.96 kB │ gzip: 114.25 kB
+✓ built in 2.74s
+
+--- Prerendering ManaTuner ---
+
+Routes: 9 static + 65 articles + 27 authors = 101 total
+Concurrency: 4 · timeout: 20000ms
+Starting preview server...
+Preview server running at http://127.0.0.1:4174
+  Rendering /analyzer ...  Rendering /mathematics ...  Rendering /guide ...  Rendering / ... -> dist/index.html
+ -> dist/analyzer/index.html
+ -> dist/mathematics/index.html
+ -> dist/guide/index.html
+  Rendering /privacy ...  Rendering /land-glossary ...  Rendering /about ...  Rendering /library ... -> dist/privacy/index.html
+ -> dist/about/index.html
+ -> dist/land-glossary/index.html
+  Rendering /my-analyses ...  Rendering /library/reid-duke-level-one-building-a-deck ...  Rendering /library/karsten-how-many-lands-2022 ... -> dist/library/index.html
+  Rendering /library/kuisma-beat-bad-luck ... -> dist/my-analyses/index.html
+ -> dist/library/reid-duke-level-one-building-a-deck/index.html
+ -> dist/library/karsten-how-many-lands-2022/index.html
+  Rendering /library/chapin-art-of-mulligan ...  Rendering /library/saito-part-2-having-fun ...  Rendering /library/reid-duke-level-one-mulligans ... -> dist/library/kuisma-beat-bad-luck/index.html
+  Rendering /library/reid-duke-level-one-sequencing ... -> dist/library/chapin-art-of-mulligan/index.html
+ -> dist/library/saito-part-2-having-fun/index.html
+ -> dist/library/reid-duke-level-one-mulligans/index.html
+  Rendering /library/pvddr-6-heuristics ...  Rendering /library/manfield-prepare-tournament ...  Rendering /library/reid-duke-level-one-sideboarding ... -> dist/library/reid-duke-level-one-sequencing/index.html
+  Rendering /library/reid-duke-level-one-sideboard-plans ... -> dist/library/pvddr-6-heuristics/index.html
+ -> dist/library/manfield-prepare-tournament/index.html
+ -> dist/library/reid-duke-level-one-sideboarding/index.html
+  Rendering /library/reid-duke-mulligans-part-iii-constructed ...  Rendering /library/pvddr-one-mistake-archive ...  Rendering /library/fortier-ladder-series ... -> dist/library/reid-duke-level-one-sideboard-plans/index.html
+  Rendering /library/zvi-using-time-wisely ... -> dist/library/reid-duke-mulligans-part-iii-constructed/index.html
+ -> dist/library/pvddr-one-mistake-archive/index.html
+ -> dist/library/fortier-ladder-series/index.html
+  Rendering /library/pvddr-when-to-mulligan ...  Rendering /library/saito-part-1-concentration ...  Rendering /library/fortier-dash-method ... -> dist/library/zvi-using-time-wisely/index.html
+  Rendering /library/dagen-puzzling-improvements ... -> dist/library/saito-part-1-concentration/index.html
+ -> dist/library/pvddr-when-to-mulligan/index.html
+ -> dist/library/fortier-dash-method/index.html
+  Rendering /library/yahi-maths-inventory ...  Rendering /library/chapin-61-cards-russian-roulette ...  Rendering /library/moudou-game-theory-series ... -> dist/library/dagen-puzzling-improvements/index.html
+  Rendering /library/pvddr-best-vs-known ... -> dist/library/yahi-maths-inventory/index.html
+ -> dist/library/moudou-game-theory-series/index.html
+ -> dist/library/chapin-61-cards-russian-roulette/index.html
+  Rendering /library/zvi-elephant-method ...  Rendering /library/chapin-information-cascades ...  Rendering /library/saito-part-3-environment ... -> dist/library/pvddr-best-vs-known/index.html
+  Rendering /library/saito-part-4-metagame ... -> dist/library/chapin-information-cascades/index.html
+ -> dist/library/zvi-elephant-method/index.html
+ -> dist/library/saito-part-3-environment/index.html
+  Rendering /library/saito-part-5-connections ...  Rendering /library/saito-part-7-other-lessons ...  Rendering /library/pvddr-pv-rule ... -> dist/library/saito-part-4-metagame/index.html
+  Rendering /library/karsten-colored-sources-2022 ... -> dist/library/saito-part-5-connections/index.html
+ -> dist/library/saito-part-7-other-lessons/index.html
+ -> dist/library/pvddr-pv-rule/index.html
+  Rendering /library/karsten-hypergeometric-intro ...  Rendering /library/karsten-colored-sources-2018-archive ...  Rendering /library/karsten-commander-manabase ... -> dist/library/karsten-colored-sources-2022/index.html
+  Rendering /library/wizards-commander-brackets-2024 ... -> dist/library/karsten-hypergeometric-intro/index.html
+ -> dist/library/karsten-colored-sources-2018-archive/index.html
+ -> dist/library/karsten-commander-manabase/index.html
+  Rendering /library/command-zone-podcast ...  Rendering /library/game-knights-command-zone-studios ...  Rendering /library/edhrec-articles-hub ... -> dist/library/wizards-commander-brackets-2024/index.html
+  Rendering /library/limited-resources-podcast ... -> dist/library/game-knights-command-zone-studios/index.html
+ -> dist/library/command-zone-podcast/index.html
+ -> dist/library/edhrec-articles-hub/index.html
+  Rendering /library/seventeen-lands-blog ...  Rendering /library/lsv-draft-signals-classic ...  Rendering /library/reid-duke-signals-booster-draft ... -> dist/library/limited-resources-podcast/index.html
+  Rendering /library/reid-duke-sideboarding-limited ... -> dist/library/lsv-draft-signals-classic/index.html
+ -> dist/library/seventeen-lands-blog/index.html
+ -> dist/library/reid-duke-signals-booster-draft/index.html
+  Rendering /library/reid-duke-mulligans-part-ii-limited ...  Rendering /library/reid-duke-level-one-role-assignment ...  Rendering /library/chapin-next-level-deckbuilding ... -> dist/library/reid-duke-sideboarding-limited/index.html
+  Rendering /library/reid-duke-level-one-play-or-draw ... -> dist/library/reid-duke-mulligans-part-ii-limited/index.html
+ -> dist/library/chapin-next-level-deckbuilding/index.html
+ -> dist/library/reid-duke-level-one-role-assignment/index.html
+  Rendering /library/chapin-next-level-magic-tempo ...  Rendering /library/reid-duke-level-one-full-course ...  Rendering /library/zvi-whos-the-beatdown-2-multitasking ... -> dist/library/reid-duke-level-one-play-or-draw/index.html
+  Rendering /library/pvddr-ten-commandments ... -> dist/library/chapin-next-level-magic-tempo/index.html
+ -> dist/library/zvi-whos-the-beatdown-2-multitasking/index.html
+ -> dist/library/reid-duke-level-one-full-course/index.html
+  Rendering /library/flores-whos-the-beatdown ...  Rendering /library/karsten-london-mulligan ...  Rendering /library/lsv-mulligans ... -> dist/library/pvddr-ten-commandments/index.html
+  Rendering /library/pvddr-how-to-sideboard ... -> dist/library/karsten-london-mulligan/index.html
+ -> dist/library/flores-whos-the-beatdown/index.html
+ -> dist/library/lsv-mulligans/index.html
+  Rendering /library/wizards-banned-restricted ...  Rendering /library/boa-mtgo-getting-started ...  Rendering /library/depraz-mtgo-stops ... -> dist/library/pvddr-how-to-sideboard/index.html
+  Rendering /library/battle-chads-mtg-study-win-rates ... -> dist/library/wizards-banned-restricted/index.html
+ -> dist/library/boa-mtgo-getting-started/index.html
+ -> dist/library/depraz-mtgo-stops/index.html
+  Rendering /library/pcm-92-tourner-cartes ...  Rendering /library/pcm-15-avoir-un-plan ...  Rendering /library/pcm-67-coherence-depraz ... -> dist/library/battle-chads-mtg-study-win-rates/index.html
+  Rendering /library/pcm-125-heuristiques ... -> dist/library/pcm-92-tourner-cartes/index.html
+ -> dist/library/pcm-15-avoir-un-plan/index.html
+  Rendering /library/pcm-164-erwan-control ...  Rendering /library/lsv-looter-problem-lost ... -> dist/library/pcm-67-coherence-depraz/index.html
+ -> dist/library/pcm-125-heuristiques/index.html
+  Rendering /library/author/reid-duke ...  Rendering /library/author/frank-karsten ... -> dist/library/pcm-164-erwan-control/index.html
+ -> dist/library/lsv-looter-problem-lost/index.html
+  Rendering /library/author/matti-kuisma ...  Rendering /library/author/patrick-chapin ... -> dist/library/author/frank-karsten/index.html
+ -> dist/library/author/reid-duke/index.html
+  Rendering /library/author/paulo-vitor-damo-da-rosa ...  Rendering /library/author/tomoharu-saito ... -> dist/library/author/matti-kuisma/index.html
+ -> dist/library/author/patrick-chapin/index.html
+  Rendering /library/author/seth-manfield ...  Rendering /library/author/remi-fortier ... -> dist/library/author/paulo-vitor-damo-da-rosa/index.html
+ -> dist/library/author/tomoharu-saito/index.html
+  Rendering /library/author/zvi-mowshowitz ...  Rendering /library/author/pierre-dagen ... -> dist/library/author/seth-manfield/index.html
+  Rendering /library/author/moudou ... -> dist/library/author/remi-fortier/index.html
+  Rendering /library/author/anael-yahi ... -> dist/library/author/pierre-dagen/index.html
+ -> dist/library/author/zvi-mowshowitz/index.html
+  Rendering /library/author/gavin-verhey-wizards-of-the-coast ...  Rendering /library/author/jimmy-wong-josh-lee-kwai ... -> dist/library/author/moudou/index.html
+  Rendering /library/author/josh-lee-kwai-jimmy-wong ... -> dist/library/author/anael-yahi/index.html
+  Rendering /library/author/edhrec-staff-contributors ... -> dist/library/author/gavin-verhey-wizards-of-the-coast/index.html
+ -> dist/library/author/jimmy-wong-josh-lee-kwai/index.html
+  Rendering /library/author/17lands-team ...  Rendering /library/author/marshall-sutcliffe-luis-scott-vargas ... -> dist/library/author/josh-lee-kwai-jimmy-wong/index.html
+  Rendering /library/author/luis-scott-vargas ... -> dist/library/author/edhrec-staff-contributors/index.html
+  Rendering /library/author/mike-flores ... -> dist/library/author/marshall-sutcliffe-luis-scott-vargas/index.html
+ -> dist/library/author/17lands-team/index.html
+  Rendering /library/author/wizards-of-the-coast ...  Rendering /library/author/el-gran-boa ... -> dist/library/author/luis-scott-vargas/index.html
+  Rendering /library/author/jean-emmanuel-depraz ... -> dist/library/author/mike-flores/index.html
+  Rendering /library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi ... -> dist/library/author/wizards-of-the-coast/index.html
+ -> dist/library/author/el-gran-boa/index.html
+  Rendering /library/author/charles-wickham-theau-mery ...  Rendering /library/author/charles-wickham-theau-mery-jean-emmanuel-depraz ... -> dist/library/author/jean-emmanuel-depraz/index.html
+  Rendering /library/author/theau-mery-erwan-maisonneuve ... -> dist/library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi/index.html
+ -> dist/library/author/charles-wickham-theau-mery-jean-emmanuel-depraz/index.html
+ -> dist/library/author/charles-wickham-theau-mery/index.html
+ -> dist/library/author/theau-mery-erwan-maisonneuve/index.html
+
+Prerender complete: 101 succeeded, 0 failed
+---
+

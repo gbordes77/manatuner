@@ -25,25 +25,162 @@
         "passed": 2,
         "failed": 0
       }
+    },
+    "cleanInstall": "PASS",
+    "vercelPrerender": {
+      "succeeded": 101,
+      "failed": 0
     }
   },
   "linuxFull": {
-    "status": "pending"
+    "status": "PASS",
+    "run": "https://github.com/gbordes77/manatuner/actions/runs/33994988310",
+    "commit": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+    "passed": 450,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "profiles": [
+      {
+        "project": "chromium",
+        "startTime": "2026-09-05T22:08:15.963Z",
+        "duration": 131239.009,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977812274,
+        "artifactZipDigest": "sha256:59833f1bea5b87414a494fb6736c59b7268a7f20ca82889589e5f8b9ee377b26",
+        "rawReportSha256": "9c2d045deed4314400b1c629de5e8d8ba613d0b7301c2c9b62b6db5ee4fd967c",
+        "retainedReport": "proofs/linux/browser-0.json.gz"
+      },
+      {
+        "project": "firefox",
+        "startTime": "2026-09-05T22:08:07.456Z",
+        "duration": 174453.964,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977820484,
+        "artifactZipDigest": "sha256:4d60bc0a3347b2f23be6561fa1f84b4797c04ba71f25edd82eab872c992800ae",
+        "rawReportSha256": "20f4bc76f8bca232c32850d3b2fa211267d48ea6cf5efcac5764b227b7aa7f39",
+        "retainedReport": "proofs/linux/browser-1.json.gz"
+      },
+      {
+        "project": "webkit",
+        "startTime": "2026-09-05T22:08:14.486Z",
+        "duration": 281465.39300000004,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977847359,
+        "artifactZipDigest": "sha256:4459936639af9922078142990755a32a140aef3aaad42d7306c0b51d18a437aa",
+        "rawReportSha256": "8438d1b15a606274e7bf360415ded47381053e68b0a15e752046619bb71c2009",
+        "retainedReport": "proofs/linux/browser-2.json.gz"
+      },
+      {
+        "project": "Mobile Chrome",
+        "startTime": "2026-09-05T22:11:23.678Z",
+        "duration": 163781.02300000002,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977864999,
+        "artifactZipDigest": "sha256:beea72b5e59102297f0920c68bfcf2bf33baa61df32e3025799f45bc908de967",
+        "rawReportSha256": "c69f17af2c7f21f9d7db91805a1b664e2fc46f84d9f5a6a753e91529dc9ec890",
+        "retainedReport": "proofs/linux/browser-3.json.gz"
+      },
+      {
+        "project": "Mobile Safari",
+        "startTime": "2026-09-05T22:12:16.474Z",
+        "duration": 330599.988,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977918653,
+        "artifactZipDigest": "sha256:8deb707523dcd25e307d543a540799c7477da37925de1156975536b06b4138d6",
+        "rawReportSha256": "7dc1a0150b5db16eeb857517463a9763e62b8f71cdf71f77b63efd2c66d9484e",
+        "retainedReport": "proofs/linux/browser-4.json.gz"
+      },
+      {
+        "project": "iPad",
+        "startTime": "2026-09-05T22:14:20.412Z",
+        "duration": 313472.535,
+        "expected": 75,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "artifactId": 9977943851,
+        "artifactZipDigest": "sha256:3c7022effb7246a91d1290a1a8ced0a70c920488b28e6d11f737ba3ee4e6d9fd",
+        "rawReportSha256": "f5902dd259c08921c09440a8d52b253e473ba33f3755e00d5658dbda26599977",
+        "retainedReport": "proofs/linux/browser-5.json.gz"
+      }
+    ]
   },
   "publication": {
-    "status": "pending"
+    "status": "verified",
+    "applicationCommit": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+    "deployment": {
+      "id": "dpl_5Xm73hbGBveAS2XY6p6qt3UBBrSr",
+      "readyState": "READY",
+      "gitSource": {
+        "ref": "main",
+        "repoId": 1002485958,
+        "sha": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+        "type": "github",
+        "prId": null
+      },
+      "alias": [
+        "www.manatuner.app",
+        "manatuner-pro.vercel.app",
+        "manatuner.app",
+        "manatuner-pro-gbordes77s-projects.vercel.app",
+        "manatuner-pro-git-main-gbordes77s-projects.vercel.app"
+      ],
+      "url": "manatuner-2ls2x0rmh-gbordes77s-projects.vercel.app",
+      "target": "production",
+      "createdAt": 1788646875252,
+      "ready": 1788646910431
+    },
+    "httpStatus": 200,
+    "productionBrowser": {
+      "startTime": "2026-09-05T22:23:13.140Z",
+      "duration": 5206.1849999999995,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "channel": "Native GitHub integration only; disabled CI deployment job left disabled",
+    "closure": "The following documentation-only commit preserves the tested application trees; inspect git log and Vercel for its own HEAD/deployment."
   },
   "proofSha256": {
+    "proofs/clean-vercel-build.txt": "c0337a8226a18036993b768f115f91b35a56319ef8622c2a83580ce1282918b0",
     "proofs/bundle.txt": "7d4f01dc96c692136b07ce3c60907404076d34e4aa94e0848a3ebdb4212330bf",
-    "proofs/unit.txt": "a0bae515e9cfb7b9d67636b70b95b2b8987a101fa25a50d00416e1cf14547ee8",
-    "proofs/webkit.json": "811e06f6031ed1b262841557fe5a2003c67aa0d8ce8a9399c41c0c7c1a114e96",
-    "proofs/audit-production.json": "25a6f5090d94f5c40d8cf791a518f78c5d588bed47fb3b44d5750052e69a6fc5",
-    "proofs/chromium.json": "4bb333f31144eccefb07f9be04ec437a019d4f448c078adbc7c61d590e7f6e9f",
+    "proofs/unit.txt": "9470c7dfb2b8b1f2fec0cad029fdb0290514160904ee20657919d023aeba0fce",
+    "proofs/webkit.json": "2ba16dd8d5566723ceae16fd073886eb07df8d671258c82f88143eca9a6ed5fc",
+    "proofs/audit-production.json": "5bf25e1d3afc33e1144bd608fa7304a13c7dbfb1f1f715575b0c5102a4e32800",
+    "proofs/chromium.json": "e66c7fdbf56ffd90f853c18a420aca2ee0cd9b32769d76cfecc8f712fa7f6285",
+    "proofs/production-browser.json.gz": "e91c694d532639d6d4e7c451a5d4a2967c87000d4def88c6e5995ef3f3159303",
+    "proofs/clean-build.txt": "1e835ad1b8b8237ca5945e1a7ff2db7410758a6f9bced5d721afae7a03fff8c5",
     "proofs/build.txt": "755e572add5b4d3a3600cc528fb57dd5ef1bb7abbb236c54b57d314c2e8bb456",
-    "proofs/audit-before.json": "52ef3787bd270b2bd35632023b11a9cb31ba6d727be6b73aeb358a1e7c6e6d38",
+    "proofs/audit-before.json": "b124b128b7e9e6e97f60cb880516e30213b1f50985c9680254aeec742363f24b",
     "proofs/types.txt": "0063f77c1b9d325fa1bde986a3f02fd2af4e2c3cac20ed021a9c863f0508d9bd",
+    "proofs/production-deploy.json": "7ebd6c9f107da9b7a2c1b825136c8ffc01e580c94d2d7f03d9dcb252d63a3f50",
     "proofs/lint.txt": "218e96414840321f9309c1eb7f8486a40fd7577d4e8c72852014bd9ee2503400",
-    "proofs/audit-after.json": "25a6f5090d94f5c40d8cf791a518f78c5d588bed47fb3b44d5750052e69a6fc5"
+    "proofs/audit-after.json": "5bf25e1d3afc33e1144bd608fa7304a13c7dbfb1f1f715575b0c5102a4e32800",
+    "proofs/clean-install.txt": "177a77153159ffd9a719e6e3c4b6f687129e9764a2ab52aef5b453a6cdc9e09d",
+    "proofs/main-ci.json": "9b84425208cf1ea6a2f02f6b406e92f0ea33e3abf3748ab4d2050ddd73c4735d",
+    "proofs/linux/browser-2.json.gz": "7114baaddfb8d4d07bdd856e34751f2c9d7534478c3fd2be5d76336983ab2191",
+    "proofs/linux/browser-3.json.gz": "9a98e54af9874490dfcd14a8125bd1c353f802151793942b105678bbc5380abd",
+    "proofs/linux/browser-1.json.gz": "9fede6efbb57000649c2e5ac0eaeaef9285eeb903ed044f6ad8dfa05160e9a6d",
+    "proofs/linux/browser-0.json.gz": "540721c72b6be801cb733acd17471be89b87fd49a9a204422994a41c216ccf50",
+    "proofs/linux/browser-5.json.gz": "9beeaaf70b8c7fb2eceaf016241321d92bbba19d9381ed11222e6cb7eda104a6",
+    "proofs/linux/browser-4.json.gz": "4b16db2280563900ada5707d73e83042619cef5336b0bf30350ce5454990331d"
   },
   "sourceSha256": {
     "src/services/paymentPolicy/cost.ts": "04dedba3ca5cc74cbf8d0f505037c6268e94e578a7a97a478c10319fd502ac20",
@@ -52,6 +189,38 @@
     "src/services/paymentPolicy/deck.ts": "c2e32d49e2a8da5e1ca5d3b431f967bb0658e6e2bbd053d75e41ac1dbb21ac3b",
     "src/workers/paymentPolicy.worker.ts": "0808d1cee09a9110d64ce35c5ff8325db42340f8cc837c6db49336095f8064c7",
     "src/components/analyzer/PaymentPolicyPanel.tsx": "271ac3307da8ff6d07f13037b42cca55574330d9b230d823e35bfd51575182e1",
-    "src/data/paymentPolicyCards.json": "74c25d712d21a78b02ec7f1f564994a834ef967f54d21de3c9eff1fdce125612"
+    "src/data/paymentPolicyCards.json": "74c25d712d21a78b02ec7f1f564994a834ef967f54d21de3c9eff1fdce125612",
+    "package.json": "27e5d88fa619212d4e1cb67cbaa39aeb0611094c460d68156d1aef74fe0b89ec",
+    "package-lock.json": "242df1422cd0ad363309329e1b4c3138ae4f58cf5b4d9b5a0855573d95a7b182",
+    "scripts/prerender.mjs": "e03a1047580a75483e69306f9ba31f5d1e5e6bbf8e005d74e4b5730564b5568b"
+  },
+  "testedCommit": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+  "oracleReproduction": {
+    "closedContracts": 102,
+    "aliases": 222,
+    "fractionCases": 12,
+    "equalParsedJson": true
+  },
+  "regressionsDuringValidation": [
+    {
+      "commit": "7e660079b93832095d53b049af6d9d882907ef27",
+      "run": "https://github.com/gbordes77/manatuner/actions/runs/33994799353",
+      "phase": "prebuild before browser tests",
+      "error": "ERR_MODULE_NOT_FOUND: Cannot find package 'esbuild' imported from scripts/generate-library-feeds.mjs",
+      "cause": "Undeclared direct script dependency had previously been provided by the removed Vercel CLI. Local residual installation masked it.",
+      "fixCommit": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+      "fix": "Declare esbuild directly, use declared @playwright/test in prerender, verify npm ci/build/prerender in a fresh directory; do not publish stale browser artifacts when scenarios never ran."
+    }
+  ],
+  "ci": {
+    "conclusion": "success",
+    "headSha": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+    "status": "completed",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33995665745"
+  },
+  "applicationTrees": {
+    "src": "d91bb72031201ce834a73d783393ba2bff6c618a",
+    "tests": "3816f1be5a57104e3562ce8084285cced1165cb0",
+    "scripts": "013f698f8874993670d4f453146a3170c333babd"
   }
 }

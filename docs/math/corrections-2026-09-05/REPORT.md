@@ -1,3 +1,5 @@
+> **Rapport historique A1–A3 et pathways.** La suite des cinq points est documentée dans [le rapport du 6 septembre](../extensions-2026-09-06/REPORT.md) et [ses preuves](../extensions-2026-09-06/validation.json). Les résultats ci-dessous restent attachés à leurs anciens commits.
+
 # 1 Verdict global
 
 Corrections A1–A3 implémentées ; extension fermée des dix pathways terrain/terrain implémentée. Fiabilité limitée au modèle et aux cas vérifiés, sans certification universelle. Le code applicatif fcf566a est publié sur main et Vercel (dpl_27sX3V9r3YcAE7muGqhSCojfXZ67, READY, HTTP 200). CI et campagne Linux complète réussies. Les preuves sont consignées dans validation.json.

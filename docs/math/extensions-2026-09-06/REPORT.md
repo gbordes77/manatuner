@@ -1,6 +1,6 @@
 # 1 Verdict global
 
-Les cinq points demandés ont des implémentations et des régressions, dans un domaine fermé. Le mode `payment-policy-v2` est une politique de ressources non clairvoyante, accessible dans Castability. Ce n'est pas une certification universelle ni une extension silencieuse des scores historiques. Les résultats de validation et de publication sont suivis dans `validation.json` ; ne pas attribuer à un SHA des tests d'un autre code.
+Les cinq points demandés ont des implémentations et des régressions, dans un domaine fermé. Le mode `payment-policy-v2` est une politique de ressources non clairvoyante, accessible dans Castability. Ce n'est pas une certification universelle ni une extension silencieuse des scores historiques. Le code applicatif `0bb387a` est publié sur main : CI réussie, Vercel natif `dpl_5Xm73hbGBveAS2XY6p6qt3UBBrSr` READY, SHA et alias vérifiés, HTTP 200 et deux parcours publics réussis. La clôture documentaire conserve les mêmes arbres applicatifs. Les résultats et références sont dans `validation.json` ; vérifier le HEAD réel à la reprise.
 
 # 2 Résumé exécutif
 
@@ -20,7 +20,7 @@ Le [contrat](MODEL.md) détaille l'événement extérieur, la politique, les ét
 
 # 6 Bugs trouvés
 
-Les refus antérieurs de fetchs, MDFC sort/terrain, neige et vie étaient des limites, pas des probabilités fausses démontrées. Une comparaison indépendante montre pourquoi réutiliser le potentiel clairvoyant pour une politique serait faux (écart 7/360). Pendant l'implémentation, les nouveaux cas testent les consommations physiques et les paiements effectifs ; les fixtures et mocks erronés ont été corrigés sans affaiblir les assertions. Les deux placeholders unitaires ne vérifiaient rien : ils sont remplacés par des tests d'erreur/réessai et de restauration du brouillon. Le placeholder navigateur est remplacé par une persistance après vrai reload.
+Les refus antérieurs de fetchs, MDFC sort/terrain, neige et vie étaient des limites, pas des probabilités fausses démontrées. Une comparaison indépendante montre pourquoi réutiliser le potentiel clairvoyant pour une politique serait faux (écart 7/360). Pendant l'implémentation, les nouveaux cas testent les consommations physiques et les paiements effectifs ; les fixtures et mocks erronés ont été corrigés sans affaiblir les assertions. La première validation Linux (`7e66007`) a échoué avant les navigateurs : `esbuild`, importé par les scripts, n'était pas une dépendance directe. Le retrait du CLI a révélé ce défaut, masqué par un paquet résiduel local. Corrigé en `0bb387a` ; installation, build et pré-rendu vérifiés dans une copie propre. Les deux placeholders unitaires ne vérifiaient rien : ils sont remplacés par des tests d'erreur/réessai et de restauration du brouillon. Le placeholder navigateur est remplacé par une persistance après vrai reload.
 
 # 7 Tests indépendants
 
@@ -48,7 +48,7 @@ Nouveau moteur/pont de métadonnées/parser de coûts/manifeste, worker et panne
 
 # 13 Tests exécutés
 
-Consulter `validation.json` et les preuves référencées pour les nombres actuels, SHA et empreintes. Les références historiques 593/438 puis 621/438 restent dans les rapports précédents. Les contrôles locaux couvrent installation verrouillée, unité, types, lint, build, budget, audit et parcours Chromium/WebKit. La campagne complète Linux doit couvrir les six projets et inclure les deux nouveaux parcours sans tests ignorés.
+Code applicatif `0bb387a` : 669 tests unitaires réussis, 0 ignoré, 63 fichiers ; lint 0 erreur / 0 avertissement ; types, build, budget et audits npm développement + production PASS (0 vulnérabilité). Installation et build dans une copie propre, puis pré-rendu : 101 pages réussies / 0 échec. Campagne Linux `33994988310` : 450 réussis / 0 ignoré / 0 échec / 0 reprise, soit 75 par profil. Les six rapports bruts compressés et leurs empreintes sont conservés. Consulter `validation.json` pour les SHA, URL et détails. Les références historiques 593/438 puis 621/438 restent dans les rapports précédents. Les contrôles locaux couvrent installation verrouillée, unité, types, lint, build, budget, audit et parcours Chromium/WebKit. Les deux nouveaux parcours passent également sur le site public après publication (worker réel avec métadonnées de cartes contrôlées, export et persistance). La campagne complète Linux couvre les six projets et inclut les deux nouveaux parcours sans tests ignorés.
 
 # 14 Performance
 

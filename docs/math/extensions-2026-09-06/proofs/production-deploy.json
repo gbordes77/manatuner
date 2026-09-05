@@ -1,0 +1,22 @@
+{
+  "id": "dpl_5Xm73hbGBveAS2XY6p6qt3UBBrSr",
+  "readyState": "READY",
+  "gitSource": {
+    "ref": "main",
+    "repoId": 1002485958,
+    "sha": "0bb387aa903c8360107db889fe8c874e256d8c2b",
+    "type": "github",
+    "prId": null
+  },
+  "alias": [
+    "www.manatuner.app",
+    "manatuner-pro.vercel.app",
+    "manatuner.app",
+    "manatuner-pro-gbordes77s-projects.vercel.app",
+    "manatuner-pro-git-main-gbordes77s-projects.vercel.app"
+  ],
+  "url": "manatuner-2ls2x0rmh-gbordes77s-projects.vercel.app",
+  "target": "production",
+  "createdAt": 1788646875252,
+  "ready": 1788646910431
+}
