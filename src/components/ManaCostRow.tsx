@@ -738,7 +738,11 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     const physicalResult = useMemo(() => {
       if (physicalLands == null)
         return { status: 'unsupported' as const, reason: 'Physical land metadata is incomplete' }
-      if ((accelContext?.removalRate ?? 0) !== 0)
+      if (
+        showAcceleration &&
+        (producers?.length ?? 0) > 0 &&
+        (accelContext?.removalRate ?? 0) !== 0
+      )
         return {
           status: 'unsupported' as const,
           reason: 'Exact sequencing currently supports goldfish only (removal rate 0)',

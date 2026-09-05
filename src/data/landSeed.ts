@@ -44,6 +44,58 @@ type SeedLandData = Omit<LandMetadata, 'name' | 'confidence'>
  * Organized by category for maintainability.
  */
 const SEED_DATA: Record<string, SeedLandData> = {
+  // Battle lands: two basic permanents required, not merely two basic land types.
+  'Prairie Stream': {
+    category: 'battle',
+    produces: ['U', 'W'],
+    producesAny: false,
+    etbBehavior: { type: 'conditional', condition: { type: 'control_basics_min', threshold: 2 } },
+    isFetch: false,
+    isCreatureLand: false,
+    hasChannel: false,
+    basicLandTypes: ['Plains', 'Island'],
+  },
+  'Sunken Hollow': {
+    category: 'battle',
+    produces: ['B', 'U'],
+    producesAny: false,
+    etbBehavior: { type: 'conditional', condition: { type: 'control_basics_min', threshold: 2 } },
+    isFetch: false,
+    isCreatureLand: false,
+    hasChannel: false,
+    basicLandTypes: ['Island', 'Swamp'],
+  },
+  'Smoldering Marsh': {
+    category: 'battle',
+    produces: ['B', 'R'],
+    producesAny: false,
+    etbBehavior: { type: 'conditional', condition: { type: 'control_basics_min', threshold: 2 } },
+    isFetch: false,
+    isCreatureLand: false,
+    hasChannel: false,
+    basicLandTypes: ['Swamp', 'Mountain'],
+  },
+  'Cinder Glade': {
+    category: 'battle',
+    produces: ['G', 'R'],
+    producesAny: false,
+    etbBehavior: { type: 'conditional', condition: { type: 'control_basics_min', threshold: 2 } },
+    isFetch: false,
+    isCreatureLand: false,
+    hasChannel: false,
+    basicLandTypes: ['Mountain', 'Forest'],
+  },
+  'Canopy Vista': {
+    category: 'battle',
+    produces: ['G', 'W'],
+    producesAny: false,
+    etbBehavior: { type: 'conditional', condition: { type: 'control_basics_min', threshold: 2 } },
+    isFetch: false,
+    isCreatureLand: false,
+    hasChannel: false,
+    basicLandTypes: ['Plains', 'Forest'],
+  },
+
   // ===========================================================================
   // BASIC LANDS (6)
   // ===========================================================================

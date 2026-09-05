@@ -27,7 +27,7 @@ interface EnhancedRecommendationsProps {
   analysis: {
     consistency: number
     /** Fraction of spells below 80% castability on curve (0-1) */
-    atRiskSpells: number
+    atRiskSpells: number | null
     landRatio: number
     avgCMC: number
   }
@@ -113,8 +113,8 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
     else if (analysis.consistency < 0.85) score -= 5
 
     // At-risk spells penalty (fraction of spells below 80% castability)
-    if (analysis.atRiskSpells > 0.3) score -= 20
-    else if (analysis.atRiskSpells > 0.15) score -= 10
+    if (analysis.atRiskSpells !== null && analysis.atRiskSpells > 0.3) score -= 20
+    else if (analysis.atRiskSpells !== null && analysis.atRiskSpells > 0.15) score -= 10
 
     // Land ratio penalty
     if (analysis.landRatio < 0.35 || analysis.landRatio > 0.45) score -= 10
@@ -177,7 +177,9 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
                 <Box textAlign="center">
                   <WarningIcon sx={{ fontSize: 32, color: 'var(--mtg-red)', mb: 1 }} />
                   <Typography variant="h6" fontWeight="600">
-                    {Math.round(analysis.atRiskSpells * 100)}%
+                    {analysis.atRiskSpells === null
+                      ? 'Unavailable'
+                      : `${Math.round(analysis.atRiskSpells * 100)}%`}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     At-Risk Spells

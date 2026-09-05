@@ -3,7 +3,7 @@
  * This is potential castability (an upper bound for a policy without foresight),
  * not a win rate. Unsupported mechanics and resource limits yield no probability.
  */
-import type { LandMetadata } from '../../types/lands'
+import type { ETBCondition, LandMetadata } from '../../types/lands'
 import type { DeckManaProfile, ProducerInDeck, ProducerManaCost } from '../../types/manaProducers'
 
 export type PhysicalManaResult =
@@ -18,6 +18,9 @@ type Source = {
   mask: number
   amount: number
   delay: number
+  entry?: ETBCondition
+  basic?: boolean
+  basicTypes?: string[]
   cost: Cost
 }
 type State = {
@@ -94,12 +97,31 @@ function landSource(land: LandMetadata): Source | string {
   if (
     land.isFetch ||
     land.producesAnyForCreaturesOnly ||
-    !['basic', 'dual', 'triome'].includes(land.category) ||
+    !['basic', 'dual', 'triome', 'fast', 'slow', 'check', 'battle'].includes(land.category) ||
     land.isMDFC
   )
     return `Unsupported land restriction: ${land.name}`
-  if (land.etbBehavior.type === 'conditional')
-    return `Conditional entry needs a board-state rule: ${land.name}`
+  const entry = land.etbBehavior.type === 'conditional' ? land.etbBehavior.condition : undefined
+  if (land.etbBehavior.type === 'conditional') {
+    if (
+      !entry ||
+      !['control_lands_max', 'control_lands_min', 'control_basic', 'control_basics_min'].includes(
+        entry.type
+      )
+    )
+      return `Unsupported conditional entry: ${land.name}`
+    if (entry.type === 'control_basic') {
+      if (
+        !entry.basicTypes?.length ||
+        entry.basicTypes.some(
+          (t) => !['Plains', 'Island', 'Swamp', 'Mountain', 'Forest'].includes(t)
+        )
+      )
+        return `Invalid required land types: ${land.name}`
+    } else if (!Number.isSafeInteger(entry.threshold) || entry.threshold! < 0) {
+      return `Invalid land threshold: ${land.name}`
+    }
+  }
   const sourceMask = (land.producesAny ? 31 : 0) | mask(land.produces)
   const amount = land.producesAmount ?? 1
   if (
@@ -116,6 +138,9 @@ function landSource(land: LandMetadata): Source | string {
     amount,
     delay: land.etbBehavior.type === 'always_tapped' ? 1 : 0,
     cost: emptyCost(),
+    entry,
+    basic: land.category === 'basic',
+    basicTypes: land.basicLandTypes ?? [],
   }
 }
 
@@ -245,7 +270,7 @@ function choose(n: number, k: number): number {
   return value
 }
 
-export function physicalManaProbability(
+function computePhysicalManaProbability(
   deck: DeckManaProfile,
   spell: ProducerManaCost,
   turn: number,
@@ -285,7 +310,7 @@ export function physicalManaProbability(
     return { status: 'unsupported', reason: 'Land and producer counts exceed the library size' }
   // With only untapped one-mana lands, order can be eliminated exactly:
   // one new card per draw step allows any payable subset of at most `turn` lands.
-  if (sources.every((s) => s.land && s.delay === 0 && s.amount === 1)) {
+  if (sources.every((s) => s.land && !s.entry && s.delay === 0 && s.amount === 1)) {
     if (onlineProducer)
       return { status: 'unsupported', reason: 'Producer is absent from the source model' }
     if (spell.mv > turn) return { status: 'exact', p1: 0, p2: 0, histories: 0 }
@@ -391,7 +416,30 @@ export function physicalManaProbability(
           const next = clone(s)
           next.hand[i]--
           next.board[i]++
-          if (!source.delay) next.ready[i]++
+          let untapped = source.delay === 0
+          if (source.entry) {
+            const otherLands = sources.reduce((n, x, j) => n + (x.land ? s.board[j] : 0), 0)
+            const basics = sources.reduce((n, x, j) => n + (x.basic ? s.board[j] : 0), 0)
+            switch (source.entry.type) {
+              case 'control_lands_max':
+                untapped = otherLands <= source.entry.threshold!
+                break
+              case 'control_lands_min':
+                untapped = otherLands >= source.entry.threshold!
+                break
+              case 'control_basics_min':
+                untapped = basics >= source.entry.threshold!
+                break
+              case 'control_basic':
+                untapped = sources.some(
+                  (x, j) =>
+                    s.board[j] > 0 &&
+                    x.basicTypes?.some((t) => source.entry!.basicTypes!.includes(t))
+                )
+                break
+            }
+          }
+          if (untapped) next.ready[i]++
           next.landPlayed = true
           pending.push(next)
         } else {
@@ -475,4 +523,43 @@ export function physicalManaProbability(
     p2: Math.min(1, success),
     histories,
   }
+}
+
+// Repeated UI and legacy summary calls often ask the same exact question.
+// Bound both key size and entry count; return copies so callers cannot poison
+// later results. Budgets, metadata, draw rules and producer identities are keyed.
+const resultCache = new Map<string, PhysicalManaResult>()
+export function physicalManaProbability(
+  deck: DeckManaProfile,
+  spell: ProducerManaCost,
+  turn: number,
+  producers: ProducerInDeck[] = [],
+  playDraw: 'PLAY' | 'DRAW' = 'PLAY',
+  maxWork = 250_000,
+  onlineProducer?: string
+): PhysicalManaResult {
+  const serialized = JSON.stringify(
+    [deck, spell, turn, producers, playDraw, maxWork, onlineProducer],
+    (_key, value) =>
+      typeof value === 'number' && !Number.isFinite(value)
+        ? { invalidNumber: String(value) }
+        : value
+  )
+  const cacheKey = serialized.length <= 16_384 ? serialized : undefined
+  const cached = cacheKey === undefined ? undefined : resultCache.get(cacheKey)
+  if (cached) return { ...cached }
+  const result = computePhysicalManaProbability(
+    deck,
+    spell,
+    turn,
+    producers,
+    playDraw,
+    maxWork,
+    onlineProducer
+  )
+  if (cacheKey !== undefined) {
+    if (resultCache.size >= 64) resultCache.delete(resultCache.keys().next().value!)
+    resultCache.set(cacheKey, { ...result })
+  }
+  return result
 }

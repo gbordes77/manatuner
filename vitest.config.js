@@ -8,11 +8,10 @@ export default defineConfig({
     setupFiles: "./tests/setup.js",
     globals: true,
     css: true,
-    // Exclude E2E tests (Playwright) and tests with missing exports from Vitest
+    // Exclude Playwright and nested worktrees from unit discovery
     exclude: [
       "node_modules/**",
       "tests/e2e/**",
-      "tests/mtg-specific/card-types/**", // TODO: rewrite tests — imports private parseDeckList
       "**/node_modules/**",
       ".claude/**", // claude-code worktrees shadow the main test tree
     ],

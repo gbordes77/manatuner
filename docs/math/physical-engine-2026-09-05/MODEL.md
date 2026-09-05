@@ -1,3 +1,5 @@
+> Extension ultérieure : fastlands, slowlands, checklands et battle lands sont maintenant évalués sur le champ de bataille effectif ; voir ../completion-2026-09-05/REPORT.md.
+
 # Périmètre du moteur physique
 
 Ce moteur calcule la probabilité que les cartes tirées admettent **au moins une séquence légale de production de mana** dans le modèle ci-dessous. Ce résultat mesure un potentiel. Il est une borne supérieure pour une politique de jeu qui ne connaît pas les futures pioches ; il n'est pas une probabilité de victoire, ni une probabilité de tirer puis lancer le sort.

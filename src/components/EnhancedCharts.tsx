@@ -382,7 +382,7 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
             <Grid item xs={12} sm={6} md={3}>
               <Paper className="mtg-card" sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" fontWeight="700" color="var(--mtg-red)">
-                  {analysis.atRiskSpells || 0}%
+                  {analysis.atRiskSpells == null ? 'Unavailable' : `${analysis.atRiskSpells}%`}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -391,7 +391,7 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
                 >
                   At-Risk Spells
                   <MuiTooltip
-                    title="Percentage of spells in your deck with less than 80% probability of being cast on curve. These are the spells most likely to strand in your hand. Lower is better."
+                    title="Fraction of spell copies below 80% potential castability in the lands-only model. Unavailable when any spell cannot be calculated. This excludes the probability of drawing the spell."
                     arrow
                   >
                     <IconButton size="small" sx={{ ml: 0.5, p: 0 }}>
@@ -401,14 +401,16 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
                 </Typography>
                 <Chip
                   label={
-                    (analysis.atRiskSpells || 0) <= 10
-                      ? 'Low'
-                      : (analysis.atRiskSpells || 0) <= 25
-                        ? 'Moderate'
-                        : 'High'
+                    analysis.atRiskSpells == null
+                      ? 'Unavailable'
+                      : analysis.atRiskSpells <= 10
+                        ? 'Low'
+                        : (analysis.atRiskSpells || 0) <= 25
+                          ? 'Moderate'
+                          : 'High'
                   }
                   size="small"
-                  className={`mtg-chip ${(analysis.atRiskSpells || 0) <= 10 ? 'excellent' : (analysis.atRiskSpells || 0) <= 25 ? 'average' : 'poor'}`}
+                  className={`mtg-chip ${analysis.atRiskSpells == null ? '' : analysis.atRiskSpells <= 10 ? 'excellent' : (analysis.atRiskSpells || 0) <= 25 ? 'average' : 'poor'}`}
                   sx={{ mt: 1 }}
                 />
               </Paper>

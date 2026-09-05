@@ -1,0 +1,52 @@
+name: Browser audit
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    name: ${{ matrix.project }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - project: chromium
+            browser: chromium
+          - project: firefox
+            browser: firefox
+          - project: webkit
+            browser: webkit
+          - project: Mobile Chrome
+            browser: chromium
+          - project: Mobile Safari
+            browser: webkit
+          - project: iPad
+            browser: webkit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: npm run build
+      - name: Browser scenarios against production build
+        env:
+          AUDIT_PROJECT: ${{ matrix.project }}
+          PLAYWRIGHT_USE_PREVIEW: '1'
+        run: npx playwright test --project="$AUDIT_PROJECT" --workers=1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-${{ strategy.job-index }}
+          path: |
+            playwright-report/
+            test-results.json
+            test-results/
+          retention-days: 7

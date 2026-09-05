@@ -43,8 +43,8 @@ export const BetaBanner: React.FC = () => {
         borderColor: (theme) => (theme.palette.mode === 'dark' ? 'grey.700' : 'grey.300'),
         py: 0.5,
         position: 'relative',
-        // Above AppBar (1100) + joyride chrome so the CTA is always reachable
-        zIndex: 1300,
+        // Above the AppBar, but below drawers and modal dialogs.
+        zIndex: (theme) => theme.zIndex.appBar + 1,
         pointerEvents: 'auto',
       }}
     >

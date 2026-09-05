@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Prairie Stream",
+    "type_line": "Land \u2014 Plains Island",
+    "oracle_text": "({T}: Add {W} or {U}.)\nThis land enters tapped unless you control two or more basic lands.",
+    "produced_mana": ["U", "W"],
+    "scryfall_uri": "https://scryfall.com/card/msc/257/prairie-stream?utm_source=api"
+  },
+  {
+    "name": "Sunken Hollow",
+    "type_line": "Land \u2014 Island Swamp",
+    "oracle_text": "({T}: Add {U} or {B}.)\nThis land enters tapped unless you control two or more basic lands.",
+    "produced_mana": ["B", "U"],
+    "scryfall_uri": "https://scryfall.com/card/msc/271/sunken-hollow?utm_source=api"
+  },
+  {
+    "name": "Smoldering Marsh",
+    "type_line": "Land \u2014 Swamp Mountain",
+    "oracle_text": "({T}: Add {B} or {R}.)\nThis land enters tapped unless you control two or more basic lands.",
+    "produced_mana": ["B", "R"],
+    "scryfall_uri": "https://scryfall.com/card/msc/266/smoldering-marsh?utm_source=api"
+  },
+  {
+    "name": "Cinder Glade",
+    "type_line": "Land \u2014 Mountain Forest",
+    "oracle_text": "({T}: Add {R} or {G}.)\nThis land enters tapped unless you control two or more basic lands.",
+    "produced_mana": ["G", "R"],
+    "scryfall_uri": "https://scryfall.com/card/msc/230/cinder-glade?utm_source=api"
+  },
+  {
+    "name": "Canopy Vista",
+    "type_line": "Land \u2014 Forest Plains",
+    "oracle_text": "({T}: Add {G} or {W}.)\nThis land enters tapped unless you control two or more basic lands.",
+    "produced_mana": ["G", "W"],
+    "scryfall_uri": "https://scryfall.com/card/msc/227/canopy-vista?utm_source=api"
+  }
+]

@@ -15,3 +15,16 @@ it('does not round small differences before the stopping decision', () => {
   const values = mulliganStoppingValues({ 4: [0.49], 5: [0.48, 0.51], 6: [0], 7: [0] })
   expect(values[7]).toBe(0.5)
 })
+
+it('one free seven-card redraw matches all 32 independent stopping paths', async () => {
+  const { freeMulliganValue } = await import('../../src/services/mulliganStopping')
+  let sum = 0
+  for (const first of [0, 50])
+    for (const h7 of [0, 50])
+      for (const h6 of [20, 40])
+        for (const h5 of [0, 30])
+          for (const h4 of [10, 20])
+            sum += first >= 40.625 ? first : h7 >= 31.25 ? h7 : h6 >= 22.5 ? h6 : h5 >= 15 ? h5 : h4
+  expect(freeMulliganValue([0, 50], 40.625)).toBe(sum / 32)
+  expect(sum / 32).toBe(45.3125)
+})

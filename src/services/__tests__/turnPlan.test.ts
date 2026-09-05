@@ -252,18 +252,15 @@ describe('generateTurnPlan - curve-out preference', () => {
 })
 
 describe('generateTurnPlan - land with no producedMana info', () => {
-  it('should treat lands with no producedMana as colorless sources', () => {
-    // Fallback: land without producedMana should still count as 1 mana
+  it('does not invent mana when production is unknown', () => {
+    // Missing production is not evidence of a colorless mana ability.
     const h = makeHand(
       [land('Unknown Land'), land('Unknown Land')],
       [spell('Sol Ring', 1, {})] // colorless spell
     )
     const plans = generateTurnPlan(h, [])
 
-    // Unknown land = no colors but still 1 mana for colorless spells
-    // Actually with empty producedMana, colorPool stays empty
-    // But generic mana check passes (cmc <= manaLeft, no symbols to check)
-    expect(plans[0].manaAvailable).toBe(1)
-    expect(plans[0].plays).toContain('Sol Ring')
+    expect(plans[0].manaAvailable).toBe(0)
+    expect(plans[0].plays).not.toContain('Sol Ring')
   })
 })

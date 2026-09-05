@@ -48,7 +48,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: process.env.PLAYWRIGHT_USE_PREVIEW ? 'npm run preview -- --port 3000 --strictPort' : 'npm run dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },

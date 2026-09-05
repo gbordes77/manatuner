@@ -97,7 +97,7 @@ function ensureNonBlockingOverlayCss() {
     a[href*="tally.so"] {
       pointer-events: auto !important;
       position: relative;
-      z-index: 1301;
+      z-index: 1101;
     }
   `
   document.head.appendChild(style)

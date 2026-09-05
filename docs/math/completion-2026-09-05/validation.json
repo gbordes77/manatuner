@@ -1,0 +1,35 @@
+{
+  "unit": {
+    "passed": 586,
+    "skipped": 2,
+    "files": 53
+  },
+  "types": "PASS",
+  "lint": {
+    "errors": 0,
+    "warnings": 27
+  },
+  "build": "PASS",
+  "bundleBudget": "PASS",
+  "productionDependencyAudit": {
+    "vulnerabilities": 0
+  },
+  "chromiumBeforeToolchainUpgrade": {
+    "passed": 72,
+    "skipped": 1
+  },
+  "firefoxMacOS27": {
+    "status": "blocked at browser startup",
+    "upstream": "https://bugzilla.mozilla.org/show_bug.cgi?id=2060476"
+  },
+  "linuxBrowserAudit": "pending workflow dispatch after commit",
+  "universalCertification": false,
+  "sha256": {
+    "src/services/castability/physicalManaEngine.ts": "fa81fab156686f6249dd609a4050bfea3edbe8e245c68e8ad66698613397d6e2",
+    "src/services/manaCalculator.ts": "6d58b1aa8c08f39e8de7a30fa71c5e74b3b1bd87c9d5b81cb01bd9b4a9c19de5",
+    "src/services/mulliganSimulatorAdvanced.ts": "4977d6dba2b181df6f0a42b53b718736acd7d35154eea362ae2ed5b3fae642b2",
+    "src/services/deckAnalyzer.ts": "571af7a7abc6d6d383bf3e225507d766dd16acd439d4dae52b44d30299177d9a",
+    "tests/math-audit/conditional-lands.test.ts": "ec292114d0e4ec6d152e4bfe246303990c0e021e0128511d8f9d65b7b20452f3",
+    "tests/math-audit/bellman.test.ts": "99c6d0223cff7fba9a63bce7d3e8f0464b6337ffb9d5c29d3d35b2b3418c49a7"
+  }
+}

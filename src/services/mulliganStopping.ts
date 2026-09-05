@@ -20,3 +20,14 @@ export function mulliganStoppingValues(
   }
   return values
 }
+
+/** One free redraw of seven, followed by the ordinary paid-mulligan chain. */
+export function freeMulliganValue(rewards: number[], paidSevenValue: number): number {
+  if (
+    !rewards.length ||
+    !Number.isFinite(paidSevenValue) ||
+    rewards.some((r) => !Number.isFinite(r))
+  )
+    throw new RangeError('Finite rewards and continuation value are required')
+  return rewards.reduce((sum, reward) => sum + Math.max(reward, paidSevenValue), 0) / rewards.length
+}

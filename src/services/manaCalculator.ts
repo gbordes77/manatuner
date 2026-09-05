@@ -52,8 +52,19 @@ export class ManaCalculator {
     turn: number,
     symbolsNeeded: number,
     onThePlay: boolean = true,
-    handSize: number = 7 // Support pour mulligans
+    handSize: number = 7 // Uniform sample only; does not model London hand selection
   ): ProbabilityResult {
+    if (
+      !Number.isSafeInteger(turn) ||
+      turn < 1 ||
+      !Number.isSafeInteger(handSize) ||
+      handSize < 0 ||
+      handSize > 7
+    ) {
+      throw new RangeError(
+        'A positive integer turn and opening sample size from 0 to 7 are required'
+      )
+    }
     // Cards seen by turn T:
     // On the play: no draw on T1, so seen = handSize + (turn - 1)
     // On the draw: draw on T1, so seen = handSize + turn
@@ -122,7 +133,7 @@ export class ManaCalculator {
     } else if (probability >= 0.8) {
       return `Risqué - Écart à la table conditionnelle : ${Math.max(0, sourcesNeeded - sourcesAvailable)} sources (ne garantit pas 90% sans mulligan)`
     } else {
-      return `Insuffisant - Il manque ${Math.max(0, sourcesNeeded - sourcesAvailable)} sources`
+      return `Accès aux sources faible — écart à la table conditionnelle : ${Math.max(0, sourcesNeeded - sourcesAvailable)} (modèles distincts)`
     }
   }
 
@@ -446,6 +457,7 @@ export function analyzeSpellCastability(
   spell: string
   cmc: number
   colorRequirements: Array<{
+    alternatives?: LandManaColor[]
     color: LandManaColor
     symbolsNeeded: number
     rawProbability: number
@@ -460,77 +472,50 @@ export function analyzeSpellCastability(
   overallCastability: number
   rating: 'excellent' | 'good' | 'average' | 'weak' | 'critical'
 } {
-  // Parse mana cost to extract color requirements
-  const colorRequirements = parseManaCostColors(spell.manaCost)
-
-  const results: Array<{
-    color: LandManaColor
-    symbolsNeeded: number
-    rawProbability: number
-    tempoAdjustedProbability: number
-    tempoImpact: number
-    scenarios: {
-      aggressive: number
-      conservative: number
-      balanced: number
-    }
-  }> = []
-
-  for (const req of colorRequirements) {
-    const { color, count, isHybrid, altColor } = req
-
-    // Calculate probability for the primary color
-    const tempoResult = calculateTempoAwareProbability({
-      deck: { lands, totalCards },
-      targetTurn: spell.cmc,
-      colorNeeded: color,
-      symbolsNeeded: count,
-      strategy: 'balanced',
-    })
-
-    let bestResult = tempoResult
-    let bestColor = color
-
-    // For hybrid mana, calculate probability for the alternate color too
-    // and use the BETTER of the two (since player can choose either)
-    if (isHybrid && altColor) {
-      const altTempoResult = calculateTempoAwareProbability({
-        deck: { lands, totalCards },
-        targetTurn: spell.cmc,
-        colorNeeded: altColor,
+  const cost = parsePhysicalCost(spell.manaCost)
+  const targetTurn = Math.max(1, cost.mv)
+  const profile = {
+    deckSize: totalCards,
+    totalLands: lands.length,
+    landColorSources: {},
+    physicalLands: lands,
+  }
+  const physical = physicalManaProbability(profile, cost, targetTurn)
+  if (physical.status !== 'exact')
+    throw new RangeError(`Castability unavailable: ${physical.reason}`)
+  const results = parseManaCostColors(spell.manaCost).map(
+    ({ color, count, isHybrid, altColor }) => {
+      const options = isHybrid && altColor ? [color, altColor] : [color]
+      const marginalCost =
+        options.length > 1
+          ? {
+              mv: count,
+              generic: 0,
+              pips: {},
+              hybrid: Array(count).fill(
+                options.reduce((m, c) => m | (1 << 'WUBRGC'.indexOf(c)), 0)
+              ),
+            }
+          : { mv: count, generic: 0, pips: { [color]: count } }
+      const marginal = physicalManaProbability(profile, marginalCost, targetTurn)
+      if (marginal.status !== 'exact')
+        throw new RangeError(`Marginal unavailable: ${marginal.reason}`)
+      const sourceCount = lands.filter((l) =>
+        options.some((c) => landProducesColorForSpell(l, c, false))
+      ).length
+      const raw = hypergeom.atLeast(totalCards, sourceCount, 6 + targetTurn, count)
+      return {
+        color,
+        alternatives: options,
         symbolsNeeded: count,
-        strategy: 'balanced',
-      })
-
-      // Use the color with higher probability (easier to cast)
-      if (altTempoResult.tempoAdjusted > tempoResult.tempoAdjusted) {
-        bestResult = altTempoResult
-        bestColor = altColor
+        rawProbability: raw,
+        tempoAdjustedProbability: marginal.p2,
+        tempoImpact: raw - marginal.p2,
+        scenarios: { aggressive: marginal.p2, conservative: marginal.p2, balanced: marginal.p2 },
       }
     }
-
-    results.push({
-      color: bestColor,
-      symbolsNeeded: count,
-      rawProbability: bestResult.raw,
-      tempoAdjustedProbability: bestResult.tempoAdjusted,
-      tempoImpact: bestResult.tempoImpact,
-      scenarios: bestResult.scenarios,
-    })
-  }
-
-  // Overall castability is the minimum of all color probabilities
-  const physical = physicalManaProbability(
-    { deckSize: totalCards, totalLands: lands.length, landColorSources: {}, physicalLands: lands },
-    parsePhysicalCost(spell.manaCost),
-    Math.max(1, spell.cmc)
   )
-  const overallCastability =
-    physical.status === 'exact'
-      ? physical.p2
-      : results.length > 0
-        ? Math.min(...results.map((r) => r.tempoAdjustedProbability))
-        : 1.0
+  const overallCastability = physical.p2
 
   // Rate the spell
   let rating: 'excellent' | 'good' | 'average' | 'weak' | 'critical'

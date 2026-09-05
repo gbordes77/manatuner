@@ -1,3 +1,4 @@
+import { landService } from '../../src/services/landService'
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { hypergeom, cardsSeenByTurn } from '../../src/services/castability/hypergeom'
 import {
@@ -174,6 +175,7 @@ describe('Audit regressions — first-principle counterexamples', () => {
     cards.forEach((c) => {
       c.resolved = true
     })
+    cards[0].landMetadata = landService.getLandSync('Forest')!
     vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(cards)
     const result = await DeckAnalyzer.analyzeDeck('synthetic fixture')
     expect(result.consistency).toBe(0)
@@ -200,4 +202,10 @@ describe('Audit regressions — first-principle counterexamples', () => {
     ] as DeckCard[]
     expect(() => analyzeWithArchetype(cards, 'midrange', 0, { seed: 1 })).toThrow()
   })
+})
+
+it('the source-access API rejects a nonexistent turn or invalid opening sample', () => {
+  const calculator = new ManaCalculator()
+  expect(() => calculator.calculateManaProbability(60, 24, 0, 1)).toThrow(RangeError)
+  expect(() => calculator.calculateManaProbability(60, 24, 2, 1, true, 7.5)).toThrow(RangeError)
 })

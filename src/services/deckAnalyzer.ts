@@ -9,14 +9,13 @@ import {
   fetchCardFromScryfallWithMeta as resolveCardFromScryfallWithMeta,
 } from './cardResolver'
 import { hypergeom } from './castability/hypergeom'
-import { computeAcceleratedCastabilityAtTurn } from './castability/acceleratedAnalyticEngine'
 import {
   applyCommanderFallback as applyCommanderFallbackPure,
   cleanCardName as cleanCardNamePure,
   detectSideboardStartLine,
 } from './deckParser'
 import { landService } from './landService'
-import { analyzeSpellCastability, compareTempoImpact } from './manaCalculator'
+import { compareTempoImpact } from './manaCalculator'
 
 // Re-export pure parser helpers so existing imports keep working (T08).
 export { cleanCardName, detectSideboardStartLine, parseDecklistLine } from './deckParser'
@@ -101,7 +100,7 @@ export interface DeckCard {
   // Card type detection (from Scryfall type_line)
   isCreature?: boolean
   /**
-   * EDH command zone: card sits outside the library (always castable).
+   * EDH command zone: card sits outside the library; casting still requires legal mana payment.
    * Set via *CMDR*, a Commander: section, or first non-land fallback on 99–100 lists.
    */
   isCommander?: boolean
@@ -191,6 +190,8 @@ export interface AnalysisResult {
   }
   // Enhanced analysis from reference project
   spellAnalysis: Record<string, { castable: number; total: number; percentage: number }>
+  spellAnalysisModel?: 'physical-v1'
+  unsupportedSpellAnalysis?: Record<string, string>
   // NEW: Tempo-aware analysis
   tempoSpellAnalysis?: Record<string, TempoSpellAnalysis>
   tempoImpactByColor?: Record<string, TempoImpactSummary>
@@ -925,11 +926,11 @@ export class DeckAnalyzer {
     const complexAnalysis = this.analyzeComplexLandMechanics(cards)
 
     // Land ratio recommendations
-    if (analysis.landRatio && analysis.landRatio < 0.35) {
+    if (analysis.landRatio !== undefined && analysis.landRatio < 0.35) {
       recommendations.push(
         `🏔️ Consider adding more lands (current: ${Math.round(analysis.landRatio * 100)}%, recommended: 35-40%)`
       )
-    } else if (analysis.landRatio && analysis.landRatio > 0.45) {
+    } else if (analysis.landRatio !== undefined && analysis.landRatio > 0.45) {
       recommendations.push(
         `🎯 Consider reducing lands (current: ${Math.round(analysis.landRatio * 100)}%, recommended: 35-40%)`
       )
@@ -953,11 +954,15 @@ export class DeckAnalyzer {
     }
 
     // Mana curve recommendations
-    if (analysis.averageCMC && analysis.averageCMC > 3.5) {
+    if (analysis.totalNonLands && analysis.averageCMC !== undefined && analysis.averageCMC > 3.5) {
       recommendations.push(
         `⚡ High mana curve (${analysis.averageCMC.toFixed(1)}). Consider more ramp or lower-cost spells.`
       )
-    } else if (analysis.averageCMC && analysis.averageCMC < 2.0) {
+    } else if (
+      analysis.totalNonLands &&
+      analysis.averageCMC !== undefined &&
+      analysis.averageCMC < 2.0
+    ) {
       recommendations.push(
         `🏃 Very aggressive curve (${analysis.averageCMC.toFixed(1)}). Ensure sufficient early mana sources.`
       )
@@ -994,7 +999,7 @@ export class DeckAnalyzer {
     }
 
     // Consistency recommendations
-    if (analysis.consistency && analysis.consistency < 0.7) {
+    if (analysis.consistency !== undefined && analysis.consistency < 0.7) {
       recommendations.push(
         `🎲 Low mana consistency (${Math.round(analysis.consistency * 100)}%). Add more dual lands or mana fixing.`
       )
@@ -1158,8 +1163,6 @@ export class DeckAnalyzer {
       rating,
     }
 
-    const recommendations = this.generateRecommendations(cards, partialAnalysis)
-
     const averageCMC =
       totalNonLands > 0
         ? nonLands.reduce((sum, card) => sum + card.cmc * card.quantity, 0) / totalNonLands
@@ -1167,6 +1170,11 @@ export class DeckAnalyzer {
     // NaN guard: empty decklist (totalCards === 0) would produce 0/0 = NaN
     // and propagate "NaN%" to ManabaseStats.
     const landRatio = totalCards > 0 ? totalLands / totalCards : 0
+
+    const recommendations =
+      totalCards > 0
+        ? this.generateRecommendations(cards, { ...partialAnalysis, averageCMC, landRatio })
+        : []
 
     // Calculate mana curve distribution
     const manaCurve: Record<string, number> = {
@@ -1193,57 +1201,49 @@ export class DeckAnalyzer {
     // where N = deck size, K = lands, n = hand size (7), k = lands in hand
     const mulliganAnalysis = this.calculateMulliganAnalysis(totalCards, totalLands, manaCurve)
 
-    // Calculate spell analysis (simplified version inspired by reference project)
-    const spellAnalysis: Record<string, { castable: number; total: number; percentage: number }> =
-      {}
-    nonLands.forEach((spell) => {
-      const total = spell.quantity
-      const parsed = this.parseManaCost(spell.manaCost)
-      const pips: Partial<Record<LandManaColor, number>> = {}
-      for (const color of MANA_COLORS) {
-        if (parsed.cost[color]) pips[color] = parsed.cost[color]
+    // Summary and detailed rows share the same physical event. Unsupported
+    // cards stay outside numeric summaries; they are never assigned 0 or 100%.
+    const spellAnalysis: AnalysisResult['spellAnalysis'] = {}
+    const unsupportedSpellAnalysis: Record<string, string> = {}
+    const physicalLands = lands.flatMap((l) =>
+      l.landMetadata ? Array(l.quantity).fill(l.landMetadata) : []
+    )
+    const completeMetadata =
+      cards.every((c) => c.resolved === true) && physicalLands.length === totalLands
+    let spellIndex = 0
+    for (const spell of nonLands) {
+      throwIfCancelled()
+      const cost = parsePhysicalCost(spell.manaCost)
+      const physical = completeMetadata
+        ? physicalManaProbability(
+            {
+              deckSize: totalCards,
+              totalLands,
+              landColorSources: colorDistribution,
+              physicalLands,
+            },
+            cost,
+            Math.max(1, cost.mv),
+            [],
+            'PLAY',
+            50_000
+          )
+        : {
+            status: 'unsupported' as const,
+            reason: 'Complete resolved card and land metadata is required',
+          }
+      if (physical.status === 'exact') {
+        spellAnalysis[spell.name] = {
+          castable: spell.quantity * physical.p2,
+          total: spell.quantity,
+          percentage: physical.p2 * 100,
+        }
+      } else unsupportedSpellAnalysis[spell.name] = physical.reason
+      if (++spellIndex % TEMPO_YIELD_EVERY === 0) {
+        await yieldToMain()
+        throwIfCancelled()
       }
-      // Aggregate lands-only estimate. Gold/hybrid/conditional sources remain
-      // approximations; this replaces the old quantity-rounded fabricated rate.
-      for (const [symbol, count] of Object.entries(parsed.cost)) {
-        if (!symbol.includes('/')) continue
-        const options = symbol
-          .split('/')
-          .filter((c) => MANA_COLORS.includes(c as ManaColor)) as ManaColor[]
-        const best = options.sort((a, b) => colorDistribution[b] - colorDistribution[a])[0]
-        if (best) pips[best] = (pips[best] ?? 0) + count
-      }
-      const physical = physicalManaProbability(
-        {
-          deckSize: totalCards,
-          totalLands,
-          landColorSources: colorDistribution,
-          physicalLands: lands.every((l) => !!l.landMetadata)
-            ? lands.flatMap((l) => Array(l.quantity).fill(l.landMetadata!))
-            : undefined,
-        },
-        parsePhysicalCost(spell.manaCost),
-        Math.max(1, spell.cmc)
-      )
-      // Other summary charts remain explicitly labeled estimates; only the
-      // dedicated castability rows refuse unsupported calculations entirely.
-      const probability =
-        physical.status === 'exact'
-          ? physical.p2
-          : computeAcceleratedCastabilityAtTurn(
-              hypergeom,
-              { deckSize: totalCards, totalLands, landColorSources: colorDistribution },
-              { mv: spell.cmc, generic: parsed.cost.generic ?? 0, pips },
-              Math.max(1, spell.cmc),
-              [],
-              { playDraw: 'PLAY', removalRate: 0, defaultRockSurvival: 1 }
-            ).p2
-      spellAnalysis[spell.name] = {
-        castable: total * probability,
-        total,
-        percentage: probability * 100,
-      }
-    })
+    }
 
     // NEW: Extract LandMetadata from cards for tempo analysis
     const landMetadataList: LandMetadata[] = []
@@ -1256,89 +1256,8 @@ export class DeckAnalyzer {
       }
     })
 
-    // NEW: Calculate tempo-aware spell analysis (sync math + yield every N — T06)
+    // Legacy tempo scenario estimates are not substituted for physical results.
     const tempoSpellAnalysis: Record<string, TempoSpellAnalysis> = {}
-
-    if (landMetadataList.length > 0) {
-      let spellIndex = 0
-      for (const spell of nonLands) {
-        throwIfCancelled()
-        try {
-          // Synchronous pure math (analyzeSpellCastability is no longer async)
-          const tempoResult = analyzeSpellCastability(
-            {
-              name: spell.name,
-              manaCost: spell.manaCost,
-              cmc: spell.cmc,
-            },
-            landMetadataList,
-            totalCards
-          )
-
-          tempoSpellAnalysis[spell.name] = {
-            castable: spellAnalysis[spell.name]?.castable ?? spell.quantity,
-            total: spell.quantity,
-            percentage: spellAnalysis[spell.name]?.percentage ?? 0,
-            tempoAdjustedPercentage: Math.round(tempoResult.overallCastability * 100),
-            tempoImpact:
-              tempoResult.colorRequirements.length > 0
-                ? Math.round(
-                    (tempoResult.colorRequirements.reduce((sum, cr) => sum + cr.tempoImpact, 0) /
-                      tempoResult.colorRequirements.length) *
-                      100
-                  )
-                : 0,
-            scenarios: {
-              aggressive:
-                tempoResult.colorRequirements.length > 0
-                  ? Math.round(
-                      Math.min(
-                        ...tempoResult.colorRequirements.map((cr) => cr.scenarios.aggressive)
-                      ) * 100
-                    )
-                  : 100,
-              conservative:
-                tempoResult.colorRequirements.length > 0
-                  ? Math.round(
-                      Math.min(
-                        ...tempoResult.colorRequirements.map((cr) => cr.scenarios.conservative)
-                      ) * 100
-                    )
-                  : 100,
-              balanced:
-                tempoResult.colorRequirements.length > 0
-                  ? Math.round(
-                      Math.min(
-                        ...tempoResult.colorRequirements.map((cr) => cr.scenarios.balanced)
-                      ) * 100
-                    )
-                  : 100,
-            },
-            rating: tempoResult.rating,
-          }
-        } catch (error) {
-          // Cancellation must propagate; per-spell math errors must not stop the loop
-          if (error instanceof AnalysisCancelledError) throw error
-          console.warn(`[DeckAnalyzer] Error analyzing tempo for ${spell.name}:`, error)
-          // Fallback to basic analysis
-          tempoSpellAnalysis[spell.name] = {
-            castable: spellAnalysis[spell.name]?.castable ?? spell.quantity,
-            total: spell.quantity,
-            percentage: spellAnalysis[spell.name]?.percentage ?? 0,
-            tempoAdjustedPercentage: spellAnalysis[spell.name]?.percentage ?? 0,
-            tempoImpact: 0,
-            scenarios: { aggressive: 100, conservative: 100, balanced: 100 },
-            rating: 'good',
-          }
-        }
-
-        spellIndex += 1
-        if (spellIndex % TEMPO_YIELD_EVERY === 0) {
-          await yieldToMain()
-          throwIfCancelled()
-        }
-      }
-    }
 
     // NEW: Calculate tempo impact by color
     let tempoImpactByColor: Record<string, TempoImpactSummary> | undefined
@@ -1413,6 +1332,8 @@ export class DeckAnalyzer {
       manaCurve,
       mulliganAnalysis,
       spellAnalysis,
+      unsupportedSpellAnalysis,
+      spellAnalysisModel: 'physical-v1',
       // NEW: Include tempo-aware analysis
       tempoSpellAnalysis:
         Object.keys(tempoSpellAnalysis).length > 0 ? tempoSpellAnalysis : undefined,

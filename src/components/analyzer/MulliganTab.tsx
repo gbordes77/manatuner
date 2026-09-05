@@ -28,6 +28,8 @@ import {
   Alert,
   Box,
   Button,
+  FormControlLabel,
+  Switch,
   Card,
   CardContent,
   Chip,
@@ -842,6 +844,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
   ({ cards, isMobile: _isMobile = false }) => {
     const [archetype, setArchetype] = useState<Archetype>(() => suggestArchetypeFromDeck(cards))
     const [archetypeLocked, setArchetypeLocked] = useState(false)
+    const [multiplayer, setMultiplayer] = useState(false)
     const [iterations, setIterations] = useState(10000)
     const [result, setResult] = useState<AdvancedMulliganResult | null>(null)
     const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -859,13 +862,15 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
     }, [])
 
     const ITERATION_PRESETS = [
-      { value: 3000, label: 'Quick (3k)', desc: '~1.8% margin' },
-      { value: 10000, label: 'Standard (10k)', desc: '~0.9% margin' },
-      { value: 50000, label: 'Precise (50k)', desc: '~0.4% margin' },
+      { value: 3000, label: 'Quick (3k)', desc: '3,000 samples per hand size' },
+      { value: 10000, label: 'Standard (10k)', desc: '10,000 samples per hand size' },
+      { value: 50000, label: 'Precise (50k)', desc: '50,000 samples per hand size' },
     ]
 
     // Calculate total cards including quantities
-    const totalCards = cards.reduce((sum, card) => sum + (card.quantity || 1), 0)
+    const totalCards = cards
+      .filter((c) => !c.isSideboard && !c.isCommander)
+      .reduce((sum, card) => sum + card.quantity, 0)
 
     // Audit fix H1 + M3 (2026-04-13): Monte Carlo + Bellman now run inside a
     // dedicated Web Worker so the main thread stays responsive even on the
@@ -880,7 +885,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
       const worker = new MulliganArchetypeWorker()
       workerRef.current = worker
       return () => {
-        worker.terminate()
+        workerRef.current?.terminate()
         workerRef.current = null
       }
     }, [])
@@ -890,18 +895,25 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
         setError('You need at least 40 cards for mulligan analysis')
         return
       }
-      const worker = workerRef.current
-      if (!worker) {
+      const previousWorker = workerRef.current
+      if (!previousWorker) {
         setError('Worker is not ready yet — try again in a moment.')
         return
       }
 
+      previousWorker.terminate()
+      const worker = new MulliganArchetypeWorker()
+      workerRef.current = worker
       const id = ++requestIdRef.current
       setIsAnalyzing(true)
       setError(null)
 
       const handler = (event: MessageEvent<MulliganWorkerResponse>) => {
-        if (event.data.id !== id) return // stale response — ignore
+        if (id !== requestIdRef.current) {
+          worker.removeEventListener('message', handler)
+          return
+        }
+        if (event.data.id !== id) return
         worker.removeEventListener('message', handler)
         if (event.data.ok) {
           setResult(event.data.result)
@@ -919,6 +931,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
         cards: toCloneableDeckCards(cards),
         archetype,
         iterations,
+        multiplayer,
       }
       try {
         worker.postMessage(request)
@@ -931,7 +944,7 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
             : 'Failed to start mulligan analysis (worker message not cloneable)'
         )
       }
-    }, [cards, archetype, iterations, totalCards])
+    }, [cards, archetype, iterations, totalCards, multiplayer])
 
     // Single auto-run effect (was previously two overlapping effects → M3 fix).
     // Triggers on initial mount, on cards change, on archetype change, and on
@@ -990,9 +1003,19 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
 
         <Alert severity="info" sx={{ mb: 2 }}>
           Hand scores and keep thresholds optimize a heuristic opening-hand score, not win
-          probability. Plans assume play-first, one land per turn, and no ramp. Commander free
-          mulligans and multiplayer first-turn draws are not modeled here.
+          probability. The policy stops at four cards and uses heuristic bottoming. Plans allow one
+          land per turn and no ramp. In multiplayer mode the first mulligan is free and turn one
+          includes a draw; the seven-card threshold applies before the free mulligan.
         </Alert>
+        <FormControlLabel
+          control={<Switch checked={multiplayer} onChange={(_, value) => setMultiplayer(value)} />}
+          label="Multiplayer: free first mulligan and turn-one draw"
+        />
+        {multiplayer && result?.multiplayer && (
+          <Typography variant="body2" sx={{ mb: 2 }}>
+            After the free mulligan, keep-seven threshold: {result.paidSevenThreshold}.
+          </Typography>
+        )}
         {/* Simulation Precision */}
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
           <Typography variant="subtitle2" color="text.secondary">

@@ -43,3 +43,14 @@ it('an unsupported cost never silently drops its special symbol', () => {
   )
   expect(screen.getByText('Calculation unavailable')).toBeTruthy()
 })
+it('creature-removal settings do not disable a lands-only calculation', () => {
+  render(
+    <ManaCostRow
+      {...base}
+      showAcceleration={false}
+      accelContext={{ ...base.accelContext, removalRate: 0.35 }}
+      physicalLands={Array(4).fill(landService.getLandSync('Forest')!)}
+    />
+  )
+  expect(screen.getByText('Potential castability: 0%')).toBeTruthy()
+})

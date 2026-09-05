@@ -1,3 +1,5 @@
+> Mise à jour : voir [la vague de corrections après publication](../completion-2026-09-05/REPORT.md). Ce rapport conserve les résultats historiques de sa propre vague.
+
 # Fiabilisation après l'audit mathématique
 
 ## Conclusion

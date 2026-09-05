@@ -47,6 +47,8 @@ interface SpellAnalysisData {
 }
 
 interface EnhancedSpellAnalysisProps {
+  model?: 'physical-v1'
+  unsupportedSpellAnalysis?: Record<string, string>
   spellAnalysis: SpellAnalysisData
   tempoSpellAnalysis?: Record<string, TempoSpellAnalysis>
   tempoImpactByColor?: Record<string, TempoImpactSummary>
@@ -54,6 +56,8 @@ interface EnhancedSpellAnalysisProps {
 
 const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
   spellAnalysis,
+  model,
+  unsupportedSpellAnalysis = {},
   tempoSpellAnalysis,
   tempoImpactByColor: _tempoImpactByColor,
 }) => {
@@ -174,7 +178,10 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
           <Typography variant="subtitle2" fontWeight="600" mb={1}>
             {data.fullName || label}
           </Typography>
-          <Typography variant="body2">Estimated castability: {data.percentage}%</Typography>
+          <Typography variant="body2">
+            {model === 'physical-v1' ? 'Potential castability' : 'Legacy estimate'}:{' '}
+            {data.percentage}%
+          </Typography>
           {hasTempoData && data.tempoImpact !== 0 && (
             <>
               <Divider sx={{ my: 1 }} />
@@ -201,7 +208,7 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
             </>
           )}
           <Typography variant="body2">
-            Copies: {data.castable}/{data.total}
+            Expected payable copies: {data.castable.toFixed(2)}/{data.total}
           </Typography>
           <Typography variant="body2">Category: {data.category}</Typography>
         </Paper>
@@ -212,11 +219,33 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
 
   const averagePercentage =
     spellData.length > 0
-      ? spellData.reduce((sum, spell) => sum + spell.percentage, 0) / spellData.length
+      ? spellData.reduce((sum, spell) => sum + spell.percentage * spell.total, 0) /
+        spellData.reduce((sum, spell) => sum + spell.total, 0)
       : 0
 
   return (
     <Box className="animate-fadeIn">
+      {model !== 'physical-v1' && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Saved legacy estimates. Run the analysis again to obtain physical castability results.
+        </Alert>
+      )}
+      <Alert severity="info" sx={{ mb: 2 }}>
+        Current model: potential castability, lands only, on the play, without mulligans. The spell
+        is an external mana demand; its draw probability is not included. A legal sequence may
+        depend on future draws. X is set to 2. Summaries cover calculated spells only.
+      </Alert>
+      {Object.keys(unsupportedSpellAnalysis).length > 0 && (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          Calculation unavailable for {Object.keys(unsupportedSpellAnalysis).length} distinct
+          spells.
+          {Object.entries(unsupportedSpellAnalysis).map(([name, reason]) => (
+            <Typography key={name} variant="body2">
+              {name}: {reason}
+            </Typography>
+          ))}
+        </Alert>
+      )}
       {/* Performance Insights - FIRST (reliable) */}
       <Paper className="mtg-card" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
@@ -464,7 +493,7 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
                       </Box>
 
                       <Typography variant="body2" color="text.secondary" mb={1}>
-                        {spell.castable}/{spell.total} copies castable
+                        {spell.castable.toFixed(2)}/{spell.total} expected payable copies
                       </Typography>
 
                       <LinearProgress

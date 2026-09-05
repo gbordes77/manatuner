@@ -253,3 +253,16 @@ it('raw tempo sources also distinguish any color from C', () => {
   expect(result.raw).toBe(0)
   expect(result.tempoAdjusted).toBe(0)
 })
+it('cached probabilities remain independent of caller mutation and budget changes', () => {
+  const deck = profile(10, [land('Forest')])
+  const cost = { mv: 1, generic: 0, pips: { G: 1 } }
+  const first = probability(deck, cost, 1)
+  expect(first.status).toBe('exact')
+  if (first.status === 'exact') first.p2 = 999
+  const second = probability(deck, cost, 1)
+  expect(second.status).toBe('exact')
+  if (second.status === 'exact') expect(second.p2).toBeCloseTo(0.7, 12)
+  expect(probability(deck, cost, 1, [], 'PLAY', 1).status).toBe('unsupported')
+  const draw = probability(deck, cost, 1, [], 'DRAW')
+  if (draw.status === 'exact') expect(draw.p2).toBeCloseTo(0.8, 12)
+})

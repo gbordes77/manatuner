@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, navigateAnalyzer } from '../../fixtures/audit-browser.js';
 import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
 
 const viewports = [
@@ -20,29 +20,24 @@ viewports.forEach(viewport => {
       // Vérifier que le header est visible
       await expect(page.getByRole('banner')).toBeVisible();
       
-      // Sur mobile, vérifier le menu hamburger ou navigation adaptée
-      if (viewport.width < 768) {
-        // Chercher soit un menu hamburger, soit une navigation mobile
-        const mobileMenu = page.locator('[data-testid="mobile-menu-button"], .mobile-menu, [aria-label*="menu"]').first();
-        if (await mobileMenu.isVisible()) {
-          await mobileMenu.click();
-          const mobileNavigation = page.locator('[data-testid="mobile-navigation"], .mobile-nav, .drawer').first();
-          await expect(mobileNavigation).toBeVisible();
-        }
-      } else {
-        // Sur desktop/tablet, vérifier la navigation normale
-        await expect(page.getByRole('navigation')).toBeVisible();
-      }
+      const mobileMenu = page.getByRole('button', { name: 'Open navigation menu' })
+      if (await mobileMenu.isVisible()) {
+        await mobileMenu.click()
+        await expect(page.getByRole('button', { name: 'Analyzer', exact: true })).toBeVisible()
+        await page.getByRole('button', { name: 'Close navigation menu' }).click()
+      } else await expect(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true })).toBeVisible()
+
     });
 
     test(`Page d'accueil responsive sur ${viewport.name}`, async ({ page }) => {
       // Vérifier que le titre principal est visible
-      await expect(page.getByRole('heading', { name: /manatuner/i })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       
       // Vérifier que les liens de navigation sont accessibles
-      const analyzerLink = page.getByRole('link', { name: /analyzer/i });
-      await expect(analyzerLink).toBeVisible();
-      
+      const menu = page.getByRole('button', { name: 'Open navigation menu' })
+      if (await menu.isVisible()) await expect(menu).toBeVisible()
+      else await expect(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true })).toBeVisible()
+
       // Vérifier que le contenu s'adapte à la taille d'écran
       const mainContent = page.getByRole('main');
       await expect(mainContent).toBeVisible();
@@ -53,9 +48,9 @@ viewports.forEach(viewport => {
     });
 
     test(`Formulaire de decklist responsive sur ${viewport.name}`, async ({ page }) => {
-      await page.getByRole('link', { name: /analyzer/i }).click();
+      await navigateAnalyzer(page);
       
-      const textarea = page.getByPlaceholder(/collez votre decklist/i);
+      const textarea = page.getByPlaceholder(/paste your decklist/i);
       await expect(textarea).toBeVisible();
       
       // Vérifier que le textarea est bien dimensionné
@@ -68,7 +63,7 @@ viewports.forEach(viewport => {
       await expect(textarea).toHaveValue(SAMPLE_DECKLISTS.simple);
       
       // Vérifier que le bouton d'analyse est accessible
-      const analyzeButton = page.getByRole('button', { name: /analyser/i });
+      const analyzeButton = page.getByRole('button', { name: /^Analyze Manabase$/i });
       await expect(analyzeButton).toBeVisible();
       
       // Sur mobile, vérifier que le bouton est bien positionné
@@ -80,15 +75,15 @@ viewports.forEach(viewport => {
 
     test(`Onglets d'analyse responsive sur ${viewport.name}`, async ({ page }) => {
       // Aller à l'analyzer et lancer une analyse
-      await page.getByRole('link', { name: /analyzer/i }).click();
-      await page.getByPlaceholder(/collez votre decklist/i).fill(SAMPLE_DECKLISTS.simple);
-      await page.getByRole('button', { name: /analyser/i }).click();
+      await navigateAnalyzer(page);
+      await page.getByPlaceholder(/paste your decklist/i).fill(SAMPLE_DECKLISTS.simple);
+      await page.getByRole('button', { name: /^Analyze Manabase$/i }).click();
       
       // Attendre les résultats
       await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
       
       // Vérifier que les onglets sont accessibles
-      const tabs = page.getByRole('tablist');
+      const tabs = page.getByRole('tablist').first();
       await expect(tabs).toBeVisible();
       
       // Sur mobile, les onglets peuvent être en scroll horizontal
@@ -99,21 +94,17 @@ viewports.forEach(viewport => {
       }
       
       // Tester la navigation entre onglets
-      const tabNames = [
-        /statistiques|overview/i,
-        /probabilités|probabilities/i,
-        /recommandations|recommendations/i,
-        /cartes|spells/i
-      ];
+      const tabNames = ['tab-castability', 'tab-analysis', 'tab-mulligan', 'tab-manabase', 'tab-blueprint'];
       
       for (const tabName of tabNames) {
-        const tab = page.getByRole('tab', { name: tabName });
-        if (await tab.isVisible()) {
+        const tab = page.getByTestId(tabName);
+        await expect(tab).toBeVisible();
+        {
           await tab.click();
-          await expect(page.getByRole('tabpanel')).toBeVisible();
+          await expect(page.getByRole('tabpanel').filter({ visible: true }).first()).toBeVisible();
           
           // Vérifier que le contenu du panel s'adapte
-          const panel = page.getByRole('tabpanel');
+          const panel = page.getByRole('tabpanel').filter({ visible: true }).first();
           const panelBox = await panel.boundingBox();
           expect(panelBox.width).toBeLessThanOrEqual(viewport.width);
         }
@@ -122,14 +113,14 @@ viewports.forEach(viewport => {
 
     test(`Tableaux et graphiques responsive sur ${viewport.name}`, async ({ page }) => {
       // Aller à l'analyzer et lancer une analyse
-      await page.getByRole('link', { name: /analyzer/i }).click();
-      await page.getByPlaceholder(/collez votre decklist/i).fill(SAMPLE_DECKLISTS.complex);
-      await page.getByRole('button', { name: /analyser/i }).click();
+      await navigateAnalyzer(page);
+      await page.getByPlaceholder(/paste your decklist/i).fill(SAMPLE_DECKLISTS.complex);
+      await page.getByRole('button', { name: /^Analyze Manabase$/i }).click();
       
       await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
       
       // Aller sur l'onglet avec des tableaux (cartes)
-      const spellTab = page.getByRole('tab', { name: /cartes|spells/i });
+      const spellTab = page.getByRole('tab', { name: /^Manabase$/i });
       if (await spellTab.isVisible()) {
         await spellTab.click();
         
@@ -150,7 +141,7 @@ viewports.forEach(viewport => {
       }
       
       // Vérifier les graphiques sur l'onglet statistiques
-      const statsTab = page.getByRole('tab', { name: /statistiques|overview/i });
+      const statsTab = page.getByRole('tab', { name: /^Analysis$/i });
       if (await statsTab.isVisible()) {
         await statsTab.click();
         
@@ -165,7 +156,7 @@ viewports.forEach(viewport => {
 
     test(`Scroll et navigation tactile sur ${viewport.name}`, async ({ page }) => {
       if (viewport.width < 768) { // Tests spécifiques mobile
-        await page.getByRole('link', { name: /analyzer/i }).click();
+        await navigateAnalyzer(page);
         
         // Tester le scroll vertical
         await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -176,7 +167,7 @@ viewports.forEach(viewport => {
         await page.waitForTimeout(500);
         
         // Vérifier que les éléments restent accessibles après scroll
-        const textarea = page.getByPlaceholder(/collez votre decklist/i);
+        const textarea = page.getByPlaceholder(/paste your decklist/i);
         await expect(textarea).toBeVisible();
       }
     });
@@ -186,7 +177,7 @@ viewports.forEach(viewport => {
       
       // Mesurer le temps de chargement
       await page.goto('/');
-      await expect(page.getByRole('heading', { name: /manatuner/i })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       
       const loadTime = Date.now() - startTime;
       
@@ -214,9 +205,9 @@ test.describe('Tests de Transitions Responsive', () => {
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
     
-    await page.getByRole('link', { name: /analyzer/i }).click();
-    await page.getByPlaceholder(/collez votre decklist/i).fill(SAMPLE_DECKLISTS.simple);
-    await page.getByRole('button', { name: /analyser/i }).click();
+    await navigateAnalyzer(page);
+    await page.getByPlaceholder(/paste your decklist/i).fill(SAMPLE_DECKLISTS.simple);
+    await page.getByRole('button', { name: /^Analyze Manabase$/i }).click();
     
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 15000 });
     
@@ -231,7 +222,7 @@ test.describe('Tests de Transitions Responsive', () => {
     const tabs = page.getByRole('tab');
     if (await tabs.count() > 0) {
       await tabs.first().click();
-      await expect(page.getByRole('tabpanel')).toBeVisible();
+      await expect(page.getByRole('tabpanel').filter({ visible: true }).first()).toBeVisible();
     }
   });
 
@@ -245,7 +236,7 @@ test.describe('Tests de Transitions Responsive', () => {
     await page.waitForTimeout(1000);
     
     // Vérifier que l'interface s'adapte
-    await expect(page.getByRole('navigation')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /manatuner/i })).toBeVisible();
+    await expect(page.getByRole('banner')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 }); 

@@ -71,3 +71,14 @@ it('colorless identity does not hide an explicit C requirement', async () => {
   const result = await DeckAnalyzer.analyzeDeck('fixture')
   expect(result.consistency).toBe(0)
 })
+
+it('recommendations use computed land ratio and curve, including zero consistency', async () => {
+  const input = cards()
+    .slice(1, 2)
+    .map((c) => ({ ...c, cmc: 5, manaCost: '{4}{G}' }))
+  vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(input)
+  const result = await DeckAnalyzer.analyzeDeck('fixture')
+  expect(result.recommendations.join(' ')).toContain('current: 0%')
+  expect(result.recommendations.join(' ')).toContain('High mana curve (5.0)')
+  expect(result.recommendations.join(' ')).toContain('Low mana consistency (0%)')
+})

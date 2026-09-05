@@ -129,6 +129,7 @@ const CompareView: React.FC<{
       : [],
     probabilities: record.analysis?.probabilities || null,
     cards: record.analysis?.cards || [],
+    spellAnalysisModel: (record.analysis as any)?.spellAnalysisModel,
     spellAnalysis: (record.analysis?.spellAnalysis || {}) as Record<
       string,
       { castable: number; total: number; percentage: number }
@@ -325,16 +326,22 @@ const CompareView: React.FC<{
             </Typography>
           </Box>
           {commonSpells.slice(0, 20).map((name) => {
-            const probaA = sa.spellAnalysis[name]?.percentage ?? 0
-            const probaB = sb.spellAnalysis[name]?.percentage ?? 0
-            const delta = probaB - probaA
+            const probaA =
+              sa.spellAnalysisModel === 'physical-v1'
+                ? sa.spellAnalysis[name]?.percentage
+                : undefined
+            const probaB =
+              sb.spellAnalysisModel === 'physical-v1'
+                ? sb.spellAnalysis[name]?.percentage
+                : undefined
+            const delta = probaA === undefined || probaB === undefined ? undefined : probaB - probaA
             const cardA = spellsA.get(name)
             return (
               <StatRow
                 key={name}
                 label={`${name} (${cardA?.cmc ?? 0} CMC)`}
-                va={`${probaA}%`}
-                vb={`${probaB}%`}
+                va={probaA === undefined ? 'Unavailable' : `${probaA}%`}
+                vb={probaB === undefined ? 'Unavailable' : `${probaB}%`}
                 delta={delta}
                 suffix="%"
               />

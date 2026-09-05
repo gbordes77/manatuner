@@ -176,7 +176,7 @@ describe('ManaCalculator', () => {
 
       const analysis = calculator.analyzeCard(card, deck)
       expect(analysis.U.meetsThreshold).toBe(false)
-      expect(analysis.U.recommendation).toContain('manque')
+      expect(analysis.U.recommendation).toContain('écart à la table conditionnelle : 3')
     })
   })
 

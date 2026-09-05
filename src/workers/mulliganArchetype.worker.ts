@@ -25,6 +25,7 @@ export interface MulliganWorkerRequest {
   cards: DeckCard[]
   archetype: Archetype
   iterations: number
+  multiplayer?: boolean
 }
 
 export interface MulliganWorkerSuccess {
@@ -77,7 +78,9 @@ ctx.addEventListener('message', (event: MessageEvent<MulliganWorkerRequest>) => 
   const { id, cards, archetype, iterations: rawIterations } = event.data
   try {
     const { iterations, warning } = clampMulliganIterations(rawIterations)
-    const result = analyzeWithArchetype(cards, archetype, iterations)
+    const result = analyzeWithArchetype(cards, archetype, iterations, {
+      multiplayer: event.data.multiplayer,
+    })
     const response: MulliganWorkerSuccess & { warning?: string } = {
       id,
       ok: true,

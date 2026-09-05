@@ -1,3 +1,5 @@
+> Mise à jour : voir [la vague de corrections après publication](../completion-2026-09-05/REPORT.md). Ce rapport conserve les résultats historiques de sa propre vague.
+
 # AUDIT MATHÉMATIQUE MTG
 
 > **État historique du premier audit.** Une série ultérieure de corrections fait désormais passer les huit contre-exemples. Voir le [compte rendu de fiabilisation](../physical-engine-2026-09-05/REPORT.md). Les valeurs et lignes ci-dessous décrivent la version auditée avant cette deuxième série.

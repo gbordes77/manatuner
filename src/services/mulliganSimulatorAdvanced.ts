@@ -1,3 +1,5 @@
+import type { LandMetadata } from '../types/lands'
+import { parsePhysicalCost } from './castability/parsePhysicalCost'
 /**
  * Mulligan Simulator — London Mulligan (official since 2019)
  *
@@ -9,7 +11,7 @@
  */
 
 import type { DeckCard } from './deckAnalyzer'
-import { mulliganStoppingValues } from './mulliganStopping'
+import { mulliganStoppingValues, freeMulliganValue } from './mulliganStopping'
 
 // =============================================================================
 // SHARED TYPES
@@ -22,12 +24,15 @@ export interface SimulatedCard {
   manaCost: {
     colorless: number
     symbols: Record<string, number>
+    hybrid?: number[]
+    unsupported?: boolean
   }
   quantity: number
   /** Colors this land can produce (e.g. ['U', 'R'] for Steam Vents) */
   producedMana?: string[]
   /** True if this land always enters tapped (e.g. Wind-Scarred Crag) */
   etbTapped?: boolean
+  landMetadata?: LandMetadata
 }
 
 export interface SimulatedHand {
@@ -78,6 +83,8 @@ export function createSeededRng(seed: number): RngFn {
 export interface AnalyzeArchetypeOptions {
   /** When set, Monte Carlo shuffles use a deterministic PRNG (tests / repro). */
   seed?: number
+  /** Explicit multiplayer rules: first mulligan free and draw on turn one. */
+  multiplayer?: boolean
 }
 
 /**
@@ -89,7 +96,7 @@ export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {
   for (const card of cards) {
     if (card.isSideboard || card.isCommander) continue
     for (let i = 0; i < card.quantity; i++) {
-      let parsedManaCost: { colorless: number; symbols: Record<string, number> }
+      let parsedManaCost: SimulatedCard['manaCost']
 
       if (typeof card.manaCost === 'string') {
         parsedManaCost = parseManaCostString(card.manaCost)
@@ -111,12 +118,16 @@ export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {
 
       simulatedDeck.push({
         name: card.name,
-        cmc: card.cmc,
+        cmc:
+          !card.isLand && typeof card.manaCost === 'string' && !parsedManaCost.unsupported
+            ? parsePhysicalCost(card.manaCost).mv
+            : card.cmc,
         isLand: card.isLand,
         manaCost: parsedManaCost,
         quantity: 1,
         producedMana: card.isLand ? card.producedMana : undefined,
         etbTapped,
+        landMetadata: card.landMetadata,
       })
     }
   }
@@ -124,20 +135,14 @@ export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {
   return simulatedDeck
 }
 
-function parseManaCostString(cost: string): { colorless: number; symbols: Record<string, number> } {
-  const result = { colorless: 0, symbols: {} as Record<string, number> }
-  if (!cost) return result
-
-  const matches = cost.match(/\{([^}]+)\}/g) || []
-  for (const match of matches) {
-    const symbol = match.slice(1, -1)
-    if (/^\d+$/.test(symbol)) {
-      result.colorless += parseInt(symbol, 10)
-    } else if (['W', 'U', 'B', 'R', 'G', 'C'].includes(symbol)) {
-      result.symbols[symbol] = (result.symbols[symbol] || 0) + 1
-    }
+function parseManaCostString(cost: string): SimulatedCard['manaCost'] {
+  const parsed = parsePhysicalCost(cost)
+  return {
+    colorless: parsed.generic,
+    symbols: parsed.pips as Record<string, number>,
+    hybrid: parsed.hybrid,
+    unsupported: parsed.unsupportedSymbols,
   }
-  return result
 }
 
 /**
@@ -232,6 +237,8 @@ export interface TurnPlan {
 export interface AdvancedMulliganResult {
   archetype: Archetype
   archetypeConfig: ArchetypeConfig
+  multiplayer?: boolean
+  paidSevenThreshold?: number
   expectedScores: {
     hand7: number
     hand6: number
@@ -581,9 +588,10 @@ function calculateLandBalance(hand: SimulatedHand, config: ArchetypeConfig): num
  */
 /** Find a payment using each physical land at most once. Generic costs also tap lands. */
 function findPayment(sources: SimulatedCard[], spell: SimulatedCard): number[] | null {
-  const pips = Object.entries(spell.manaCost.symbols).flatMap(
-    ([color, count]) => Array(count).fill(color) as string[]
-  )
+  if (spell.manaCost.unsupported) return null
+  const pips: number[] = Object.entries(spell.manaCost.symbols)
+    .flatMap(([color, count]) => Array(count).fill(1 << 'WUBRGC'.indexOf(color)))
+    .concat(spell.manaCost.hybrid ?? [])
   const manaNeeded = Math.max(spell.cmc, pips.length)
   if (sources.length < manaNeeded) return null
   const used = new Set<number>()
@@ -602,7 +610,13 @@ function findPayment(sources: SimulatedCard[], spell: SimulatedCard): number[] |
       return payment
     }
     for (let j = 0; j < sources.length; j++) {
-      if (used.has(j) || !sources[j].producedMana?.includes(pips[i])) continue
+      if (
+        used.has(j) ||
+        !sources[j].producedMana?.some(
+          (c) => 'WUBRGC'.includes(c) && pips[i] & (1 << 'WUBRGC'.indexOf(c))
+        )
+      )
+        continue
       used.add(j)
       const payment = assign(i + 1)
       if (payment) return payment
@@ -661,7 +675,29 @@ function chooseLandDrop(
   return { land: landsInHand[bestIdx], index: bestIdx }
 }
 
-function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPlan[] {
+function generateTurnPlan(
+  hand: SimulatedHand,
+  library: SimulatedCard[],
+  drawOnTurnOne = false
+): TurnPlan[] {
+  // An illustrative plan must not spend a fetchland as a direct mana source
+  // or invent life/restriction payments. Decline histories outside this model.
+  if (
+    [...hand.cards, ...library.slice(0, drawOnTurnOne ? 4 : 3)].some((c) => {
+      const m = c.landMetadata
+      return (
+        c.isLand &&
+        m &&
+        (m.isFetch ||
+          m.isMDFC ||
+          m.producesAnyForCreaturesOnly ||
+          (m.producesAmount ?? 1) !== 1 ||
+          (m.category &&
+            !['basic', 'dual', 'triome', 'fast', 'slow', 'check', 'battle'].includes(m.category)))
+      )
+    })
+  )
+    return []
   const plans: TurnPlan[] = []
   const landsInHand = [...hand.lands]
   const spellsInHand = [...hand.spells]
@@ -678,7 +714,7 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
     landsInPlayUntapped.push(...landsInPlayTapped.splice(0))
 
     // Draw (except T1)
-    if (turn > 1 && deckIndex < remainingDeck.length) {
+    if ((turn > 1 || drawOnTurnOne) && deckIndex < remainingDeck.length) {
       const drawn = remainingDeck[deckIndex++]
       if (drawn.isLand) landsInHand.push(drawn)
       else spellsInHand.push(drawn)
@@ -701,7 +737,32 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
       landDrop = land.name
       landsInHand.splice(landChoice.index, 1)
 
-      if (land.etbTapped) {
+      const condition = land.landMetadata?.etbBehavior.condition
+      let tapped = !!land.etbTapped
+      const previous = [...landsInPlayUntapped, ...landsInPlayTapped]
+      if (land.landMetadata?.etbBehavior.type === 'conditional') {
+        switch (condition?.type) {
+          case 'control_lands_max':
+            tapped = previous.length > condition.threshold!
+            break
+          case 'control_lands_min':
+            tapped = previous.length < condition.threshold!
+            break
+          case 'control_basics_min':
+            tapped =
+              previous.filter((l) => l.landMetadata?.category === 'basic').length <
+              condition.threshold!
+            break
+          case 'control_basic':
+            tapped = !previous.some((l) =>
+              l.landMetadata?.basicLandTypes?.some((t) => condition.basicTypes?.includes(t))
+            )
+            break
+          default:
+            return []
+        }
+      }
+      if (tapped) {
         // Enters tapped — won't provide mana this turn
         landsInPlayTapped.push(land)
       } else {
@@ -714,12 +775,13 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
       }
     }
 
-    const manaAvailable = landsInPlayUntapped.length
+    const usableLands = landsInPlayUntapped.filter((l) => (l.producedMana?.length ?? 0) > 0)
+    const manaAvailable = usableLands.length
 
     // Cast spells — prefer curve-out (highest CMC that fits) over greedy packing
     const plays: string[] = []
     let manaLeft = manaAvailable
-    let availableSources = [...landsInPlayUntapped]
+    let availableSources = [...usableLands]
 
     // Sort descending by CMC: prefer playing the biggest spell that fits on curve
     spellsInHand.sort((a, b) => b.cmc - a.cmc)
@@ -727,7 +789,6 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
     const toRemove: number[] = []
     for (let i = 0; i < spellsInHand.length; i++) {
       const spell = spellsInHand[i]
-      if (spell.cmc <= 0) continue
       if (spell.cmc > manaLeft) continue
       const payment = findPayment(availableSources, spell)
       if (!payment) continue
@@ -751,7 +812,6 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
         .sort((a, b) => a.s.cmc - b.s.cmc)
 
       for (const { s: spell, i } of remaining) {
-        if (spell.cmc <= 0) continue
         if (spell.cmc > manaLeft) continue
         const payment = findPayment(availableSources, spell)
         if (!payment) continue
@@ -839,12 +899,17 @@ function createSampleHand(
   library: SimulatedCard[],
   hand: SimulatedHand,
   archetype: Archetype,
-  threshold: number
+  threshold: number,
+  drawOnTurnOne = false
 ): SampleHand {
   // Retain this sample's actual shuffle for the illustrative turn plan.
   const breakdown = calculateScoreBreakdown(hand, archetype, library)
-  const turnByTurn = generateTurnPlan(hand, library)
+  const turnByTurn = generateTurnPlan(hand, library, drawOnTurnOne)
   const reasoning = generateReasoningForHand(hand, breakdown, archetype)
+  if (!turnByTurn.length)
+    reasoning.unshift(
+      'Turn plan unavailable: this history contains mana mechanics outside the illustrative model.'
+    )
 
   let recommendation: SampleHand['recommendation']
   if (breakdown.total >= 90) recommendation = 'SNAP_KEEP'
@@ -1052,6 +1117,11 @@ export function analyzeWithArchetype(
   if (!Number.isSafeInteger(iterations) || iterations <= 0) {
     throw new RangeError('iterations must be a positive integer')
   }
+  const libraryCards = cards.filter((c) => !c.isSideboard && !c.isCommander)
+  if (libraryCards.some((c) => c.resolved === false))
+    throw new Error('Mulligan analysis requires resolved card data')
+  if (libraryCards.some((c) => !Number.isSafeInteger(c.quantity) || c.quantity < 0))
+    throw new RangeError('Card quantities must be nonnegative integers')
   const deck = prepareDeckForSimulation(cards)
 
   if (deck.length < 40) {
@@ -1118,6 +1188,9 @@ export function analyzeWithArchetype(
     7: results[7].scores,
   })
 
+  const initialEv7 = options?.multiplayer ? freeMulliganValue(results[7].scores, ev7) : ev7
+  const initialThreshold = options?.multiplayer ? ev7 : ev6
+
   // Categorize sample hands
   const sampleHands = {
     excellent: [] as SampleHand[],
@@ -1130,7 +1203,13 @@ export function analyzeWithArchetype(
   sampleHandsCollected.sort((a, b) => b.score - a.score)
 
   for (const { hand, score, library } of sampleHandsCollected) {
-    const sample = createSampleHand(library, hand, archetype, ev6)
+    const sample = createSampleHand(
+      library,
+      hand,
+      archetype,
+      initialThreshold,
+      options?.multiplayer
+    )
 
     if (score >= 85 && sampleHands.excellent.length < 3) {
       sampleHands.excellent.push(sample)
@@ -1145,17 +1224,17 @@ export function analyzeWithArchetype(
 
   // Deck quality
   let deckQuality: AdvancedMulliganResult['deckQuality']
-  if (ev7 >= 80) deckQuality = 'excellent'
-  else if (ev7 >= 65) deckQuality = 'good'
-  else if (ev7 >= 50) deckQuality = 'average'
+  if (initialEv7 >= 80) deckQuality = 'excellent'
+  else if (initialEv7 >= 65) deckQuality = 'good'
+  else if (initialEv7 >= 50) deckQuality = 'average'
   else deckQuality = 'poor'
 
   // Generate recommendations
   const recommendations: string[] = []
 
-  if (ev7 >= 80) {
+  if (initialEv7 >= 80) {
     recommendations.push(`✅ Excellent ${config.name} manabase - most hands are keepable`)
-  } else if (ev7 >= 65) {
+  } else if (initialEv7 >= 65) {
     recommendations.push(`👍 Good ${config.name} consistency - be selective with marginal hands`)
   } else {
     recommendations.push(`⚠️ Consider tuning your manabase for ${config.name} strategy`)
@@ -1166,24 +1245,26 @@ export function analyzeWithArchetype(
 
   // Bellman gain: how much the option to mulligan improves EV over raw 7-card average
   const rawEv7 = results[7].scores.reduce((a, b) => a + b, 0) / iterations
-  const mulliganValue = ev7 - rawEv7
+  const mulliganValue = initialEv7 - rawEv7
   if (mulliganValue > 2) {
     recommendations.push(
-      `📊 Mulliganing bad 7s to 6 gains ~${Math.round(mulliganValue)} points on average`
+      `📊 The selected mulligan policy gains ~${Math.round(mulliganValue)} points on average`
     )
   }
 
   return {
     archetype,
     archetypeConfig: config,
+    multiplayer: options?.multiplayer ?? false,
+    paidSevenThreshold: Math.round(ev6),
     expectedScores: {
-      hand7: Math.round(ev7),
+      hand7: Math.round(initialEv7),
       hand6: Math.round(ev6),
       hand5: Math.round(ev5),
       hand4: Math.round(ev4),
     },
     thresholds: {
-      keep7: Math.round(ev6),
+      keep7: Math.round(initialThreshold),
       keep6: Math.round(ev5),
       keep5: Math.round(ev4),
     },

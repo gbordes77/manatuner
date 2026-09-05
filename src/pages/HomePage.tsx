@@ -131,7 +131,7 @@ export const HomePage: React.FC = () => {
       title: 'Mulligan Simulator',
       description: (
         <>
-          <Term id="monte-carlo">10,000 simulated hands</Term> tell you exactly when to keep or
+          <Term id="monte-carlo">10,000 simulated hands</Term> help compare whether to keep or
           mulligan.
         </>
       ),
@@ -264,8 +264,8 @@ export const HomePage: React.FC = () => {
               lineHeight: 1.6,
             }}
           >
-            Stop guessing. Get <strong>exact cast odds</strong> for every spell, plus know{' '}
-            <strong>exactly when to mulligan</strong>.
+            Explore <strong>mana probabilities</strong> for supported cards and compare{' '}
+            <strong>mulligan strategies</strong>.
           </Typography>
 
           {/* Beginner-friendly qualifier — answers Leo's "is this for me?"
