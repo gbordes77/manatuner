@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -20,7 +20,19 @@ export function TabPanel(props: TabPanelProps) {
       data-testid={`analyzer-tabpanel-${index}`}
       {...other}
     >
-      {isActive && <Box sx={{ p: 3 }}>{children}</Box>}
+      {isActive && (
+        <Box sx={{ p: 3 }}>
+          <Suspense
+            fallback={
+              <Box role="status" data-testid="analysis-panel-loading">
+                Loading analysis panel…
+              </Box>
+            }
+          >
+            {children}
+          </Suspense>
+        </Box>
+      )}
     </div>
   )
 }

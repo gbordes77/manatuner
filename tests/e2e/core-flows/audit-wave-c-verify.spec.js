@@ -15,6 +15,7 @@ test.describe('Audit verification (automated)', () => {
     await page.goto('/')
 
     const menu = page.getByRole('button', { name: 'Open navigation menu' })
+    await expect(menu.or(page.getByRole('button', { name: 'Learn', exact: true }))).toBeVisible()
     if (await menu.isVisible()) {
       await menu.click()
       await expect(page.getByRole('button', { name: 'Guide', exact: true })).toBeVisible()

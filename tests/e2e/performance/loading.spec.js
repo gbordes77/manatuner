@@ -7,6 +7,19 @@ import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
 test.use({ video: 'off', trace: 'off' });
 
 test.describe('Tests de Performance', () => {
+  test('Interaction timer waits for destination content', async ({ page }) => {
+    await page.setContent('<button id="show">Show result</button><div id="result" hidden>Ready</div>');
+    await page.locator('#show').evaluate(button => {
+      button.addEventListener('click', () => setTimeout(() => {
+        document.getElementById('result').hidden = false;
+      }, 200));
+    });
+    const duration = await measureClickToContent(page, page.getByRole('button', { name: 'Show result' }), '#result');
+    expect(duration).toBeGreaterThanOrEqual(190);
+    expect(Number.isFinite(duration)).toBe(true);
+    await expect(page.locator('#result')).toBeVisible();
+  });
+
   test('Temps de chargement initial', async ({ page }) => {
     const startTime = Date.now();
     
@@ -24,6 +37,7 @@ test.describe('Tests de Performance', () => {
     await page.goto('/');
     
     const menu = page.getByRole('button', { name: 'Open navigation menu' });
+    await expect(menu.or(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true }))).toBeVisible();
     const mobile = await menu.isVisible();
     if (mobile) await menu.click();
     const target = mobile
@@ -88,7 +102,7 @@ test.describe('Tests de Performance', () => {
     for (const [index, tabName] of tabNames.entries()) {
       const tab = page.getByTestId(tabName);
       await expect(tab).toBeVisible();
-      const switchTime = await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div`);
+      const switchTime = await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div:not(:has([data-testid="analysis-panel-loading"]))`);
       await expect(tab).toHaveAttribute('aria-selected', 'true');
       await expect(page.getByTestId(`analyzer-tabpanel-${index}`)).toBeVisible();
       tabSwitchTimes.push(switchTime);
@@ -256,7 +270,7 @@ test.describe('Tests de Mémoire et Ressources', () => {
       for (const [index, tabName] of tabNames.entries()) {
         const tab = page.getByTestId(tabName);
         await expect(tab).toBeVisible();
-        totalTime += await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div`);
+        totalTime += await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div:not(:has([data-testid="analysis-panel-loading"]))`);
         await expect(tab).toHaveAttribute('aria-selected', 'true');
         await expect(page.getByTestId(`analyzer-tabpanel-${index}`)).toBeVisible();
       }

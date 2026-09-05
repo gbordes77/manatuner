@@ -947,7 +947,7 @@ const AnalyzerPage: React.FC = () => {
                     />
                   </Tabs>
 
-                  <Suspense fallback={<AnalyzerSkeleton />}>
+                  <>
                     <TabPanel value={activeTab} index={0}>
                       <ErrorBoundary label="AnalyzerTab.Castability">
                         <CastabilityTab analysisResult={analysisResult} />
@@ -990,7 +990,7 @@ const AnalyzerPage: React.FC = () => {
                         />
                       </ErrorBoundary>
                     </TabPanel>
-                  </Suspense>
+                  </>
                 </div>
               )}
             </Paper>

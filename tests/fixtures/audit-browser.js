@@ -23,6 +23,7 @@ export const test = base.extend({
 export { expect }
 export async function navigateAnalyzer(page) {
   const menu = page.getByRole('button', { name: 'Open navigation menu' })
+  await expect(menu.or(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true }))).toBeVisible()
   if (await menu.isVisible()) {
     await menu.click()
     await page.getByRole('button', { name: 'Analyzer', exact: true }).click()

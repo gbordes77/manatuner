@@ -46,6 +46,7 @@ test.describe('Accessibility smoke (EN)', () => {
   test('Analyzer navigation is unique in the active desktop or mobile menu', async ({ page }) => {
     await page.goto('/')
     const menu = page.getByRole('button', { name: 'Open navigation menu' })
+    await expect(menu.or(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true }))).toBeVisible()
     const mobile = await menu.isVisible()
     if (mobile) await menu.click()
     const bannerAnalyzer = mobile
