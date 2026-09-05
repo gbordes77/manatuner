@@ -493,19 +493,19 @@ describe('computeAcceleratedCastabilityAtTurn', () => {
     expect(accelK0.p2).toBeCloseTo(base.p2, 8)
   })
 
-  it('results should stay between 0 and 1', () => {
+  // Each turn is an independent assertion case. Seven exact enumerations together
+  // can exceed the runner's per-test deadline on shared CI hardware.
+  it.each([1, 2, 3, 4, 5, 6, 7])('turn %i results should stay between 0 and 1', (turn) => {
     const deck = makeGruulDeck()
     const spell = make4ManaGruulSpell()
     const ctx = makeGoldfishCtx()
     const producers = [makeLlanowarElves(), makeBirdsOfParadise()]
 
-    for (let turn = 1; turn <= 7; turn++) {
-      const result = computeAcceleratedCastabilityAtTurn(hg, deck, spell, turn, producers, ctx)
-      expect(result.p1).toBeGreaterThanOrEqual(0)
-      expect(result.p1).toBeLessThanOrEqual(1)
-      expect(result.p2).toBeGreaterThanOrEqual(0)
-      expect(result.p2).toBeLessThanOrEqual(1)
-    }
+    const result = computeAcceleratedCastabilityAtTurn(hg, deck, spell, turn, producers, ctx)
+    expect(result.p1).toBeGreaterThanOrEqual(0)
+    expect(result.p1).toBeLessThanOrEqual(1)
+    expect(result.p2).toBeGreaterThanOrEqual(0)
+    expect(result.p2).toBeLessThanOrEqual(1)
   })
 })
 
