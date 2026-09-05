@@ -1,5 +1,3 @@
-import { physicalManaProbability } from './castability/physicalManaEngine'
-import { parsePhysicalCost } from './castability/parsePhysicalCost'
 import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
@@ -9,6 +7,8 @@ import {
   fetchCardFromScryfallWithMeta as resolveCardFromScryfallWithMeta,
 } from './cardResolver'
 import { hypergeom } from './castability/hypergeom'
+import { parsePhysicalCost } from './castability/parsePhysicalCost'
+import { physicalManaProbability } from './castability/physicalManaEngine'
 import {
   applyCommanderFallback as applyCommanderFallbackPure,
   cleanCardName as cleanCardNamePure,
@@ -18,13 +18,13 @@ import { landService } from './landService'
 import { compareTempoImpact } from './manaCalculator'
 
 // Re-export pure parser helpers so existing imports keep working (T08).
-export { cleanCardName, detectSideboardStartLine, parseDecklistLine } from './deckParser'
 export {
   batchFetchFromScryfall,
   clearCardResolverCache,
   fetchCardFromScryfall,
   fetchCardFromScryfallWithMeta,
 } from './cardResolver'
+export { cleanCardName, detectSideboardStartLine, parseDecklistLine } from './deckParser'
 
 /** How many spells between main-thread yields during tempo analysis (T06). */
 export const TEMPO_YIELD_EVERY = 10
@@ -1048,7 +1048,6 @@ export class DeckAnalyzer {
 
     const okQty = qty(okCards)
     const notFoundQty = qty(notFoundCards)
-    const unavailableQty = qty(unavailableCards)
 
     const sampleFrom = (list: DeckCard[]) =>
       [...new Set(list.map((c) => c.name))].slice(0, 6).join(', ')

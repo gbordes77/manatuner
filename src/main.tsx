@@ -1,12 +1,15 @@
 import * as Sentry from '@sentry/react'
-import { Box, CircularProgress } from '@mui/material'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 import App from './App'
+import { ErrorFallback, PersistLoader } from './components/common/BootFallbacks'
 import { persistor, store } from './store'
+import './styles/contrast-fixes.css'
+import './styles/index.css'
+import './styles/ux-improvements.css'
 
 /**
  * Sentry privacy contract (2026-04-12, reinforced 2026-08-01)
@@ -66,9 +69,6 @@ if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
       defaults.filter((i) => !/Replay|BrowserSession/i.test(i.name ?? '')),
   })
 }
-import './styles/contrast-fixes.css'
-import './styles/index.css'
-import './styles/ux-improvements.css'
 
 // PWA Cleanup: Unregister all old Service Workers and clear caches
 // This fixes the issue where old cached versions persist after deployment
@@ -91,55 +91,6 @@ if ('serviceWorker' in navigator) {
     }
   })
 }
-
-// Loading component for PersistGate
-const PersistLoader = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    }}
-  >
-    <CircularProgress size={48} sx={{ color: 'white' }} />
-  </Box>
-)
-
-// Error boundary for production
-const ErrorFallback = ({ error: _error }: { error: Error }) => (
-  <div
-    style={{
-      padding: '20px',
-      textAlign: 'center',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-  >
-    <h1>🎯 ManaTuner</h1>
-    <p>Something went wrong loading the application.</p>
-    <button
-      onClick={() => window.location.reload()}
-      style={{
-        padding: '10px 20px',
-        background: 'white',
-        color: '#667eea',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        marginTop: '10px',
-      }}
-    >
-      Reload Page
-    </button>
-  </div>
-)
 
 try {
   ReactDOM.createRoot(document.getElementById('root')!).render(

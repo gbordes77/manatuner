@@ -114,7 +114,7 @@ const CompareView: React.FC<{
   a: AnalysisRecord
   b: AnalysisRecord
   onClose: () => void
-}> = ({ a, b, onClose }) => {
+}> = ({ a, b }) => {
   const getStats = (record: AnalysisRecord) => ({
     name: record.deckName || 'Unnamed Deck',
     consistency: record.consistency ?? record.analysis?.consistency ?? 0,

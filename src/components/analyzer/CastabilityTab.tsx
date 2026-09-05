@@ -3,6 +3,7 @@ import TimelineIcon from '@mui/icons-material/Timeline'
 import {
   Alert,
   Box,
+  Button,
   Chip,
   Grid,
   IconButton,
@@ -12,8 +13,8 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import React, { memo, useEffect, useMemo, useState } from 'react'
-import { useAcceleration } from '../../contexts/AccelerationContext'
+import React, { lazy, memo, Suspense, useEffect, useMemo, useState } from 'react'
+import { useAcceleration } from '../../contexts/accelerationState'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { manaProducerService, producerCacheService } from '../../services/manaProducerService'
 import type { Card } from '../../types'
@@ -34,6 +35,8 @@ interface CastabilityTabProps {
   analysisResult: AnalysisResult
 }
 
+const PaymentPolicyPanel = lazy(() => import('./PaymentPolicyPanel'))
+
 type BoardScope = 'main' | 'postboard'
 
 export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisResult }) => {
@@ -41,6 +44,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   const { settings, accelContext, detectedFamily, suggestFromDeckSize } = useAcceleration()
 
   // P1-8: board scope — main only vs post-board (swaps)
+  const [showPolicy, setShowPolicy] = useState(false)
   const [boardScope, setBoardScope] = useState<BoardScope>('main')
   const [activeSwaps, setActiveSwaps] = useState<SideboardSwap[]>([])
 
@@ -209,6 +213,15 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     }
   }, [effectiveCards])
 
+  const policyCards = useMemo(
+    () =>
+      effectiveCards.map((card) => ({
+        ...card,
+        producesMana: card.producesMana || producersInDeck.some((p) => p.def.name === card.name),
+      })),
+    [effectiveCards, producersInDeck]
+  )
+
   // v1.1: Extract unconditional multi-mana lands for probabilistic handling
   // Groups lands by their delta (bonus mana per land)
   // e.g., Ancient Tomb (δ=1), Bounce lands (δ=1)
@@ -334,6 +347,18 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         Each card shows on-curve cast % — scroll the list. Priority horizon spells are highlighted.
       </Typography>
 
+      <Button
+        variant="outlined"
+        onClick={() => setShowPolicy((v) => !v)}
+        aria-expanded={showPolicy}
+      >
+        Searches & special mana — policy model
+      </Button>
+      {showPolicy && (
+        <Suspense fallback={<Typography role="status">Loading policy model…</Typography>}>
+          <PaymentPolicyPanel cards={policyCards} />
+        </Suspense>
+      )}
       {/* Acceleration Settings Panel */}
       <AccelerationSettings producersInDeck={producersInDeck} deckSize={listSize || 60} />
 

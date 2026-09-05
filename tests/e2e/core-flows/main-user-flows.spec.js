@@ -1,13 +1,20 @@
-/**
- * Legacy French / pre-v2 tab suite — replaced by analyzer-happy-path.spec.js
- * and tabs/analyzer-tabs.spec.js (EN UI, current tabs).
- *
- * Kept as a skipped placeholder so old CI links / docs don't 404 the path.
- */
-import { test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
-test.describe.skip('Flux Utilisateur Principaux (legacy FR — retired)', () => {
-  test('see tests/e2e/core-flows/analyzer-happy-path.spec.js', async () => {
-    // intentionally empty
-  })
+// Replaces the retired empty FR placeholder with the persistence behavior it lacked.
+test('Deck draft survives a real browser reload without analysis', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('manatuner-onboarding-completed', 'true'))
+  await page.goto('/analyzer')
+  const draft = '12 Forest\n12 Island'
+  await page.getByPlaceholder(/paste your decklist/i).fill(draft)
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const root = localStorage.getItem('persist:root')
+        return root ? JSON.parse(JSON.parse(root).analyzer).deckList : null
+      })
+    )
+    .toBe(draft)
+  await page.reload()
+  await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue(draft)
+  await expect(page.getByTestId('analysis-results')).toHaveCount(0)
 })

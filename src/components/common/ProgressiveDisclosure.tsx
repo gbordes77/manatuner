@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import InfoIcon from '@mui/icons-material/Info'
+import SettingsIcon from '@mui/icons-material/Settings'
 import {
   Accordion,
-  AccordionSummary,
   AccordionDetails,
-  Typography,
+  AccordionSummary,
   Box,
   Chip,
   Tooltip,
+  Typography,
 } from '@mui/material'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import SettingsIcon from '@mui/icons-material/Settings'
-import InfoIcon from '@mui/icons-material/Info'
+import React, { useState } from 'react'
 
 interface ProgressiveDisclosureProps {
   title: string
@@ -147,61 +147,3 @@ export const ProgressiveDisclosure: React.FC<ProgressiveDisclosureProps> = ({
 /**
  * 🎯 Hook pour la gestion d'état des Progressive Disclosures multiples
  */
-export const useProgressiveDisclosure = (initialStates: Record<string, boolean> = {}) => {
-  const [states, setStates] = useState(initialStates)
-
-  const toggle = (key: string) => {
-    setStates((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }))
-  }
-
-  const open = (key: string) => {
-    setStates((prev) => ({
-      ...prev,
-      [key]: true,
-    }))
-  }
-
-  const close = (key: string) => {
-    setStates((prev) => ({
-      ...prev,
-      [key]: false,
-    }))
-  }
-
-  const openAll = () => {
-    setStates((prev) =>
-      Object.keys(prev).reduce(
-        (acc, key) => ({
-          ...acc,
-          [key]: true,
-        }),
-        {}
-      )
-    )
-  }
-
-  const closeAll = () => {
-    setStates((prev) =>
-      Object.keys(prev).reduce(
-        (acc, key) => ({
-          ...acc,
-          [key]: false,
-        }),
-        {}
-      )
-    )
-  }
-
-  return {
-    states,
-    toggle,
-    open,
-    close,
-    openAll,
-    closeAll,
-    isOpen: (key: string) => !!states[key],
-  }
-}

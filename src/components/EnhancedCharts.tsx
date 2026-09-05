@@ -41,7 +41,7 @@ interface EnhancedChartsProps {
   cards?: DeckCard[]
 }
 
-const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
+const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
   // Theme available via CSS variables, no need for useTheme here
 
   // MTG Color Palette

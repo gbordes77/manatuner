@@ -5,8 +5,6 @@
  * Import from here to ensure consistency and avoid duplication.
  */
 
-import type { ManaColor } from '../types'
-
 // Re-export the canonical ManaColor type for consumers of this module
 export type { ManaColor } from '../types'
 

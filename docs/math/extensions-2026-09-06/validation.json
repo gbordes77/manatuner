@@ -1,0 +1,57 @@
+{
+  "baseline": "d6418f065e286b451a72ab2a0de705361523df22",
+  "model": "payment-policy-v2",
+  "local": {
+    "unit": {
+      "passed": 669,
+      "skipped": 0,
+      "files": 63
+    },
+    "lint": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "types": "PASS",
+    "build": "PASS",
+    "bundle": "PASS",
+    "npmAuditAll": 0,
+    "npmAuditProduction": 0,
+    "browserTargeted": {
+      "chromium": {
+        "passed": 2,
+        "failed": 0
+      },
+      "webkit": {
+        "passed": 2,
+        "failed": 0
+      }
+    }
+  },
+  "linuxFull": {
+    "status": "pending"
+  },
+  "publication": {
+    "status": "pending"
+  },
+  "proofSha256": {
+    "proofs/bundle.txt": "7d4f01dc96c692136b07ce3c60907404076d34e4aa94e0848a3ebdb4212330bf",
+    "proofs/unit.txt": "a0bae515e9cfb7b9d67636b70b95b2b8987a101fa25a50d00416e1cf14547ee8",
+    "proofs/webkit.json": "811e06f6031ed1b262841557fe5a2003c67aa0d8ce8a9399c41c0c7c1a114e96",
+    "proofs/audit-production.json": "25a6f5090d94f5c40d8cf791a518f78c5d588bed47fb3b44d5750052e69a6fc5",
+    "proofs/chromium.json": "4bb333f31144eccefb07f9be04ec437a019d4f448c078adbc7c61d590e7f6e9f",
+    "proofs/build.txt": "755e572add5b4d3a3600cc528fb57dd5ef1bb7abbb236c54b57d314c2e8bb456",
+    "proofs/audit-before.json": "52ef3787bd270b2bd35632023b11a9cb31ba6d727be6b73aeb358a1e7c6e6d38",
+    "proofs/types.txt": "0063f77c1b9d325fa1bde986a3f02fd2af4e2c3cac20ed021a9c863f0508d9bd",
+    "proofs/lint.txt": "218e96414840321f9309c1eb7f8486a40fd7577d4e8c72852014bd9ee2503400",
+    "proofs/audit-after.json": "25a6f5090d94f5c40d8cf791a518f78c5d588bed47fb3b44d5750052e69a6fc5"
+  },
+  "sourceSha256": {
+    "src/services/paymentPolicy/cost.ts": "04dedba3ca5cc74cbf8d0f505037c6268e94e578a7a97a478c10319fd502ac20",
+    "src/services/paymentPolicy/engine.ts": "afec27c6f487b7c810321fc9670bdeb5422bd196de16922d21735e18cdf73d35",
+    "src/services/paymentPolicy/types.ts": "3d6a0c9a402bc853004836175881dcfa73c8ef2786411ddfa3b64be6fd87870d",
+    "src/services/paymentPolicy/deck.ts": "c2e32d49e2a8da5e1ca5d3b431f967bb0658e6e2bbd053d75e41ac1dbb21ac3b",
+    "src/workers/paymentPolicy.worker.ts": "0808d1cee09a9110d64ce35c5ff8325db42340f8cc837c6db49336095f8064c7",
+    "src/components/analyzer/PaymentPolicyPanel.tsx": "271ac3307da8ff6d07f13037b42cca55574330d9b230d823e35bfd51575182e1",
+    "src/data/paymentPolicyCards.json": "74c25d712d21a78b02ec7f1f564994a834ef967f54d21de3c9eff1fdce125612"
+  }
+}

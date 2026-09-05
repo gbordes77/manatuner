@@ -5,7 +5,7 @@ import {
   computeAcceleratedCastabilityAtTurn,
   producerOnlineProbByTurn,
 } from '../../src/services/castability/acceleratedAnalyticEngine'
-import { computeColorDeltas } from '../../src/components/analyzer/KarstenTargetDelta'
+import { computeColorDeltas } from '../../src/components/analyzer/karstenDeltas'
 import { DeckAnalyzer, type DeckCard, type AnalysisResult } from '../../src/services/deckAnalyzer'
 import {
   _generateTurnPlanForTest as plan,

@@ -1,7 +1,8 @@
-import { describe, test, expect, beforeEach } from 'vitest'
 import { render, waitFor } from '@testing-library/react'
 import { HelmetProvider } from 'react-helmet-async'
-import { SEO, buildBreadcrumbs, PAGE_TITLES } from '../SEO'
+import { beforeEach, describe, expect, test } from 'vitest'
+import { SEO } from '../SEO'
+import { buildBreadcrumbs, PAGE_TITLES } from '../seoMetadata'
 
 const BASE_URL = 'https://www.manatuner.app'
 

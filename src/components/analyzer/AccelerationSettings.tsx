@@ -28,7 +28,7 @@ import {
   useTheme,
 } from '@mui/material'
 import React, { useState } from 'react'
-import { useAcceleration } from '../../contexts/AccelerationContext'
+import { useAcceleration } from '../../contexts/accelerationState'
 import type { FormatPreset, ProducerInDeck } from '../../types/manaProducers'
 import { formatFamilyLabel } from '../../utils/deckFormat'
 

@@ -1,0 +1,110 @@
+[
+  {
+    "fetchTapped": false,
+    "turn": 1,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 0,
+    "denominator": 1,
+    "probability": 0.0
+  },
+  {
+    "fetchTapped": false,
+    "turn": 1,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 0,
+    "denominator": 1,
+    "probability": 0.0
+  },
+  {
+    "fetchTapped": false,
+    "turn": 2,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": false,
+    "turn": 2,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": false,
+    "turn": 3,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": false,
+    "turn": 3,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": true,
+    "turn": 1,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 0,
+    "denominator": 1,
+    "probability": 0.0
+  },
+  {
+    "fetchTapped": true,
+    "turn": 1,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 0,
+    "denominator": 1,
+    "probability": 0.0
+  },
+  {
+    "fetchTapped": true,
+    "turn": 2,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 43,
+    "denominator": 45,
+    "probability": 0.9555555555555556
+  },
+  {
+    "fetchTapped": true,
+    "turn": 2,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": true,
+    "turn": 3,
+    "draw": false,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  },
+  {
+    "fetchTapped": true,
+    "turn": 3,
+    "draw": true,
+    "cost": ["G", "W"],
+    "numerator": 1,
+    "denominator": 1,
+    "probability": 1.0
+  }
+]

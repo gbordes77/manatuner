@@ -6,11 +6,11 @@
  * 2. ETB tapped handling (taplands don't give mana the turn they enter)
  * 3. Curve-out preference (play 3-drop on T3 instead of 1+2)
  */
-import { describe, it, expect } from 'vitest'
-import type { SimulatedCard, SimulatedHand, TurnPlan } from '../mulliganSimulatorAdvanced'
+import { describe, expect, it } from 'vitest'
+import type { SimulatedCard, SimulatedHand } from '../mulliganSimulatorAdvanced'
 import {
-  prepareDeckForSimulation,
   _generateTurnPlanForTest as generateTurnPlan,
+  prepareDeckForSimulation,
 } from '../mulliganSimulatorAdvanced'
 
 // Helper to create a SimulatedCard

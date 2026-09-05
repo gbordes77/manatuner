@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react'
 import {
   _useAcceleratedCastabilityForTest as useAccel,
   _useProbabilityCalculationForTest as useBase,
-} from '../../src/components/ManaCostRow'
+} from '../../src/components/manaCostHooks'
 import { exactTail } from './oracle'
 import type { Card } from '../../src/types'
 const ctx = { playDraw: 'PLAY' as const, removalRate: 0, defaultRockSurvival: 1 }

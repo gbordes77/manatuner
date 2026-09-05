@@ -4,6 +4,7 @@ import CasinoIcon from '@mui/icons-material/Casino'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import DownloadIcon from '@mui/icons-material/Download'
 import FunctionsIcon from '@mui/icons-material/Functions'
+import ShareIcon from '@mui/icons-material/Share'
 import ShowChartIcon from '@mui/icons-material/ShowChart'
 import TerrainIcon from '@mui/icons-material/Terrain'
 import {
@@ -20,17 +21,34 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material'
-import ShareIcon from '@mui/icons-material/Share'
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AnalyzerSkeleton } from '../components/analyzer/AnalyzerSkeleton'
 import { DeckInputSection } from '../components/analyzer/DeckInputSection'
-import { computeColorDeltas, summarizeColorDeltas } from '../components/analyzer/KarstenTargetDelta'
+import { computeColorDeltas, summarizeColorDeltas } from '../components/analyzer/karstenDeltas'
 import { QuickVerdict } from '../components/analyzer/QuickVerdict'
 import { TabPanel } from '../components/analyzer/TabPanel'
 import { ErrorBoundary } from '../components/common/ErrorBoundary'
 import { FloatingManaSymbols } from '../components/common/FloatingManaSymbols'
 import { SEO } from '../components/common/SEO'
+import { useAcceleration } from '../contexts/accelerationState'
+import { SAMPLE_DECKS } from '../data/sampleDecks'
+import { PrivacyStorage } from '../lib/privacy'
+import { AnalysisCancelledError, DeckAnalyzer } from '../services/deckAnalyzer'
+import { AppDispatch, RootState } from '../store'
+import {
+  clearAnalyzer,
+  hideSnackbar,
+  setActiveTab,
+  setAnalysisResult,
+  setDeckList,
+  setDeckName,
+  setIsAnalyzing,
+  setIsDeckMinimized,
+  showSnackbar,
+} from '../store/slices/analyzerSlice'
+import { detectDeckFormatFamily } from '../utils/deckFormat'
+import { buildShareUrl, parseShareParams } from '../utils/urlCodec'
 
 // Audit fix perf (2026-04-13): lazy-load PrivacySettings to drop ~14 KB gzip
 // from the first AnalyzerPage paint (DOMPurify ships inside this component).
@@ -50,24 +68,6 @@ const ManabaseFullTab = React.lazy(() =>
   import('../components/analyzer/ManabaseFullTab').then((m) => ({ default: m.ManabaseFullTab }))
 )
 const ManaBlueprint = React.lazy(() => import('../components/export/ManaBlueprint'))
-import { PrivacyStorage } from '../lib/privacy'
-import { AnalysisCancelledError, DeckAnalyzer } from '../services/deckAnalyzer'
-import { AppDispatch, RootState } from '../store'
-import {
-  clearAnalyzer,
-  hideSnackbar,
-  setActiveTab,
-  setAnalysisResult,
-  setDeckList,
-  setDeckName,
-  setIsAnalyzing,
-  setIsDeckMinimized,
-  showSnackbar,
-} from '../store/slices/analyzerSlice'
-import { useAcceleration } from '../contexts/AccelerationContext'
-import { detectDeckFormatFamily, formatFamilyLabel, landCountGuidance } from '../utils/deckFormat'
-import { buildShareUrl, parseShareParams } from '../utils/urlCodec'
-import { SAMPLE_DECKS } from '../data/sampleDecks'
 // Lazy-load Onboarding (includes react-joyride ~50KB)
 const Onboarding = React.lazy(() => import('../components/Onboarding'))
 

@@ -1,0 +1,18 @@
+Bundle budget check (QW3)
+     420.9 KB  vendor-charts-Cry7PZGj.js
+     376.8 KB  jspdf.es.min-Bwnfbdae.js
+     361.4 KB  vendor-mui-CPNqbaNh.js
+     195.8 KB  html2canvas.esm-DmLBsbfV.js
+     187.5 KB  vendor-react-YPwVjS-F.js
+     154.3 KB  index.es-DmCRpKFg.js
+     150.3 KB  index-CoktPVsv.js
+     126.8 KB  AnalyzerPage-BggXkTob.js
+      99.4 KB  Onboarding-BYzdDrPn.js
+      71.0 KB  CastabilityTab-DZHALUCc.js
+      61.9 KB  useLibraryProgress-C0rMaTm5.js
+      45.9 KB  vendor-redux-Bc1t3V2X.js
+      43.1 KB  PaymentPolicyPanel-CQ8ve-G3.js
+      36.5 KB  vendor-mui-icons-CXd-WJEu.js
+      28.0 KB  purify.es-Ktofpjop.js
+
+OK — all budgets within limits

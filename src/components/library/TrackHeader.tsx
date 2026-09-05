@@ -4,7 +4,7 @@ import React from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import type { CuratorTrack } from '../../types/referenceArticle'
 import { TRACK_METADATA } from '../../types/referenceArticle'
-import { useTheme } from '../common/NotificationProvider'
+import { useTheme } from '../common/notificationContext'
 
 const MANA_COLOR_HEX: Record<'w' | 'u' | 'b' | 'r' | 'g', string> = {
   w: '#D4B85A', // darker gold-ish white — readable on light + dark backgrounds

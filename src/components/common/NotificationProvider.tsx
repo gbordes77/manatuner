@@ -1,49 +1,8 @@
 import { Alert, AlertColor, CssBaseline, Snackbar } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
-import React, {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { darkTheme, lightTheme } from '../../theme'
-
-interface NotificationContextType {
-  showNotification: (message: string, severity?: AlertColor) => void
-}
-
-interface ThemeContextType {
-  isDark: boolean
-  toggleTheme: () => void
-}
-
-interface CombinedContextType extends NotificationContextType, ThemeContextType {}
-
-const CombinedContext = createContext<CombinedContextType | undefined>(undefined)
-
-export const useNotification = () => {
-  const context = useContext(CombinedContext)
-  if (!context) {
-    throw new Error('useNotification must be used within NotificationProvider')
-  }
-  return {
-    showNotification: context.showNotification,
-  }
-}
-
-export const useTheme = () => {
-  const context = useContext(CombinedContext)
-  if (!context) {
-    throw new Error('useTheme must be used within NotificationProvider')
-  }
-  return {
-    isDark: context.isDark,
-    toggleTheme: context.toggleTheme,
-  }
-}
+import { CombinedContext, CombinedContextType } from './notificationContext'
 
 interface NotificationProviderProps {
   children: ReactNode

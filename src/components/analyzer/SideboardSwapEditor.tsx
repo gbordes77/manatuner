@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { Box, Button, Chip, Collapse, IconButton, Paper, Typography, useTheme } from '@mui/material'
+import { Box, Button, Chip, Collapse, IconButton, Paper, Typography } from '@mui/material'
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import type { DeckCard } from '../../services/deckAnalyzer'
 
@@ -26,7 +26,6 @@ interface SideboardSwapEditorProps {
  */
 export const SideboardSwapEditor: React.FC<SideboardSwapEditorProps> = memo(
   ({ maindeckCards, sideboardCards, onSwapsChange }) => {
-    const theme = useTheme()
     const [expanded, setExpanded] = useState(false)
     // Track quantities to swap in/out
     const [sbIn, setSbIn] = useState<Record<string, number>>({})

@@ -1,0 +1,13 @@
+
+> manatuner@2.7.9 test:unit
+> vitest run
+
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+
+ Test Files  63 passed (63)
+      Tests  669 passed (669)
+   Start at  00:01:34
+   Duration  5.96s (transform 2.57s, setup 3.69s, import 10.96s, tests 9.12s, environment 19.77s)
+

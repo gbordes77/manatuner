@@ -297,9 +297,6 @@ describe('London Mulligan library correctness', () => {
       // London: draw 7, pick best 6
       const london7 = shuffled.slice(0, 7)
       const londonLands = london7.filter((c) => c.isLand).length
-      // Simple heuristic: closer to 2-3 lands = better
-      const londonScore =
-        Math.abs(londonLands - 2.5) < Math.abs(londonLands - 3.5) ? londonLands : londonLands
       londonTotal += Math.min(londonLands, 4)
 
       // Random: draw only 6

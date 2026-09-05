@@ -5,12 +5,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import FeedbackIcon from '@mui/icons-material/Feedback'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import GuideIcon from '@mui/icons-material/MenuBook'
 import HistoryIcon from '@mui/icons-material/History'
 import HomeIcon from '@mui/icons-material/Home'
 import InfoIcon from '@mui/icons-material/Info'
 import LandscapeIcon from '@mui/icons-material/Landscape'
 import MenuIcon from '@mui/icons-material/Menu'
+import GuideIcon from '@mui/icons-material/MenuBook'
 import SchoolIcon from '@mui/icons-material/School'
 import {
   AppBar,
@@ -36,7 +36,7 @@ import {
 } from '@mui/material'
 import React, { useState } from 'react'
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
-import { useTheme } from '../common/NotificationProvider'
+import { useTheme } from '../common/notificationContext'
 import { FEEDBACK_URL } from './Footer'
 
 // Mana symbol component using Keyrune font

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { hasAnalyzerDeepLinkParams, isPrimaryAnalyzerCtaLabel, ONBOARDING_KEY } from '../Onboarding'
+import { ONBOARDING_KEY } from '../Onboarding'
+import { hasAnalyzerDeepLinkParams, isPrimaryAnalyzerCtaLabel } from '../onboardingHelpers'
 
 describe('Onboarding helpers (P0-UX-1)', () => {
   it('exports stable localStorage key', () => {

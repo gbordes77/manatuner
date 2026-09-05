@@ -17,7 +17,7 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useRef, useState } from 'react'
-import { COLOR_NAMES, MANA_COLOR_STYLES, type WUBRGColor } from '../../constants/manaColors'
+import { COLOR_NAMES, type WUBRGColor } from '../../constants/manaColors'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { countPipsInCost, type KarstenColor } from '../../utils/manaCostParser'
 
@@ -806,7 +806,6 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 
           {/* Color Rows */}
           {activeColors.map((color) => {
-            const colorStyle = MANA_COLOR_STYLES[color]
             const probs = [
               analysisResult.probabilities.turn1.specificColors[color],
               analysisResult.probabilities.turn2.specificColors[color],

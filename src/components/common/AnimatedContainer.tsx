@@ -1,5 +1,5 @@
-import React from 'react'
 import { Box, BoxProps } from '@mui/material'
+import React from 'react'
 
 // Types d'animations disponibles
 type AnimationType = 'fadeInUp' | 'slideInLeft' | 'scaleIn' | 'stagger' | 'cardHover'
@@ -85,11 +85,7 @@ export const AnimatedList: React.FC<AnimatedListProps> = ({ children, className 
   return (
     <Box className={className}>
       {children.map((child, index) => (
-        <AnimatedContainer 
-          key={index} 
-          animation="fadeInUp" 
-          delay={index * 0.1}
-        >
+        <AnimatedContainer key={index} animation="fadeInUp" delay={index * 0.1}>
           {child}
         </AnimatedContainer>
       ))}
@@ -118,12 +114,16 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.6 : 1,
         transition: 'all 0.2s ease',
-        '&:hover': !disabled ? {
-          transform: 'scale(1.05)',
-        } : {},
-        '&:active': !disabled ? {
-          transform: 'scale(0.95)',
-        } : {},
+        '&:hover': !disabled
+          ? {
+              transform: 'scale(1.05)',
+            }
+          : {},
+        '&:active': !disabled
+          ? {
+              transform: 'scale(0.95)',
+            }
+          : {},
         ...sx,
       }}
     >
@@ -133,18 +133,3 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
 }
 
 // Hook pour animations en scroll (simplifié)
-export const useScrollAnimation = () => {
-  const scrollVariants = {
-    hidden: {
-      opacity: 0,
-      transform: 'translateY(50px)',
-    },
-    visible: {
-      opacity: 1,
-      transform: 'translateY(0)',
-      transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-    },
-  }
-
-  return { scrollVariants }
-} 

@@ -1,6 +1,7 @@
 import { useTheme } from '@mui/material/styles'
 import React, { useCallback, useEffect, useState } from 'react'
 import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride'
+import { hasAnalyzerDeepLinkParams, isPrimaryAnalyzerCtaLabel } from './onboardingHelpers'
 
 export const ONBOARDING_KEY = 'manatuner-onboarding-completed'
 
@@ -49,19 +50,6 @@ const preAnalysisSteps: Step[] = [
 ]
 
 /** Deep-link visitors already have intent — don't block them with a tour. */
-export function hasAnalyzerDeepLinkParams(
-  search = typeof window !== 'undefined' ? window.location.search : ''
-): boolean {
-  const params = new URLSearchParams(search)
-  return params.has('sample') || params.has('format')
-}
-
-/** Primary analyzer CTAs that should dismiss the tour without forcing Skip. */
-export function isPrimaryAnalyzerCtaLabel(text: string): boolean {
-  const t = text.replace(/\s+/g, ' ').trim()
-  return t.includes('Try Example') || t.includes('Analyze Manabase') || t === 'Analyzing...'
-}
-
 /**
  * Inject a belt-and-suspenders CSS rule. react-joyride hardcodes
  * `pointer-events: auto` on the overlay via inline styles, so props alone
