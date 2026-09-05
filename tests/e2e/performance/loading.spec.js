@@ -2,7 +2,7 @@ import { test, expect, navigateAnalyzer } from '../../fixtures/audit-browser.js'
 import { measureClickToContent } from '../../fixtures/interaction-timing.js';
 import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
 
-// Recording every frame materially changes rendering throughput on WebKit CI.
+// Recording adds rendering work that is separate from the application workload.
 // Keep screenshots on failure, but benchmark without video/trace instrumentation.
 test.use({ video: 'off', trace: 'off' });
 

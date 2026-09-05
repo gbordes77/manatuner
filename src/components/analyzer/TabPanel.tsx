@@ -1,4 +1,4 @@
-import { Box, Fade } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react'
 
 interface TabPanelProps {
@@ -20,11 +20,7 @@ export function TabPanel(props: TabPanelProps) {
       data-testid={`analyzer-tabpanel-${index}`}
       {...other}
     >
-      {isActive && (
-        <Fade in={isActive} timeout={300}>
-          <Box sx={{ p: 3 }}>{children}</Box>
-        </Fade>
-      )}
+      {isActive && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
