@@ -29,7 +29,9 @@ describe('Special card contracts', () => {
   it('pathways retain a face choice, not freely switching dual mana', () => {
     const pathway = land('Needleverge Pathway')
     expect(pathway.category).toBe('pathway')
-    expect(result(pathway).status).toBe('unsupported')
+    // The audited R/W faces cannot pay U; the new domain proves zero.
+    expect(result(pathway)).toMatchObject({ status: 'exact', p2: 0 })
+    expect(result({ ...pathway, otherFace: 'Unaudited face' }).status).toBe('unsupported')
   })
   it('a spell/land double face is not silently accepted as an ordinary land', () => {
     expect(result({ ...land('Mountain'), name: 'Valakut Awakening // Valakut Stoneforge', isMDFC: true }).status).toBe('unsupported')

@@ -54,3 +54,14 @@ it('creature-removal settings do not disable a lands-only calculation', () => {
   )
   expect(screen.getByText('Potential castability: 0%')).toBeTruthy()
 })
+
+it('an audited pathway exposes its back-face payment without doubling the card', () => {
+  render(
+    <ManaCostRow
+      {...base}
+      initialCardData={{ name: 'Green', mana_cost: '{G}', cmc: 1 } as any}
+      physicalLands={[landService.getLandSync('Cragcrown Pathway')!]}
+    />
+  )
+  expect(screen.getByText('Potential castability: 70%')).toBeTruthy()
+})

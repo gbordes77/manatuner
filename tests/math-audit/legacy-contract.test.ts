@@ -1,4 +1,5 @@
-import { expect, it } from 'vitest'
+import { PrivacyStorage } from '../../src/lib/privacy'
+import { afterEach, expect, it, vi } from 'vitest'
 import { compareTempoImpact } from '../../src/services/manaCalculator'
 import {
   computeAcceleratedCastabilityAtTurn,
@@ -40,4 +41,22 @@ it('represented physical results retain their distinct event', () => {
   )
   expect(result.method).toBe('exact')
   expect(result.assumptions).toMatch(/potential/i)
+})
+
+afterEach(() => vi.unstubAllGlobals())
+it('native saved-analysis export/import preserves methods and unknown risk', () => {
+  const stored = new Map<string, string>()
+  vi.stubGlobal('localStorage', {
+    getItem: (key: string) => stored.get(key) ?? null,
+    setItem: (key: string, value: string) => stored.set(key, value),
+    removeItem: (key: string) => stored.delete(key),
+    clear: () => stored.clear(),
+  })
+  const analysis = { atRiskSpells: null, tempoImpactByColor: compareTempoImpact([land], 10, 1) }
+  PrivacyStorage.saveAnalysis({ deckName: 'Contract', deckList: '1 fetch', analysis })
+  const exported = PrivacyStorage.exportAnalyses()
+  localStorage.clear()
+  PrivacyStorage.importAnalyses(exported)
+  expect(PrivacyStorage.getMyAnalyses()[0].analysis).toEqual(analysis)
+  localStorage.clear()
 })

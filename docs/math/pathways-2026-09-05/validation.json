@@ -1,0 +1,17 @@
+{
+  "local": {
+    "unitPassed": 621,
+    "unitSkipped": 2,
+    "files": 57,
+    "types": "PASS",
+    "lintErrors": 0,
+    "lintWarnings": 27,
+    "build": "PASS",
+    "bundle": "PASS",
+    "productionVulnerabilities": 0
+  },
+  "oracleCases": 6,
+  "oracleTolerance": 1e-12,
+  "linux": "pending",
+  "deployment": "pending"
+}

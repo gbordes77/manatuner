@@ -1,6 +1,14 @@
 {
   "base": "ac790fda71426dae2b135802f637d0dcb105af43",
-  "redBefore": { "score": { "failed": 2, "passed": 1 }, "legacy": { "failed": 3 } },
+  "redBefore": {
+    "score": {
+      "failed": 2,
+      "passed": 1
+    },
+    "legacy": {
+      "failed": 3
+    }
+  },
   "local": {
     "unitPassed": 599,
     "unitSkipped": 2,
@@ -13,5 +21,16 @@
     "productionVulnerabilities": 0
   },
   "linux": "pending",
-  "deployment": "pending"
+  "deployment": {
+    "id": "dpl_J5WfdpDfNu77V5WLuxUt29qEESwP",
+    "state": "READY",
+    "commit": "3d2730ddcebf6ffe33a0f22b82e4b480975e76a0",
+    "httpStatus": 200,
+    "url": "https://www.manatuner.app"
+  },
+  "testedCommit": "3d2730ddcebf6ffe33a0f22b82e4b480975e76a0",
+  "linuxCI": {
+    "status": "PASS",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33991826178"
+  }
 }

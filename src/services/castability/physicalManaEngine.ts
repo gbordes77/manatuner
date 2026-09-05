@@ -3,6 +3,7 @@
  * This is potential castability (an upper bound for a policy without foresight),
  * not a win rate. Unsupported mechanics and resource limits yield no probability.
  */
+import { auditedPathwayColors } from '../../data/auditedPathways'
 import type { ETBCondition, LandMetadata } from '../../types/lands'
 import type { DeckManaProfile, ProducerInDeck, ProducerManaCost } from '../../types/manaProducers'
 
@@ -13,6 +14,8 @@ export type PhysicalManaResult =
 type Cost = { generic: number; symbols: number[] }
 type Source = {
   name?: string
+  faceMasks?: number[]
+  faceIndices?: number[]
   count: number
   land: boolean
   mask: number
@@ -93,6 +96,19 @@ function pay(pool: number[], cost: Cost): number[][] {
 }
 
 function landSource(land: LandMetadata): Source | string {
+  if (land.category === 'pathway') {
+    const faces = auditedPathwayColors(land)
+    if (!faces) return `Unsupported pathway face metadata: ${land.name}`
+    return {
+      count: 1,
+      land: true,
+      mask: 0,
+      amount: 1,
+      delay: 0,
+      faceMasks: faces.map((c) => mask([c])),
+      cost: emptyCost(),
+    }
+  }
   if (land.produces.some((c) => !colors.includes(c))) return `Invalid produced mana: ${land.name}`
   if (
     land.isFetch ||
@@ -260,7 +276,18 @@ function sourceModel(
     if (prev) prev.count += s.count
     else grouped.set(k, { ...s })
   }
-  return [...grouped.values()]
+  const result = [...grouped.values()]
+  // Face permanents have zero library population. Playing one physical card chooses
+  // exactly one board slot; its color can never be changed by an untap step.
+  for (const source of [...result]) {
+    if (!source.faceMasks) continue
+    source.faceIndices = source.faceMasks.map((faceMask) => {
+      const index = result.length
+      result.push({ count: 0, land: true, mask: faceMask, amount: 1, delay: 0, cost: emptyCost() })
+      return index
+    })
+  }
+  return result
 }
 
 function choose(n: number, k: number): number {
@@ -310,7 +337,7 @@ function computePhysicalManaProbability(
     return { status: 'unsupported', reason: 'Land and producer counts exceed the library size' }
   // With only untapped one-mana lands, order can be eliminated exactly:
   // one new card per draw step allows any payable subset of at most `turn` lands.
-  if (sources.every((s) => s.land && !s.entry && s.delay === 0 && s.amount === 1)) {
+  if (sources.every((s) => s.land && !s.faceMasks && !s.entry && s.delay === 0 && s.amount === 1)) {
     if (onlineProducer)
       return { status: 'unsupported', reason: 'Producer is absent from the source model' }
     if (spell.mv > turn) return { status: 'exact', p1: 0, p2: 0, histories: 0 }
@@ -413,6 +440,17 @@ function computePhysicalManaProbability(
         if (s.hand[i] <= 0) continue
         if (source.land) {
           if (s.landPlayed) continue
+          if (source.faceIndices) {
+            for (const face of source.faceIndices) {
+              const next = clone(s)
+              next.hand[i]--
+              next.board[face]++
+              next.ready[face]++
+              next.landPlayed = true
+              pending.push(next)
+            }
+            continue
+          }
           const next = clone(s)
           next.hand[i]--
           next.board[i]++
