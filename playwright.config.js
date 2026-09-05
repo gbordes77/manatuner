@@ -44,7 +44,7 @@ export default defineConfig({
     // Tablet
     {
       name: 'iPad',
-      use: { ...devices['iPad Pro'] },
+      use: { ...devices['iPad Pro 11'] },
     },
   ],
   webServer: {

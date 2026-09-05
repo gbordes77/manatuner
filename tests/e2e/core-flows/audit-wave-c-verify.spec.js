@@ -14,18 +14,24 @@ test.describe('Audit verification (automated)', () => {
   test('shell: Learn nav + Feedback entry points', async ({ page }) => {
     await page.goto('/')
 
-    const learnNav = page.getByRole('button', { name: 'Learn', exact: true })
-    await expect(learnNav).toBeVisible()
-    await learnNav.click()
-    await expect(page.getByRole('menuitem', { name: /guide/i })).toBeVisible()
-    await expect(page.getByRole('menuitem', { name: /mathematics/i })).toBeVisible()
-    // Close menu so header chrome is clear
-    await page.keyboard.press('Escape')
+    const menu = page.getByRole('button', { name: 'Open navigation menu' })
+    if (await menu.isVisible()) {
+      await menu.click()
+      await expect(page.getByRole('button', { name: 'Guide', exact: true })).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Mathematics', exact: true })).toBeVisible()
+      await page.getByRole('button', { name: 'Close navigation menu' }).click()
+    } else {
+      const learnNav = page.getByRole('button', { name: 'Learn', exact: true })
+      await expect(learnNav).toBeVisible()
+      await learnNav.click()
+      await expect(page.getByRole('menuitem', { name: /guide/i })).toBeVisible()
+      await expect(page.getByRole('menuitem', { name: /mathematics/i })).toBeVisible()
+      await page.keyboard.press('Escape')
+    }
 
     // Header + footer both link to Tally (Chip renders as <a>)
     const tallyLinks = page.locator('a[href*="tally.so"]')
     await expect(tallyLinks.first()).toBeVisible()
-    await expect(tallyLinks).toHaveCount(await tallyLinks.count()) // at least 1
     expect(await tallyLinks.count()).toBeGreaterThanOrEqual(2)
     const footerFeedback = page.locator('footer a[href*="tally.so"]')
     await expect(footerFeedback.first()).toBeVisible()

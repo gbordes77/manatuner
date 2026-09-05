@@ -834,6 +834,8 @@ const AnalyzerPage: React.FC = () => {
                       iconPosition="start"
                       label="Castability"
                       aria-label="Castability - Spell casting probabilities"
+                      id="analyzer-tab-0"
+                      aria-controls="analyzer-tabpanel-0"
                       data-testid="tab-castability"
                     />
                     <Tab
@@ -841,6 +843,8 @@ const AnalyzerPage: React.FC = () => {
                       iconPosition="start"
                       label="Analysis"
                       aria-label="Analysis - Detailed spell analysis"
+                      id="analyzer-tab-1"
+                      aria-controls="analyzer-tabpanel-1"
                       data-testid="tab-analysis"
                     />
                     <Tab
@@ -848,6 +852,8 @@ const AnalyzerPage: React.FC = () => {
                       iconPosition="start"
                       label="Mulligan"
                       aria-label="Mulligan - Hand simulation and strategy"
+                      id="analyzer-tab-2"
+                      aria-controls="analyzer-tabpanel-2"
                       data-testid="tab-mulligan"
                     />
                     <Tab
@@ -926,6 +932,8 @@ const AnalyzerPage: React.FC = () => {
                             ? `Manabase — ${manabaseVerdict.warnCount} colors close to target`
                             : 'Manabase - Land breakdown'
                       }
+                      id="analyzer-tab-3"
+                      aria-controls="analyzer-tabpanel-3"
                       data-testid="tab-manabase"
                     />
                     <Tab
@@ -933,6 +941,8 @@ const AnalyzerPage: React.FC = () => {
                       iconPosition="start"
                       label="Blueprint"
                       aria-label="Blueprint - Export analysis as PNG, PDF or JSON"
+                      id="analyzer-tab-4"
+                      aria-controls="analyzer-tabpanel-4"
                       data-testid="tab-blueprint"
                     />
                   </Tabs>

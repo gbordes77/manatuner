@@ -43,9 +43,14 @@ test.describe('Accessibility smoke (EN)', () => {
     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
   })
 
-  test('Header Analyzer link is unique in banner', async ({ page }) => {
+  test('Analyzer navigation is unique in the active desktop or mobile menu', async ({ page }) => {
     await page.goto('/')
-    const bannerAnalyzer = page.getByRole('banner').getByRole('link', { name: /^Analyzer$/i })
+    const menu = page.getByRole('button', { name: 'Open navigation menu' })
+    const mobile = await menu.isVisible()
+    if (mobile) await menu.click()
+    const bannerAnalyzer = mobile
+      ? page.getByRole('button', { name: 'Analyzer', exact: true })
+      : page.getByRole('banner').getByRole('link', { name: /^Analyzer$/i })
     await expect(bannerAnalyzer).toHaveCount(1)
     await bannerAnalyzer.click()
     await expect(page).toHaveURL(/\/analyzer/)

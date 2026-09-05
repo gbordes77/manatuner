@@ -1,4 +1,5 @@
 import { test, expect, navigateAnalyzer } from '../../fixtures/audit-browser.js';
+import { measureClickToContent } from '../../fixtures/interaction-timing.js';
 import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
 
 test.describe('Tests de Performance', () => {
@@ -18,11 +19,16 @@ test.describe('Tests de Performance', () => {
   test('Temps de navigation vers Analyzer', async ({ page }) => {
     await page.goto('/');
     
-    const startTime = Date.now();
-    await navigateAnalyzer(page);
+    const menu = page.getByRole('button', { name: 'Open navigation menu' });
+    const mobile = await menu.isVisible();
+    if (mobile) await menu.click();
+    const target = mobile
+      ? page.getByRole('button', { name: 'Analyzer', exact: true })
+      : page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true });
+    const navigationTime = await measureClickToContent(page, target, 'textarea[placeholder]');
+    await expect(page).toHaveURL(/\/analyzer/);
     await expect(page.getByPlaceholder(/paste your decklist/i)).toBeVisible();
-    
-    const navigationTime = Date.now() - startTime;
+
     console.log(`Temps de navigation vers Analyzer: ${navigationTime}ms`);
     
     // La navigation doit être rapide (moins de 1 seconde)
@@ -75,20 +81,16 @@ test.describe('Tests de Performance', () => {
     
     const tabSwitchTimes = [];
     
-    for (const tabName of tabNames) {
+    for (const [index, tabName] of tabNames.entries()) {
       const tab = page.getByTestId(tabName);
       await expect(tab).toBeVisible();
-        {
-        const startTime = Date.now();
-        await tab.click();
-        await expect(page.getByRole('tabpanel').filter({ visible: true }).first()).toBeVisible();
-        
-        const switchTime = Date.now() - startTime;
-        tabSwitchTimes.push(switchTime);
-        console.log(`Temps de changement vers onglet ${tabName}: ${switchTime}ms`);
-      }
+      const switchTime = await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div`);
+      await expect(tab).toHaveAttribute('aria-selected', 'true');
+      await expect(page.getByTestId(`analyzer-tabpanel-${index}`)).toBeVisible();
+      tabSwitchTimes.push(switchTime);
+      console.log(`Temps de changement vers onglet ${tabName}: ${switchTime}ms`);
     }
-    
+
     // Chaque changement d'onglet doit prendre moins de 500ms
     tabSwitchTimes.forEach(time => {
       expect(time).toBeLessThan(500);
@@ -244,21 +246,18 @@ test.describe('Tests de Mémoire et Ressources', () => {
     // Changer rapidement entre tous les onglets plusieurs fois
     const tabNames = ['tab-castability', 'tab-analysis', 'tab-mulligan', 'tab-manabase', 'tab-blueprint'];
     
-    const startTime = Date.now();
-    
-    // Faire 3 cycles complets entre tous les onglets
+    let totalTime = 0;
+    // Sum actual app response for 15 user clicks, excluding test-runner overhead.
     for (let cycle = 0; cycle < 3; cycle++) {
-      for (const tabName of tabNames) {
+      for (const [index, tabName] of tabNames.entries()) {
         const tab = page.getByTestId(tabName);
         await expect(tab).toBeVisible();
-        {
-          await tab.click();
-          await expect(page.getByRole('tabpanel').filter({ visible: true }).first()).toBeVisible();
-        }
+        totalTime += await measureClickToContent(page, tab, `#analyzer-tabpanel-${index}:not([hidden]) > div`);
+        await expect(tab).toHaveAttribute('aria-selected', 'true');
+        await expect(page.getByTestId(`analyzer-tabpanel-${index}`)).toBeVisible();
       }
     }
-    
-    const totalTime = Date.now() - startTime;
+
     console.log(`Temps total navigation multiple onglets: ${totalTime}ms`);
     
     // La navigation multiple ne doit pas dégrader les performances

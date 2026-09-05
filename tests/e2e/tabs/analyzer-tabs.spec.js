@@ -19,7 +19,13 @@ test.describe('Analyzer result tabs', () => {
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 45000 })
 
     for (const id of ['tab-castability', 'tab-analysis', 'tab-mulligan', 'tab-manabase', 'tab-blueprint']) {
-      await page.getByTestId(id).click()
+      const tab = page.getByTestId(id)
+      await tab.click()
+      const panelId = await tab.getAttribute('aria-controls')
+      expect(panelId).toBeTruthy()
+      const panel = page.locator(`#${panelId}`)
+      await expect(panel).toBeVisible()
+      await expect(panel).toHaveAttribute('aria-labelledby', await tab.getAttribute('id'))
       await expect(page.getByText(/Something went wrong|could not be cloned/i)).toHaveCount(0)
     }
 
