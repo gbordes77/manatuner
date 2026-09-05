@@ -20,7 +20,7 @@
  */
 
 import { execSync } from 'child_process'
-import { chromium } from 'playwright'
+import { chromium } from '@playwright/test'
 import { preview } from 'vite'
 import { build } from 'esbuild'
 import { writeFileSync, mkdirSync, existsSync } from 'fs'

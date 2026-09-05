@@ -43,6 +43,7 @@ jobs:
       - run: npx playwright install --with-deps ${{ matrix.browser }}
       - run: npm run build
       - name: Browser scenarios against production build
+        id: scenarios
         env:
           AUDIT_PROJECT: ${{ matrix.project }}
           PLAYWRIGHT_USE_PREVIEW: '1'
@@ -52,7 +53,7 @@ jobs:
           if [ -n "$AUDIT_GREP" ]; then args+=(--grep "$AUDIT_GREP"); fi
           npx playwright test --project="$AUDIT_PROJECT" --workers=1 "${args[@]}"
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && steps.scenarios.outcome != 'skipped'
         with:
           name: browser-${{ strategy.job-index }}
           path: |
