@@ -1,6 +1,12 @@
 name: Browser audit
 on:
   workflow_dispatch:
+    inputs:
+      grep:
+        description: Optional scenario filter; empty runs all scenarios
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -40,7 +46,11 @@ jobs:
         env:
           AUDIT_PROJECT: ${{ matrix.project }}
           PLAYWRIGHT_USE_PREVIEW: '1'
-        run: npx playwright test --project="$AUDIT_PROJECT" --workers=1
+          AUDIT_GREP: ${{ inputs.grep }}
+        run: |
+          args=()
+          if [ -n "$AUDIT_GREP" ]; then args+=(--grep "$AUDIT_GREP"); fi
+          npx playwright test --project="$AUDIT_PROJECT" --workers=1 "${args[@]}"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

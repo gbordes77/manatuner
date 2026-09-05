@@ -2,6 +2,10 @@ import { test, expect, navigateAnalyzer } from '../../fixtures/audit-browser.js'
 import { measureClickToContent } from '../../fixtures/interaction-timing.js';
 import { SAMPLE_DECKLISTS } from '../../fixtures/sample-decklists.js';
 
+// Recording every frame materially changes rendering throughput on WebKit CI.
+// Keep screenshots on failure, but benchmark without video/trace instrumentation.
+test.use({ video: 'off', trace: 'off' });
+
 test.describe('Tests de Performance', () => {
   test('Temps de chargement initial', async ({ page }) => {
     const startTime = Date.now();
