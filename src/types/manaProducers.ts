@@ -12,7 +12,7 @@
 // COLOR TYPES (shared with lands)
 // =============================================================================
 
-import type { LandManaColor } from './lands'
+import type { LandManaColor, LandMetadata } from './lands'
 
 export { LandManaColor }
 
@@ -78,6 +78,10 @@ export const PRODUCER_TYPE_NAMES: Record<ManaProducerType, string> = {
  * Uses mana value (mv) + generic + colored pips breakdown.
  */
 export interface ProducerManaCost {
+  /** One mask per hybrid symbol; alternatives, not simultaneous requirements. */
+  hybrid?: number[]
+  /** Do not emit probabilities for unrepresented symbols. */
+  unsupportedSymbols?: boolean
   /** Total mana value (converted mana cost) */
   mv: number
   /** Generic mana component */
@@ -208,6 +212,8 @@ export interface UnconditionalMultiManaGroup {
  * Mana profile of a deck for castability calculations
  */
 export interface DeckManaProfile {
+  /** One entry per physical land, preserving overlap and entry behavior. */
+  physicalLands?: LandMetadata[]
   /** Deck size (60 for constructed, 99 for Commander) */
   deckSize: number
 

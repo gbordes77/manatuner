@@ -1,0 +1,43 @@
+{
+  "baselineCommit": "b87579a46b936e2b3192c9a5f1ceca3de97c4f50",
+  "unit": {
+    "passed": 538,
+    "skipped": 2,
+    "expectedFailures": 0,
+    "files": 48
+  },
+  "originalCounterexamples": {
+    "passed": 8,
+    "expectedUnchanged": true
+  },
+  "types": "PASS",
+  "lint": {
+    "errors": 0,
+    "warnings": 27
+  },
+  "build": "PASS",
+  "e2e": {
+    "failed": 365,
+    "passed": 67,
+    "skipped": 6,
+    "newFailedIdentities": 0
+  },
+  "excludedCardTestsFailed": 12,
+  "universalCertification": false,
+  "sha256": {
+    "src/services/castability/physicalManaEngine.ts": "dec525eed1279a71cff9f82e6bbdb4ca59aa3cc4d7e94c1a35833f85bffc3ba9",
+    "src/services/castability/parsePhysicalCost.ts": "b08a354cf2ddc758d3cb81ed05ac71482b13d27ea1edaffc3ddc8fad23fd2206",
+    "tests/math-audit/karsten.test.ts": "04915610b00f07d9395de222f4365667ac46b6e12e6b496b7f345a3b4e38ce57",
+    "tests/math-audit/bellman.test.ts": "e3fc4188e7924952c12b0ed5f37e5920d3dfb86b13e763e85c642ea114eead7a",
+    "tests/math-audit/independent.test.ts": "e3aec3e93e46555d7b175d8dfb78c7afaf75423a9b9bb0c9715664008f910037",
+    "tests/math-audit/canonical.test.ts": "3c842c7f350b116d08f5fc1fb38c3784f1bc2eb7ad782a6ab20a8683916a63ee",
+    "tests/math-audit/oracle.ts": "b2d30faf8c39819055f3cd0a99c6d484110abf9ae46aa980cfe10b27db31e12b",
+    "tests/math-audit/physical-engine.test.ts": "e691cf473aab62a405c60efffeaa0721cd63d4acdd9ae0047d6f0a2d49dc1891",
+    "tests/math-audit/ui-probabilities.test.tsx": "bac859b48dcbf6ad5cb84927deb4d9446a641d65bf22b89bc6fe2e7111e3f7f1",
+    "tests/math-audit/retired-paths.test.ts": "8828e6f4395d9ee5688e73d56ba7601cd5579ec7732ab1cbc25ed26d7e679b0e",
+    "tests/math-audit/known-limitations.test.ts": "9794e9c31c10d1ca2bd377b2743770bc1728f4e79436b56e5c810f3a07716dac",
+    "tests/math-audit/populations.test.ts": "6d95123f7091453d08a62e0b7352cdb8385d16f9a1bf9c863d6b2c97b2b3379a",
+    "tests/math-audit/regressions.test.ts": "d23b8105d77dc81cec5705863cee7cccfb7f48f5d9de86974048d03a0cff568a",
+    "tests/math-audit/physical-ui.test.tsx": "eccb06d7059dd99413e7da33bc55b5003de1e4201822e195bbc4c9001f80d1ab"
+  }
+}

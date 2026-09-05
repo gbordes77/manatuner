@@ -162,10 +162,7 @@ export function parseDecklistLine(line: string): { quantity: number; name: strin
 export function applyCommanderFallback<
   T extends { isCommander?: boolean; isLand?: boolean; isSideboard?: boolean; quantity?: number },
 >(cards: T[]): T[] {
-  if (cards.some((c) => c.isCommander)) return cards
-  const total = cards.reduce((s, c) => s + (c.quantity || 1), 0)
-  if (total < 99) return cards
-  const first = cards.find((c) => !c.isLand && !c.isSideboard)
-  if (!first) return cards
-  return cards.map((c) => (c === first ? { ...c, isCommander: true } : c))
+  // A card count or ordering does not identify a command zone.
+  // Preserve only explicit Commander headers / markers supplied by the user.
+  return cards
 }

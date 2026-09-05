@@ -1,0 +1,53 @@
+{
+  "date": "2026-09-05",
+  "repository": "/Volumes/DataDisk/_Projects/Project Mana base V2",
+  "baselineCommit": "b87579a46b936e2b3192c9a5f1ceca3de97c4f50",
+  "verdict": "NON VALIDÉ",
+  "ordinaryVitest": {
+    "passed": 496,
+    "expectedFail": 8,
+    "skipped": 2
+  },
+  "baselineRegressions": {
+    "failed": 29
+  },
+  "finalRegressions": {
+    "passed": 29
+  },
+  "unitFiles": 44,
+  "exhaustivePmfComparisons": 2431,
+  "monoConfigurations": 28,
+  "canonicalConfigurations": 5,
+  "monteCarloDrawsPerSampler": 1000000,
+  "e2eBaselineAndAfter": {
+    "failed": 365,
+    "passed": 67,
+    "skipped": 6
+  },
+  "excludedCardTestsBaselineAndAfter": {
+    "failed": 12
+  },
+  "lintBaseline": {
+    "errors": 0,
+    "warnings": 25
+  },
+  "lintAfter": {
+    "errors": 0,
+    "warnings": 27
+  },
+  "typecheck": "PASS",
+  "build": "PASS",
+  "deployed": false,
+  "sha256": {
+    "tests/math-audit/bellman.test.ts": "e3fc4188e7924952c12b0ed5f37e5920d3dfb86b13e763e85c642ea114eead7a",
+    "tests/math-audit/canonical.test.ts": "3c842c7f350b116d08f5fc1fb38c3784f1bc2eb7ad782a6ab20a8683916a63ee",
+    "tests/math-audit/independent.test.ts": "e3aec3e93e46555d7b175d8dfb78c7afaf75423a9b9bb0c9715664008f910037",
+    "tests/math-audit/karsten.test.ts": "04915610b00f07d9395de222f4365667ac46b6e12e6b496b7f345a3b4e38ce57",
+    "tests/math-audit/known-limitations.test.ts": "1148421696fbe45d95997437fe8d6b4f88794e0f20aaf9c48a1e0aefaafb1258",
+    "tests/math-audit/oracle.ts": "b2d30faf8c39819055f3cd0a99c6d484110abf9ae46aa980cfe10b27db31e12b",
+    "tests/math-audit/regressions.test.ts": "d23b8105d77dc81cec5705863cee7cccfb7f48f5d9de86974048d03a0cff568a",
+    "tests/math-audit/ui-probabilities.test.tsx": "bac859b48dcbf6ad5cb84927deb4d9446a641d65bf22b89bc6fe2e7111e3f7f1",
+    "scripts/math-audit-oracle.py": "b64beb6ef7141018199c0b83f67cb26de0780cff7f58e0b6950f85035111cbfa",
+    "scripts/math-audit-inventory.cjs": "160872c00e25fd1519ede3ec40e948d9be5f5b24d99c4408a6a230cc11caaf54"
+  }
+}

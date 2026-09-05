@@ -149,7 +149,7 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
                 {healthScore}
               </Typography>
               <Typography variant="h6" color="text.secondary">
-                Manabase Health Score
+                Heuristic Manabase Score
               </Typography>
               <Chip
                 label={getScoreLabel(healthScore)}

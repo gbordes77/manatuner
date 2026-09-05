@@ -1,3 +1,5 @@
+import { physicalManaProbability } from './castability/physicalManaEngine'
+import { parsePhysicalCost } from './castability/parsePhysicalCost'
 // manaCalculator.ts - Implémentation correcte selon Frank Karsten
 
 import type { ParsedManaCost } from '@/types'
@@ -15,7 +17,7 @@ interface ProbabilityResult {
 }
 
 // Karsten tables — unified from types/maths.ts (single source of truth)
-import { KARSTEN_TABLES } from '../types/maths'
+import { KARSTEN_TABLES, KARSTEN_PUBLISHED_TABLES } from '../types/maths'
 
 /** Cumulative P(X >= successesWanted) — direct SSOT hypergeom (T09). */
 export const calculateHypergeometric = (params: {
@@ -66,7 +68,9 @@ export class ManaCalculator {
     )
 
     // Récupération de la recommandation Karsten
-    const karstenRequirement = KARSTEN_TABLES[symbolsNeeded]?.[turn] || 0
+    const karstenRequirement =
+      KARSTEN_PUBLISHED_TABLES[deckSize]?.[symbolsNeeded]?.[turn] ??
+      Math.ceil(((KARSTEN_TABLES[symbolsNeeded]?.[turn] ?? 0) * deckSize) / 60)
 
     return {
       probability,
@@ -114,9 +118,9 @@ export class ManaCalculator {
     } else if (probability >= 0.9) {
       return 'Bon - Atteint le seuil recommandé de 90%'
     } else if (probability >= 0.85) {
-      return `Acceptable - Considérez ajouter ${sourcesNeeded - sourcesAvailable} sources`
+      return `Acceptable - Écart à la table conditionnelle : ${Math.max(0, sourcesNeeded - sourcesAvailable)} sources`
     } else if (probability >= 0.8) {
-      return `Risqué - Ajoutez ${sourcesNeeded - sourcesAvailable} sources pour atteindre 90%`
+      return `Risqué - Écart à la table conditionnelle : ${Math.max(0, sourcesNeeded - sourcesAvailable)} sources (ne garantit pas 90% sans mulligan)`
     } else {
       return `Insuffisant - Il manque ${Math.max(0, sourcesNeeded - sourcesAvailable)} sources`
     }
@@ -205,8 +209,11 @@ export class ManaCalculator {
       }
     }
 
+    if (Object.keys(requirements).length === 0) return {}
+
     // Distribuer les terres proportionnellement
     const totalRequired = Object.values(requirements).reduce((sum, r) => sum + r, 0)
+    if (totalRequired === 0) return {}
     const distribution: { [color: string]: number } = {}
 
     for (const [color, required] of Object.entries(requirements)) {
@@ -260,7 +267,7 @@ function landProducesColorForSpell(
   if (land.produces.includes(colorNeeded)) return true
 
   // producesAny lands: check creature-only restriction
-  if (land.producesAny) {
+  if (land.producesAny && colorNeeded !== 'C') {
     if (land.producesAnyForCreaturesOnly && isCreatureSpell === false) {
       return false // Cavern of Souls can't help cast Bitter Triumph
     }
@@ -275,6 +282,39 @@ export function calculateTempoAwareProbability(
 ): TempoAwareProbability {
   const { deck, targetTurn, colorNeeded, symbolsNeeded, strategy, isCreatureSpell } = params
   const calculator = new ManaCalculator()
+  const exact = physicalManaProbability(
+    {
+      deckSize: deck.totalCards,
+      totalLands: deck.lands.length,
+      landColorSources: {},
+      physicalLands: deck.lands,
+    },
+    { mv: symbolsNeeded, generic: 0, pips: { [colorNeeded]: symbolsNeeded } },
+    targetTurn
+  )
+  if (exact.status === 'exact') {
+    const rawSources = deck.lands.filter((l) =>
+      landProducesColorForSpell(l, colorNeeded, isCreatureSpell)
+    ).length
+    const raw = hypergeom.atLeast(deck.totalCards, rawSources, 6 + targetTurn, symbolsNeeded)
+    return {
+      raw,
+      tempoAdjusted: exact.p2,
+      scenarios: { aggressive: exact.p2, conservative: exact.p2, balanced: exact.p2 },
+      // Eligibility counts are descriptive, not the distribution used by the solver.
+      effectiveSourcesByTurn: Array.from({ length: Math.max(targetTurn, 6) }, (_, i) =>
+        i === 0
+          ? deck.lands.filter(
+              (l) =>
+                landProducesColorForSpell(l, colorNeeded, isCreatureSpell) &&
+                l.etbBehavior.type === 'always_untapped'
+            ).length
+          : rawSources
+      ),
+      tempoImpact: raw - exact.p2,
+      method: 'exact',
+    }
+  }
 
   // Create deck context for condition evaluation
   const context = createDeckContext(deck.lands, strategy === 'aggressive')
@@ -347,6 +387,7 @@ export function calculateTempoAwareProbability(
     scenarios,
     effectiveSourcesByTurn,
     tempoImpact: raw - tempoAdjusted,
+    method: 'heuristic',
   }
 }
 
@@ -479,8 +520,17 @@ export function analyzeSpellCastability(
   }
 
   // Overall castability is the minimum of all color probabilities
+  const physical = physicalManaProbability(
+    { deckSize: totalCards, totalLands: lands.length, landColorSources: {}, physicalLands: lands },
+    parsePhysicalCost(spell.manaCost),
+    Math.max(1, spell.cmc)
+  )
   const overallCastability =
-    results.length > 0 ? Math.min(...results.map((r) => r.tempoAdjustedProbability)) : 1.0
+    physical.status === 'exact'
+      ? physical.p2
+      : results.length > 0
+        ? Math.min(...results.map((r) => r.tempoAdjustedProbability))
+        : 1.0
 
   // Rate the spell
   let rating: 'excellent' | 'good' | 'average' | 'weak' | 'critical'

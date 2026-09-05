@@ -22,7 +22,7 @@ export const GLOSSARY: Record<string, { short: string; long?: string }> = {
   },
   'health-score': {
     short: 'Overall grade for your mana base — higher is better.',
-    long: 'A composite score combining land count, color source coverage, curve alignment, and Karsten compliance. 90%+ is Excellent, 70-89% is Good.',
+    long: 'A heuristic average of turn-two access to required colors, not a percentage of spells cast on curve.',
   },
   'best-case': {
     short: 'Perfect land drops: chance of the right colors if you hit a land every turn on curve.',
@@ -31,7 +31,7 @@ export const GLOSSARY: Record<string, { short: string; long?: string }> = {
   realistic: {
     short:
       'On-curve cast chance including mana screw (and ramp when enabled). Primary number to optimize.',
-    long: 'Accounts for drawing enough lands by the turn AND the right colors among them (plus rocks/dorks when acceleration is on). This is your real-world probability.',
+    long: 'Accounts for drawing enough lands by the turn AND the right colors among them (plus rocks/dorks when acceleration is on). This is an aggregate estimate; sequencing and joint color payments are approximated.',
   },
   karsten: {
     short:

@@ -27,7 +27,6 @@ import {
   landCountGuidance,
 } from '../../utils/deckFormat'
 import ManaCostRow from '../ManaCostRow'
-import { Term } from '../common/Term'
 import { AccelerationSettings } from './AccelerationSettings'
 import { SideboardSwapEditor, type SideboardSwap } from './SideboardSwapEditor'
 
@@ -271,6 +270,16 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
     return extra
   }, [effectiveCards])
 
+  const physicalLands = useMemo(() => {
+    // An unresolved library card might itself be a mana source.
+    if (effectiveCards.some((card) => !card.isCommander && card.resolved !== true)) return null
+    const lands = effectiveCards.filter((card) => card.isLand && !card.isCommander)
+    if (lands.some((card) => !card.landMetadata || card.resolved !== true)) return null
+    return lands.flatMap((card) =>
+      Array.from({ length: card.quantity ?? 1 }, () => card.landMetadata!)
+    )
+  }, [effectiveCards])
+
   // Build Card objects from DeckCard to pass as initialCardData (avoids N+1 Scryfall calls)
   const cardDataMap = useMemo(() => {
     const map = new Map<string, Card>()
@@ -279,7 +288,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       map.set(card.name, {
         id: '',
         name: card.name,
-        mana_cost: card.manaCost,
+        mana_cost: card.resolved === true ? card.manaCost : '',
         cmc: card.cmc,
         type_line: '',
         colors: card.colors,
@@ -444,6 +453,12 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         </Paper>
       )}
 
+      <Alert severity="warning" sx={{ mb: 2 }}>
+        Potential castability measures whether the drawn cards admit a legal mana sequence. Results
+        are exact within the supported goldfish model, without mulligans or the probability of
+        drawing the target spell. Choices may depend on the complete drawn history: this is an upper
+        bound for actual play without foresight. Unsupported mechanics show no percentage.
+      </Alert>
       {/* Ramp detection banner */}
       {producersInDeck.length > 0 && (
         <Paper
@@ -503,47 +518,8 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                 gap: { xs: 0.5, sm: 1 },
               }}
             >
-              <Box
-                component="span"
-                sx={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap' }}
-              >
-                <strong>
-                  <Term id="best-case">Perfect drops</Term>
-                </strong>
-                &nbsp;= right colors if lands on curve
-              </Box>
-              <Box
-                component="span"
-                sx={{ display: { xs: 'none', sm: 'inline' }, color: 'text.secondary' }}
-                aria-hidden
-              >
-                ·
-              </Box>
-              <Box
-                component="span"
-                sx={{ display: 'inline-flex', alignItems: 'center', flexWrap: 'wrap' }}
-              >
-                <strong>
-                  <Term id="realistic">Realistic</Term>
-                </strong>
-                &nbsp;= what to optimize (mana screw
-                {producersInDeck.length > 0 ? ' + rocks/dorks' : ''})
-              </Box>
-              <Tooltip
-                title="Perfect drops: chance of the right colors if you always hit land drops on curve. Realistic: on-curve cast chance including mana screw (and rocks/dorks when acceleration is on). Perfect drops is always ≥ Realistic (same model). Focus on Realistic."
-                arrow
-                placement="top"
-              >
-                <IconButton
-                  size="small"
-                  sx={{ p: 0.25, ml: { xs: 0, sm: 0.25 } }}
-                  component="a"
-                  href="/mathematics#probabilities"
-                  aria-label="Explain Perfect drops vs Realistic probabilities"
-                >
-                  <HelpOutlineIcon sx={{ fontSize: 16, opacity: 0.6 }} />
-                </IconButton>
-              </Tooltip>
+              Potential castability: one legal sequence must pay every cost using distinct physical
+              sources.
             </Typography>
           </Box>
 
@@ -577,7 +553,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                   Probabilities
                 </Typography>
                 <Tooltip
-                  title="Realistic = on-curve cast chance (land count + colors [+ ramp]). Perfect drops = right colors if you hit every land drop (same model). Click Mathematics for the full explanation."
+                  title="Exact potential castability in the supported goldfish model; not a mulligan-adjusted win probability."
                   arrow
                   placement="top"
                 >
@@ -599,6 +575,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               key={`${card.name}-${index}`}
               cardName={card.name}
               quantity={card.quantity || 1}
+              physicalLands={physicalLands}
               deckSources={analysisResult?.colorDistribution}
               totalLands={effectiveLands || mainLands || analysisResult?.totalLands || 0}
               // Commander sits in the command zone: library size excludes commander copies
@@ -657,8 +634,8 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       {/* Footer echo kept short — primary legend is sticky at top (P1-1) */}
       <Box sx={{ mt: 2, px: 0.5 }}>
         <Typography variant="caption" color="text.secondary">
-          Tip: optimize <strong>Realistic</strong> first — Perfect drops is always ≥ Realistic (same
-          model).
+          Unsupported cards or rules are explicitly reported; no estimated fallback is displayed in
+          these rows.
         </Typography>
       </Box>
     </>

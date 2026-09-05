@@ -1,6 +1,5 @@
 import type {
   Card,
-  ColorRequirement,
   DeckCard,
   ManaColor,
   SimulationParams,
@@ -119,67 +118,16 @@ export const calculateCastProbability = (
 /**
  * Analyse une carte spécifique dans le contexte du deck
  */
+/** @deprecated Retired: marginal source counts cannot certify physical payment. */
 export const analyzeCard = (
-  card: Card,
-  quantity: number,
-  lands: DeckCard[],
-  deckSize: number = 60
+  _card: Card,
+  _quantity: number,
+  _lands: DeckCard[],
+  _deckSize: number = 60
 ): TurnAnalysis[] => {
-  if (!card.mana_cost) return []
-
-  const colors = extractColors(card.mana_cost)
-  const analysis: TurnAnalysis[] = []
-
-  // Compte les sources pour chaque couleur
-  const colorSources = colors.reduce(
-    (acc, color) => {
-      const sources = lands.reduce((count, land) => {
-        // Check color_identity as a fallback for produced mana
-        if (land.card.color_identity?.includes(color)) {
-          return count + land.quantity
-        }
-        return count
-      }, 0)
-      acc[color] = sources
-      return acc
-    },
-    {} as Record<string, number>
+  throw new Error(
+    'Legacy castability API retired; use physicalManaProbability with physical source metadata'
   )
-
-  // Analyse pour les tours 1-6
-  for (let turn = 1; turn <= 6; turn++) {
-    const cardsDrawn = 7 + turn - 1 // Main initiale + pioche
-    const requirements: ColorRequirement[] = []
-    let worstProbability = 1
-
-    for (const color of colors) {
-      const required = calculateRequiredSources(card.mana_cost!, turn)
-      const available = colorSources[color] || 0
-      const probability = calculateCastProbability(required, available, deckSize, cardsDrawn)
-
-      // Only push if color is a valid ManaColor (not 'C')
-      if (color !== 'C') {
-        requirements.push({
-          color: color as 'W' | 'U' | 'B' | 'R' | 'G',
-          turn,
-          sources: required,
-          probability: probability,
-          isOptimal: probability >= 0.9,
-        })
-      }
-
-      worstProbability = Math.min(worstProbability, probability)
-    }
-
-    analysis.push({
-      turn,
-      castProbability: worstProbability,
-      averageDelay: worstProbability < 0.9 ? (1 - worstProbability) * 2 : 0,
-      sources: requirements,
-    })
-  }
-
-  return analysis
 }
 
 /**
@@ -223,67 +171,14 @@ export const simulateHand = (
 /**
  * Simule de multiples parties pour obtenir des statistiques
  */
+/** @deprecated Retired: this routine did not simulate legal draws or London mulligans. */
 export const runManabaseSimulation = (
-  deck: DeckCard[],
-  params: SimulationParams
+  _deck: DeckCard[],
+  _params: SimulationParams
 ): SimulationResult => {
-  const results: Array<{
-    turn: number
-    castRate: number
-    averageDelay: number
-    keepRate: number
-  }> = []
-  let totalKeeps = 0
-
-  for (let turn = 1; turn <= 6; turn++) {
-    let successfulCasts = 0
-    let totalDelay = 0
-    let validGames = 0
-
-    for (let game = 0; game < params.iterations; game++) {
-      let hand = simulateHand(deck, params.mulliganStrategy)
-      let mulligans = 0
-
-      // Mulligan jusqu'à avoir une main gardable
-      while (!hand.keepable && mulligans < params.maxMulligans) {
-        mulligans++
-        hand = simulateHand(deck, params.mulliganStrategy)
-      }
-
-      if (hand.keepable) {
-        totalKeeps++
-        validGames++
-
-        // Simule la pioche jusqu'au tour T
-        const landsInPlay = Math.min(hand.lands + Math.floor((turn - 1) * 0.4), turn)
-
-        // Vérifie si on peut jouer nos sorts
-        // Simplifié : assume qu'on peut jouer si on a assez de mana
-        if (landsInPlay >= turn) {
-          successfulCasts++
-        } else {
-          totalDelay += turn - landsInPlay
-        }
-      }
-    }
-
-    results.push({
-      turn,
-      castRate: validGames > 0 ? successfulCasts / validGames : 0,
-      averageDelay: validGames > 0 ? totalDelay / validGames : 0,
-      keepRate: totalKeeps / params.iterations,
-    })
-  }
-
-  return {
-    params,
-    results,
-    statistics: {
-      totalGames: params.iterations,
-      averageKeepRate: totalKeeps / (params.iterations * 6),
-      averageFirstSpellTurn: results.find((r) => r.castRate > 0.8)?.turn || 6,
-    },
-  }
+  throw new Error(
+    'Legacy simulation API retired; use the explicitly modeled physical mana or mulligan services'
+  )
 }
 
 /**
@@ -317,11 +212,27 @@ export const calculateOptimalColorDistribution = (
 
   const totalDemand = Object.values(colorDemand).reduce((sum, demand) => sum + demand, 0)
 
-  // Distribue les terrains proportionnellement
-  const distribution: Record<string, number> = {}
-  Object.entries(colorDemand).forEach(([color, demand]) => {
-    distribution[color] = Math.round((demand / totalDemand) * totalLands)
-  })
+  if (!Number.isSafeInteger(totalLands) || totalLands < 0)
+    throw new RangeError('Land count must be a nonnegative integer')
+  if (!totalDemand) return {}
+  // Largest-remainder allocation: integer counts sum exactly to totalLands.
+  const shares = Object.entries(colorDemand).map(([color, demand]) => ({
+    color,
+    exact: (demand / totalDemand) * totalLands,
+  }))
+  const distribution: Record<string, number> = Object.fromEntries(
+    shares.map((s) => [s.color, Math.floor(s.exact)])
+  )
+  let remaining = totalLands - Object.values(distribution).reduce((a, b) => a + b, 0)
+  shares.sort(
+    (a, b) =>
+      b.exact - Math.floor(b.exact) - (a.exact - Math.floor(a.exact)) ||
+      a.color.localeCompare(b.color)
+  )
+  for (const share of shares) {
+    if (remaining-- <= 0) break
+    distribution[share.color]++
+  }
 
   return distribution
 }

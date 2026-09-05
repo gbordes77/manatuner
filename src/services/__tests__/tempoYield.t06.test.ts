@@ -56,7 +56,7 @@ describe('T06 analyzeSpellCastability is synchronous', () => {
     )
   })
 
-  it('colorless spell has overallCastability 1 when no color reqs', () => {
+  it('generic cost still needs mana when no color is required', () => {
     const lands = Array.from({ length: 20 }, (_, i) => plainLand(`Wastes ${i}`, 'C' as 'W'))
     // colorless cost
     const result = analyzeSpellCastability(
@@ -64,12 +64,8 @@ describe('T06 analyzeSpellCastability is synchronous', () => {
       lands.filter((l) => l.produces[0] !== ('C' as any)),
       60
     )
-    // parse may yield empty color requirements for {1}
-    if (result.colorRequirements.length === 0) {
-      expect(result.overallCastability).toBe(1)
-    } else {
-      expect(Number.isFinite(result.overallCastability)).toBe(true)
-    }
+    // The filter removed every source: {1} is not a free spell.
+    expect(result.overallCastability).toBe(0)
   })
 })
 

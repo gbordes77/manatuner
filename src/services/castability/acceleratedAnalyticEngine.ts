@@ -1,3 +1,4 @@
+import { physicalManaProbability } from './physicalManaEngine'
 /**
  * Accelerated Castability Engine v1.1
  *
@@ -163,7 +164,7 @@ function calculateSurvivalProbability(
  * For each color c with Sᶜ sources and needᶜ pips:
  * P(pipᶜ OK | l) = P(Xᶜ >= needᶜ), where Xᶜ ~ Hypergeom(L, Sᶜ, l)
  *
- * Conservative approximation: P(colors OK | l) ≈ min_c P(Xᶜ >= needᶜ)
+ * Upper bound (not a joint probability): P(colors OK | l) ≤ min_c P(Xᶜ >= needᶜ)
  */
 function colorsOkGivenLands(
   hg: Hypergeom,
@@ -171,10 +172,9 @@ function colorsOkGivenLands(
   spell: ProducerManaCost,
   landsInHand: number
 ): number {
-  if (landsInHand <= 0) return 0
-
   const colors = Object.keys(spell.pips) as LandManaColor[]
-  if (colors.length === 0) return 1 // Colorless spell
+  if (colors.every((c) => (spell.pips[c] ?? 0) <= 0)) return 1
+  if (landsInHand <= 0) return 0
 
   let minP = 1
   for (const color of colors) {
@@ -246,7 +246,7 @@ function manaOkGivenLands(
 }
 
 /**
- * Compute base castability (lands only) - v1.1 rigorous version
+ * Compute base castability (lands only) - aggregate approximation
  *
  * Proper conditioning: sum over all possible values of lands drawn
  *
@@ -267,6 +267,8 @@ function computeBaseCastability(
   turn: number,
   ctx: AccelContext
 ): CastabilityResult {
+  // One land drop per turn; extra lands drawn cannot pay a spell early.
+  if (spell.mv > turn && !deck.unconditionalMultiMana) return { p1: 0, p2: 0 }
   const cardsSeen = cardsSeenByTurn(turn, ctx.playDraw)
   const maxLands = Math.min(deck.totalLands, cardsSeen)
 
@@ -336,7 +338,7 @@ function computeProducerCastability(
  *
  * P(online at T) = P(draw by T_latest) × P(castable at T_latest) × P(survive until T)
  *
- * Where T_latest = T - delay - 1 (must be cast with time to remove summoning sickness)
+ * Where T_latest = T - max(1, delay); same-turn accelerator payment is not modeled
  */
 export function producerOnlineProbByTurn(
   hg: Hypergeom,
@@ -346,12 +348,26 @@ export function producerOnlineProbByTurn(
   ctx: AccelContext
 ): number {
   const def = producer.def
+  if (ctx.removalRate === 0 && ['DORK', 'ROCK'].includes(def.type)) {
+    const exact = physicalManaProbability(
+      deck,
+      { mv: 0, generic: 0, pips: {} },
+      turnTarget,
+      [producer],
+      ctx.playDraw,
+      250_000,
+      def.name
+    )
+    if (exact.status === 'exact') return exact.p2
+  }
 
   // ENHANCERs are treated like creatures for draw/cast/survival probability.
   // Their synergistic mana contribution is calculated in castabilityGivenOnlineSet.
 
   // Latest turn we can cast to have it online by turnTarget
-  const tLatest = turnTarget - def.delay - 1
+  // Delay already includes summoning sickness. Immediate sources are
+  // conservatively required on the previous turn: same-turn payment is not modeled.
+  const tLatest = turnTarget - Math.max(1, def.delay)
   if (tLatest < 1) return 0
 
   const seenLatest = cardsSeenByTurn(tLatest, ctx.playDraw)
@@ -360,7 +376,7 @@ export function producerOnlineProbByTurn(
   const pDraw = hg.atLeastOneCopy(deck.deckSize, producer.copies, seenLatest)
   if (pDraw <= 0) return 0
 
-  // P(can cast producer by T_latest) - uses new rigorous baseCastability
+  // P(can cast producer by T_latest) - aggregate approximation; draw and payment events are dependent
   const pCastable = computeProducerCastability(hg, deck, producer, tLatest, ctx)
   if (pCastable <= 0) return 0
 
@@ -561,6 +577,16 @@ export function computeAcceleratedCastabilityAtTurn(
   ctx: AccelContext,
   kMax: 0 | 1 | 2 | 3 = 3
 ): CastabilityResult {
+  if (ctx.removalRate === 0 && deck.physicalLands) {
+    const exact = physicalManaProbability(
+      deck,
+      spell,
+      turn,
+      kMax === 0 ? [] : producers,
+      ctx.playDraw
+    )
+    if (exact.status === 'exact') return { p1: exact.p1, p2: exact.p2 }
+  }
   // Filter to producers with copies and non-zero online probability
   // ENHANCERs are included: their base netMana > 0, and their synergy bonus
   // is calculated dynamically in castabilityGivenOnlineSet
@@ -771,7 +797,7 @@ export function computeAcceleratedCastability(
   // allocation per ManaCostRow render on Castability (audit 2026-04-19).
   const hg = hypergeom
 
-  const naturalTurn = spell.mv
+  const naturalTurn = Math.max(1, spell.mv)
   const base = computeBaseCastability(hg, deck, spell, naturalTurn, ctx)
   const withAcceleration = computeAcceleratedCastabilityAtTurn(
     hg,

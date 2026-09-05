@@ -66,14 +66,14 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
       .map(([name, data]) => {
         const tempoData = tempoSpellAnalysis?.[name]
         // Always use tempo-adjusted percentage when available
-        const displayPercentage = tempoData?.tempoAdjustedPercentage || data.percentage
+        const displayPercentage = tempoData?.tempoAdjustedPercentage ?? data.percentage
 
         return {
           name: name.length > 15 ? name.substring(0, 15) + '...' : name,
           fullName: name,
           percentage: displayPercentage,
           rawPercentage: data.percentage,
-          tempoPercentage: tempoData?.tempoAdjustedPercentage || data.percentage,
+          tempoPercentage: tempoData?.tempoAdjustedPercentage ?? data.percentage,
           tempoImpact: tempoData?.tempoImpact || 0,
           castable: data.castable,
           total: data.total,
@@ -174,7 +174,7 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
           <Typography variant="subtitle2" fontWeight="600" mb={1}>
             {data.fullName || label}
           </Typography>
-          <Typography variant="body2">Castability: {data.percentage}%</Typography>
+          <Typography variant="body2">Estimated castability: {data.percentage}%</Typography>
           {hasTempoData && data.tempoImpact !== 0 && (
             <>
               <Divider sx={{ my: 1 }} />
@@ -322,7 +322,7 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
         <Grid item xs={12} lg={8}>
           <Paper className="mtg-card" sx={{ p: 3, height: 400 }}>
             <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">
-              Spell Castability Analysis
+              Spell Castability Estimates
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <BarChart data={spellData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>

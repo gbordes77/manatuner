@@ -126,7 +126,10 @@ export const MAGIC_CONSTANTS = {
   CONFIDENCE_LEVEL: 0.95, // 95% confidence intervals
 } as const
 
-// Karsten's lookup tables for optimal sources (2022 Update)
+// Karsten lookup: published rows corrected against the primary article on 2026-09-05.
+// Targets are conditional on sufficient lands after the specified London mulligan,
+// at 89 + mana value percent (90–96% for published turns), not unconditional 90%.
+// Unpublished high-turn entries below are legacy heuristics; consult KARSTEN_PUBLISHED_TABLES.
 // Source: https://www.tcgplayer.com/content/article/How-Many-Sources-Do-You-Need-to-Consistently-Cast-Your-Spells-A-2022-Update/dc23a7d2-0a16-4c0b-ad36-586fcca03ad8/
 export const KARSTEN_TABLES: Record<number, Record<number, number>> = {
   // Sources needed for X colored symbols by turn Y (90% probability)
@@ -135,8 +138,8 @@ export const KARSTEN_TABLES: Record<number, Record<number, number>> = {
     1: 14,
     2: 13,
     3: 12,
-    4: 11,
-    5: 10,
+    4: 10,
+    5: 9,
     6: 9,
     7: 8,
     8: 8,
@@ -145,12 +148,12 @@ export const KARSTEN_TABLES: Record<number, Record<number, number>> = {
   },
   2: {
     // Double colored symbols (e.g., RR, 1BB, WW)
-    2: 20,
+    2: 21,
     3: 18,
     4: 16,
     5: 15,
-    6: 14,
-    7: 13,
+    6: 13,
+    7: 12,
     8: 12,
     9: 11,
     10: 11,
@@ -158,17 +161,17 @@ export const KARSTEN_TABLES: Record<number, Record<number, number>> = {
   3: {
     // Triple colored symbols (e.g., RRR, BBB)
     3: 23,
-    4: 20,
+    4: 21,
     5: 19,
-    6: 18,
-    7: 17,
+    6: 17,
+    7: 16,
     8: 16,
     9: 15,
     10: 14,
   },
   4: {
     // Quadruple colored symbols (rare)
-    4: 25,
+    4: 24,
     5: 22,
     6: 21,
     7: 20,
@@ -259,4 +262,36 @@ export interface MemoizationCache {
   combinations: Map<string, number>
   maxSize: number
   hitRate: number
+}
+
+/** Published summary rows: deck size → pips → target turn → source count.
+ * Primary source: Karsten, How Many Sources... A 2022 Update (TCGplayer).
+ * 40/60/80/99-card models assume 17/25/35/41 lands respectively.
+ * 99-card model includes a free mulligan and first-turn draw.
+ */
+export const KARSTEN_PUBLISHED_TABLES: Record<number, Record<number, Record<number, number>>> = {
+  40: {
+    1: { 1: 9, 2: 9, 3: 8, 4: 7, 5: 6, 6: 6 },
+    2: { 2: 14, 3: 12, 4: 11, 5: 10, 6: 9, 7: 8 },
+    3: { 3: 16, 4: 14, 5: 13, 6: 11, 7: 10 },
+    4: { 4: 17, 5: 15 },
+  },
+  60: {
+    1: { 1: 14, 2: 13, 3: 12, 4: 10, 5: 9, 6: 9 },
+    2: { 2: 21, 3: 18, 4: 16, 5: 15, 6: 13, 7: 12 },
+    3: { 3: 23, 4: 21, 5: 19, 6: 17, 7: 16 },
+    4: { 4: 24, 5: 22 },
+  },
+  80: {
+    1: { 1: 19, 2: 18, 3: 16, 4: 15, 5: 14, 6: 12 },
+    2: { 2: 28, 3: 25, 4: 23, 5: 20, 6: 19, 7: 17 },
+    3: { 3: 32, 4: 29, 5: 26, 6: 24, 7: 22 },
+    4: { 4: 34, 5: 31 },
+  },
+  99: {
+    1: { 1: 19, 2: 19, 3: 18, 4: 16, 5: 15, 6: 14 },
+    2: { 2: 30, 3: 28, 4: 26, 5: 23, 6: 22, 7: 20 },
+    3: { 3: 36, 4: 33, 5: 30, 6: 28, 7: 26 },
+    4: { 4: 39, 5: 36 },
+  },
 }

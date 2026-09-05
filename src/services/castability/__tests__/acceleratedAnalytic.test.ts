@@ -225,11 +225,8 @@ describe('computeBaseCastabilityAtTurn', () => {
     const t1 = computeBaseCastabilityAtTurn(deck, spell, 1, ctx)
     const t4 = computeBaseCastabilityAtTurn(deck, spell, 4, ctx)
 
-    // At turn 1 on the play, we see 7 cards. The P2 model sums over all l values
-    // where l >= MV (4 lands needed). Getting 4+ lands in 7 cards with 24/60 is
-    // possible (~27%), so p2 is non-trivially positive even at turn 1.
-    // But it must be lower than the natural turn.
-    expect(t1.p2).toBeGreaterThan(0)
+    // Drawing four lands does not allow four land drops on turn one (CR 305.2).
+    expect(t1.p2).toBe(0)
     expect(t1.p2).toBeLessThan(t4.p2)
   })
 
@@ -297,7 +294,7 @@ describe('producerOnlineProbByTurn', () => {
   const hg = new Hypergeom(200)
 
   it('should return 0 for turn 1 with a dork (needs cast + sickness)', () => {
-    // Dork has delay=1, so tLatest = 1 - 1 - 1 = -1 < 1
+    // Dork has delay=1, so tLatest = 1 - 1 = 0 < 1
     const deck = makeGruulDeck()
     const elves = makeLlanowarElves()
     const ctx = makeGoldfishCtx()
@@ -306,18 +303,18 @@ describe('producerOnlineProbByTurn', () => {
     expect(p).toBe(0)
   })
 
-  it('should return 0 for turn 2 with a dork (must cast on turn 0)', () => {
-    // tLatest = 2 - 1 - 1 = 0 < 1
+  it('should allow a dork cast on turn 1 to produce on turn 2', () => {
+    // delay=1 already accounts for summoning sickness (CR 302.6).
     const deck = makeGruulDeck()
     const elves = makeLlanowarElves()
     const ctx = makeGoldfishCtx()
 
     const p = producerOnlineProbByTurn(hg, deck, elves, 2, ctx)
-    expect(p).toBe(0)
+    expect(p).toBeGreaterThan(0)
   })
 
   it('should return positive probability for dork at turn 3 (cast T1, online T3)', () => {
-    // tLatest = 3 - 1 - 1 = 1 >= 1
+    // tLatest = 3 - 1 = 2 >= 1
     const deck = makeGruulDeck()
     const elves = makeLlanowarElves()
     const ctx = makeGoldfishCtx()

@@ -1,3 +1,6 @@
+import { physicalManaProbability } from '../services/castability/physicalManaEngine'
+import { parsePhysicalCost } from '../services/castability/parsePhysicalCost'
+import type { LandMetadata } from '../types/lands'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import {
   Box,
@@ -33,6 +36,8 @@ interface UnconditionalMultiManaGroup {
 }
 
 interface ManaCostRowProps {
+  /** Null means physical source metadata is incomplete: show no percentage. */
+  physicalLands?: LandMetadata[] | null
   cardName: string
   quantity: number
   deckSources?: Record<string, number>
@@ -401,11 +406,19 @@ const useProbabilityCalculation = (
         hybridMana.length === 0 &&
         colorlessSymbols.length === 0
       ) {
-        return { p1: 99, p2: 98, hasX, xInfo }
+        const mv = hasX && xInfo ? xInfo.targetTurn : getCmcFromCard(cardData)
+        const turn = Math.max(1, mv)
+        const p = hypergeom.atLeast(
+          totalCards ?? 60,
+          totalLands ?? 24,
+          cardsSeenByTurn(turn, playDraw),
+          mv
+        )
+        return { p1: p > 0 ? 100 : 0, p2: Math.round(p * 100), hasX, xInfo }
       }
 
-      const deckSize = totalCards || 60
-      const landsInDeck = totalLands || 24
+      const deckSize = totalCards ?? 60
+      const landsInDeck = totalLands ?? 24
 
       // For X spells, use the effective turn (fixed cost + X value)
       // For regular spells, use CMC
@@ -430,6 +443,12 @@ const useProbabilityCalculation = (
           const colorSources = deckSources?.[color] || 0
           if (colorSources === 0) return 0
           p = Math.min(p, hypergeom.atLeast(landsInDeck, colorSources, l, pipsNeeded))
+        }
+        if (colorlessSymbols.length > 0) {
+          p = Math.min(
+            p,
+            hypergeom.atLeast(landsInDeck, deckSources?.C ?? 0, l, colorlessSymbols.length)
+          )
         }
         for (const hybrid of hybridMana) {
           const sources1 = deckSources?.[hybrid.color1] || 0
@@ -570,7 +589,7 @@ const useAcceleratedCastability = (
     if (!manaCost) return null
 
     try {
-      const colorCounts: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0 }
+      const colorCounts: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0, C: 0 }
       let generic = 0
 
       const symbols = manaCost.match(/\{[^}]+\}/g) || []
@@ -580,7 +599,7 @@ const useAcceleratedCastability = (
           generic += parseInt(clean)
         } else if (clean === 'X') {
           generic += 2
-        } else if (['W', 'U', 'B', 'R', 'G'].includes(clean)) {
+        } else if (['W', 'U', 'B', 'R', 'G', 'C'].includes(clean)) {
           colorCounts[clean]++
         } else if (clean.includes('/')) {
           const parts = clean.split('/')
@@ -600,7 +619,7 @@ const useAcceleratedCastability = (
 
       const totalPips = Object.values(colorCounts).reduce((a, b) => a + b, 0)
       const spellCost: ProducerManaCost = {
-        mv: getCmcFromCard(cardData) || generic + totalPips,
+        mv: manaCost.includes('{X}') ? generic + totalPips : (cardData?.cmc ?? generic + totalPips),
         generic,
         pips: {
           W: colorCounts.W || undefined,
@@ -608,12 +627,13 @@ const useAcceleratedCastability = (
           B: colorCounts.B || undefined,
           R: colorCounts.R || undefined,
           G: colorCounts.G || undefined,
+          C: colorCounts.C || undefined,
         },
       }
 
       const deckProfile: DeckManaProfile = {
-        deckSize: totalCards || 60,
-        totalLands: totalLands || 24,
+        deckSize: totalCards ?? 60,
+        totalLands: totalLands ?? 24,
         landColorSources: {
           W: deckSources?.W || 0,
           U: deckSources?.U || 0,
@@ -663,6 +683,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     accelContext,
     showAcceleration = false,
     unconditionalMultiMana,
+    physicalLands,
     initialCardData,
     isCreature,
     creatureOnlyExtraSources,
@@ -713,6 +734,30 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
       showAcceleration,
       unconditionalMultiMana
     )
+
+    const physicalResult = useMemo(() => {
+      if (physicalLands == null)
+        return { status: 'unsupported' as const, reason: 'Physical land metadata is incomplete' }
+      if ((accelContext?.removalRate ?? 0) !== 0)
+        return {
+          status: 'unsupported' as const,
+          reason: 'Exact sequencing currently supports goldfish only (removal rate 0)',
+        }
+      const cost = parsePhysicalCost(getManaCostFromCard(cardData) || '')
+      return physicalManaProbability(
+        {
+          deckSize: totalCards ?? 60,
+          totalLands: physicalLands.length,
+          landColorSources: {},
+          physicalLands,
+        },
+        cost,
+        Math.max(1, cost.mv),
+        showAcceleration ? (producers ?? []) : [],
+        accelContext?.playDraw ?? 'PLAY',
+        50_000
+      )
+    }, [physicalLands, cardData, totalCards, producers, showAcceleration, accelContext])
 
     useEffect(() => {
       // Skip fetch if card data was provided via props
@@ -964,7 +1009,27 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
             {/* Realistic + Perfect drops — prefer SSOT accelerated engine (base always).
                 Full width on xs so primary % never clips beside mana pips. */}
             <Grid item xs={12} sm={8} md={6}>
-              {acceleratedResult ? (
+              {physicalResult ? (
+                physicalResult.status === 'exact' ? (
+                  <Box>
+                    <Typography variant="body2">
+                      Potential castability: {Math.round(physicalResult.p2 * 100)}%
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {showAcceleration ? 'Audited ramp included. ' : 'Lands only. '}
+                      Exact for the represented goldfish model. At least one legal sequence; no
+                      mulligan or chance of drawing this spell.
+                    </Typography>
+                  </Box>
+                ) : (
+                  <Box role="status">
+                    <Typography variant="body2">Calculation unavailable</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {physicalResult.reason}
+                    </Typography>
+                  </Box>
+                )
+              ) : acceleratedResult ? (
                 <Box>
                   {showAcceleration &&
                   producers &&
@@ -1144,3 +1209,8 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
 ManaCostRow.displayName = 'ManaCostRow'
 
 export default ManaCostRow
+
+export {
+  useAcceleratedCastability as _useAcceleratedCastabilityForTest,
+  useProbabilityCalculation as _useProbabilityCalculationForTest,
+}

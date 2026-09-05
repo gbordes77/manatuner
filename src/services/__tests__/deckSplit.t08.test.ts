@@ -47,7 +47,7 @@ describe('T08 deckParser pure', () => {
     void lines
   })
 
-  it('applyCommanderFallback marks first non-land on 99+', () => {
+  it('applyCommanderFallback does not infer a command zone from 99 cards', () => {
     const cards: Array<{
       name: string
       quantity: number
@@ -58,7 +58,7 @@ describe('T08 deckParser pure', () => {
       { name: 'Forest', quantity: 98, isLand: true },
     ]
     const out = applyCommanderFallback(cards)
-    expect(out[0].isCommander).toBe(true)
+    expect(out[0].isCommander).toBeUndefined()
     expect(out[1].isCommander).toBeUndefined()
   })
 

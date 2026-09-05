@@ -8,6 +8,7 @@ import ScienceIcon from '@mui/icons-material/Science'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import {
+  Alert,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -38,9 +39,9 @@ const MathematicsPage: React.FC = () => {
   const navigate = useNavigate()
 
   const karstenTable = [
-    { cost: '1 Colored (e.g. {R}, {1}{U})', t1: '14', t2: '13', t3: '12', t4: '11' },
-    { cost: '2 Same (e.g. {U}{U})', t1: '-', t2: '20', t3: '18', t4: '16' },
-    { cost: '3 Same (e.g. {B}{B}{B})', t1: '-', t2: '-', t3: '23', t4: '20' },
+    { cost: '1 Colored (e.g. {R}, {1}{U})', t1: '14', t2: '13', t3: '12', t4: '10' },
+    { cost: '2 Same (e.g. {U}{U})', t1: '-', t2: '21', t3: '18', t4: '16' },
+    { cost: '3 Same (e.g. {B}{B}{B})', t1: '-', t2: '-', t3: '23', t4: '21' },
   ]
 
   return (
@@ -99,6 +100,12 @@ const MathematicsPage: React.FC = () => {
       {/* ================================================================
           SECTION 1 — Hero: Start with the PROBLEM, not the math
           ================================================================ */}
+      <Alert severity="info" sx={{ mb: 3 }}>
+        Castability rows now show potential castability from physical mana sources in a supported
+        goldfish model. Every cost must be paid legally. Mulligans, other card effects and the
+        chance of drawing the target spell are excluded. Unsupported mechanics show no percentage.
+        The formulas below also describe the older estimates used in secondary summary charts.
+      </Alert>
       <AnimatedContainer animation="fadeInUp">
         <Box sx={{ textAlign: 'center', mb: 5 }}>
           <Typography
@@ -118,13 +125,13 @@ const MathematicsPage: React.FC = () => {
           </Typography>
           <Typography variant="h5" color="text.secondary" sx={{ maxWidth: 700, mx: 'auto', mb: 3 }}>
             Casting your spells on curve isn't luck — it's probability. ManaTuner uses rigorous math
-            to tell you exactly what your mana base can deliver.
+            to estimate what your mana base can deliver.
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Chip
               icon={<FunctionsIcon />}
-              label="Exact Probabilities"
+              label="Exact Draw Probabilities"
               sx={{ bgcolor: '#e3f2fd', color: '#1565c0', fontWeight: 600 }}
             />
             <Chip
@@ -168,8 +175,8 @@ const MathematicsPage: React.FC = () => {
                   time — every game, not just sometimes.
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>ManaTuner calculates</strong> the exact probability of having enough mana
-                  each turn, based on your curve.
+                  <strong>ManaTuner calculates</strong> an estimate of having enough mana each turn,
+                  based on your curve.
                 </Typography>
               </Paper>
             </AnimatedContainer>
@@ -193,11 +200,11 @@ const MathematicsPage: React.FC = () => {
                 </Box>
                 <Typography variant="body1" paragraph>
                   Having enough lands is only half the puzzle. You need the <em>right colors</em> at
-                  the right time — 20 blue sources to cast Counterspell on turn 2.
+                  the right time — 21 blue sources to cast Counterspell on turn 2.
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>ManaTuner tells you</strong> exactly how many sources of each color your
-                  deck needs for 90% consistency.
+                  <strong>ManaTuner tells you</strong> source-count guidelines for each color your
+                  deck needs under the published assumptions.
                 </Typography>
               </Paper>
             </AnimatedContainer>
@@ -205,6 +212,11 @@ const MathematicsPage: React.FC = () => {
         </Grid>
       </Box>
 
+      <Alert severity="warning" sx={{ mb: 4 }}>
+        Audit note: exact hypergeometric draws do not validate the complete casting model.
+        Multicolor and hybrid payments, tapped lands and ramp sequencing remain approximate.
+        Mulligan scores are heuristics; stopping thresholds optimize that score, not win rate.
+      </Alert>
       {/* ================================================================
           SECTION 3 — Three Engines, Three Questions
           The best section from the old page, kept and promoted
@@ -239,7 +251,7 @@ const MathematicsPage: React.FC = () => {
               icon: <FunctionsIcon sx={{ fontSize: 32 }} />,
               question: 'Can I cast this spell on curve?',
               detail:
-                'For each spell in your deck, ManaTuner calculates the exact probability of having the right mana at the right time. Not an estimate — precise math based on your deck composition.',
+                'The hypergeometric draw distribution is exact. Spell castability adds approximations for simultaneous colors, land timing and acceleration; it is not an exact gameplay probability.',
               color: '#1976d2',
               bgColor: '#e3f2fd',
               example:
@@ -251,7 +263,7 @@ const MathematicsPage: React.FC = () => {
               icon: <TrendingUpIcon sx={{ fontSize: 32 }} />,
               question: 'How many sources do I need?',
               detail:
-                "Based on Hall-of-Famer Frank Karsten's peer-reviewed research, ManaTuner tells you exactly how many sources of each color you need to hit the 90% reliability threshold.",
+                "Based on Frank Karsten's published simulations: targets are conditional on enough lands after London mulligans, at 89 + mana value percent (90–96% for published turns). These are deckbuilding guidelines.",
               color: '#4caf50',
               bgColor: '#e8f5e9',
               example: '"Add 3 more blue sources to reach the 90% consistency threshold"',
@@ -344,32 +356,33 @@ const MathematicsPage: React.FC = () => {
         }}
       >
         <Typography variant="h5" fontWeight={700} color="#f57f17" gutterBottom>
-          "Why does ManaTuner show 82% when Karsten says I need 90%?"
+          Why do castability estimates differ from Karsten targets?
         </Typography>
         <Typography variant="body1" paragraph>
-          Great question — this is the #1 source of confusion, and it has a simple answer:
+          The calculation and the reference table measure different events:
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 2.5, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
               <Typography variant="subtitle2" fontWeight={700} color="#1976d2" gutterBottom>
-                ManaTuner's Castability Tab: 82%
+                ManaTuner: mana available without mulligans
               </Typography>
               <Typography variant="body2">
-                This is your <strong>single-draw probability</strong>. You drew one hand of 7 cards
-                — what are the odds you have the right mana? No mulligans, no do-overs.
+                This estimates mana availability from the opening hand and draws through the target
+                turn. It assumes the spell is available and applies no mulligan policy. Multicolor,
+                tempo and acceleration calculations include approximations.
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 2.5, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
               <Typography variant="subtitle2" fontWeight={700} color="#4caf50" gutterBottom>
-                Karsten's Recommendation: 90%
+                Karsten: conditional color consistency
               </Typography>
               <Typography variant="body2">
-                This includes <strong>the option to mulligan</strong> bad hands. If your first hand
-                has no red mana, you mulligan and try again. Across all attempts, your effective
-                chance rises to ~90%.
+                The published model applies a specified London mulligan policy and conditions on
+                drawing enough lands. Its target is 89% plus the mana value in percentage points
+                (91% for a two-mana spell). This is a different probability.
               </Typography>
             </Paper>
           </Grid>
@@ -378,7 +391,7 @@ const MathematicsPage: React.FC = () => {
           variant="body2"
           sx={{ mt: 2, fontWeight: 600, color: '#f57f17', textAlign: 'center' }}
         >
-          Both numbers are correct — they answer different questions. ManaTuner shows you both.
+          A conditional source target cannot be compared directly with unconditional castability.
         </Typography>
       </Paper>
 
@@ -684,8 +697,9 @@ const MathematicsPage: React.FC = () => {
             <Paper sx={{ p: 2, bgcolor: '#f3e5f5', borderRadius: 2 }}>
               <Typography variant="body2" fontWeight={600} color="#7b1fa2">
                 <strong>Why both?</strong> The hypergeometric formula gives instant exact answers.
-                Monte Carlo validates them and handles complex scenarios (mulligans, multiple
-                spells) that formulas alone can't solve. Our results match within 0.1%.
+                Monte Carlo can check simple draw events against those answers. Mulligan results
+                additionally depend on the reward model and sampling uncertainty; this does not
+                establish the accuracy of every castability estimate.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -739,8 +753,9 @@ const MathematicsPage: React.FC = () => {
               >
                 2022 research
               </Link>{' '}
-              is the definitive guide on how many mana sources you need. Here's his table (targeting
-              90% consistency including mulligans):
+              provides the following 60-card reference table. It targets conditional color
+              consistency of 89% plus the mana value, under its stated land count and mulligan
+              policy:
             </Typography>
 
             <TableContainer component={Paper} sx={{ my: 3, borderRadius: 2 }}>
@@ -788,8 +803,8 @@ const MathematicsPage: React.FC = () => {
 
             <Typography variant="body2" color="text.secondary">
               <strong>How to read this:</strong> If your deck has a spell that costs {'{U}{U}'} and
-              you want to cast it on turn 2 reliably, you need 20 blue sources. If you're OK casting
-              it on turn 3 instead, 18 sources are enough.
+              you want to cast it on turn 2 reliably, the published 60-card table recommends 21 blue
+              sources. If you're OK casting it on turn 3 instead, 18 sources are enough.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -833,13 +848,14 @@ const MathematicsPage: React.FC = () => {
           <AccordionDetails>
             <Typography variant="body1" paragraph>
               The hardest question in a game of Magic: "Is this hand good enough, or should I
-              mulligan and risk getting a worse 6-card hand?" The Bellman equation solves this
-              mathematically.
+              mulligan and risk getting a worse 6-card hand?" Bellman recursion compares keeping
+              with continuing under the chosen reward model. Here that reward is a heuristic hand
+              score.
             </Typography>
             <Typography variant="body1" paragraph>
-              It works backwards: first it calculates how good an average 5-card hand is, then uses
-              that to determine the minimum quality a 6-card hand must have to be worth keeping, and
-              finally uses <em>that</em> to set the threshold for 7-card hands.
+              It works backwards from a forced keep at four cards, then computes the continuation
+              values for five, six and seven cards using sampled hand scores. The recursion is exact
+              for those sample distributions; the scores are not win probabilities.
             </Typography>
 
             <Paper sx={{ p: 3, my: 3, borderRadius: 2, bgcolor: '#fff3e0', textAlign: 'center' }}>
@@ -924,7 +940,7 @@ const MathematicsPage: React.FC = () => {
                   Color Sources Needed
                 </Typography>
                 <Typography variant="body2" paragraph>
-                  From Karsten's research — the minimum sources for 90% consistency:
+                  Published 60-card targets under Karsten's conditional model:
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                   <Chip
@@ -933,7 +949,7 @@ const MathematicsPage: React.FC = () => {
                     sx={{ bgcolor: '#f3e5f5', fontWeight: 600 }}
                   />
                   <Chip
-                    label="2 pips on T2: 20"
+                    label="2 pips on T2: 21"
                     size="small"
                     sx={{ bgcolor: '#f3e5f5', fontWeight: 600 }}
                   />

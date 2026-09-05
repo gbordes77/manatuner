@@ -1,3 +1,5 @@
+import { physicalManaProbability } from './castability/physicalManaEngine'
+import { parsePhysicalCost } from './castability/parsePhysicalCost'
 import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
@@ -7,6 +9,7 @@ import {
   fetchCardFromScryfallWithMeta as resolveCardFromScryfallWithMeta,
 } from './cardResolver'
 import { hypergeom } from './castability/hypergeom'
+import { computeAcceleratedCastabilityAtTurn } from './castability/acceleratedAnalyticEngine'
 import {
   applyCommanderFallback as applyCommanderFallbackPure,
   cleanCardName as cleanCardNamePure,
@@ -1084,7 +1087,8 @@ export class DeckAnalyzer {
     }
     throwIfCancelled()
 
-    const cards = await this.parseDeckList(deckList)
+    const importedCards = await this.parseDeckList(deckList)
+    const cards = importedCards.filter((card) => !card.isSideboard && !card.isCommander)
     throwIfCancelled()
     this.assertCardResolution(cards)
 
@@ -1107,9 +1111,15 @@ export class DeckAnalyzer {
     const manaRequirements: Record<ManaColor, number> = {} as Record<ManaColor, number>
     MANA_COLORS.forEach((color) => {
       const requirement = nonLands
-        .filter((card) => card.colors.includes(color))
+        .filter((card) => {
+          const cost = parsePhysicalCost(card.manaCost)
+          return (
+            (cost.pips[color] ?? 0) > 0 ||
+            (cost.hybrid ?? []).some((mask) => (mask & (1 << 'WUBRGC'.indexOf(color))) !== 0)
+          )
+        })
         .reduce((sum, card) => sum + card.quantity, 0)
-      manaRequirements[color] = Math.ceil(requirement * 0.6) // Approximation Frank Karsten
+      manaRequirements[color] = Math.ceil(requirement * 0.6) // Heuristic demand marker, not a Karsten source target
     })
 
     // Calcul des probabilités par tour
@@ -1120,13 +1130,16 @@ export class DeckAnalyzer {
       turn4: this.calculateColorProbabilities(cards, manaRequirements, 4),
     }
 
-    // Calcul de la consistance globale
-    const avgProbability =
-      MANA_COLORS.reduce((sum, color) => {
-        return sum + (probabilities.turn2[color] || 0)
-      }, 0) / MANA_COLORS.length
-
-    const consistency = avgProbability
+    // Heuristic summary of access to required colors at T2. Unused colors
+    // must not contribute artificial 100% observations to this average.
+    const activeColors = MANA_COLORS.filter((color) => manaRequirements[color] > 0)
+    const consistency =
+      activeColors.length > 0
+        ? activeColors.reduce((sum, color) => sum + probabilities.turn2[color], 0) /
+          activeColors.length
+        : totalLands > 0
+          ? hypergeom.atLeast(totalCards, totalLands, Math.min(8, totalCards), 1)
+          : 0
 
     // Détermination du rating
     let rating: 'excellent' | 'good' | 'average' | 'poor'
@@ -1185,12 +1198,50 @@ export class DeckAnalyzer {
       {}
     nonLands.forEach((spell) => {
       const total = spell.quantity
-      const castable = Math.round(total * (consistency + 0.1)) // Simplified calculation
-      // Guard against division by zero (deck with no spells, e.g. mono-land tests) — see audit C2.
+      const parsed = this.parseManaCost(spell.manaCost)
+      const pips: Partial<Record<LandManaColor, number>> = {}
+      for (const color of MANA_COLORS) {
+        if (parsed.cost[color]) pips[color] = parsed.cost[color]
+      }
+      // Aggregate lands-only estimate. Gold/hybrid/conditional sources remain
+      // approximations; this replaces the old quantity-rounded fabricated rate.
+      for (const [symbol, count] of Object.entries(parsed.cost)) {
+        if (!symbol.includes('/')) continue
+        const options = symbol
+          .split('/')
+          .filter((c) => MANA_COLORS.includes(c as ManaColor)) as ManaColor[]
+        const best = options.sort((a, b) => colorDistribution[b] - colorDistribution[a])[0]
+        if (best) pips[best] = (pips[best] ?? 0) + count
+      }
+      const physical = physicalManaProbability(
+        {
+          deckSize: totalCards,
+          totalLands,
+          landColorSources: colorDistribution,
+          physicalLands: lands.every((l) => !!l.landMetadata)
+            ? lands.flatMap((l) => Array(l.quantity).fill(l.landMetadata!))
+            : undefined,
+        },
+        parsePhysicalCost(spell.manaCost),
+        Math.max(1, spell.cmc)
+      )
+      // Other summary charts remain explicitly labeled estimates; only the
+      // dedicated castability rows refuse unsupported calculations entirely.
+      const probability =
+        physical.status === 'exact'
+          ? physical.p2
+          : computeAcceleratedCastabilityAtTurn(
+              hypergeom,
+              { deckSize: totalCards, totalLands, landColorSources: colorDistribution },
+              { mv: spell.cmc, generic: parsed.cost.generic ?? 0, pips },
+              Math.max(1, spell.cmc),
+              [],
+              { playDraw: 'PLAY', removalRate: 0, defaultRockSurvival: 1 }
+            ).p2
       spellAnalysis[spell.name] = {
-        castable,
+        castable: total * probability,
         total,
-        percentage: total > 0 ? Math.round((castable / total) * 100) : 0,
+        percentage: probability * 100,
       }
     })
 
@@ -1225,9 +1276,9 @@ export class DeckAnalyzer {
           )
 
           tempoSpellAnalysis[spell.name] = {
-            castable: spellAnalysis[spell.name]?.castable || spell.quantity,
+            castable: spellAnalysis[spell.name]?.castable ?? spell.quantity,
             total: spell.quantity,
-            percentage: spellAnalysis[spell.name]?.percentage || 100,
+            percentage: spellAnalysis[spell.name]?.percentage ?? 0,
             tempoAdjustedPercentage: Math.round(tempoResult.overallCastability * 100),
             tempoImpact:
               tempoResult.colorRequirements.length > 0
@@ -1271,10 +1322,10 @@ export class DeckAnalyzer {
           console.warn(`[DeckAnalyzer] Error analyzing tempo for ${spell.name}:`, error)
           // Fallback to basic analysis
           tempoSpellAnalysis[spell.name] = {
-            castable: spellAnalysis[spell.name]?.castable || spell.quantity,
+            castable: spellAnalysis[spell.name]?.castable ?? spell.quantity,
             total: spell.quantity,
-            percentage: spellAnalysis[spell.name]?.percentage || 100,
-            tempoAdjustedPercentage: spellAnalysis[spell.name]?.percentage || 100,
+            percentage: spellAnalysis[spell.name]?.percentage ?? 0,
+            tempoAdjustedPercentage: spellAnalysis[spell.name]?.percentage ?? 0,
             tempoImpact: 0,
             scenarios: { aggressive: 100, conservative: 100, balanced: 100 },
             rating: 'good',
@@ -1312,10 +1363,50 @@ export class DeckAnalyzer {
       ...partialAnalysis,
       recommendations,
       probabilities: {
-        turn1: { anyColor: 0.95, specificColors: probabilities.turn1 },
-        turn2: { anyColor: 0.98, specificColors: probabilities.turn2 },
-        turn3: { anyColor: 0.99, specificColors: probabilities.turn3 },
-        turn4: { anyColor: 0.995, specificColors: probabilities.turn4 },
+        turn1: {
+          anyColor: hypergeom.atLeast(
+            totalCards,
+            lands
+              .filter((l) => (l.producedMana?.length ?? 0) > 0)
+              .reduce((n, l) => n + l.quantity, 0),
+            Math.min(7, totalCards),
+            1
+          ),
+          specificColors: probabilities.turn1,
+        },
+        turn2: {
+          anyColor: hypergeom.atLeast(
+            totalCards,
+            lands
+              .filter((l) => (l.producedMana?.length ?? 0) > 0)
+              .reduce((n, l) => n + l.quantity, 0),
+            Math.min(8, totalCards),
+            1
+          ),
+          specificColors: probabilities.turn2,
+        },
+        turn3: {
+          anyColor: hypergeom.atLeast(
+            totalCards,
+            lands
+              .filter((l) => (l.producedMana?.length ?? 0) > 0)
+              .reduce((n, l) => n + l.quantity, 0),
+            Math.min(9, totalCards),
+            1
+          ),
+          specificColors: probabilities.turn3,
+        },
+        turn4: {
+          anyColor: hypergeom.atLeast(
+            totalCards,
+            lands
+              .filter((l) => (l.producedMana?.length ?? 0) > 0)
+              .reduce((n, l) => n + l.quantity, 0),
+            Math.min(10, totalCards),
+            1
+          ),
+          specificColors: probabilities.turn4,
+        },
       },
       averageCMC,
       landRatio,
@@ -1328,7 +1419,7 @@ export class DeckAnalyzer {
       tempoImpactByColor,
       landMetadata: landMetadataList.length > 0 ? landMetadataList : undefined,
       // Cards for advanced mulligan analysis
-      cards,
+      cards: importedCards,
     }
   }
 
@@ -1408,7 +1499,7 @@ export class DeckAnalyzer {
       goodHand: Math.round(goodHand * 100),
       averageHand: Math.round(averageHand * 100),
       poorHand: Math.round(poorHand * 100),
-      terribleHand: Math.round(Math.min(terribleHand, poorHand) * 100), // Can't be worse than poor
+      terribleHand: Math.round(terribleHand * 100), // Includes seven-land hands outside the poor category
     }
   }
 

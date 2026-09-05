@@ -9,6 +9,7 @@
  */
 
 import type { DeckCard } from './deckAnalyzer'
+import { mulliganStoppingValues } from './mulliganStopping'
 
 // =============================================================================
 // SHARED TYPES
@@ -86,6 +87,7 @@ export function prepareDeckForSimulation(cards: DeckCard[]): SimulatedCard[] {
   const simulatedDeck: SimulatedCard[] = []
 
   for (const card of cards) {
+    if (card.isSideboard || card.isCommander) continue
     for (let i = 0; i < card.quantity; i++) {
       let parsedManaCost: { colorless: number; symbols: Record<string, number> }
 
@@ -131,7 +133,7 @@ function parseManaCostString(cost: string): { colorless: number; symbols: Record
     const symbol = match.slice(1, -1)
     if (/^\d+$/.test(symbol)) {
       result.colorless += parseInt(symbol, 10)
-    } else if (['W', 'U', 'B', 'R', 'G'].includes(symbol)) {
+    } else if (['W', 'U', 'B', 'R', 'G', 'C'].includes(symbol)) {
       result.symbols[symbol] = (result.symbols[symbol] || 0) + 1
     }
   }
@@ -460,51 +462,14 @@ function calculateScoreBreakdown(
   }
 }
 
-function calculateManaEfficiency(hand: SimulatedHand, library: SimulatedCard[]): number {
-  // Simulate T1-T4 goldfish
-  let landsInPlay = 0
-  let totalManaSpent = 0
-  let totalManaAvailable = 0
-
-  const landsInHand = [...hand.lands]
-  const spellsInHand = [...hand.spells]
-  let deckIndex = 0
-  const remainingDeck = library // Already the correct library (undrawn + bottomed)
-
-  for (let turn = 1; turn <= 4; turn++) {
-    // Draw (except T1)
-    if (turn > 1 && deckIndex < remainingDeck.length) {
-      const drawn = remainingDeck[deckIndex++]
-      if (drawn.isLand) landsInHand.push(drawn)
-      else spellsInHand.push(drawn)
-    }
-
-    // Play land
-    if (landsInHand.length > 0) {
-      landsInHand.shift()
-      landsInPlay++
-    }
-
-    totalManaAvailable += landsInPlay
-
-    // Cast spells (greedy)
-    let manaLeft = landsInPlay
-    spellsInHand.sort((a, b) => a.cmc - b.cmc)
-
-    const toRemove: number[] = []
-    for (let i = 0; i < spellsInHand.length; i++) {
-      if (spellsInHand[i].cmc <= manaLeft && spellsInHand[i].cmc > 0) {
-        manaLeft -= spellsInHand[i].cmc
-        totalManaSpent += spellsInHand[i].cmc
-        toRemove.push(i)
-      }
-    }
-    for (let i = toRemove.length - 1; i >= 0; i--) {
-      spellsInHand.splice(toRemove[i], 1)
-    }
-  }
-
-  return totalManaAvailable > 0 ? (totalManaSpent / totalManaAvailable) * 100 : 0
+function calculateManaEfficiency(hand: SimulatedHand, _library: SimulatedCard[]): number {
+  // A keep decision may use the visible hand, never the sampled future draws.
+  // Score the opening hand's T1-T4 plan without additional draws. This is an
+  // observable heuristic reward, not an estimate of winning the game.
+  const turns = generateTurnPlan(hand, [])
+  const available = turns.reduce((sum, turn) => sum + turn.manaAvailable, 0)
+  const spent = turns.reduce((sum, turn) => sum + turn.manaUsed, 0)
+  return available > 0 ? (100 * spent) / available : 0
 }
 
 function calculateCurvePlayability(hand: SimulatedHand, archetype: Archetype): number {
@@ -546,42 +511,16 @@ function calculateCurvePlayability(hand: SimulatedHand, archetype: Archetype): n
 }
 
 function calculateColorAccess(hand: SimulatedHand): number {
-  // Check if lands can cast spells
-  const colorsProduced = new Set<string>()
-
-  for (const land of hand.lands) {
-    // Basic lands produce their color
-    if (land.name.includes('Plains')) colorsProduced.add('W')
-    else if (land.name.includes('Island')) colorsProduced.add('U')
-    else if (land.name.includes('Swamp')) colorsProduced.add('B')
-    else if (land.name.includes('Mountain')) colorsProduced.add('R')
-    else if (land.name.includes('Forest')) colorsProduced.add('G')
-    // Dual lands, shocks, etc. - simplified detection
-    else {
-      // Assume non-basic lands produce multiple colors
-      colorsProduced.add('W')
-      colorsProduced.add('U')
-      colorsProduced.add('B')
-      colorsProduced.add('R')
-      colorsProduced.add('G')
-    }
-  }
-
-  // Check spell requirements
-  let totalRequired = 0
-  let totalMet = 0
-
+  // One physical source may pay only one pip. Use actual mana production,
+  // never infer rainbow production from an unrecognized nonbasic name.
+  let required = 0
+  let covered = 0
   for (const spell of hand.spells) {
-    for (const [color, count] of Object.entries(spell.manaCost.symbols)) {
-      totalRequired += count
-      if (colorsProduced.has(color)) {
-        totalMet += count
-      }
-    }
+    const count = Object.values(spell.manaCost.symbols).reduce((a, b) => a + b, 0)
+    required += count
+    if (findPayment(hand.lands, { ...spell, cmc: count })) covered += count
   }
-
-  if (totalRequired === 0) return 100
-  return (totalMet / totalRequired) * 100
+  return required > 0 ? (100 * covered) / required : 100
 }
 
 function calculateEarlyGame(hand: SimulatedHand, archetype: Archetype): number {
@@ -640,11 +579,38 @@ function calculateLandBalance(hand: SimulatedHand, config: ArchetypeConfig): num
  * colorPool: Record<color, count> of available colored mana
  * spell.manaCost.symbols: Record<color, pips needed>
  */
-function canPayColors(colorPool: Record<string, number>, spell: SimulatedCard): boolean {
-  for (const [color, needed] of Object.entries(spell.manaCost.symbols)) {
-    if ((colorPool[color] ?? 0) < needed) return false
+/** Find a payment using each physical land at most once. Generic costs also tap lands. */
+function findPayment(sources: SimulatedCard[], spell: SimulatedCard): number[] | null {
+  const pips = Object.entries(spell.manaCost.symbols).flatMap(
+    ([color, count]) => Array(count).fill(color) as string[]
+  )
+  const manaNeeded = Math.max(spell.cmc, pips.length)
+  if (sources.length < manaNeeded) return null
+  const used = new Set<number>()
+  function assign(i: number): number[] | null {
+    if (i === pips.length) {
+      const payment = [...used]
+      // Spend the least flexible sources on generic mana first.
+      const remaining = sources
+        .map((s, index) => ({ s, index }))
+        .filter(({ index }) => !used.has(index))
+        .sort((a, b) => (a.s.producedMana?.length ?? 0) - (b.s.producedMana?.length ?? 0))
+      for (const { index } of remaining) {
+        if (payment.length >= manaNeeded) break
+        payment.push(index)
+      }
+      return payment
+    }
+    for (let j = 0; j < sources.length; j++) {
+      if (used.has(j) || !sources[j].producedMana?.includes(pips[i])) continue
+      used.add(j)
+      const payment = assign(i + 1)
+      if (payment) return payment
+      used.delete(j)
+    }
+    return null
   }
-  return true
+  return assign(0)
 }
 
 /**
@@ -753,6 +719,7 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
     // Cast spells — prefer curve-out (highest CMC that fits) over greedy packing
     const plays: string[] = []
     let manaLeft = manaAvailable
+    let availableSources = [...landsInPlayUntapped]
 
     // Sort descending by CMC: prefer playing the biggest spell that fits on curve
     spellsInHand.sort((a, b) => b.cmc - a.cmc)
@@ -762,7 +729,9 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
       const spell = spellsInHand[i]
       if (spell.cmc <= 0) continue
       if (spell.cmc > manaLeft) continue
-      if (!canPayColors(colorPool, spell)) continue
+      const payment = findPayment(availableSources, spell)
+      if (!payment) continue
+      availableSources = availableSources.filter((_, index) => !payment.includes(index))
 
       manaLeft -= spell.cmc
       plays.push(spell.name)
@@ -784,7 +753,9 @@ function generateTurnPlan(hand: SimulatedHand, library: SimulatedCard[]): TurnPl
       for (const { s: spell, i } of remaining) {
         if (spell.cmc <= 0) continue
         if (spell.cmc > manaLeft) continue
-        if (!canPayColors(colorPool, spell)) continue
+        const payment = findPayment(availableSources, spell)
+        if (!payment) continue
+        availableSources = availableSources.filter((_, index) => !payment.includes(index))
 
         manaLeft -= spell.cmc
         plays.push(spell.name)
@@ -865,14 +836,12 @@ function generateReasoningForHand(
 }
 
 function createSampleHand(
-  fullDeck: SimulatedCard[],
+  library: SimulatedCard[],
   hand: SimulatedHand,
   archetype: Archetype,
   threshold: number
 ): SampleHand {
-  // Build a representative library: cards not in hand
-  const handSet = new Set(hand.cards)
-  const library = fullDeck.filter((c) => !handSet.has(c))
+  // Retain this sample's actual shuffle for the illustrative turn plan.
   const breakdown = calculateScoreBreakdown(hand, archetype, library)
   const turnByTurn = generateTurnPlan(hand, library)
   const reasoning = generateReasoningForHand(hand, breakdown, archetype)
@@ -1080,6 +1049,9 @@ export function analyzeWithArchetype(
   iterations: number = 5000,
   options?: AnalyzeArchetypeOptions
 ): AdvancedMulliganResult {
+  if (!Number.isSafeInteger(iterations) || iterations <= 0) {
+    throw new RangeError('iterations must be a positive integer')
+  }
   const deck = prepareDeckForSimulation(cards)
 
   if (deck.length < 40) {
@@ -1094,7 +1066,8 @@ export function analyzeWithArchetype(
 
   // Run simulations for each hand size
   const results: Record<number, { scores: number[]; distribution: number[] }> = {}
-  const sampleHandsCollected: { hand: SimulatedHand; score: number }[] = []
+  const sampleHandsCollected: { hand: SimulatedHand; score: number; library: SimulatedCard[] }[] =
+    []
 
   for (const handSize of [4, 5, 6, 7]) {
     const scores: number[] = []
@@ -1119,7 +1092,7 @@ export function analyzeWithArchetype(
 
       // Collect sample hands (only for 7-card)
       if (handSize === 7 && sampleHandsCollected.length < 100) {
-        sampleHandsCollected.push({ hand, score: breakdown.total })
+        sampleHandsCollected.push({ hand, score: breakdown.total, library: libraryWithBottomed })
       }
     }
 
@@ -1131,26 +1104,19 @@ export function analyzeWithArchetype(
     results[handSize] = { scores, distribution }
   }
 
-  // Calculate expected values with Bellman equation
-  const ev4 = results[4].scores.reduce((a, b) => a + b, 0) / iterations
-
-  let ev5 = 0
-  for (const score of results[5].scores) {
-    ev5 += Math.max(score, ev4)
-  }
-  ev5 /= iterations
-
-  let ev6 = 0
-  for (const score of results[6].scores) {
-    ev6 += Math.max(score, ev5)
-  }
-  ev6 /= iterations
-
-  let ev7 = 0
-  for (const score of results[7].scores) {
-    ev7 += Math.max(score, ev6)
-  }
-  ev7 /= iterations
+  // Sampling approximates the reward law; backward induction itself is exact
+  // for that empirical law and the selected heuristic bottoming policy.
+  const {
+    4: ev4,
+    5: ev5,
+    6: ev6,
+    7: ev7,
+  } = mulliganStoppingValues({
+    4: results[4].scores,
+    5: results[5].scores,
+    6: results[6].scores,
+    7: results[7].scores,
+  })
 
   // Categorize sample hands
   const sampleHands = {
@@ -1163,8 +1129,8 @@ export function analyzeWithArchetype(
   // Sort and pick diverse samples
   sampleHandsCollected.sort((a, b) => b.score - a.score)
 
-  for (const { hand, score } of sampleHandsCollected) {
-    const sample = createSampleHand(deck, hand, archetype, ev6)
+  for (const { hand, score, library } of sampleHandsCollected) {
+    const sample = createSampleHand(library, hand, archetype, ev6)
 
     if (score >= 85 && sampleHands.excellent.length < 3) {
       sampleHands.excellent.push(sample)
@@ -1222,9 +1188,18 @@ export function analyzeWithArchetype(
       keep5: Math.round(ev4),
     },
     distributions: {
-      hand7: results[7].distribution.map((freq, i) => ({ score: i * 10 + 5, frequency: freq })),
-      hand6: results[6].distribution.map((freq, i) => ({ score: i * 10 + 5, frequency: freq })),
-      hand5: results[5].distribution.map((freq, i) => ({ score: i * 10 + 5, frequency: freq })),
+      hand7: results[7].distribution.map((freq, i) => ({
+        score: Math.min(100, i * 10 + 5),
+        frequency: freq,
+      })),
+      hand6: results[6].distribution.map((freq, i) => ({
+        score: Math.min(100, i * 10 + 5),
+        frequency: freq,
+      })),
+      hand5: results[5].distribution.map((freq, i) => ({
+        score: Math.min(100, i * 10 + 5),
+        frequency: freq,
+      })),
     },
     sampleHands,
     deckQuality,
@@ -1243,3 +1218,5 @@ export function quickArchetypeAnalysis(
 ): AdvancedMulliganResult {
   return analyzeWithArchetype(cards, archetype, 2000)
 }
+
+export { shuffleDeck as _shuffleDeckForTest, calculateScoreBreakdown as _scoreHandForTest }

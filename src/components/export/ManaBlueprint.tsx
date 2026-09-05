@@ -83,14 +83,24 @@ const calculateStabilityScore = (analysis: AnalysisResult): number => {
   const landRatioScore = Math.max(0, 1 - ratioDeviation * 5)
 
   // Average turn 2 probability across colors
-  const turn2Colors = Object.values(probabilities.turn2.specificColors)
+  const turn2Colors = Object.entries(probabilities.turn2.specificColors)
+    .filter(
+      ([color]) =>
+        (analysis.manaRequirements?.[color as keyof typeof analysis.manaRequirements] ?? 0) > 0
+    )
+    .map(([, value]) => value)
   const avgTurn2 =
-    turn2Colors.length > 0 ? turn2Colors.reduce((a, b) => a + b, 0) / turn2Colors.length : 0.8
+    turn2Colors.length > 0 ? turn2Colors.reduce((a, b) => a + b, 0) / turn2Colors.length : 0
 
   // Average turn 4 probability
-  const turn4Colors = Object.values(probabilities.turn4.specificColors)
+  const turn4Colors = Object.entries(probabilities.turn4.specificColors)
+    .filter(
+      ([color]) =>
+        (analysis.manaRequirements?.[color as keyof typeof analysis.manaRequirements] ?? 0) > 0
+    )
+    .map(([, value]) => value)
   const avgTurn4 =
-    turn4Colors.length > 0 ? turn4Colors.reduce((a, b) => a + b, 0) / turn4Colors.length : 0.9
+    turn4Colors.length > 0 ? turn4Colors.reduce((a, b) => a + b, 0) / turn4Colors.length : 0
 
   const score =
     (consistency * consistencyWeight +
@@ -666,7 +676,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
               fontSize: '0.65rem',
             }}
           >
-            MANA STABILITY INDEX
+            HEURISTIC MANA STABILITY INDEX
           </Typography>
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 1 }}>

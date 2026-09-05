@@ -315,6 +315,8 @@ export interface TempoCalculationParams {
  * Result of tempo-aware probability calculation.
  */
 export interface TempoAwareProbability {
+  /** Exact for represented legal sequences, otherwise an explicitly heuristic estimate. */
+  method?: 'exact' | 'heuristic'
   /** Raw probability (ignoring tempo) */
   raw: number
 

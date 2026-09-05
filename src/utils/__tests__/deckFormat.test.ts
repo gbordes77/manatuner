@@ -85,7 +85,7 @@ describe('command zone helpers', () => {
     expect(effectiveLibrarySize(60, 1, 'constructed')).toBe(60)
   })
 
-  it('falls back to first non-land on 100-card lists', () => {
+  it('does not infer a commander from list length', () => {
     const cards: Array<{
       name: string
       quantity: number
@@ -98,7 +98,7 @@ describe('command zone helpers', () => {
     ]
     // total 100
     const out = applyCommanderFallback(cards)
-    expect(out[0].isCommander).toBe(true)
+    expect(out[0].isCommander).toBeUndefined()
     expect(out[1].isCommander).toBeFalsy()
   })
 

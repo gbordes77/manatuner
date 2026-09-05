@@ -1,0 +1,3 @@
+import config from '/Volumes/DataDisk/_Projects/Project Mana base V2/playwright.config.js';
+const root='/Volumes/DataDisk/_Projects/Project Mana base V2';
+export default {...config,testDir:root+'/tests/e2e',reporter:[['line'],['json',{outputFile:'/tmp/mtg-physical-e2e/report.json'}]],outputDir:'/tmp/mtg-physical-e2e/results',use:{...config.use,baseURL:'http://localhost:3013'},webServer:{...config.webServer,cwd:root,command:'npm run dev -- --port 3013 --strictPort',url:'http://localhost:3013',reuseExistingServer:false}};

@@ -25,7 +25,7 @@ export type PlayDraw = 'PLAY' | 'DRAW'
  * - DRAW: draw on turn 1 => seen = 7 + turn
  */
 export function cardsSeenByTurn(turn: number, playDraw: PlayDraw): number {
-  if (turn <= 0) return 0
+  if (!Number.isInteger(turn) || turn <= 0) return 0
   return playDraw === 'PLAY' ? 7 + Math.max(0, turn - 1) : 7 + turn
 }
 
@@ -57,6 +57,10 @@ function buildLogFactorials(maxN: number): Float64Array {
  * Pre-computes factorials up to maxN for performance and grows dynamically
  * if a caller requests N > capacity (Cube, Commander, Highlander, etc.).
  */
+function validPopulation(N: number, K: number, n: number): boolean {
+  return [N, K, n].every(Number.isSafeInteger) && N >= 0 && K >= 0 && K <= N && n >= 0 && n <= N
+}
+
 export class Hypergeom {
   private lf: Float64Array
   private maxN: number
@@ -100,8 +104,7 @@ export class Hypergeom {
     if (!Number.isFinite(N) || !Number.isFinite(K) || !Number.isFinite(n) || !Number.isFinite(k)) {
       return 0
     }
-    if (N < 0 || K < 0 || n < 0) return 0
-    if (K > N || n > N) return 0
+    if (!validPopulation(N, K, n) || !Number.isInteger(k)) return 0
 
     this.ensureCapacity(N)
 
@@ -127,6 +130,8 @@ export class Hypergeom {
     ) {
       return 0
     }
+    if (!validPopulation(N, K, n)) return 0
+    kMin = Math.ceil(kMin)
     this.ensureCapacity(N)
 
     const kMax = Math.min(K, n)
@@ -153,6 +158,8 @@ export class Hypergeom {
     ) {
       return 0
     }
+    if (!validPopulation(N, K, n)) return 0
+    kMax = Math.floor(kMax)
     this.ensureCapacity(N)
 
     const kMin = Math.max(0, n - (N - K))
@@ -171,12 +178,7 @@ export class Hypergeom {
    * Probability of drawing at least one copy of a card
    */
   atLeastOneCopy(deckSize: number, copies: number, cardsSeen: number): number {
-    if (copies <= 0) return 0
-    if (!Number.isFinite(deckSize) || deckSize <= 0) return 0
-    if (!Number.isFinite(cardsSeen) || cardsSeen <= 0) return 0
-
-    const p0 = this.pmf(deckSize, copies, cardsSeen, 0)
-    return clampProbability(1 - p0)
+    return this.atLeast(deckSize, copies, cardsSeen, 1)
   }
 
   /**

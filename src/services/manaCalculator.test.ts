@@ -122,19 +122,19 @@ describe('ManaCalculator', () => {
       expect(result.meetsThreshold).toBe(false)
     })
 
-    test('Counterspell turn 2 - UU requires 20 sources', () => {
+    test('Counterspell turn 2 - UU requires 21 sources (published 2022 table)', () => {
       // Tour 2 = 8 cartes vues, 2 symboles bleus, 20 sources → ~82.4%
       const result = calculator.calculateManaProbability(60, 20, 2, 2, true)
       expect(result.probability).toBeGreaterThan(0.8)
-      expect(result.sourcesNeeded).toBe(20)
+      expect(result.sourcesNeeded).toBe(21)
     })
 
-    test('Cryptic Command turn 4 - UUU requires 20 sources', () => {
+    test('Cryptic Command turn 4 - UUU requires 21 sources (published 2022 table)', () => {
       // Tour 4 = 10 cartes vues, 3 symboles, 20 sources → ~72.2%
       // meetsThreshold est false car probabilité < 90%
       const result = calculator.calculateManaProbability(60, 20, 4, 3, true)
       expect(result.probability).toBeGreaterThan(0.7)
-      expect(result.sourcesNeeded).toBe(20)
+      expect(result.sourcesNeeded).toBe(21)
     })
   })
 

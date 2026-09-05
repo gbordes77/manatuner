@@ -988,6 +988,11 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
           </Typography>
         )}
 
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Hand scores and keep thresholds optimize a heuristic opening-hand score, not win
+          probability. Plans assume play-first, one land per turn, and no ramp. Commander free
+          mulligans and multiplayer first-turn draws are not modeled here.
+        </Alert>
         {/* Simulation Precision */}
         <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
           <Typography variant="subtitle2" color="text.secondary">
@@ -1022,8 +1027,9 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                   What is the margin?
                 </Typography>
                 <Typography variant="caption" component="div" sx={{ mb: 1 }}>
-                  The margin of error tells you how precise the results are. At 10k simulations, a
-                  reported 72% is actually between 71.1% and 72.9% (95% confidence).
+                  For an observed hand frequency near 72%, 10,000 independent samples give an
+                  approximate 95% interval of 71.1–72.9%. This interval does not apply to heuristic
+                  scores or Bellman thresholds, and does not include model error.
                 </Typography>
                 <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
                   Which precision to choose?
@@ -1179,8 +1185,8 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
               color="text.secondary"
               sx={{ display: 'block', mt: 2, textAlign: 'center' }}
             >
-              Based on {result.iterations.toLocaleString()} Monte Carlo simulations using Frank
-              Karsten methodology
+              Based on {result.iterations.toLocaleString()} samples per hand size (four sizes) using
+              a heuristic reward and finite-horizon stopping model
             </Typography>
           </>
         )}

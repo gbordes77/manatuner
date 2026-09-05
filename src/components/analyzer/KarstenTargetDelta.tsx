@@ -2,7 +2,7 @@ import { Box, Paper, Tooltip, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
 import { MANA_COLOR_STYLES } from '../../constants/manaColors'
 import { AnalysisResult } from '../../services/deckAnalyzer'
-import { KARSTEN_TABLES } from '../../types/maths'
+import { KARSTEN_TABLES, KARSTEN_PUBLISHED_TABLES } from '../../types/maths'
 import {
   detectDeckFormatFamily,
   KARSTEN_REFERENCE_DECK_SIZE,
@@ -60,22 +60,30 @@ export function computeColorDeltas(analysisResult: AnalysisResult): ColorDelta[]
   for (const color of COLORS) {
     let maxPips = 0
     let pivotTurn = 0
+    let requiredUnscaled = 0
+    let wasClamped = false
+    let required = 0
+    let wasScaled = false
     for (const card of spells) {
       const pips = countPipsInCost(card.manaCost, color)
       if (pips === 0) continue
-      if (pips > maxPips || (pips === maxPips && card.cmc < pivotTurn)) {
+      const turn = Math.max(1, card.cmc)
+      const tablePips = Math.min(pips, 4)
+      const tableTurn = Math.min(Math.max(turn, tablePips), 10)
+      const target = KARSTEN_TABLES[tablePips]?.[tableTurn] ?? 0
+      const published = KARSTEN_PUBLISHED_TABLES[deckSize]?.[pips]?.[turn]
+      const candidate = published ?? scaleKarstenSources(target, deckSize)
+      if (candidate > required || (candidate === required && turn < pivotTurn)) {
+        required = candidate
+        wasScaled = published === undefined && deckSize !== 60
         maxPips = pips
-        pivotTurn = Math.max(1, card.cmc)
+        pivotTurn = turn
+        requiredUnscaled = target
+        wasClamped = published === undefined
       }
     }
     if (maxPips === 0) continue
 
-    const clampedPips = Math.min(Math.max(maxPips, 1), 3)
-    const clampedTurn = Math.min(Math.max(pivotTurn, 1), 10)
-    const wasClamped = clampedPips !== maxPips || clampedTurn !== pivotTurn
-    const requiredUnscaled = KARSTEN_TABLES[clampedPips]?.[clampedTurn] ?? 0
-    const required = scaleKarstenSources(requiredUnscaled, deckSize)
-    const wasScaled = required !== requiredUnscaled
     const actual = analysisResult.colorDistribution[color] || 0
     const delta = actual - required
     // EDH/Limited: wider "warn" band (±3) because scaled targets are approximate
@@ -147,7 +155,8 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
         sx={{ display: 'block', mb: 2, lineHeight: 1.5 }}
       >
         For each color, we compare how many lands producing that color you have against Frank
-        Karsten&apos;s 2022 recommended minimums for the toughest mana cost in your spells
+        Karsten&apos;s published source guidelines for the strongest requirement in your spells.
+        These assume sufficient lands after mulligans and a target of 89 + mana value percent
         {anyScaled
           ? ` — scaled from 60-card tables to your ${deckSize}-card ${
               family === 'edh' ? 'Commander' : family === 'limited' ? 'Limited' : ''
@@ -161,7 +170,7 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
         {deltas.map((d) => {
           const manaStyle = MANA_COLOR_STYLES[d.color]
           const palette = VERDICT_COLORS[d.verdict]
-          const pipSymbol = '{' + d.color + '}'.repeat(d.maxPips)
+          const pipSymbol = `{${d.color}}`.repeat(d.maxPips)
           const deltaLabel =
             d.delta === 0
               ? 'on target'
@@ -201,7 +210,7 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
                       variant="caption"
                       sx={{ display: 'block', mt: 0.5, fontStyle: 'italic', opacity: 0.85 }}
                     >
-                      Scaled N/60 approximation — not a published EDH/Limited table.
+                      Scaled N/60 approximation — outside the published table.
                     </Typography>
                   )}
                 </Box>

@@ -359,7 +359,7 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
             <Grid item xs={12} sm={6} md={3}>
               <Paper className="mtg-card" sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" fontWeight="700" color="var(--mtg-blue)">
-                  {analysis.consistency || 68}%
+                  {analysis.consistency ?? 0}%
                 </Typography>
                 <Typography
                   variant="body2"
@@ -368,7 +368,7 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, cards }) => {
                 >
                   Consistency
                   <MuiTooltip
-                    title="Consistency measures the probability of having the right mana colors to cast your spells on curve. Higher is better - aim for 80%+ for competitive play."
+                    title="Heuristic average of turn-two access to required colors. It does not measure joint spell castability."
                     arrow
                   >
                     <IconButton size="small" sx={{ ml: 0.5, p: 0 }}>

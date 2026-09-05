@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Llanowar Elves",
+    "mana_cost": "{G}",
+    "oracle_text": "{T}: Add {G}.",
+    "produced_mana": ["G"],
+    "scryfall_uri": "https://scryfall.com/card/fdn/227/llanowar-elves?utm_source=api"
+  },
+  {
+    "name": "Elvish Mystic",
+    "mana_cost": "{G}",
+    "oracle_text": "{T}: Add {G}.",
+    "produced_mana": ["G"],
+    "scryfall_uri": "https://scryfall.com/card/hoc/205/elvish-mystic?utm_source=api"
+  },
+  {
+    "name": "Fyndhorn Elves",
+    "mana_cost": "{G}",
+    "oracle_text": "{T}: Add {G}.",
+    "produced_mana": ["G"],
+    "scryfall_uri": "https://scryfall.com/card/cmr/228/fyndhorn-elves?utm_source=api"
+  },
+  {
+    "name": "Birds of Paradise",
+    "mana_cost": "{G}",
+    "oracle_text": "Flying\n{T}: Add one mana of any color.",
+    "produced_mana": ["B", "G", "R", "U", "W"],
+    "scryfall_uri": "https://scryfall.com/card/msc/170/birds-of-paradise?utm_source=api"
+  },
+  {
+    "name": "Sol Ring",
+    "mana_cost": "{1}",
+    "oracle_text": "{T}: Add {C}{C}.",
+    "produced_mana": ["C"],
+    "scryfall_uri": "https://scryfall.com/card/msc/211/sol-ring?utm_source=api"
+  }
+]

@@ -1,0 +1,2 @@
+import config from '/Volumes/DataDisk/_Projects/Project Mana base V2/vitest.config.js';
+export default {...config,test:{...config.test,exclude:['node_modules/**','**/node_modules/**','.claude/**','tests/e2e/**']}};

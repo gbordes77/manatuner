@@ -1,0 +1,3644 @@
+[
+  {
+    "file": "src/App.tsx",
+    "line": 27,
+    "function": "[messageIndex]",
+    "expression": "Math.floor(Math.random() * MTG_LOADING_MESSAGES.length)"
+  },
+  {
+    "file": "src/App.tsx",
+    "line": 50,
+    "function": "PageLoader",
+    "expression": "index * 0.15"
+  },
+  {
+    "file": "src/components/EnhancedCharts.tsx",
+    "line": 72,
+    "function": "totalCount",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/components/EnhancedCharts.tsx",
+    "line": 76,
+    "function": "prepareColorDistribution",
+    "expression": "Math.round(((count as number) / totalCount) * 100)"
+  },
+  {
+    "file": "src/components/EnhancedCharts.tsx",
+    "line": 83,
+    "function": "totalCount",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/components/EnhancedCharts.tsx",
+    "line": 87,
+    "function": "prepareCurveData",
+    "expression": "Math.round(((count as number) / totalCount) * 100)"
+  },
+  {
+    "file": "src/components/EnhancedRecommendations.tsx",
+    "line": 122,
+    "function": "getHealthScore",
+    "expression": "Math.max(score, 0)"
+  },
+  {
+    "file": "src/components/EnhancedRecommendations.tsx",
+    "line": 168,
+    "function": "EnhancedRecommendations",
+    "expression": "Math.round(analysis.consistency * 100)"
+  },
+  {
+    "file": "src/components/EnhancedRecommendations.tsx",
+    "line": 180,
+    "function": "EnhancedRecommendations",
+    "expression": "Math.round(analysis.atRiskSpells * 100)"
+  },
+  {
+    "file": "src/components/EnhancedRecommendations.tsx",
+    "line": 192,
+    "function": "EnhancedRecommendations",
+    "expression": "Math.round(analysis.landRatio * 100)"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 72,
+    "function": "prepareSpellData",
+    "expression": "name.substring(0, 15) + '...'"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 80,
+    "function": "prepareSpellData",
+    "expression": "(data.castable / data.total) * 100"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 86,
+    "function": "prepareSpellData",
+    "expression": "b.percentage - a.percentage"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 136,
+    "function": "categoryDistribution",
+    "expression": "(acc[spell.category] || 0) + 1"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 145,
+    "function": "categoryData",
+    "expression": "Math.round((count / spellData.length) * 100)"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 196,
+    "function": "CustomTooltip",
+    "expression": "Math.abs(data.tempoImpact)"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 215,
+    "function": "averagePercentage",
+    "expression": "spellData.reduce((sum, spell) => sum + spell.percentage, 0) / spellData.length"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 558,
+    "function": "EnhancedSpellAnalysis",
+    "expression": "Math.round(averagePercentage)"
+  },
+  {
+    "file": "src/components/EnhancedSpellAnalysis.tsx",
+    "line": 592,
+    "function": "EnhancedSpellAnalysis",
+    "expression": "(categoryDistribution['Critical'] || 0) + (categoryDistribution['Weak'] || 0)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 98,
+    "function": "scaledSize",
+    "expression": "size * 1.2"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 114,
+    "function": "KeyruneManaSymbol",
+    "expression": "scaledSize * 0.55"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 140,
+    "function": "KeyruneManaSymbol",
+    "expression": "scaledSize * 0.55"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 197,
+    "function": "KeyruneManaSymbol",
+    "expression": "size * 0.5"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 313,
+    "function": "xValue",
+    "expression": "Math.max(minUsefulX, reasonableX)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 314,
+    "function": "targetTurn",
+    "expression": "fixedCmc + xValue * xCount"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 344,
+    "function": "{ xValue, targetTurn }",
+    "expression": "calculateEffectiveX(fixedCmc, xCount)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 372,
+    "function": "useProbabilityCalculation",
+    "expression": "(colorCounts[color] || 0) + 1"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 410,
+    "function": "turn",
+    "expression": "Math.max(1, mv)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 411,
+    "function": "p",
+    "expression": "hypergeom.atLeast( totalCards ?? 60, totalLands ?? 24, cardsSeenByTurn(turn, playDraw), mv )"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 414,
+    "function": "p",
+    "expression": "cardsSeenByTurn(turn, playDraw)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 417,
+    "function": "useProbabilityCalculation",
+    "expression": "Math.round(p * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 428,
+    "function": "turn",
+    "expression": "Math.max(1, Math.min(effectiveCmc, 10))"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 429,
+    "function": "cardsSeen",
+    "expression": "cardsSeenByTurn(turn, playDraw)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 437,
+    "function": "maxLands",
+    "expression": "Math.min(landsInDeck, cardsSeen)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 445,
+    "function": "colorsOkGivenL",
+    "expression": "Math.min(p, hypergeom.atLeast(landsInDeck, colorSources, l, pipsNeeded))"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 448,
+    "function": "colorsOkGivenL",
+    "expression": "Math.min( p, hypergeom.atLeast(landsInDeck, deckSources?.C ?? 0, l, colorlessSymbols.length) )"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 450,
+    "function": "colorsOkGivenL",
+    "expression": "hypergeom.atLeast(landsInDeck, deckSources?.C ?? 0, l, colorlessSymbols.length)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 456,
+    "function": "p1c",
+    "expression": "hypergeom.atLeast(landsInDeck, sources1, l, 1)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 457,
+    "function": "p2c",
+    "expression": "hypergeom.atLeast(landsInDeck, sources2, l, 1)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 458,
+    "function": "colorsOkGivenL",
+    "expression": "Math.min(p, Math.max(p1c, p2c))"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 464,
+    "function": "pL",
+    "expression": "hypergeom.pmf(deckSize, landsInDeck, cardsSeen, l)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 471,
+    "function": "joint",
+    "expression": "pL * pColors"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 476,
+    "function": "p1Probability",
+    "expression": "pCastGivenEnough / pEnoughLands"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 482,
+    "function": "safePct",
+    "expression": "Math.round(Math.max(0, Math.min(1, p)) * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 620,
+    "function": "totalPips",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 622,
+    "function": "spellCost",
+    "expression": "generic + totalPips"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 657,
+    "function": "useAcceleratedCastability",
+    "expression": "computeAcceleratedCastability(deckProfile, spellCost, producersForEngine, ctx)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 705,
+    "function": "effectiveDeckSources",
+    "expression": "(adjusted[color] || 0) + count"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 755,
+    "function": "physicalResult",
+    "expression": "Math.max(1, cost.mv)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1016,
+    "function": "ManaCostRow",
+    "expression": "Math.round(physicalResult.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1039,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1040,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.withAcceleration.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1050,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1053,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.withAcceleration.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1060,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.accelerationImpact * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1074,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1086,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1091,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1099,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p2 * 100)"
+  },
+  {
+    "file": "src/components/ManaCostRow.tsx",
+    "line": 1116,
+    "function": "ManaCostRow",
+    "expression": "Math.round(acceleratedResult.base.p1 * 100)"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 57,
+    "function": "base",
+    "expression": "Math.max(0, Math.min(100, baseProbability))"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 58,
+    "function": "total",
+    "expression": "Math.max(0, Math.min(100, totalProbability))"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 59,
+    "function": "bonus",
+    "expression": "Math.max(0, total - base)"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 127,
+    "function": "barContent",
+    "expression": "height / 2"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 142,
+    "function": "barContent",
+    "expression": "height / 2"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 157,
+    "function": "barContent",
+    "expression": "height / 2"
+  },
+  {
+    "file": "src/components/SegmentedProbabilityBar.tsx",
+    "line": 158,
+    "function": "barContent",
+    "expression": "height / 2"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 89,
+    "function": "n",
+    "expression": "Math.min(cardsSeen, deckSize)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 92,
+    "function": "pAtLeastOneInHand",
+    "expression": "(deckSize - rampCount - i) / (deckSize - i)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 94,
+    "function": "pAtLeastOneInHand",
+    "expression": "Math.max(0, Math.min(1, 1 - pZero))"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 123,
+    "function": "handleRemovalRateChange",
+    "expression": "rate / 100"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 243,
+    "function": "AccelerationSettings",
+    "expression": "Math.round(removalRate * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 249,
+    "function": "AccelerationSettings",
+    "expression": "Math.round(removalRate * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 256,
+    "function": "totalRamp",
+    "expression": "sum + p.copies"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 257,
+    "function": "pOpener",
+    "expression": "Math.round(pAtLeastOneInHand(deckSize, totalRamp, 7) * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 319,
+    "function": "AccelerationSettings",
+    "expression": "Math.round(removalRate * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AccelerationSettings.tsx",
+    "line": 323,
+    "function": "AccelerationSettings",
+    "expression": "removalRate * 100"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 20,
+    "function": "computeAtRiskSpells",
+    "expression": "atRisk / entries.length"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 26,
+    "function": "computeAtRiskSpells",
+    "expression": "atRisk / entries.length"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 30,
+    "function": "computeAtRiskSpells",
+    "expression": "Math.max(0, 1 - analysisResult.consistency)"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 53,
+    "function": "atRiskSpells",
+    "expression": "computeAtRiskSpells(analysisResult)"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 118,
+    "function": "AnalysisTab",
+    "expression": "Math.round(analysisResult.consistency * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 119,
+    "function": "AnalysisTab",
+    "expression": "Math.round(analysisResult.consistency * 100)"
+  },
+  {
+    "file": "src/components/analyzer/AnalysisTab.tsx",
+    "line": 120,
+    "function": "AnalysisTab",
+    "expression": "Math.round(atRiskSpells * 100)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 65,
+    "function": "effectiveCards",
+    "expression": "Math.max(0, (outCard.quantity || 1) - swap.quantity)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 71,
+    "function": "effectiveCards",
+    "expression": "(existing.quantity || 1) + swap.quantity"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 80,
+    "function": "mainCount",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 84,
+    "function": "sbCount",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 88,
+    "function": "mainLands",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 93,
+    "function": "effectiveDeckSize",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 97,
+    "function": "effectiveLands",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 112,
+    "function": "commanderCopies",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 129,
+    "function": "nonLandCards",
+    "expression": "(a.cmc ?? 0) - (b.cmc ?? 0)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 136,
+    "function": "nonLandCards",
+    "expression": "aIn - bIn"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 137,
+    "function": "nonLandCards",
+    "expression": "(a.cmc ?? 0) - (b.cmc ?? 0)"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 226,
+    "function": "delta",
+    "expression": "producesAmount - 1"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 229,
+    "function": "unconditionalMultiMana",
+    "expression": "delta * quantity"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 235,
+    "function": "avgDelta",
+    "expression": "totalDelta / totalCount"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 264,
+    "function": "creatureOnlyExtraSources",
+    "expression": "(extra[color] || 0) + qty"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 388,
+    "function": "CastabilityTab",
+    "expression": "singletonViolations.length - 5"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 480,
+    "function": "CastabilityTab",
+    "expression": "sum + p.copies"
+  },
+  {
+    "file": "src/components/analyzer/CastabilityTab.tsx",
+    "line": 612,
+    "function": "CastabilityTab",
+    "expression": "s + sw.quantity"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 70,
+    "function": "turn",
+    "expression": "Math.max(1, card.cmc)"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 71,
+    "function": "tablePips",
+    "expression": "Math.min(pips, 4)"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 72,
+    "function": "tableTurn",
+    "expression": "Math.min(Math.max(turn, tablePips), 10)"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 75,
+    "function": "candidate",
+    "expression": "scaleKarstenSources(target, deckSize)"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 88,
+    "function": "delta",
+    "expression": "actual - required"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 140,
+    "function": "deltas",
+    "expression": "computeColorDeltas(analysisResult)"
+  },
+  {
+    "file": "src/components/analyzer/KarstenTargetDelta.tsx",
+    "line": 270,
+    "function": "KarstenTargetDelta",
+    "expression": "Math.abs(d.delta)"
+  },
+  {
+    "file": "src/components/analyzer/LandBreakdownList.tsx",
+    "line": 48,
+    "function": "sortedLandTypes",
+    "expression": "orderA - orderB"
+  },
+  {
+    "file": "src/components/analyzer/ManaDistributionChart.tsx",
+    "line": 64,
+    "function": "ManaDistributionChart",
+    "expression": "percent * 100"
+  },
+  {
+    "file": "src/components/analyzer/ManaDistributionChart.tsx",
+    "line": 139,
+    "function": "ManaDistributionChart",
+    "expression": "(item.value / totalMana) * 100"
+  },
+  {
+    "file": "src/components/analyzer/ManabaseStats.tsx",
+    "line": 59,
+    "function": "ManabaseStats",
+    "expression": "landRatio * 100"
+  },
+  {
+    "file": "src/components/analyzer/ManabaseTab.tsx",
+    "line": 54,
+    "function": "totalMana",
+    "expression": "sum + item.value"
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "line": 537,
+    "function": "data",
+    "expression": "Math.round(d7.frequency * 100)"
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "line": 538,
+    "function": "data",
+    "expression": "Math.round(result.distributions.hand6[i].frequency * 100)"
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "line": 539,
+    "function": "data",
+    "expression": "Math.round(result.distributions.hand5[i].frequency * 100)"
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "line": 692,
+    "function": "SampleHandCard",
+    "expression": "index + 1"
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "line": 868,
+    "function": "totalCards",
+    "expression": "sum + (card.quantity || 1)"
+  },
+  {
+    "file": "src/components/analyzer/QuickVerdict.tsx",
+    "line": 65,
+    "function": "consistencyPct",
+    "expression": "Math.round((analysisResult.consistency || 0) * 100)"
+  },
+  {
+    "file": "src/components/analyzer/QuickVerdict.tsx",
+    "line": 208,
+    "function": "QuickVerdict",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 35,
+    "function": "totalIn",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 36,
+    "function": "totalOut",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 45,
+    "function": "next",
+    "expression": "Math.max(0, Math.min(max, current + delta))"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 60,
+    "function": "next",
+    "expression": "Math.max(0, Math.min(max, current + delta))"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 82,
+    "function": "qty",
+    "expression": "Math.min(inRemaining, outRemaining)"
+  },
+  {
+    "file": "src/components/analyzer/SideboardSwapEditor.tsx",
+    "line": 144,
+    "function": "SideboardSwapEditor",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/components/common/AnimatedContainer.tsx",
+    "line": 91,
+    "function": "AnimatedList",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/components/common/FloatingManaSymbols.tsx",
+    "line": 57,
+    "function": "FloatingManaSymbols",
+    "expression": "4 + index * 0.5"
+  },
+  {
+    "file": "src/components/common/ManaSymbols.tsx",
+    "line": 120,
+    "function": "ManaSymbolFallback",
+    "expression": "fontSize * 0.6"
+  },
+  {
+    "file": "src/components/common/ManaSymbols.tsx",
+    "line": 305,
+    "function": "ManaCost",
+    "expression": "fontSize * 0.6"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 29,
+    "function": "startIndex",
+    "expression": "Math.floor(scrollTop / itemHeight)"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 30,
+    "function": "endIndex",
+    "expression": "Math.min( items.length - 1, Math.floor((scrollTop + containerHeight) / itemHeight) )"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 31,
+    "function": "endIndex",
+    "expression": "items.length - 1"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 32,
+    "function": "endIndex",
+    "expression": "Math.floor((scrollTop + containerHeight) / itemHeight)"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 36,
+    "function": "visibleRange",
+    "expression": "Math.max(0, startIndex - overscan)"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 37,
+    "function": "visibleRange",
+    "expression": "Math.min(items.length - 1, endIndex + overscan)"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 42,
+    "function": "visibleItems",
+    "expression": "visibleRange.end + 1"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 45,
+    "function": "totalHeight",
+    "expression": "items.length * itemHeight"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 46,
+    "function": "offsetY",
+    "expression": "visibleRange.start * itemHeight"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 92,
+    "function": "VirtualListComponent",
+    "expression": "visibleRange.start + index"
+  },
+  {
+    "file": "src/components/common/VirtualList.tsx",
+    "line": 93,
+    "function": "VirtualListComponent",
+    "expression": "visibleRange.start + index"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 82,
+    "function": "ratioDeviation",
+    "expression": "Math.abs(landRatio - optimalRatio)"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 83,
+    "function": "landRatioScore",
+    "expression": "Math.max(0, 1 - ratioDeviation * 5)"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 93,
+    "function": "avgTurn2",
+    "expression": "turn2Colors.reduce((a, b) => a + b, 0) / turn2Colors.length"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 103,
+    "function": "avgTurn4",
+    "expression": "turn4Colors.reduce((a, b) => a + b, 0) / turn4Colors.length"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 106,
+    "function": "score",
+    "expression": "(consistency * consistencyWeight + landRatioScore * landRatioWeight + avgTurn2 * turn2Weight + avgTurn4 * turn4Weight) * 100"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 107,
+    "function": "score",
+    "expression": "landRatioScore * landRatioWeight"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 108,
+    "function": "score",
+    "expression": "avgTurn2 * turn2Weight"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 109,
+    "function": "score",
+    "expression": "avgTurn4 * turn4Weight"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 112,
+    "function": "calculateStabilityScore",
+    "expression": "Math.round(Math.min(100, Math.max(0, score)))"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 130,
+    "function": "stabilityScore",
+    "expression": "calculateStabilityScore(analysisResult)"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 204,
+    "function": "imgHeight",
+    "expression": "(canvas.height * imgWidth) / canvas.width"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 300,
+    "function": "pipCount",
+    "expression": "sum + countPipsInCost(c.manaCost ?? '', color) * c.quantity"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 490,
+    "function": "ManaBlueprint",
+    "expression": "sum + c.quantity"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 496,
+    "function": "ManaBlueprint",
+    "expression": "b.quantity - a.quantity"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 543,
+    "function": "ManaBlueprint",
+    "expression": "sum + c.quantity"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 551,
+    "function": "ManaBlueprint",
+    "expression": "a.cmc - b.cmc"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 611,
+    "function": "ManaBlueprint",
+    "expression": "sum + c.quantity"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 625,
+    "function": "ManaBlueprint",
+    "expression": "a.cmc - b.cmc"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 849,
+    "function": "percentage",
+    "expression": "Math.round((prob || 0) * 100)"
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "line": 891,
+    "function": "ManaBlueprint",
+    "expression": "Math.round(analysisResult.landRatio * 100)"
+  },
+  {
+    "file": "src/components/layout/Header.tsx",
+    "line": 123,
+    "function": "isLearnActive",
+    "expression": "p + '/'"
+  },
+  {
+    "file": "src/components/layout/Header.tsx",
+    "line": 454,
+    "function": "Header",
+    "expression": "muiTheme.palette.primary.main + '20'"
+  },
+  {
+    "file": "src/components/layout/StaticPages.tsx",
+    "line": 173,
+    "function": "AboutPage",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/components/library/ArticleCard.tsx",
+    "line": 132,
+    "function": "h",
+    "expression": "Math.floor(minutes / 60)"
+  },
+  {
+    "file": "src/components/library/ArticleCard.tsx",
+    "line": 133,
+    "function": "m",
+    "expression": "minutes % 60"
+  },
+  {
+    "file": "src/components/library/TrackHeader.tsx",
+    "line": 30,
+    "function": "progressPct",
+    "expression": "Math.round((readCount / articleCount) * 100)"
+  },
+  {
+    "file": "src/data/sampleDecks.ts",
+    "line": 204,
+    "function": "countDeckListCards",
+    "expression": "sum + parseInt(m[2], 10)"
+  },
+  {
+    "file": "src/data/sampleDecks.ts",
+    "line": 205,
+    "function": "countDeckListCards",
+    "expression": "sum + parseInt(m[1], 10)"
+  },
+  {
+    "file": "src/lib/privacy.ts",
+    "line": 63,
+    "function": "attempt",
+    "expression": "Math.max(10, Math.floor(records.length / 2))"
+  },
+  {
+    "file": "src/lib/privacy.ts",
+    "line": 69,
+    "function": "persist",
+    "expression": "Math.floor(attempt.length / 2)"
+  },
+  {
+    "file": "src/lib/privacy.ts",
+    "line": 128,
+    "function": "getMyAnalyses",
+    "expression": "(b.timestamp ?? 0) - (a.timestamp ?? 0)"
+  },
+  {
+    "file": "src/lib/validations.ts",
+    "line": 64,
+    "function": "totalCards",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/lib/validations.ts",
+    "line": 318,
+    "function": "totalCards",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/pages/AnalyzerPage.tsx",
+    "line": 227,
+    "function": "deltas",
+    "expression": "computeColorDeltas(analysisResult)"
+  },
+  {
+    "file": "src/pages/AnalyzerPage.tsx",
+    "line": 259,
+    "function": "mainSize",
+    "expression": "s + (c.quantity || 1)"
+  },
+  {
+    "file": "src/pages/ArticleDetailPage.tsx",
+    "line": 56,
+    "function": "findRelated",
+    "expression": "y.score - x.score"
+  },
+  {
+    "file": "src/pages/ArticleDetailPage.tsx",
+    "line": 103,
+    "function": "descriptionForSeo",
+    "expression": "article.description.slice(0, 152) + '…'"
+  },
+  {
+    "file": "src/pages/AuthorPage.tsx",
+    "line": 40,
+    "function": "years",
+    "expression": "x - y"
+  },
+  {
+    "file": "src/pages/AuthorPage.tsx",
+    "line": 42,
+    "function": "lastYear",
+    "expression": "years.length - 1"
+  },
+  {
+    "file": "src/pages/AuthorPage.tsx",
+    "line": 66,
+    "function": "jsonLd",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/pages/GuidePage.tsx",
+    "line": 382,
+    "function": "GuidePage",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/pages/GuidePage.tsx",
+    "line": 414,
+    "function": "GuidePage",
+    "expression": "index + 1"
+  },
+  {
+    "file": "src/pages/GuidePage.tsx",
+    "line": 654,
+    "function": "GuidePage",
+    "expression": "index * 0.08"
+  },
+  {
+    "file": "src/pages/HomePage.tsx",
+    "line": 79,
+    "function": "FloatingManaSymbols",
+    "expression": "4 + index * 0.5"
+  },
+  {
+    "file": "src/pages/HomePage.tsx",
+    "line": 739,
+    "function": "HomePage",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/pages/HomePage.tsx",
+    "line": 923,
+    "function": "HomePage",
+    "expression": "idx * 0.1"
+  },
+  {
+    "file": "src/pages/HomePage.tsx",
+    "line": 1057,
+    "function": "HomePage",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/pages/LandGlossaryPage.tsx",
+    "line": 413,
+    "function": "LandGlossaryPage",
+    "expression": "index * 0.05"
+  },
+  {
+    "file": "src/pages/MathematicsPage.tsx",
+    "line": 284,
+    "function": "MathematicsPage",
+    "expression": "index * 0.1"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 66,
+    "function": "DeltaChip",
+    "expression": "Math.abs(value)"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 87,
+    "function": "percent",
+    "expression": "Math.round(consistency * 100)"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 183,
+    "function": "consistencyDelta",
+    "expression": "(sb.consistency - sa.consistency) * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 252,
+    "function": "CompareView",
+    "expression": "sb.totalCards - sa.totalCards"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 258,
+    "function": "CompareView",
+    "expression": "sb.totalLands - sa.totalLands"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 262,
+    "function": "CompareView",
+    "expression": "sa.landRatio * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 263,
+    "function": "CompareView",
+    "expression": "sb.landRatio * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 264,
+    "function": "CompareView",
+    "expression": "(sb.landRatio - sa.landRatio) * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 271,
+    "function": "CompareView",
+    "expression": "sb.avgCMC - sa.avgCMC"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 275,
+    "function": "CompareView",
+    "expression": "sa.consistency * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 276,
+    "function": "CompareView",
+    "expression": "sb.consistency * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 295,
+    "function": "CompareView",
+    "expression": "pa * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 296,
+    "function": "CompareView",
+    "expression": "pb * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 297,
+    "function": "CompareView",
+    "expression": "(pb - pa) * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 330,
+    "function": "delta",
+    "expression": "probaB - probaA"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 466,
+    "function": "AnalysisCard",
+    "expression": "(totalLands / totalCards) * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 470,
+    "function": "AnalysisCard",
+    "expression": "(totalLands / totalCards) * 100"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 594,
+    "function": "filteredAnalyses",
+    "expression": "scoreB - scoreA"
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "line": 599,
+    "function": "filteredAnalyses",
+    "expression": "b.timestamp - a.timestamp"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 91,
+    "function": "articleFreshnessScore",
+    "expression": "article.year * 10_000 + idx"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 320,
+    "function": "fiveMostRecent",
+    "expression": "y.score - x.score"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 328,
+    "function": "pick",
+    "expression": "Math.floor(Math.random() * live.length)"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 360,
+    "function": "ReferenceArticlesPage",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 751,
+    "function": "ReferenceArticlesPage",
+    "expression": "Math.min(idx, 4) * 0.05"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 849,
+    "function": "ReferenceArticlesPage",
+    "expression": "acc + (a.readingTimeMin ?? 0)"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 1069,
+    "function": "ReferenceArticlesPage",
+    "expression": "Math.min(trackIdx, 4) * 0.05"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 1082,
+    "function": "ReferenceArticlesPage",
+    "expression": "0.08 + Math.min(articleIdx, 5) * 0.05"
+  },
+  {
+    "file": "src/pages/ReferenceArticlesPage.tsx",
+    "line": 1583,
+    "function": "ReferenceArticlesPage",
+    "expression": "progress.readCount + progress.bookmarkCount"
+  },
+  {
+    "file": "src/services/cardResolver.ts",
+    "line": 30,
+    "function": "batch",
+    "expression": "i + BATCH_SIZE"
+  },
+  {
+    "file": "src/services/cardResolver.ts",
+    "line": 55,
+    "function": "batchFetchFromScryfall",
+    "expression": "i + BATCH_SIZE"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 55,
+    "function": "clamp01",
+    "expression": "Math.max(0, Math.min(1, x))"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 104,
+    "function": "enhancerBonusMana",
+    "expression": "p.def.enhancerBonus * compatibles.length"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 152,
+    "function": "rEffective",
+    "expression": "ctx.removalRate * (ctx.rockRemovalFactor ?? DEFAULT_ROCK_REMOVAL_FACTOR)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 154,
+    "function": "calculateSurvivalProbability",
+    "expression": "Math.pow(1 - rEffective, exposureTurns)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 193,
+    "function": "p",
+    "expression": "hg.atLeast(deck.totalLands, sources, landsInHand, need)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 194,
+    "function": "colorsOkGivenLands",
+    "expression": "Math.min(minP, p)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 230,
+    "function": "maxM",
+    "expression": "Math.min(U, landsInHand)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 234,
+    "function": "pM",
+    "expression": "hg.pmf(deck.totalLands, U, landsInHand, m)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 238,
+    "function": "totalMana",
+    "expression": "landsInHand + m * delta"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 272,
+    "function": "cardsSeen",
+    "expression": "cardsSeenByTurn(turn, ctx.playDraw)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 273,
+    "function": "maxLands",
+    "expression": "Math.min(deck.totalLands, cardsSeen)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 281,
+    "function": "pL",
+    "expression": "hg.pmf(deck.deckSize, deck.totalLands, cardsSeen, l)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 296,
+    "function": "joint",
+    "expression": "pL * pColors * pMana"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 303,
+    "function": "p1",
+    "expression": "pCastGivenEnoughMass / pEnoughLands"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 321,
+    "function": "mv",
+    "expression": "def.castCostGeneric + Object.values(def.castCostColors).reduce((a, b) => a + (b ?? 0), 0)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 329,
+    "function": "computeProducerCastability",
+    "expression": "computeBaseCastability(hg, deck, producerSpell, turn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 370,
+    "function": "tLatest",
+    "expression": "turnTarget - Math.max(1, def.delay)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 373,
+    "function": "seenLatest",
+    "expression": "cardsSeenByTurn(tLatest, ctx.playDraw)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 376,
+    "function": "pDraw",
+    "expression": "hg.atLeastOneCopy(deck.deckSize, producer.copies, seenLatest)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 380,
+    "function": "pCastable",
+    "expression": "computeProducerCastability(hg, deck, producer, tLatest, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 388,
+    "function": "pSurvive",
+    "expression": "calculateSurvivalProbability(def.isCreature, turnTarget - tLatest, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 390,
+    "function": "producerOnlineProbByTurn",
+    "expression": "pDraw * pCastable * pSurvive"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 455,
+    "function": "p",
+    "expression": "hg.atLeast(deck.totalLands, K, turn, need)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 456,
+    "function": "evalAssignment",
+    "expression": "Math.min(minP, p)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 459,
+    "function": "evalAssignment",
+    "expression": "Math.max(best, minP)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 469,
+    "function": "dfs",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 491,
+    "function": "baseMana",
+    "expression": "s + netManaPerTurn(p.def)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 493,
+    "function": "extraMana",
+    "expression": "baseMana + bonusMana"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 494,
+    "function": "landsNeeded",
+    "expression": "Math.max(0, spell.mv - extraMana)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 498,
+    "function": "cardsSeen",
+    "expression": "cardsSeenByTurn(turn, ctx.playDraw)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 503,
+    "function": "reducedSpell",
+    "expression": "Math.max(0, spell.generic - extraMana)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 515,
+    "function": "castabilityGivenOnlineSet",
+    "expression": "current - 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 529,
+    "function": "castabilityGivenOnlineSet",
+    "expression": "current - 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 540,
+    "function": "maxLands",
+    "expression": "Math.min(deck.totalLands, cardsSeen)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 543,
+    "function": "pL",
+    "expression": "hg.pmf(deck.deckSize, deck.totalLands, cardsSeen, l)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 552,
+    "function": "castabilityGivenOnlineSet",
+    "expression": "pL * pColors * pMana"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 604,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "computeBaseCastability(hg, deck, spell, turn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 608,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "b.pOnline * b.netMana - a.pOnline * a.netMana"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 617,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "1 - pi"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 627,
+    "function": "wi",
+    "expression": "(pi * p0) / (1 - pi)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 641,
+    "function": "j",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 644,
+    "function": "w",
+    "expression": "(pi * pj * p0) / ((1 - pi) * (1 - pj))"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 661,
+    "function": "j",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 664,
+    "function": "k",
+    "expression": "j + 1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 667,
+    "function": "w",
+    "expression": "(pi * pj * pk * p0) / ((1 - pi) * (1 - pj) * (1 - pk))"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 679,
+    "function": "pKGe2",
+    "expression": "1 - p0 - p1Sum"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 687,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "Math.min(sumPairsExact, pKGe2)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 688,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "pKGe2 - p2Weight"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 697,
+    "function": "outP1",
+    "expression": "p0 * k0.p1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 698,
+    "function": "outP2",
+    "expression": "p0 * k0.p2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 705,
+    "function": "wi",
+    "expression": "w1[i] / p1Sum"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 708,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wi * res.p1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 709,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wi * res.p2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 711,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p1Sum * accP1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 712,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p1Sum * accP2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 720,
+    "function": "wNorm",
+    "expression": "pw.w / sumPairsExact"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 722,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wNorm * res.p1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 723,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wNorm * res.p2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 725,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p2Weight * accP1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 726,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p2Weight * accP2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 734,
+    "function": "wNorm",
+    "expression": "tw.w / sumTriplesExact"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 740,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wNorm * res.p1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 741,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "wNorm * res.p2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 743,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p3Weight * accP1"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 744,
+    "function": "computeAcceleratedCastabilityAtTurn",
+    "expression": "p3Weight * accP2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 773,
+    "function": "res",
+    "expression": "computeAcceleratedCastabilityAtTurn(hg, deck, spell, t, producers, ctx, 3)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 800,
+    "function": "naturalTurn",
+    "expression": "Math.max(1, spell.mv)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 801,
+    "function": "base",
+    "expression": "computeBaseCastability(hg, deck, spell, naturalTurn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 802,
+    "function": "withAcceleration",
+    "expression": "computeAcceleratedCastabilityAtTurn( hg, deck, spell, naturalTurn, producers, ctx, 3 )"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 818,
+    "function": "dorkPOnlineSum",
+    "expression": "s + producerOnlineProbByTurn(hg, deck, pd, naturalTurn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 826,
+    "function": "scored",
+    "expression": "pd.def.enhancerBonus * dorkPOnlineSum"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 828,
+    "function": "scored",
+    "expression": "pOnline * effectiveMana"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 830,
+    "function": "scored",
+    "expression": "b.score - a.score"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 835,
+    "function": "computeAcceleratedCastability",
+    "expression": "withAcceleration.p2 - base.p2"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 852,
+    "function": "computeBaseCastabilityAtTurn",
+    "expression": "computeBaseCastability(hypergeom, deck, spell, turn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 873,
+    "function": "base",
+    "expression": "computeBaseCastability(hg, deck, spell, turn, ctx)"
+  },
+  {
+    "file": "src/services/castability/acceleratedAnalyticEngine.ts",
+    "line": 874,
+    "function": "withAcceleration",
+    "expression": "computeAcceleratedCastabilityAtTurn( hg, deck, spell, turn, producers, ctx, 3 )"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 29,
+    "function": "cardsSeenByTurn",
+    "expression": "7 + Math.max(0, turn - 1)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 38,
+    "function": "clampProbability",
+    "expression": "Math.max(0, Math.min(1, x))"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 45,
+    "function": "lf",
+    "expression": "maxN + 1"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 48,
+    "function": "buildLogFactorials",
+    "expression": "lf[i - 1] + Math.log(i)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 80,
+    "function": "target",
+    "expression": "Math.max(n, Math.ceil(this.maxN * 1.5))"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 91,
+    "function": "logChoose",
+    "expression": "this.lf[n] - this.lf[k] - this.lf[n - k]"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 111,
+    "function": "kMin",
+    "expression": "Math.max(0, n - (N - K))"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 112,
+    "function": "kMax",
+    "expression": "Math.min(K, n)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 115,
+    "function": "logP",
+    "expression": "this.logChoose(K, k) + this.logChoose(N - K, n - k) - this.logChoose(N, n)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 117,
+    "function": "p",
+    "expression": "Math.exp(logP)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 134,
+    "function": "atLeast",
+    "expression": "Math.ceil(kMin)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 137,
+    "function": "kMax",
+    "expression": "Math.min(K, n)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 162,
+    "function": "atMost",
+    "expression": "Math.floor(kMax)"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 165,
+    "function": "kMin",
+    "expression": "Math.max(0, n - (N - K))"
+  },
+  {
+    "file": "src/services/castability/hypergeom.ts",
+    "line": 169,
+    "function": "upper",
+    "expression": "Math.min(kMax, K, n)"
+  },
+  {
+    "file": "src/services/castability/parsePhysicalCost.ts",
+    "line": 19,
+    "function": "parsePhysicalCost",
+    "expression": "(result.pips[c] ?? 0) + 1"
+  },
+  {
+    "file": "src/services/castability/parsePhysicalCost.ts",
+    "line": 25,
+    "function": "parsePhysicalCost",
+    "expression": "result.generic + Object.values(result.pips).reduce((a, b) => a + (b ?? 0), 0) + result.hybrid!.length"
+  },
+  {
+    "file": "src/services/castability/parsePhysicalCost.ts",
+    "line": 26,
+    "function": "parsePhysicalCost",
+    "expression": "a + (b ?? 0)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 56,
+    "function": "costOf",
+    "expression": "cost.generic + symbols.length"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 62,
+    "function": "pay",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 73,
+    "function": "generic",
+    "expression": "left - 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 85,
+    "function": "colored",
+    "expression": "index + 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 109,
+    "function": "landSource",
+    "expression": "sourceMask - 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 170,
+    "function": "sourceModel",
+    "expression": "deck.totalLands - K"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 214,
+    "function": "sourceModel",
+    "expression": "sourceMask - 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 218,
+    "function": "mv",
+    "expression": "def.castCostGeneric + Object.values(def.castCostColors).reduce((a, b) => a + (b ?? 0), 0)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 244,
+    "function": "choose",
+    "expression": "Math.min(k, n - k)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 264,
+    "function": "seen",
+    "expression": "7 + turn - (playDraw === 'PLAY' ? 1 : 0)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 282,
+    "function": "counts",
+    "expression": "deck.deckSize - sources.reduce((sum, s) => sum + s.count, 0)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 298,
+    "function": "payable",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 302,
+    "function": "ok",
+    "expression": "index + 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 312,
+    "function": "enumerate",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 313,
+    "function": "enumerate",
+    "expression": "weight / totalWeight"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 314,
+    "function": "enumerate",
+    "expression": "weight / totalWeight"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 317,
+    "function": "enumerate",
+    "expression": "Math.min(left, counts[i])"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 318,
+    "function": "enumerate",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 330,
+    "function": "physicalManaProbability",
+    "expression": "Math.min(1, numerator / denominator)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 331,
+    "function": "physicalManaProbability",
+    "expression": "Math.min(1, numerator)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 420,
+    "function": "resolve",
+    "expression": "t + 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 426,
+    "function": "total",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 436,
+    "function": "advance",
+    "expression": "(probability * remaining[i]) / total"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 444,
+    "function": "remaining",
+    "expression": "n - picks[j]"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 457,
+    "function": "opening",
+    "expression": "weight / choose(deck.deckSize, 7)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 461,
+    "function": "opening",
+    "expression": "Math.min(left, counts[i])"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 462,
+    "function": "opening",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 474,
+    "function": "physicalManaProbability",
+    "expression": "Math.min(1, success / genericSuccess)"
+  },
+  {
+    "file": "src/services/castability/physicalManaEngine.ts",
+    "line": 475,
+    "function": "physicalManaProbability",
+    "expression": "Math.min(1, success)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 311,
+    "function": "parseManaCost",
+    "expression": "(cost.generic || 0) + num"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 322,
+    "function": "parseManaCost",
+    "expression": "(cost[symbol] || 0) + 1"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 328,
+    "function": "parseManaCost",
+    "expression": "(cost[symbol] || 0) + 1"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 333,
+    "function": "parseManaCost",
+    "expression": "(cost.X || 0) + 1"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 880,
+    "function": "calculateHypergeometric",
+    "expression": "hypergeom.atLeast(populationSize, successStates, sampleSize, observedSuccesses)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 888,
+    "function": "totalCards",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 890,
+    "function": "cardsDrawn",
+    "expression": "Math.min(handSize + turn - 1, totalCards)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 897,
+    "function": "sourcesForColor",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 905,
+    "function": "minSources",
+    "expression": "Math.min(1, requiredSources)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 930,
+    "function": "generateRecommendations",
+    "expression": "Math.round(analysis.landRatio * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 934,
+    "function": "generateRecommendations",
+    "expression": "Math.round(analysis.landRatio * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 948,
+    "function": "generateRecommendations",
+    "expression": "activeWubrgCount * 2"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 999,
+    "function": "generateRecommendations",
+    "expression": "Math.round(analysis.consistency * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1029,
+    "function": "totalQty",
+    "expression": "sum + (c.quantity || 1)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1032,
+    "function": "qty",
+    "expression": "sum + (c.quantity || 1)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1067,
+    "function": "assertCardResolution",
+    "expression": "notFoundQty / totalQty"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1095,
+    "function": "totalCards",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1099,
+    "function": "totalLands",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1100,
+    "function": "totalNonLands",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1107,
+    "function": "analyzeDeck",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1121,
+    "function": "requirement",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1122,
+    "function": "analyzeDeck",
+    "expression": "Math.ceil(requirement * 0.6)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1138,
+    "function": "consistency",
+    "expression": "activeColors.reduce((sum, color) => sum + probabilities.turn2[color], 0) / activeColors.length"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1141,
+    "function": "consistency",
+    "expression": "hypergeom.atLeast(totalCards, totalLands, Math.min(8, totalCards), 1)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1165,
+    "function": "averageCMC",
+    "expression": "nonLands.reduce((sum, card) => sum + card.cmc * card.quantity, 0) / totalNonLands"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1169,
+    "function": "landRatio",
+    "expression": "totalLands / totalCards"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1183,
+    "function": "cmc",
+    "expression": "Math.floor(card.cmc)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1213,
+    "function": "best",
+    "expression": "colorDistribution[b] - colorDistribution[a]"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1214,
+    "function": "analyzeDeck",
+    "expression": "(pips[best] ?? 0) + count"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1226,
+    "function": "physical",
+    "expression": "Math.max(1, spell.cmc)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1233,
+    "function": "probability",
+    "expression": "computeAcceleratedCastabilityAtTurn( hypergeom, { deckSize: totalCards, totalLands, landColorSources: colorDistribution }, { mv: spell.cmc, generic: parsed.cost.generic ?? 0, pips "
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1237,
+    "function": "probability",
+    "expression": "Math.max(1, spell.cmc)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1242,
+    "function": "analyzeDeck",
+    "expression": "total * probability"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1244,
+    "function": "analyzeDeck",
+    "expression": "probability * 100"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1282,
+    "function": "analyzeDeck",
+    "expression": "Math.round(tempoResult.overallCastability * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1285,
+    "function": "analyzeDeck",
+    "expression": "Math.round( (tempoResult.colorRequirements.reduce((sum, cr) => sum + cr.tempoImpact, 0) / tempoResult.colorRequirements.length) * 100 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1286,
+    "function": "analyzeDeck",
+    "expression": "(tempoResult.colorRequirements.reduce((sum, cr) => sum + cr.tempoImpact, 0) / tempoResult.colorRequirements.length) * 100"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1294,
+    "function": "analyzeDeck",
+    "expression": "Math.round( Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.aggressive) ) * 100 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1295,
+    "function": "analyzeDeck",
+    "expression": "Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.aggressive) ) * 100"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1302,
+    "function": "analyzeDeck",
+    "expression": "Math.round( Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.conservative) ) * 100 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1303,
+    "function": "analyzeDeck",
+    "expression": "Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.conservative) ) * 100"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1310,
+    "function": "analyzeDeck",
+    "expression": "Math.round( Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.balanced) ) * 100 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1311,
+    "function": "analyzeDeck",
+    "expression": "Math.min( ...tempoResult.colorRequirements.map((cr) => cr.scenarios.balanced) ) * 100"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1336,
+    "function": "analyzeDeck",
+    "expression": "spellIndex % TEMPO_YIELD_EVERY"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1367,
+    "function": "analyzeDeck",
+    "expression": "hypergeom.atLeast( totalCards, lands .filter((l) => (l.producedMana?.length ?? 0) > 0) .reduce((n, l) => n + l.quantity, 0), Math.min(7, totalCards), 1 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1371,
+    "function": "analyzeDeck",
+    "expression": "n + l.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1372,
+    "function": "analyzeDeck",
+    "expression": "Math.min(7, totalCards)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1378,
+    "function": "analyzeDeck",
+    "expression": "hypergeom.atLeast( totalCards, lands .filter((l) => (l.producedMana?.length ?? 0) > 0) .reduce((n, l) => n + l.quantity, 0), Math.min(8, totalCards), 1 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1382,
+    "function": "analyzeDeck",
+    "expression": "n + l.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1383,
+    "function": "analyzeDeck",
+    "expression": "Math.min(8, totalCards)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1389,
+    "function": "analyzeDeck",
+    "expression": "hypergeom.atLeast( totalCards, lands .filter((l) => (l.producedMana?.length ?? 0) > 0) .reduce((n, l) => n + l.quantity, 0), Math.min(9, totalCards), 1 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1393,
+    "function": "analyzeDeck",
+    "expression": "n + l.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1394,
+    "function": "analyzeDeck",
+    "expression": "Math.min(9, totalCards)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1400,
+    "function": "analyzeDeck",
+    "expression": "hypergeom.atLeast( totalCards, lands .filter((l) => (l.producedMana?.length ?? 0) > 0) .reduce((n, l) => n + l.quantity, 0), Math.min(10, totalCards), 1 )"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1404,
+    "function": "analyzeDeck",
+    "expression": "n + l.quantity"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1405,
+    "function": "analyzeDeck",
+    "expression": "Math.min(10, totalCards)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1461,
+    "function": "calculateMulliganAnalysis",
+    "expression": "hypergeom.pmf(deckSize, landCount, handSize, k)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1465,
+    "function": "earlySpells",
+    "expression": "(manaCurve['0'] || 0) + (manaCurve['1'] || 0) + (manaCurve['2'] || 0)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1466,
+    "function": "totalSpells",
+    "expression": "deckSize - landCount"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1473,
+    "function": "probNoEarly",
+    "expression": "hypergeom.pmf(totalSpells, earlySpells, spellsDrawn, 0)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1474,
+    "function": "probEarlySpell",
+    "expression": "1 - probNoEarly"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1480,
+    "function": "spellsDrawn",
+    "expression": "handSize - k"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1481,
+    "function": "calculateMulliganAnalysis",
+    "expression": "landProbs[k] * probEarlySpell(spellsDrawn)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1485,
+    "function": "goodHand",
+    "expression": "landProbs[2] + landProbs[3] + landProbs[4]"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1488,
+    "function": "averageHand",
+    "expression": "landProbs[1] + landProbs[5]"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1491,
+    "function": "poorHand",
+    "expression": "landProbs[0] + landProbs[6]"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1494,
+    "function": "terribleHand",
+    "expression": "landProbs[7] + landProbs[0] * (1 - probEarlySpell(7))"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1498,
+    "function": "calculateMulliganAnalysis",
+    "expression": "Math.round(perfectHand * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1499,
+    "function": "calculateMulliganAnalysis",
+    "expression": "Math.round(goodHand * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1500,
+    "function": "calculateMulliganAnalysis",
+    "expression": "Math.round(averageHand * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1501,
+    "function": "calculateMulliganAnalysis",
+    "expression": "Math.round(poorHand * 100)"
+  },
+  {
+    "file": "src/services/deckAnalyzer.ts",
+    "line": 1502,
+    "function": "calculateMulliganAnalysis",
+    "expression": "Math.round(terribleHand * 100)"
+  },
+  {
+    "file": "src/services/deckParser.ts",
+    "line": 105,
+    "function": "b",
+    "expression": "blankLineIndices.length - 1"
+  },
+  {
+    "file": "src/services/deckParser.ts",
+    "line": 114,
+    "function": "i",
+    "expression": "splitIdx + 1"
+  },
+  {
+    "file": "src/services/deckParser.ts",
+    "line": 123,
+    "function": "detectSideboardStartLine",
+    "expression": "cardsBefore + cardsAfter"
+  },
+  {
+    "file": "src/services/http.ts",
+    "line": 43,
+    "function": "fallback",
+    "expression": "500 * (attempt + 1)"
+  },
+  {
+    "file": "src/services/http.ts",
+    "line": 48,
+    "function": "parseRetryAfterMs",
+    "expression": "asSeconds * 1000"
+  },
+  {
+    "file": "src/services/http.ts",
+    "line": 53,
+    "function": "parseRetryAfterMs",
+    "expression": "Math.max(0, asDate - Date.now())"
+  },
+  {
+    "file": "src/services/landCacheService.ts",
+    "line": 155,
+    "function": "getStats",
+    "expression": "(bySource[entry.source] || 0) + 1"
+  },
+  {
+    "file": "src/services/landCacheService.ts",
+    "line": 259,
+    "function": "expiresAt",
+    "expression": "now.getTime() + CACHE_TTL_DAYS * 24 * 60 * 60 * 1000"
+  },
+  {
+    "file": "src/services/landCacheService.ts",
+    "line": 341,
+    "function": "scheduleFlush",
+    "expression": "FLUSH_DEBOUNCE_MS * 2"
+  },
+  {
+    "file": "src/services/landCacheService.ts",
+    "line": 414,
+    "function": "sorted",
+    "expression": "new Date(b[1].fetchedAt).getTime() - new Date(a[1].fetchedAt).getTime()"
+  },
+  {
+    "file": "src/services/landCacheService.ts",
+    "line": 440,
+    "function": "daysSinceCleanup",
+    "expression": "(now.getTime() - lastCleanup.getTime()) / (1000 * 60 * 60 * 24)"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 595,
+    "function": "landsInPlayFast",
+    "expression": "turn - 1"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 599,
+    "function": "evaluateCondition",
+    "expression": "(condition.threshold || 2) + 1"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 607,
+    "function": "landsInPlaySlow",
+    "expression": "turn - 1"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 611,
+    "function": "evaluateCondition",
+    "expression": "(condition.threshold || 2) - 1"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 627,
+    "function": "basicRatio",
+    "expression": "context.basicCount / context.totalLands"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 628,
+    "function": "evaluateCondition",
+    "expression": "Math.min(0.9, basicRatio * 1.5 + 0.2)"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 629,
+    "function": "evaluateCondition",
+    "expression": "Math.min(0.8, basicRatio * 1.2)"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 630,
+    "function": "evaluateCondition",
+    "expression": "basicRatio * 0.7"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 643,
+    "function": "evaluateCondition",
+    "expression": "ratio * 0.9"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 842,
+    "function": "createDeckContext",
+    "expression": "(basicTypeCount[type] || 0) + 1"
+  },
+  {
+    "file": "src/services/landService.ts",
+    "line": 855,
+    "function": "createDeckContext",
+    "expression": "typeCount / lands.length"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 29,
+    "function": "calculateHypergeometric",
+    "expression": "hypergeom.atLeast( params.deckSize, params.successStates, params.sampleSize, params.successesWanted )"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 40,
+    "function": "hypergeometric",
+    "expression": "hypergeom.pmf(N, K, n, k)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 45,
+    "function": "cumulativeHypergeometric",
+    "expression": "hypergeom.atLeast(N, K, n, minK)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 60,
+    "function": "cardsSeen",
+    "expression": "handSize + turn - 1"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 73,
+    "function": "karstenRequirement",
+    "expression": "Math.ceil(((KARSTEN_TABLES[symbolsNeeded]?.[turn] ?? 0) * deckSize) / 60)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 121,
+    "function": "getRecommendation",
+    "expression": "Math.max(0, sourcesNeeded - sourcesAvailable)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 123,
+    "function": "getRecommendation",
+    "expression": "Math.max(0, sourcesNeeded - sourcesAvailable)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 125,
+    "function": "getRecommendation",
+    "expression": "Math.max(0, sourcesNeeded - sourcesAvailable)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 144,
+    "function": "deckSize",
+    "expression": "deck.cards.reduce((sum, card) => sum + card.quantity, 0) + deck.lands.reduce((sum, land) => sum + land.quantity, 0)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 145,
+    "function": "deckSize",
+    "expression": "sum + land.quantity"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 156,
+    "function": "analyzeDeck",
+    "expression": "(sources[color] || 0) + land.quantity"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 172,
+    "function": "avgProbability",
+    "expression": "allProbabilities.reduce((sum, p) => sum + p, 0) / allProbabilities.length"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 207,
+    "function": "optimizeManabase",
+    "expression": "Math.max(requirements[color] || 0, needed)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 215,
+    "function": "totalRequired",
+    "expression": "sum + r"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 220,
+    "function": "optimizeManabase",
+    "expression": "Math.round((required / totalRequired) * deck.totalLands)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 224,
+    "function": "currentTotal",
+    "expression": "sum + d"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 226,
+    "function": "mostNeeded",
+    "expression": "b[1] - a[1]"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 227,
+    "function": "optimizeManabase",
+    "expression": "deck.totalLands - currentTotal"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 299,
+    "function": "raw",
+    "expression": "hypergeom.atLeast(deck.totalCards, rawSources, 6 + targetTurn, symbolsNeeded)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 305,
+    "function": "calculateTempoAwareProbability",
+    "expression": "Math.max(targetTurn, 6)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 314,
+    "function": "calculateTempoAwareProbability",
+    "expression": "raw - exact.p2"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 326,
+    "function": "calculateTempoAwareProbability",
+    "expression": "Math.max(targetTurn, 6)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 341,
+    "function": "calculateTempoAwareProbability",
+    "expression": "untappedProb * fetchPenalty"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 352,
+    "function": "cardsSeen",
+    "expression": "7 + targetTurn - 1"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 357,
+    "function": "tempoAdjusted",
+    "expression": "Math.round(effectiveSources)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 376,
+    "function": "scenarios",
+    "expression": "calculateWithStrategy(params, 'aggressive', calculator)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 377,
+    "function": "scenarios",
+    "expression": "calculateWithStrategy(params, 'conservative', calculator)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 382,
+    "function": "calculateTempoAwareProbability",
+    "expression": "scenarios.aggressive * 0.6 + scenarios.conservative * 0.4"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 389,
+    "function": "calculateTempoAwareProbability",
+    "expression": "raw - tempoAdjusted"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 415,
+    "function": "calculateWithStrategy",
+    "expression": "untappedProb * fetchPenalty"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 418,
+    "function": "cardsSeen",
+    "expression": "7 + targetTurn - 1"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 422,
+    "function": "calculateWithStrategy",
+    "expression": "Math.round(effectiveSources)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 483,
+    "function": "tempoResult",
+    "expression": "calculateTempoAwareProbability({ deck: { lands, totalCards }, targetTurn: spell.cmc, colorNeeded: color, symbolsNeeded: count, strategy: 'balanced', })"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 497,
+    "function": "altTempoResult",
+    "expression": "calculateTempoAwareProbability({ deck: { lands, totalCards }, targetTurn: spell.cmc, colorNeeded: altColor, symbolsNeeded: count, strategy: 'balanced', })"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 526,
+    "function": "physical",
+    "expression": "Math.max(1, spell.cmc)"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 532,
+    "function": "overallCastability",
+    "expression": "Math.min(...results.map((r) => r.tempoAdjustedProbability))"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 664,
+    "function": "tempoResult",
+    "expression": "calculateTempoAwareProbability({ deck: { lands, totalCards }, targetTurn, colorNeeded: color, symbolsNeeded: 1, strategy: 'balanced', })"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 672,
+    "function": "effectiveSources",
+    "expression": "targetTurn - 1"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 676,
+    "function": "compareTempoImpact",
+    "expression": "Math.round(effectiveSources * 10) / 10"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 677,
+    "function": "compareTempoImpact",
+    "expression": "Math.round(tempoResult.raw * 1000) / 1000"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 678,
+    "function": "compareTempoImpact",
+    "expression": "Math.round(tempoResult.tempoAdjusted * 1000) / 1000"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 679,
+    "function": "compareTempoImpact",
+    "expression": "Math.round(tempoResult.tempoImpact * 1000) / 1000"
+  },
+  {
+    "file": "src/services/manaCalculator.ts",
+    "line": 680,
+    "function": "compareTempoImpact",
+    "expression": "Math.round(tempoResult.tempoImpact * 100)"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 34,
+    "function": "CACHE_TTL_MS",
+    "expression": "7 * 24 * 60 * 60 * 1000"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 130,
+    "function": "entry",
+    "expression": "Date.now() + CACHE_TTL_MS"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 151,
+    "function": "getStats",
+    "expression": "this.memoryCache.size - seedCount"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 362,
+    "function": "analyzeOracleForMana",
+    "expression": "Math.max(result.amount, symbols.length)"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 624,
+    "function": "parseManaCost",
+    "expression": "(colors[c] ?? 0) + 1"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 633,
+    "function": "parseManaCost",
+    "expression": "(colors[colorPart] ?? 0) + 1"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 730,
+    "function": "calculateAcceleratedCastability",
+    "expression": "computeAcceleratedCastability(deck, spell, producers, ctx)"
+  },
+  {
+    "file": "src/services/manaProducerService.ts",
+    "line": 743,
+    "function": "calculateCastabilityByTurn",
+    "expression": "computeCastabilityByTurn(deck, spell, producers, ctx, maxTurn)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 71,
+    "function": "createSeededRng",
+    "expression": "s + 0x6d2b79f5"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 72,
+    "function": "t",
+    "expression": "Math.imul(s ^ (s >>> 15), 1 | s)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 73,
+    "function": "createSeededRng",
+    "expression": "t + Math.imul(t ^ (t >>> 7), 61 | t)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 74,
+    "function": "createSeededRng",
+    "expression": "((t ^ (t >>> 14)) >>> 0) / 4294967296"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 137,
+    "function": "parseManaCostString",
+    "expression": "(result.symbols[symbol] || 0) + 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 154,
+    "function": "targetKeep",
+    "expression": "hand.length - bottomCount"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 156,
+    "function": "idealLands",
+    "expression": "Math.round(targetKeep * 0.4)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 162,
+    "function": "scored",
+    "expression": "idealLands + 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 173,
+    "function": "chooseBottom",
+    "expression": "a.score - b.score"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 360,
+    "function": "suggestArchetypeFromDeck",
+    "expression": "(c.cmc ?? 0) * q"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 363,
+    "function": "avg",
+    "expression": "cmcSum / spellQty"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 426,
+    "function": "manaEfficiency",
+    "expression": "calculateManaEfficiency(hand, deck)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 429,
+    "function": "curvePlayability",
+    "expression": "calculateCurvePlayability(hand, archetype)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 432,
+    "function": "colorAccess",
+    "expression": "calculateColorAccess(hand)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 435,
+    "function": "earlyGame",
+    "expression": "calculateEarlyGame(hand, archetype)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 438,
+    "function": "landBalance",
+    "expression": "calculateLandBalance(hand, config)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 442,
+    "function": "total",
+    "expression": "Math.round( manaEfficiency * config.weights.manaEfficiency + curvePlayability * config.weights.curvePlayability + colorAccess * config.weights.colorAccess + earlyGame * config.weig"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 443,
+    "function": "total",
+    "expression": "manaEfficiency * config.weights.manaEfficiency + curvePlayability * config.weights.curvePlayability + colorAccess * config.weights.colorAccess + earlyGame * config.weights.earlyGam"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 444,
+    "function": "total",
+    "expression": "curvePlayability * config.weights.curvePlayability"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 445,
+    "function": "total",
+    "expression": "colorAccess * config.weights.colorAccess"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 446,
+    "function": "total",
+    "expression": "earlyGame * config.weights.earlyGame"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 447,
+    "function": "total",
+    "expression": "landBalance * config.weights.landCount"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 449,
+    "function": "total",
+    "expression": "config.weights.manaEfficiency + config.weights.curvePlayability + config.weights.colorAccess + config.weights.earlyGame + config.weights.landCount"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 456,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(manaEfficiency)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 457,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(curvePlayability)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 458,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(colorAccess)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 459,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(earlyGame)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 460,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(landBalance)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 461,
+    "function": "calculateScoreBreakdown",
+    "expression": "Math.round(total)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 470,
+    "function": "available",
+    "expression": "sum + turn.manaAvailable"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 471,
+    "function": "spent",
+    "expression": "sum + turn.manaUsed"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 472,
+    "function": "calculateManaEfficiency",
+    "expression": "(100 * spent) / available"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 479,
+    "function": "idx",
+    "expression": "Math.min(spell.cmc - 1, 4)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 510,
+    "function": "calculateCurvePlayability",
+    "expression": "Math.min(100, score)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 519,
+    "function": "count",
+    "expression": "a + b"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 523,
+    "function": "calculateColorAccess",
+    "expression": "(100 * covered) / required"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 552,
+    "function": "calculateEarlyGame",
+    "expression": "Math.min(100, score)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 563,
+    "function": "calculateLandBalance",
+    "expression": "70 + (30 * (count - min)) / (optimal - min)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 565,
+    "function": "calculateLandBalance",
+    "expression": "70 + (30 * (max - count)) / (max - optimal)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 569,
+    "function": "calculateLandBalance",
+    "expression": "Math.max(0, 50 - (count - max) * 15)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 570,
+    "function": "calculateLandBalance",
+    "expression": "Math.max(0, 50 - (min - count) * 20)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 587,
+    "function": "manaNeeded",
+    "expression": "Math.max(spell.cmc, pips.length)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 597,
+    "function": "remaining",
+    "expression": "(a.s.producedMana?.length ?? 0) - (b.s.producedMana?.length ?? 0)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 607,
+    "function": "payment",
+    "expression": "i + 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 692,
+    "function": "generateTurnPlan",
+    "expression": "(colorPool[c] ?? 0) + 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 712,
+    "function": "generateTurnPlan",
+    "expression": "(colorPool[c] ?? 0) + 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 725,
+    "function": "generateTurnPlan",
+    "expression": "b.cmc - a.cmc"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 742,
+    "function": "generateTurnPlan",
+    "expression": "(colorPool[color] ?? 0) - needed"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 751,
+    "function": "remaining",
+    "expression": "a.s.cmc - b.s.cmc"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 765,
+    "function": "generateTurnPlan",
+    "expression": "(colorPool[color] ?? 0) - needed"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 771,
+    "function": "generateTurnPlan",
+    "expression": "b - a"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 780,
+    "function": "generateTurnPlan",
+    "expression": "manaAvailable - manaLeft"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 845,
+    "function": "breakdown",
+    "expression": "calculateScoreBreakdown(hand, archetype, library)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 851,
+    "function": "createSampleHand",
+    "expression": "threshold + 10"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 852,
+    "function": "createSampleHand",
+    "expression": "threshold - 5"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 853,
+    "function": "createSampleHand",
+    "expression": "threshold - 20"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 906,
+    "function": "breakdown",
+    "expression": "calculateScoreBreakdown(hand, archetype, library)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 912,
+    "function": "simulateSingleGameAdvanced",
+    "expression": "7 - handSize"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 940,
+    "function": "i",
+    "expression": "shuffled.length - 1"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 941,
+    "function": "j",
+    "expression": "Math.floor(rng() * (i + 1))"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 957,
+    "function": "drawHand",
+    "expression": "sum + c.cmc"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1010,
+    "function": "selectBestSubset",
+    "expression": "b.priority - a.priority"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1042,
+    "function": "selectBestSubset",
+    "expression": "sum + c.cmc"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1064,
+    "function": "rng",
+    "expression": "createSeededRng(options.seed)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1087,
+    "function": "breakdown",
+    "expression": "calculateScoreBreakdown(hand, archetype, libraryWithBottomed)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1090,
+    "function": "bucket",
+    "expression": "Math.min(10, Math.floor(breakdown.total / 10))"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1101,
+    "function": "analyzeWithArchetype",
+    "expression": "distribution[i] / iterations"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1114,
+    "function": "{\n    4: ev4,\n    5: ev5,\n    6: ev6,\n    7: ev7,\n  }",
+    "expression": "mulliganStoppingValues({ 4: results[4].scores, 5: results[5].scores, 6: results[6].scores, 7: results[7].scores, })"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1130,
+    "function": "analyzeWithArchetype",
+    "expression": "b.score - a.score"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1168,
+    "function": "rawEv7",
+    "expression": "results[7].scores.reduce((a, b) => a + b, 0) / iterations"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1169,
+    "function": "mulliganValue",
+    "expression": "ev7 - rawEv7"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1172,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(mulliganValue)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1180,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev7)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1181,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev6)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1182,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev5)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1183,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev4)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1186,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev6)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1187,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev5)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1188,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev4)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1192,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.min(100, i * 10 + 5)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1196,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.min(100, i * 10 + 5)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1200,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.min(100, i * 10 + 5)"
+  },
+  {
+    "file": "src/services/mulliganSimulatorAdvanced.ts",
+    "line": 1206,
+    "function": "analyzeWithArchetype",
+    "expression": "Math.round(ev7)"
+  },
+  {
+    "file": "src/services/mulliganStopping.ts",
+    "line": 15,
+    "function": "mulliganStoppingValues",
+    "expression": "rewards.reduce( (sum, reward) => sum + (size === 4 ? reward : Math.max(reward, values[(size - 1) as 4 | 5 | 6])), 0 ) / rewards.length"
+  },
+  {
+    "file": "src/services/mulliganStopping.ts",
+    "line": 17,
+    "function": "mulliganStoppingValues",
+    "expression": "sum + (size === 4 ? reward : Math.max(reward, values[(size - 1) as 4 | 5 | 6]))"
+  },
+  {
+    "file": "src/services/scryfall.ts",
+    "line": 66,
+    "function": "timeSinceLastRequest",
+    "expression": "now - lastRequestTime"
+  },
+  {
+    "file": "src/services/scryfall.ts",
+    "line": 69,
+    "function": "ensureRateLimit",
+    "expression": "RATE_LIMIT_DELAY - timeSinceLastRequest"
+  },
+  {
+    "file": "src/services/scryfall.ts",
+    "line": 301,
+    "function": "totalCards",
+    "expression": "sum + card.quantity"
+  },
+  {
+    "file": "src/services/scryfall.ts",
+    "line": 379,
+    "function": "getCacheStats",
+    "expression": "cardCache.size + collectionCache.size"
+  },
+  {
+    "file": "src/services/scryfall.ts",
+    "line": 527,
+    "function": "chunk",
+    "expression": "i + SCRYFALL_COLLECTION_CHUNK_SIZE"
+  },
+  {
+    "file": "src/services/scryfallPersistentCache.ts",
+    "line": 20,
+    "function": "TTL_MS",
+    "expression": "30 * 24 * 60 * 60 * 1000"
+  },
+  {
+    "file": "src/services/scryfallPersistentCache.ts",
+    "line": 42,
+    "function": "getCachedCard",
+    "expression": "Date.now() - entry.ts"
+  },
+  {
+    "file": "src/types/manaProducers.ts",
+    "line": 445,
+    "function": "netManaPerTurn",
+    "expression": "Math.max(0, producer.producesAmount - producer.activationTax)"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 115,
+    "function": "t",
+    "expression": "Math.max(0, Math.round(Number.isFinite(cmc) ? cmc : 0))"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 135,
+    "function": "scaleKarstenSources",
+    "expression": "Math.round(sourcesFor60)"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 137,
+    "function": "scaleKarstenSources",
+    "expression": "Math.round(sourcesFor60)"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 140,
+    "function": "scaleKarstenSources",
+    "expression": "Math.abs(deckSize - referenceSize)"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 142,
+    "function": "scaled",
+    "expression": "(sourcesFor60 * deckSize) / referenceSize"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 144,
+    "function": "rounded",
+    "expression": "Math.max(1, Math.round(scaled))"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 145,
+    "function": "scaleKarstenSources",
+    "expression": "Math.min(rounded, Math.floor(deckSize))"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 168,
+    "function": "more",
+    "expression": "names.length - 2"
+  },
+  {
+    "file": "src/utils/deckFormat.ts",
+    "line": 205,
+    "function": "effectiveLibrarySize",
+    "expression": "Math.max(1, listSize - commanderCopiesInList)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 90,
+    "function": "intensity",
+    "expression": "Math.min(Math.max(colorCount, 1), 4)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 103,
+    "function": "hypergeometric",
+    "expression": "hypergeom.pmf(population, successes, draws, target)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 115,
+    "function": "calculateCastProbability",
+    "expression": "hypergeom.atLeast(deckSize, availableSources, cardsDrawn, requiredSources)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 143,
+    "function": "i",
+    "expression": "shuffled.length - 1"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 144,
+    "function": "j",
+    "expression": "Math.floor(Math.random() * (i + 1))"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 150,
+    "function": "spells",
+    "expression": "hand.length - lands"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 209,
+    "function": "calculateOptimalColorDistribution",
+    "expression": "(colorDemand[color] || 0) + symbols.length * spell.quantity"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 213,
+    "function": "totalDemand",
+    "expression": "sum + demand"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 221,
+    "function": "shares",
+    "expression": "(demand / totalDemand) * totalLands"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 224,
+    "function": "distribution",
+    "expression": "Math.floor(s.exact)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 226,
+    "function": "remaining",
+    "expression": "totalLands - Object.values(distribution).reduce((a, b) => a + b, 0)"
+  },
+  {
+    "file": "src/utils/manabase.ts",
+    "line": 229,
+    "function": "calculateOptimalColorDistribution",
+    "expression": "b.exact - Math.floor(b.exact) - (a.exact - Math.floor(a.exact))"
+  },
+  {
+    "file": "src/utils/prefetchRoute.ts",
+    "line": 25,
+    "function": "scheduleIdlePrefetch",
+    "expression": "Math.min(timeoutMs, 1500)"
+  },
+  {
+    "file": "src/utils/urlCodec.ts",
+    "line": 29,
+    "function": "padded",
+    "expression": "base64 + '='.repeat((4 - (base64.length % 4)) % 4)"
+  },
+  {
+    "file": "src/workers/mulliganArchetype.worker.ts",
+    "line": 58,
+    "function": "n",
+    "expression": "Math.floor(raw)"
+  }
+]

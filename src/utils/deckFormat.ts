@@ -218,12 +218,9 @@ export function applyCommanderFallback<
     isCommander?: boolean
   },
 >(cards: T[]): T[] {
-  if (cards.some((c) => c.isCommander)) return cards
-  const total = cards.reduce((s, c) => s + (c.quantity ?? 1), 0)
-  if (detectDeckFormatFamily(total) !== 'edh') return cards
-  const first = cards.find((c) => !c.isLand && !c.isSideboard)
-  if (!first) return cards
-  return cards.map((c) => (c === first ? { ...c, isCommander: true } : c))
+  // A card count or ordering does not identify a command zone.
+  // Preserve only explicit Commander headers / markers supplied by the user.
+  return cards
 }
 
 /** Basic land names (incl. snow / wastes) — allowed qty > 1 in singleton formats. */

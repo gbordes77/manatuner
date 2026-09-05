@@ -4,7 +4,7 @@ import React from 'react'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 
 const HEALTH_SCORE_HELP =
-  'Health Score is the average on-curve cast probability across your non-land spells (turn matched to CMC). Higher means the manabase supports the curve more consistently. Karsten color targets and mulligan advice refine the plain-English verdict below.'
+  'Health Score is a heuristic average of access to each required color at turn two. It is not a probability of casting spells on curve. Land sequencing, simultaneous pips and ramp are not measured by this score.'
 
 interface QuickVerdictProps {
   analysisResult: AnalysisResult
@@ -128,10 +128,10 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           : 'error'
 
   const headline = isEDH
-    ? `EDH — ${consistencyPct}% of spells cast on curve at 100 cards`
+    ? `EDH — color access score ${consistencyPct}/100`
     : isLimited
-      ? `Limited (40-card) — ${consistencyPct}% of spells cast on curve`
-      : `Your deck casts ${consistencyPct}% of spells on curve`
+      ? `Limited — color access score ${consistencyPct}/100`
+      : `Your deck has a color access score of ${consistencyPct}/100`
 
   const phrase = colorClause
     ? `${headline} — ${tierLabel[tier]}, but ${colorClause}; ${mulliganRider}.`
