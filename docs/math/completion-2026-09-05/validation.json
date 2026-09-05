@@ -1,8 +1,8 @@
 {
   "unit": {
-    "passed": 586,
+    "passed": 593,
     "skipped": 2,
-    "files": 53
+    "files": 54
   },
   "types": "PASS",
   "lint": {
@@ -22,7 +22,67 @@
     "status": "blocked at browser startup",
     "upstream": "https://bugzilla.mozilla.org/show_bug.cgi?id=2060476"
   },
-  "linuxBrowserAudit": "pending workflow dispatch after commit",
+  "linuxBrowserAudit": {
+    "status": "PASS",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33990476313",
+    "commit": "acfb37c6c551a5cc2cc370ecaacd2549a090f01b",
+    "totals": {
+      "expected": 438,
+      "skipped": 6,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "projects": {
+      "chromium": {
+        "startTime": "2026-09-05T20:34:42.072Z",
+        "duration": 120885.652,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "firefox": {
+        "startTime": "2026-09-05T20:34:32.013Z",
+        "duration": 147693.56,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "webkit": {
+        "startTime": "2026-09-05T20:34:41.488Z",
+        "duration": 281341.49899999995,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "Mobile Chrome": {
+        "startTime": "2026-09-05T20:37:41.994Z",
+        "duration": 162868.26,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "Mobile Safari": {
+        "startTime": "2026-09-05T20:38:28.511Z",
+        "duration": 328059.309,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "iPad": {
+        "startTime": "2026-09-05T20:40:28.089Z",
+        "duration": 278345.393,
+        "expected": 73,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  },
   "universalCertification": false,
   "sha256": {
     "src/services/castability/physicalManaEngine.ts": "fa81fab156686f6249dd609a4050bfea3edbe8e245c68e8ad66698613397d6e2",
@@ -30,6 +90,31 @@
     "src/services/mulliganSimulatorAdvanced.ts": "4977d6dba2b181df6f0a42b53b718736acd7d35154eea362ae2ed5b3fae642b2",
     "src/services/deckAnalyzer.ts": "571af7a7abc6d6d383bf3e225507d766dd16acd439d4dae52b44d30299177d9a",
     "tests/math-audit/conditional-lands.test.ts": "ec292114d0e4ec6d152e4bfe246303990c0e021e0128511d8f9d65b7b20452f3",
-    "tests/math-audit/bellman.test.ts": "99c6d0223cff7fba9a63bce7d3e8f0464b6337ffb9d5c29d3d35b2b3418c49a7"
-  }
+    "tests/math-audit/bellman.test.ts": "99c6d0223cff7fba9a63bce7d3e8f0464b6337ffb9d5c29d3d35b2b3418c49a7",
+    "src/components/analyzer/TabPanel.tsx": "db44b59ce4da9ecf9fa50e661bd66c519e4bed0b5e4557940b6922011509ec5d",
+    "src/pages/AnalyzerPage.tsx": "a33591e1dad23e67294c4623ea7fc9ba957ecc0628321f9352918579c2fc0759",
+    "tests/fixtures/interaction-timing.js": "ea84e4be2437207b6cae6bedace519d730ddd402cd556be24d378197fd1834da",
+    "tests/math-audit/tab-panel-loading.test.tsx": "6d908d8c93d48f9bf0d6408cdbe0fde26975de535ba8b912a03880139c9eeb0f"
+  },
+  "testedCommit": "acfb37c6c551a5cc2cc370ecaacd2549a090f01b",
+  "linuxCI": {
+    "status": "PASS",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33990476247"
+  },
+  "deployment": {
+    "id": "dpl_6uBQYYvgN7AtNwfgWCVSkuBySY6g",
+    "state": "READY",
+    "url": "https://www.manatuner.app",
+    "aliases": [
+      "www.manatuner.app",
+      "manatuner-pro.vercel.app",
+      "manatuner.app",
+      "manatuner-pro-gbordes77s-projects.vercel.app",
+      "manatuner-pro-git-main-gbordes77s-projects.vercel.app"
+    ],
+    "commit": "acfb37c6c551a5cc2cc370ecaacd2549a090f01b",
+    "httpStatus": 200
+  },
+  "performanceMetric": "Real click to visible destination DOM, verified by a delayed-content control; not hardware paint latency.",
+  "closedAtUTC": "2026-09-05"
 }

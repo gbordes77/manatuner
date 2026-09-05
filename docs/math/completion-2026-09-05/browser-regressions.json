@@ -1,0 +1,963 @@
+{
+  "run": "https://github.com/gbordes77/manatuner/actions/runs/33988992249",
+  "commit": "54b3d4be31fa7f6598a85378558455d2aa51ee57",
+  "results": {
+    "0": {
+      "stats": {
+        "startTime": "2026-09-05T20:05:18.176Z",
+        "duration": 121245.769,
+        "expected": 72,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "failures": []
+    },
+    "1": {
+      "stats": {
+        "startTime": "2026-09-05T20:05:10.232Z",
+        "duration": 174685.37900000002,
+        "expected": 72,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "failures": []
+    },
+    "2": {
+      "stats": {
+        "startTime": "2026-09-05T20:05:25.508Z",
+        "duration": 343420.302,
+        "expected": 69,
+        "skipped": 1,
+        "unexpected": 3,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Temps de navigation vers Analyzer",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance navigation entre onglets",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec multiples onglets",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        }
+      ]
+    },
+    "3": {
+      "stats": {
+        "startTime": "2026-09-05T20:08:23.619Z",
+        "duration": 198403.283,
+        "expected": 70,
+        "skipped": 1,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Header Analyzer link is unique in banner",
+          "status": "unexpected",
+          "error": "Error: expect(locator).toHaveCount(expected) failed"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "shell: Learn nav + Feedback entry points",
+          "status": "unexpected",
+          "error": "Error: expect(locator).toBeVisible() failed"
+        }
+      ]
+    },
+    "5": {
+      "stats": {
+        "startTime": "2026-09-05T20:12:23.339Z",
+        "duration": 80038.42,
+        "expected": 0,
+        "skipped": 1,
+        "unexpected": 72,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Home page — axe critical/serious (no critical)",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Analyzer empty — axe critical clear",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Analyzer after Try Example — no critical axe",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Header Analyzer link is unique in banner",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Keyboard: tab reaches primary actions on home",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Footer contrast text is readable (grey.800 / grey.300)",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Home hero shows product preview (P2-2)",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Analyzer primary buttons use text + icons (no emoji-only)",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "After analyze, focus lands on Health Score verdict (P2-11)",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/analyzer-happy-path.spec.js",
+          "title": "Try Example → Analyze → all 5 result tabs without crash",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "shell: Learn nav + Feedback entry points",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "analyzer happy path + format controls + health score",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "EDH sample auto-detects Commander format family",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "Limited sample auto-detects Limited",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "sideboard main/post-board toggle when SB present",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/garbage-deck.spec.js",
+          "title": "shows error and no Health Score 100 on invented cards",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/p1-9-edh-verify.spec.js",
+          "title": "sample=edh: commander banner, horizon, command zone, scaled manabase",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/p1-9-edh-verify.spec.js",
+          "title": "format=commander hydrates Atraxa + banner",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "core-flows/sideboard-banner-n.spec.js",
+          "title": "format-family-banner shows lands in 60, not 75",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Temps de chargement initial",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Temps de navigation vers Analyzer",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance analyse decklist simple",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance analyse decklist complexe",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance navigation entre onglets",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec grande decklist",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec connexion lente",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "JavaScript disabled shows an explicit fallback",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance chargement mobile",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance analyse mobile",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance scroll mobile",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Utilisation mémoire normale",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec multiples onglets",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Comparaison Desktop vs Mobile",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec cache vs sans cache",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Navigation responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Page d'accueil responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Formulaire de decklist responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Onglets d'analyse responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Tableaux et graphiques responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Scroll et navigation tactile sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Performance responsive sur Mobile Portrait",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Navigation responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Page d'accueil responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Formulaire de decklist responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Onglets d'analyse responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Tableaux et graphiques responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Scroll et navigation tactile sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Performance responsive sur Mobile Landscape",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Navigation responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Page d'accueil responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Formulaire de decklist responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Onglets d'analyse responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Tableaux et graphiques responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Scroll et navigation tactile sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Performance responsive sur Tablet",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Navigation responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Page d'accueil responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Formulaire de decklist responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Onglets d'analyse responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Tableaux et graphiques responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Scroll et navigation tactile sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Performance responsive sur Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Navigation responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Page d'accueil responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Formulaire de decklist responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Onglets d'analyse responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Tableaux et graphiques responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Scroll et navigation tactile sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Performance responsive sur Small Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Transition Desktop vers Mobile",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "responsive/mobile-desktop.spec.js",
+          "title": "Transition Mobile vers Desktop",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        },
+        {
+          "file": "tabs/analyzer-tabs.spec.js",
+          "title": "navigates all 5 result tabs after Try Example",
+          "status": "unexpected",
+          "error": "Error: browserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell"
+        }
+      ]
+    },
+    "4": {
+      "stats": {
+        "startTime": "2026-09-05T20:09:21.156Z",
+        "duration": 423706.256,
+        "expected": 67,
+        "skipped": 1,
+        "unexpected": 5,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "accessibility/a11y.spec.js",
+          "title": "Header Analyzer link is unique in banner",
+          "status": "unexpected",
+          "error": "Error: expect(locator).toHaveCount(expected) failed"
+        },
+        {
+          "file": "core-flows/audit-wave-c-verify.spec.js",
+          "title": "shell: Learn nav + Feedback entry points",
+          "status": "unexpected",
+          "error": "Error: expect(locator).toBeVisible() failed"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Temps de navigation vers Analyzer",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance navigation entre onglets",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec multiples onglets",
+          "status": "unexpected",
+          "error": "Error: expect(received).toBeLessThan(expected)"
+        }
+      ]
+    }
+  },
+  "webkitTraceEvidence": {
+    "test": "Performance navigation entre onglets, retry 1",
+    "clickCallMs": 648.977,
+    "beforeActualClickMs": 636.77,
+    "explanation": "Le temps mesuré côté robot incluait actionability et transport avant le clic effectif. Les seuils applicatifs sont conservés ; mesure depuis le clic réel vers le contenu prêt sur deux trames."
+  },
+  "fixCommit": "13597e5",
+  "localTargetedValidation": {
+    "passed": 12,
+    "projects": ["webkit", "Mobile Chrome"]
+  },
+  "unitDeadlineRegression": {
+    "run": "https://github.com/gbordes77/manatuner/actions/runs/33989595938",
+    "passed": 585,
+    "failed": 1,
+    "skipped": 2,
+    "cause": "Seven sequential exact turn calculations shared one 5000 ms test deadline. No numerical assertion failed.",
+    "fix": "53917a8: seven individually reported cases, identical assertions and default deadlines.",
+    "localAfter": {
+      "passed": 592,
+      "skipped": 2
+    }
+  },
+  "secondFullCampaign": {
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33989595762",
+    "commit": "13597e51cdff49c7b82b9bdb836caa348a9ea085",
+    "results": {
+      "0": {
+        "stats": {
+          "startTime": "2026-09-05T20:17:15.287Z",
+          "duration": 110319.346,
+          "expected": 72,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "failures": []
+      },
+      "1": {
+        "stats": {
+          "startTime": "2026-09-05T20:17:12.783Z",
+          "duration": 187392.66,
+          "expected": 72,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "failures": []
+      },
+      "2": {
+        "stats": {
+          "startTime": "2026-09-05T20:17:31.165Z",
+          "duration": 283924.53500000003,
+          "expected": 70,
+          "skipped": 1,
+          "unexpected": 2,
+          "flaky": 0
+        },
+        "failures": [
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance navigation entre onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   820\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   596\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   553\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps de changement vers onglet tab-castability: 297ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-analysis: 553ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-mulligan: 347ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-manabase: 338ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-blueprint: 330ms\n"
+              }
+            ]
+          },
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance avec multiples onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4304\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4111\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4176\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps total navigation multiple onglets: 4176ms\n"
+              }
+            ]
+          }
+        ]
+      },
+      "3": {
+        "stats": {
+          "startTime": "2026-09-05T20:20:09.426Z",
+          "duration": 168771.329,
+          "expected": 72,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "failures": []
+      },
+      "4": {
+        "stats": {
+          "startTime": "2026-09-05T20:21:42.380Z",
+          "duration": 400467.636,
+          "expected": 68,
+          "skipped": 1,
+          "unexpected": 2,
+          "flaky": 2
+        },
+        "failures": [
+          {
+            "file": "accessibility/a11y.spec.js",
+            "title": "Analyzer after Try Example — no critical axe",
+            "status": "flaky",
+            "errors": [
+              "Error: [\n  {\n    \"id\": \"aria-valid-attr-value\",\n    \"impact\": \"critical\",\n    \"tags\": [\n      \"cat.aria\",\n      \"wcag2a\",\n      \"wcag412\",\n      \"EN-301-549\",\n      \"EN-9.4.1.2\",\n      \"RGAAv4\",\n      \"RGAA-7.1.1\"\n    ],\n    \"description\": \"Ensure all ARIA attributes have valid values\",\n    \"help\": \"ARIA attributes must conform to valid values\",\n    \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value?application=playwright\",\n    \"nodes\": [\n      {\n        \"any\": [],\n        \"all\": [\n          {\n            \"id\": \"aria-valid-attr-value\",\n            \"data\": [\n              \"aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n            ],\n            \"relatedNodes\": [],\n            \"impact\": \"critical\",\n            \"message\": \"Invalid ARIA attribute value: aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n          }\n        ],\n        \"none\": [],\n        \"impact\": \"critical\",\n        \"html\": \"<button class=\\\"MuiButtonBase-root M...\\\" tabindex=\\\"0\\\" type=\\\"button\\\" role=\\\"tab\\\" aria-selected=\\\"true\\\" aria-label=\\\"Castability - Spell ...\\\" id=\\\"analyzer-tab-0\\\" aria-controls=\\\"analyzer-tabpanel-0\\\" data-testid=\\\"tab-castability\\\">\",\n        \"target\": [\n          \"#analyzer-tab-0\"\n        ],\n        \"failureSummary\": \"Fix all of the following:\\n  Invalid ARIA attribute value: aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n      }\n    ]\n  }\n]\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 42\n\n- Array []\n+ Array [\n+   Object {\n+     \"description\": \"Ensure all ARIA attributes have valid values\",\n+     \"help\": \"ARIA attributes must conform to valid values\",\n+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.11"
+            ],
+            "lastStdout": []
+          },
+          {
+            "file": "core-flows/audit-wave-c-verify.spec.js",
+            "title": "shell: Learn nav + Feedback entry points",
+            "status": "flaky",
+            "errors": [
+              "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Learn', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('button', { name: 'Learn', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Learn', exact: true })\n\n\n  23 |     } else {\n  24 |       const learnNav = page.getByRole('button', { name: 'Learn', exact: true })\n> 25 |       await expect(learnNav).toBeVisible()\n     |                              ^\n  26 |       await learnNav.click()\n  27 |       await expect(page.getByRole('menuitem', { name: /guide/i })).toBeVisible()\n  28 |       await expect(page.getByRole('menuitem', { name: /mathematics/i })).toBeVisible()\n    at /home/runner/work/manatuner/manatuner/tests/e2e/core-flows/audit-wave-c-verify.spec.js:25:30"
+            ],
+            "lastStdout": []
+          },
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance navigation entre onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   646\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   613\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   645\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps de changement vers onglet tab-castability: 261ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-analysis: 645ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-mulligan: 461ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-manabase: 416ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-blueprint: 425ms\n"
+              }
+            ]
+          },
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance avec multiples onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   5483\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   5516\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   5644\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps total navigation multiple onglets: 5644ms\n"
+              }
+            ]
+          }
+        ]
+      },
+      "5": {
+        "stats": {
+          "startTime": "2026-09-05T20:23:42.717Z",
+          "duration": 383127.687,
+          "expected": 67,
+          "skipped": 1,
+          "unexpected": 2,
+          "flaky": 3
+        },
+        "failures": [
+          {
+            "file": "accessibility/a11y.spec.js",
+            "title": "Analyzer after Try Example — no critical axe",
+            "status": "flaky",
+            "errors": [
+              "Error: [\n  {\n    \"id\": \"aria-valid-attr-value\",\n    \"impact\": \"critical\",\n    \"tags\": [\n      \"cat.aria\",\n      \"wcag2a\",\n      \"wcag412\",\n      \"EN-301-549\",\n      \"EN-9.4.1.2\",\n      \"RGAAv4\",\n      \"RGAA-7.1.1\"\n    ],\n    \"description\": \"Ensure all ARIA attributes have valid values\",\n    \"help\": \"ARIA attributes must conform to valid values\",\n    \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.11/aria-valid-attr-value?application=playwright\",\n    \"nodes\": [\n      {\n        \"any\": [],\n        \"all\": [\n          {\n            \"id\": \"aria-valid-attr-value\",\n            \"data\": [\n              \"aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n            ],\n            \"relatedNodes\": [],\n            \"impact\": \"critical\",\n            \"message\": \"Invalid ARIA attribute value: aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n          }\n        ],\n        \"none\": [],\n        \"impact\": \"critical\",\n        \"html\": \"<button class=\\\"MuiButtonBase-root M...\\\" tabindex=\\\"0\\\" type=\\\"button\\\" role=\\\"tab\\\" aria-selected=\\\"true\\\" aria-label=\\\"Castability - Spell ...\\\" id=\\\"analyzer-tab-0\\\" aria-controls=\\\"analyzer-tabpanel-0\\\" data-testid=\\\"tab-castability\\\">\",\n        \"target\": [\n          \"#analyzer-tab-0\"\n        ],\n        \"failureSummary\": \"Fix all of the following:\\n  Invalid ARIA attribute value: aria-controls=\\\"analyzer-tabpanel-0\\\"\"\n      }\n    ]\n  }\n]\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 42\n\n- Array []\n+ Array [\n+   Object {\n+     \"description\": \"Ensure all ARIA attributes have valid values\",\n+     \"help\": \"ARIA attributes must conform to valid values\",\n+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.11"
+            ],
+            "lastStdout": []
+          },
+          {
+            "file": "accessibility/a11y.spec.js",
+            "title": "Analyzer navigation is unique in the active desktop or mobile menu",
+            "status": "flaky",
+            "errors": [
+              "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByRole('banner').getByRole('link', { name: /^Analyzer$/i })\nExpected: 1\nReceived: 0\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toHaveCount\" getByRole('banner').getByRole('link', { name: /^Analyzer$/i }) with timeout 5000ms\n  - waiting for getByRole('banner').getByRole('link', { name: /^Analyzer$/i })\n    13 × locator resolved to 0 elements\n       - unexpected value \"0\"\n\n\n  52 |       ? page.getByRole('button', { name: 'Analyzer', exact: true })\n  53 |       : page.getByRole('banner').getByRole('link', { name: /^Analyzer$/i })\n> 54 |     await expect(bannerAnalyzer).toHaveCount(1)\n     |                                  ^\n  55 |     await bannerAnalyzer.click()\n  56 |     await expect(page).toHaveURL(/\\/analyzer/)\n  57 |   })\n    at /home/runner/work/manatuner/manatuner/tests/e2e/accessibility/a11y.spec.js:54:34"
+            ],
+            "lastStdout": []
+          },
+          {
+            "file": "core-flows/audit-wave-c-verify.spec.js",
+            "title": "shell: Learn nav + Feedback entry points",
+            "status": "flaky",
+            "errors": [
+              "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button', { name: 'Learn', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toBeVisible\" getByRole('button', { name: 'Learn', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Learn', exact: true })\n\n\n  23 |     } else {\n  24 |       const learnNav = page.getByRole('button', { name: 'Learn', exact: true })\n> 25 |       await expect(learnNav).toBeVisible()\n     |                              ^\n  26 |       await learnNav.click()\n  27 |       await expect(page.getByRole('menuitem', { name: /guide/i })).toBeVisible()\n  28 |       await expect(page.getByRole('menuitem', { name: /mathematics/i })).toBeVisible()\n    at /home/runner/work/manatuner/manatuner/tests/e2e/core-flows/audit-wave-c-verify.spec.js:25:30"
+            ],
+            "lastStdout": []
+          },
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance navigation entre onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   759\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   866\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   773\n\n  94 |     // Chaque changement d'onglet doit prendre moins de 500ms\n  95 |     tabSwitchTimes.forEach(time => {\n> 96 |       expect(time).toBeLessThan(500);\n     |                    ^\n  97 |     });\n  98 |   });\n  99 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:96:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:95:20"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps de changement vers onglet tab-castability: 131ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-analysis: 773ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-mulligan: 492ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-manabase: 411ms\n"
+              },
+              {
+                "text": "Temps de changement vers onglet tab-blueprint: 412ms\n"
+              }
+            ]
+          },
+          {
+            "file": "performance/loading.spec.js",
+            "title": "Performance avec multiples onglets",
+            "status": "unexpected",
+            "errors": [
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   6029\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   6494\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23",
+              "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   6147\n\n  262 |     \n  263 |     // La navigation multiple ne doit pas dégrader les performances\n> 264 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  265 |   });\n  266 | });\n  267 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:264:23"
+            ],
+            "lastStdout": [
+              {
+                "text": "Temps total navigation multiple onglets: 6147ms\n"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "recordingControl": {
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33989990370",
+    "webkit": {
+      "stats": {
+        "startTime": "2026-09-05T20:25:22.136Z",
+        "duration": 64144.274999999994,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance navigation entre onglets",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   568\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   610\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   719\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20"
+          ],
+          "lastStdout": [
+            {
+              "text": "Temps de changement vers onglet tab-castability: 220ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-analysis: 719ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-mulligan: 296ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-manabase: 408ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-blueprint: 369ms\n"
+            }
+          ]
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec multiples onglets",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4707\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4647\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4547\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23"
+          ],
+          "lastStdout": [
+            {
+              "text": "Temps total navigation multiple onglets: 4547ms\n"
+            }
+          ]
+        }
+      ]
+    },
+    "conclusion": "Removing recording alone did not resolve the timing failures."
+  },
+  "opacityControl": {
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33990199358",
+    "webkit": {
+      "stats": {
+        "startTime": "2026-09-05T20:29:18.712Z",
+        "duration": 65210.081,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "failures": [
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance navigation entre onglets",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   655\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   678\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 500\nReceived:   661\n\n   98 |     // Chaque changement d'onglet doit prendre moins de 500ms\n   99 |     tabSwitchTimes.forEach(time => {\n> 100 |       expect(time).toBeLessThan(500);\n      |                    ^\n  101 |     });\n  102 |   });\n  103 |\n    at forEach (/home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:100:20)\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:99:20"
+          ],
+          "lastStdout": [
+            {
+              "text": "Temps de changement vers onglet tab-castability: 312ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-analysis: 661ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-mulligan: 299ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-manabase: 389ms\n"
+            },
+            {
+              "text": "Temps de changement vers onglet tab-blueprint: 347ms\n"
+            }
+          ]
+        },
+        {
+          "file": "performance/loading.spec.js",
+          "title": "Performance avec multiples onglets",
+          "status": "unexpected",
+          "errors": [
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4790\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4765\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23",
+            "Error: expect(received).toBeLessThan(expected)\n\nExpected: < 3000\nReceived:   4541\n\n  266 |     \n  267 |     // La navigation multiple ne doit pas dégrader les performances\n> 268 |     expect(totalTime).toBeLessThan(3000);\n      |                       ^\n  269 |   });\n  270 | });\n  271 |\n    at /home/runner/work/manatuner/manatuner/tests/e2e/performance/loading.spec.js:268:23"
+          ],
+          "lastStdout": [
+            {
+              "text": "Temps total navigation multiple onglets: 4541ms\n"
+            }
+          ]
+        }
+      ]
+    },
+    "conclusion": "Removing the panel fade alone did not resolve the timing failures."
+  },
+  "finalCorrections": {
+    "commit": "acfb37c",
+    "changes": [
+      "Keep tab panel IDs in the DOM while lazy content suspends.",
+      "Wait for the responsive header before selecting its desktop/mobile navigation.",
+      "Measure click-to-visible-DOM with MutationObserver, matching toBeVisible rather than adding three animation frames.",
+      "A delayed-content browser control verifies the timer does not resolve before the destination is visible."
+    ],
+    "hardwarePaintGuarantee": false
+  }
+}
