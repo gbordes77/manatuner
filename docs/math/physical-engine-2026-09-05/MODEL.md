@@ -1,4 +1,4 @@
-> Extension ultérieure : fastlands, slowlands, checklands et battle lands sont maintenant évalués sur le champ de bataille effectif ; voir ../completion-2026-09-05/REPORT.md.
+> Contrat vivant, harmonisé lors du lot A3. Les preuves historiques restent dans [le rapport de clôture](../completion-2026-09-05/REPORT.md).
 
 # Périmètre du moteur physique
 
@@ -9,7 +9,7 @@ Ce moteur calcule la probabilité que les cartes tirées admettent **au moins un
 - Bibliothèque finie uniforme sans remise, sans mulligan ; main initiale de sept ; mode play/draw explicite.
 - Tours 1 à 10, bibliothèque jusqu'à 1 000 cartes. Le sort est une demande de mana extérieure au tirage, pas une carte retirée de la bibliothèque ni conditionnée comme déjà en main.
 - Coûts génériques, W/U/B/R/G/C, hybrides de deux couleurs, X fixé explicitement (2 dans l'interface). Les autres symboles produisent un statut non pris en charge.
-- Terrains physiques avec leurs couleurs communes et leur entrée engagée/dégagée. Le chemin exact admet actuellement les catégories basic, dual et triome, sans MDFC, fetch ni restriction ; une classification correcte en amont reste une hypothèse.
+- Terrains physiques avec leurs couleurs communes et leur entrée engagée/dégagée. Le chemin exact admet actuellement les catégories basic, dual, triome, fast, slow, check et battle, sous leurs contrats de métadonnées, sans MDFC, fetch ni restriction supplémentaire ; une classification correcte en amont reste une hypothèse.
 - Producteurs dont le contrat d'activation a été vérifié : Llanowar Elves, Elvish Mystic, Fyndhorn Elves, Birds of Paradise et Sol Ring. Les coûts, sorties, délais et restrictions sont contrôlés ; le nom seul ne suffit pas. Leurs textes ont été consultés via l'API Scryfall et sont conservés dans card-sources.json.
 - Aucun retrait adverse, aucun autre effet de carte, aucune règle de remplacement, aucun effet de pioche supplémentaire ou de vie. Une probabilité de retrait non nulle n'est pas prise en charge dans les lignes exactes de l'interface.
 - Une seule pose de terrain par tour ; les sources utilisées sont engagées ; le mana dépensé disparaît ; le mana flottant restant peut payer une autre action pendant le même tour, mais ne passe pas au suivant ; les dorks ont leur délai et les terrains engagés se dégagent au tour suivant.
@@ -37,3 +37,9 @@ Des nombres agrégés de sources ne permettent pas de reconstruire les recouvrem
 Les graphiques secondaires conservent des estimations explicitement nommées. Les scores de santé, de stabilité et de mulligan sont des heuristiques. Le simulateur avancé n'est pas un moteur complet de parties Commander ni un optimiseur du taux de victoire. L'ancien moteur analytique reste utilisé par certains chemins d'estimation ; ses résultats ne deviennent pas exacts du seul fait de l'existence de ce nouveau module.
 
 La certification de toutes les interactions MTG n'est donc pas acquise. Le changement remplace les valeurs trompeuses de l'onglet principal par un calcul à domaine explicite, avec refus des cas non représentés.
+
+## Contrats des estimations historiques et du score
+
+Les API de `acceleratedAnalyticEngine` exposent maintenant `method` et `assumptions` sur les résultats p1/p2. Leurs agrégats et classements restent heuristiques, même lorsqu’un sous-calcul utilise le moteur physique. `producerOnlineProbByTurn`, API scalaire historique, reste une estimation à usage interne du classement ; elle ne certifie pas une activation. `calculateTempoAwareProbability` et `compareTempoImpact` conservent la méthode et le motif du refus physique jusqu’à la sérialisation des résumés. Les valeurs de scénarios égales en mode physique désignent le même potentiel, pas trois politiques optimisées.
+
+Le score composite de recommandations a deux états : complet (nombre heuristique sur 100) ou indisponible (risque inconnu, aucun nombre ni badge de qualité). Zéro risque mesuré est une entrée complète. Les indicateurs disponibles et les recommandations restent consultables avec un avertissement de données incomplètes. Le score est dérivé à l’affichage ; aucun nouveau score numérique n’est enregistré lorsque le risque manque. Les sauvegardes historiques sans version de modèle ne deviennent pas des analyses exactes.

@@ -317,10 +317,13 @@ export interface AccelContext {
  * Basic castability result (P1/P2)
  */
 export interface CastabilityResult {
-  /** P1: Probability of having required color sources */
+  method: 'exact' | 'heuristic'
+  /** Declares the event; legacy and physical p1 have different conditioning. */
+  assumptions: string
+  /** Physical: conditional on generic payment; legacy: conditional on perfect land drops. */
   p1: number
 
-  /** P2: P1 weighted by probability of having enough lands */
+  /** Physical: payment potential; legacy: aggregate estimate. */
   p2: number
 }
 
@@ -328,6 +331,9 @@ export interface CastabilityResult {
  * Extended result with acceleration data
  */
 export interface AcceleratedCastabilityResult {
+  /** Impact and accelerator ranking combine legacy estimates. */
+  method: 'heuristic'
+  assumptions: string
   /** Base castability (lands only) */
   base: CastabilityResult
 

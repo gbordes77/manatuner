@@ -105,6 +105,7 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
   }
 
   const getHealthScore = () => {
+    if (analysis.atRiskSpells == null) return null
     let score = 100
 
     // Consistency penalty
@@ -145,15 +146,19 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
         <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md={4}>
             <Box textAlign="center">
-              <Typography variant="h2" fontWeight="700" color={getScoreColor(healthScore)}>
-                {healthScore}
+              <Typography
+                variant="h2"
+                fontWeight="700"
+                color={healthScore === null ? 'text.secondary' : getScoreColor(healthScore)}
+              >
+                {healthScore === null ? 'Unavailable' : healthScore}
               </Typography>
               <Typography variant="h6" color="text.secondary">
                 Heuristic Manabase Score
               </Typography>
               <Chip
-                label={getScoreLabel(healthScore)}
-                className={`mtg-chip ${getScoreLabel(healthScore).toLowerCase()}`}
+                label={healthScore === null ? 'Incomplete data' : getScoreLabel(healthScore)}
+                className={`mtg-chip ${healthScore === null ? '' : getScoreLabel(healthScore).toLowerCase()}`}
                 sx={{ mt: 1 }}
               />
             </Box>
@@ -214,6 +219,13 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
           </Grid>
         </Grid>
       </Paper>
+
+      {healthScore === null && (
+        <Alert severity="info" sx={{ mb: 3 }}>
+          Spell risk is unavailable. The composite heuristic score cannot be calculated;
+          recommendations below only describe the available indicators.
+        </Alert>
+      )}
 
       {/* Recommendations by Priority */}
       <Grid container spacing={3}>

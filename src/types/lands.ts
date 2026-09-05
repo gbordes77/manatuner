@@ -316,7 +316,9 @@ export interface TempoCalculationParams {
  */
 export interface TempoAwareProbability {
   /** Exact for represented legal sequences, otherwise an explicitly heuristic estimate. */
-  method?: 'exact' | 'heuristic'
+  method: 'exact' | 'heuristic'
+  /** Physical refusal, when this API returns a legacy estimate. */
+  reason?: string
   /** Raw probability (ignoring tempo) */
   raw: number
 

@@ -399,6 +399,7 @@ export function calculateTempoAwareProbability(
     effectiveSourcesByTurn,
     tempoImpact: raw - tempoAdjusted,
     method: 'heuristic',
+    reason: exact.reason,
   }
 }
 
@@ -628,6 +629,8 @@ export function compareTempoImpact(
 ): Record<
   LandManaColor,
   {
+    method: TempoAwareProbability['method']
+    reason?: string
     rawSources: number
     effectiveSources: number
     rawProbability: number
@@ -657,6 +660,8 @@ export function compareTempoImpact(
     const effectiveSources = tempoResult.effectiveSourcesByTurn[targetTurn - 1] || 0
 
     results[color] = {
+      method: tempoResult.method,
+      reason: tempoResult.reason,
       rawSources,
       effectiveSources: Math.round(effectiveSources * 10) / 10,
       rawProbability: Math.round(tempoResult.raw * 1000) / 1000,

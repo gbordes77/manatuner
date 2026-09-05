@@ -35,6 +35,12 @@ import { Hypergeom, cardsSeenByTurn, hypergeom } from './hypergeom'
 /** Maximum producers to consider for K-disjoint (performance cap) */
 const MAX_PRODUCER_CANDIDATES = 18
 
+const legacyMethod = {
+  method: 'heuristic' as const,
+  assumptions:
+    'Legacy aggregate source/producer estimate; p1 conditions on perfect land drops. Not an exact joint payment probability.',
+}
+
 /** Default rock removal factor (rocks are ~30% as likely to be removed as creatures) */
 const DEFAULT_ROCK_REMOVAL_FACTOR = 0.3
 
@@ -268,7 +274,7 @@ function computeBaseCastability(
   ctx: AccelContext
 ): CastabilityResult {
   // One land drop per turn; extra lands drawn cannot pay a spell early.
-  if (spell.mv > turn && !deck.unconditionalMultiMana) return { p1: 0, p2: 0 }
+  if (spell.mv > turn && !deck.unconditionalMultiMana) return { ...legacyMethod, p1: 0, p2: 0 }
   const cardsSeen = cardsSeenByTurn(turn, ctx.playDraw)
   const maxLands = Math.min(deck.totalLands, cardsSeen)
 
@@ -302,7 +308,7 @@ function computeBaseCastability(
 
   const p1 = pEnoughLands > 0 ? pCastGivenEnoughMass / pEnoughLands : 0
 
-  return { p1: clamp01(p1), p2: clamp01(p2) }
+  return { ...legacyMethod, p1: clamp01(p1), p2: clamp01(p2) }
 }
 
 /**
@@ -493,7 +499,7 @@ function castabilityGivenOnlineSet(
   const extraMana = baseMana + bonusMana
   const landsNeeded = Math.max(0, spell.mv - extraMana)
 
-  if (landsNeeded > turn) return { p1: 0, p2: 0 }
+  if (landsNeeded > turn) return { ...legacyMethod, p1: 0, p2: 0 }
 
   const cardsSeen = cardsSeenByTurn(turn, ctx.playDraw)
 
@@ -552,7 +558,7 @@ function castabilityGivenOnlineSet(
     p2 += pL * pColors * pMana
   }
 
-  return { p1: clamp01(p1), p2: clamp01(p2) }
+  return { ...legacyMethod, p1: clamp01(p1), p2: clamp01(p2) }
 }
 
 // =============================================================================
@@ -585,7 +591,14 @@ export function computeAcceleratedCastabilityAtTurn(
       kMax === 0 ? [] : producers,
       ctx.playDraw
     )
-    if (exact.status === 'exact') return { p1: exact.p1, p2: exact.p2 }
+    if (exact.status === 'exact')
+      return {
+        method: 'exact',
+        assumptions:
+          'Payment potential with foresight, external target, no mulligan; p1 conditional on generic payment.',
+        p1: exact.p1,
+        p2: exact.p2,
+      }
   }
   // Filter to producers with copies and non-zero online probability
   // ENHANCERs are included: their base netMana > 0, and their synergy bonus
@@ -745,6 +758,7 @@ export function computeAcceleratedCastabilityAtTurn(
   }
 
   return {
+    ...legacyMethod,
     p1: clamp01(outP1),
     p2: clamp01(outP2),
   }
@@ -830,6 +844,7 @@ export function computeAcceleratedCastability(
     .sort((a, b) => b.score - a.score)
 
   return {
+    ...legacyMethod,
     base,
     withAcceleration,
     accelerationImpact: withAcceleration.p2 - base.p2,

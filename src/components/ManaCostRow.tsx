@@ -1035,6 +1035,9 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                 )
               ) : acceleratedResult ? (
                 <Box>
+                  <Typography variant="caption">
+                    Legacy heuristic estimate — not exact payment potential.
+                  </Typography>
                   {showAcceleration &&
                   producers &&
                   producers.length > 0 &&

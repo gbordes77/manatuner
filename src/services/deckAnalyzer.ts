@@ -152,6 +152,9 @@ export interface TempoSpellAnalysis {
 
 // Tempo impact summary per color
 export interface TempoImpactSummary {
+  /** Missing in older saved analyses: never infer exactness. */
+  method?: 'exact' | 'heuristic'
+  reason?: string
   color: LandManaColor
   rawSources: number
   effectiveSources: number
