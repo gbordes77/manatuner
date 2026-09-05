@@ -20,7 +20,6 @@
     "bundle": "PASS",
     "productionVulnerabilities": 0
   },
-  "linux": "pending",
   "deployment": {
     "id": "dpl_J5WfdpDfNu77V5WLuxUt29qEESwP",
     "state": "READY",
@@ -32,5 +31,84 @@
   "linuxCI": {
     "status": "PASS",
     "url": "https://github.com/gbordes77/manatuner/actions/runs/33991826178"
+  },
+  "linuxBrowsers": {
+    "status": "PASS",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33991825622",
+    "commit": "3d2730ddcebf6ffe33a0f22b82e4b480975e76a0",
+    "totals": {
+      "expected": 438,
+      "skipped": 6,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "projects": {
+      "chromium": {
+        "stats": {
+          "startTime": "2026-09-05T21:02:50.160Z",
+          "duration": 120302.59599999999,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "a84f84882b79681ecc9dbd809b958c15b33b7313f7122a66a50d515cb8cb4432"
+      },
+      "firefox": {
+        "stats": {
+          "startTime": "2026-09-05T21:03:04.538Z",
+          "duration": 146745.511,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "484d28a122411700da3cc105a7fcee46cd4c8931c420de8013ba070a1141457c"
+      },
+      "webkit": {
+        "stats": {
+          "startTime": "2026-09-05T21:02:51.966Z",
+          "duration": 274648.615,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "db70459346f8f5ef4a4afa34a1e942ff13ab289548cdde2c655d906b2683aeb2"
+      },
+      "Mobile Chrome": {
+        "stats": {
+          "startTime": "2026-09-05T21:05:57.745Z",
+          "duration": 161955.874,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "27617d5f1abe256cf3e57446d5bf099c6906f05404f3f62748fc0d4b7fadc388"
+      },
+      "Mobile Safari": {
+        "stats": {
+          "startTime": "2026-09-05T21:06:33.199Z",
+          "duration": 314693.166,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "d7b0b0e872a0cead68a0fd63898c3c41d49df93d5fdaa21ef4756503eee3c059"
+      },
+      "iPad": {
+        "stats": {
+          "startTime": "2026-09-05T21:08:44.472Z",
+          "duration": 293454.961,
+          "expected": 73,
+          "skipped": 1,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "4d054588bedc15257ccc339d8e55ffaf38bd7cb78918b8f133f664577ee8467d"
+      }
+    }
   }
 }

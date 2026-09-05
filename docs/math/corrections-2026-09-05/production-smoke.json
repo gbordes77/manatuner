@@ -1,0 +1,20 @@
+{
+  "at": "2026-09-05T21:16:05.622Z",
+  "target": "https://www.manatuner.app",
+  "scryfall": "fixed repository fixtures",
+  "probabilityReference": 0.3994996257446656,
+  "results": [
+    {
+      "land": "Riverglide Pathway",
+      "expected": "Potential castability: 40%",
+      "status": "PASS",
+      "httpStatus": 200
+    },
+    {
+      "land": "Scalding Tarn",
+      "expected": "Calculation unavailable",
+      "status": "PASS",
+      "httpStatus": 200
+    }
+  ]
+}

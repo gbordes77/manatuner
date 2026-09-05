@@ -1,4 +1,10 @@
 {
+  "testedCommit": "fcf566acd5069413280eeb363ec25ce126518163",
+  "base": "ac790fda71426dae2b135802f637d0dcb105af43",
+  "lots": {
+    "A": "../corrections-a-2026-09-05/validation.json",
+    "B2": "../pathways-2026-09-05/validation.json"
+  },
   "local": {
     "unitPassed": 621,
     "unitSkipped": 2,
@@ -10,19 +16,16 @@
     "bundle": "PASS",
     "productionVulnerabilities": 0
   },
-  "oracleCases": 6,
-  "oracleTolerance": 1e-12,
+  "linuxCI": {
+    "status": "PASS",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/33992168500"
+  },
   "deployment": {
     "id": "dpl_27sX3V9r3YcAE7muGqhSCojfXZ67",
     "state": "READY",
     "commit": "fcf566acd5069413280eeb363ec25ce126518163",
     "httpStatus": 200,
     "url": "https://www.manatuner.app"
-  },
-  "testedCommit": "fcf566acd5069413280eeb363ec25ce126518163",
-  "linuxCI": {
-    "status": "PASS",
-    "url": "https://github.com/gbordes77/manatuner/actions/runs/33992168500"
   },
   "sha256": {
     "src/services/castability/physicalManaEngine.ts": "c55c8cf332f22db68587419341b10b487f85ae8f24f41ebeb9cf56afb66bb2b4",
@@ -109,5 +112,18 @@
         "sha256": "04f614297dbbb376193927d18cea70d70ae9d538bd44a5bb8ee26afd50d4fc57"
       }
     }
+  },
+  "universalCertification": false,
+  "localEnvironment": {
+    "node": "25.2.0",
+    "npm": "11.6.2",
+    "application": "2.7.9",
+    "playwright": "1.63.0"
+  },
+  "productionSmoke": {
+    "status": "PASS",
+    "cases": 2,
+    "results": "production-smoke.json",
+    "commit": "fcf566acd5069413280eeb363ec25ce126518163"
   }
 }

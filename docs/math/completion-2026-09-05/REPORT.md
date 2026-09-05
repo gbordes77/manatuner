@@ -1,3 +1,5 @@
+> Suite de cette clôture : [corrections A1–A3 et extension pathways](../corrections-2026-09-05/REPORT.md). Les 16 sections ci-dessous conservent les résultats historiques de leur propre version.
+
 # 1 Verdict global
 
 **OUI AVEC LIMITATIONS pour le domaine mathématique décrit ; aucune certification universelle.** Les corrections sont publiées sur Git (`main`) et Vercel. Le code de cette clôture correspond à `acfb37c6c551a5cc2cc370ecaacd2549a090f01b`, déployé en production sous `dpl_6uBQYYvgN7AtNwfgWCVSkuBySY6g`, READY, alias www.manatuner.app, HTTP 200 vérifié. La publication initiale demandée a précédé les corrections complémentaires ; les deux rapports historiques et les campagnes échouées restent conservés.
