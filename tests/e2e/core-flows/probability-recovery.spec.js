@@ -126,8 +126,19 @@ test('Post-board estimates use the incoming land and restore main-deck sources',
   await expect(pathRow.getByText('Mana availability estimate: 89%', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Post-board', exact: true }).click()
   await page.getByText('Post-Board Analysis', { exact: true }).click()
+  await expect(
+    page.locator('.MuiCollapse-entered').filter({
+      has: page.getByRole('button', { name: 'Increase maindeck Oath of Nissa', exact: true }),
+    })
+  ).toHaveCount(1)
   await page.getByRole('button', { name: 'Increase sideboard Plains', exact: true }).click()
-  await page.getByRole('button', { name: 'Increase maindeck Oath of Nissa', exact: true }).click()
+  const removeOath = page.getByRole('button', {
+    name: 'Increase maindeck Oath of Nissa',
+    exact: true,
+  })
+  await removeOath.scrollIntoViewIfNeeded()
+  await expect(removeOath).toBeInViewport({ ratio: 1 })
+  await removeOath.click()
   await expect(page.getByText('Balanced: 1 in / 1 out', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: /Apply/ }).click()
   // Independent source-count marginal: 1 - C(29,7)/C(40,7).
