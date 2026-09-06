@@ -282,7 +282,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
         Math.max(1, cost.mv),
         showAcceleration ? (producers ?? []) : [],
         accelContext?.playDraw ?? 'PLAY',
-        50_000
+        1_000_000
       )
     }, [
       probabilityModel,

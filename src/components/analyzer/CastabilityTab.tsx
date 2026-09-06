@@ -46,6 +46,14 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   // P1-8: board scope — main only vs post-board (swaps)
   const [showPolicy, setShowPolicy] = useState(false)
   const [probabilityModel, setProbabilityModel] = useState<'estimate' | 'exact'>('estimate')
+  // Goldfish is a calculation assumption, not a mutation of the user's estimate settings.
+  const probabilityContext = useMemo(
+    () =>
+      probabilityModel === 'exact'
+        ? { ...accelContext, removalRate: 0, defaultRockSurvival: 1 }
+        : accelContext,
+    [accelContext, probabilityModel]
+  )
   const [boardScope, setBoardScope] = useState<BoardScope>('main')
   const [activeSwaps, setActiveSwaps] = useState<SideboardSwap[]>([])
 
@@ -510,7 +518,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       <Alert severity="warning" sx={{ mb: 2 }}>
         {probabilityModel === 'estimate'
           ? 'Source-count estimates approximate mana availability with the selected ramp and removal settings. They do not model every legal payment sequence or source overlap exactly. Perfect land drops conditions on having enough lands. Neither number includes mulligans or drawing the target spell.'
-          : 'Exact potential within the supported goldfish model: at least one legal mana sequence. Choices may use the complete drawn history, so this is an upper bound for play without foresight. No mulligans or chance of drawing the target spell. Ramp requires removal rate 0; unsupported cases show no percentage.'}
+          : 'Exact potential within the supported goldfish model: at least one legal mana sequence. Choices may use the complete drawn history, so this is an upper bound for play without foresight. No mulligans or chance of drawing the target spell. This mode applies 0% removal and 100% ramp survival, regardless of the estimate settings above. Unsupported cards or calculations exceeding the budget still show no percentage.'}
       </Alert>
       {/* Ramp detection banner */}
       {producersInDeck.length > 0 && (
@@ -642,7 +650,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
               // listSize is main (or post-board), never main+side.
               totalCards={librarySize}
               producers={producersInDeck}
-              accelContext={accelContext}
+              accelContext={probabilityContext}
               showAcceleration={settings.showAcceleration && producersInDeck.length > 0}
               unconditionalMultiMana={unconditionalMultiMana}
               initialCardData={cardDataMap.get(card.name) ?? null}

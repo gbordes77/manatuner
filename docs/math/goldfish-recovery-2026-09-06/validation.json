@@ -1,0 +1,17 @@
+{
+  "unit": 695,
+  "files": 68,
+  "browser": "Chromium targeted only; no exhaustive campaign",
+  "proofs": {
+    "manatuner-goldfish-parser-red.log": "382c12b6af179cd634a0b45a45e844edeca14f7f3cc74da5f1782c96177e56c7",
+    "manatuner-goldfish-types.log": "0063f77c1b9d325fa1bde986a3f02fd2af4e2c3cac20ed021a9c863f0508d9bd",
+    "manatuner-goldfish-lint.log": "218e96414840321f9309c1eb7f8486a40fd7577d4e8c72852014bd9ee2503400",
+    "manatuner-goldfish-tapland-red.log": "afc83b7849fb526a1c35f131df38d15810f9021113d31ea17bd9ce33e563a70e",
+    "manatuner-goldfish-four-flows.log": "3bd1da58179b58fe86f0547ca43c149b41bc79f42ede78566e1311b616e1a984",
+    "manatuner-goldfish-play-draw.log": "c9d1b7ec00bffc63b8fd4de754e0b42cb86261882d37570f0541d5390b21660c",
+    "manatuner-goldfish-red.log": "fd59a4de3c5e29ea125672d248803c4f887d4ce3402e4ba07b880637e58731aa",
+    "manatuner-goldfish-unit.log": "6b9bd3e8f6b2f468be1a01f02ecb054a9e4a0471a8153ab5c75d8757ffa21512",
+    "manatuner-goldfish-budget.log": "568722bc2b56646ff83e2ea5da47bf05743fadcf6c682b86e181aa59537f7e85",
+    "manatuner-goldfish-build.log": "c607dae73e00fc6bb54f918a3f88bf264f8f4703a95e7aaf323964a19e720a13"
+  }
+}

@@ -95,6 +95,33 @@ function pay(pool: number[], cost: Cost): number[][] {
   return [...out.values()]
 }
 
+// Admit only a complete, plain tapland contract, never arbitrary utility lands.
+function isPlainTapland(land: LandMetadata): boolean {
+  const lines = land.scryfallData?.oracleText?.split('\n') ?? []
+  if (
+    land.category !== 'utility' ||
+    land.etbBehavior.type !== 'always_tapped' ||
+    land.producesAny ||
+    (land.producesAmount ?? 1) !== 1 ||
+    lines.length !== 2
+  )
+    return false
+  if (
+    ![
+      'This land enters tapped.',
+      `${land.name} enters the battlefield tapped.`,
+      `${land.name} enters tapped.`,
+    ].includes(lines[0])
+  )
+    return false
+  if (!/^\{T\}: Add \{[WUBRGC]\}(?: or \{[WUBRGC]\})?\.$/.test(lines[1])) return false
+  const produced = [...lines[1].matchAll(/\{([WUBRGC])\}/g)].map((m) => m[1])
+  return (
+    produced.length === land.produces.length &&
+    produced.every((c) => land.produces.includes(c as (typeof land.produces)[number]))
+  )
+}
+
 function landSource(land: LandMetadata): Source | string {
   if (land.category === 'pathway') {
     const faces = auditedPathwayColors(land)
@@ -113,7 +140,8 @@ function landSource(land: LandMetadata): Source | string {
   if (
     land.isFetch ||
     land.producesAnyForCreaturesOnly ||
-    !['basic', 'dual', 'triome', 'fast', 'slow', 'check', 'battle'].includes(land.category) ||
+    (!['basic', 'dual', 'triome', 'fast', 'slow', 'check', 'battle'].includes(land.category) &&
+      !isPlainTapland(land)) ||
     land.isMDFC
   )
     return `Unsupported land restriction: ${land.name}`
@@ -163,7 +191,8 @@ function landSource(land: LandMetadata): Source | string {
 function sourceModel(
   deck: DeckManaProfile,
   spell: ProducerManaCost,
-  producers: ProducerInDeck[]
+  producers: ProducerInDeck[],
+  onlineProducer?: string
 ): Source[] | string {
   const sources: Source[] = []
   if (deck.physicalLands) {
@@ -271,7 +300,7 @@ function sourceModel(
   }
   const grouped = new Map<string, Source>()
   for (const s of sources) {
-    const k = JSON.stringify({ ...s, count: 0 })
+    const k = JSON.stringify({ ...s, count: 0, name: onlineProducer ? s.name : undefined })
     const prev = grouped.get(k)
     if (prev) prev.count += s.count
     else grouped.set(k, { ...s })
@@ -325,7 +354,7 @@ function computePhysicalManaProbability(
     seen > deck.deckSize
   )
     return { status: 'unsupported', reason: 'Invalid mana cost, population or horizon' }
-  const model = sourceModel(deck, spell, producers)
+  const model = sourceModel(deck, spell, producers, onlineProducer)
   if (typeof model === 'string') return { status: 'unsupported', reason: model }
   const sources = model,
     g = sources.length
@@ -393,7 +422,20 @@ function computePhysicalManaProbability(
     if (++work > maxWork) throw new Error('Exact state budget exceeded')
   }
 
+  const closureCache = new Map<string, { next: State[]; colored: boolean; generic: boolean }>()
   function closure(
+    initial: State[],
+    final: boolean
+  ): { next: State[]; colored: boolean; generic: boolean } {
+    const cacheKey = `${final}:${initial.map(key).sort().join(';')}`
+    const cached = closureCache.get(cacheKey)
+    if (cached) return cached
+    const resolved = expandClosure(initial, final)
+    if (closureCache.size < 5000) closureCache.set(cacheKey, resolved)
+    return resolved
+  }
+
+  function expandClosure(
     initial: State[],
     final: boolean
   ): { next: State[]; colored: boolean; generic: boolean } {
@@ -426,9 +468,12 @@ function computePhysicalManaProbability(
         end.landPlayed = false
         endStates.set(key(end), end)
       }
+      // Floating mana is discarded at the next untap. Without a producer in hand,
+      // tapping before the target turn cannot change any reachable next-turn state.
+      const needsMana = final || sources.some((source, i) => !source.land && s.hand[i] > 0)
       for (let i = 0; i < g; i++) {
         const source = sources[i]
-        if (s.ready[i] > 0) {
+        if (needsMana && s.ready[i] > 0) {
           for (let c = 0; c < 7; c++)
             if (source.mask & (1 << c)) {
               const next = clone(s)

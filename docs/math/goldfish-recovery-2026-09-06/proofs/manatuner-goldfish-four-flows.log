@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+(node:13958) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/e2e/core-flows/probability-recovery.spec.js:6:5 › Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish (2.4s)
+  ✓  2 tests/e2e/core-flows/probability-recovery.spec.js:87:5 › Review: result tabs, JSON export, local history and loading another saved deck (1.4s)
+  ✓  3 tests/e2e/core-flows/probability-recovery.spec.js:142:5 › Post-board estimates use the incoming land and restore main-deck sources (1.7s)
+  ✓  4 tests/e2e/core-flows/probability-recovery.spec.js:174:5 › Transform spell front-face cost reaches the table and saved analysis (585ms)
+
+  4 passed (6.6s)

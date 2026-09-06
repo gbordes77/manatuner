@@ -3,7 +3,7 @@ import limitedCards from '../../fixtures/probability-recovery/limited.json' with
 import wedding from '../../fixtures/probability-recovery/wedding-announcement.json' with { type: 'json' }
 const cards = [...limitedCards, wedding]
 
-test('Selesnya Limited: numeric estimates, play/draw, ramp and explicit exact-mode refusal', async ({
+test('Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish', async ({
   page,
 }) => {
   await analyzeLimited(page)
@@ -32,9 +32,21 @@ test('Selesnya Limited: numeric estimates, play/draw, ramp and explicit exact-mo
     page.getByText('Exact sequencing currently supports goldfish only (removal rate 0)', {
       exact: true,
     })
-  ).toHaveCount(17)
+  ).toHaveCount(0)
+  // Exact T1 on the draw: only the 8 untapped Plains can pay W; gates enter tapped.
+  // Independent oracle: 1 - C(32,8)/C(40,8) = 86.322940%.
+  await expect(pathRow.getByText('Potential castability: 86%', { exact: true })).toBeVisible()
+  await expect(page.getByText(/^Potential castability: \d+%$/)).toHaveCount(17)
+  await page.getByRole('button', { name: 'On the play', exact: true }).click()
+  // Independent T1 play oracle: 1 - C(32,7)/C(40,7) = 81.946281%.
+  await expect(pathRow.getByText('Potential castability: 82%', { exact: true })).toBeVisible()
+  await expect(page.getByText(/^Potential castability: \d+%$/)).toHaveCount(17)
+  await page.getByRole('button', { name: 'On the draw', exact: true }).click()
+  await expect(page.getByText('Calculation unavailable', { exact: true })).toHaveCount(0)
   await page.getByRole('button', { name: 'Mana estimates', exact: true }).click()
   await expect(estimates).toHaveCount(17)
+  await expect(pathRow.getByText('Mana availability estimate: 92%', { exact: true })).toBeVisible()
+  await expect(page.getByText('15% removal', { exact: true })).toBeVisible()
 })
 
 async function analyzeLimited(page, sideboard = false, deckList = null) {

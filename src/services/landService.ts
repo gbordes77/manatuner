@@ -121,7 +121,7 @@ const ETB_PATTERNS: Array<{
 
   // Always tapped (simple pattern): "~ enters the battlefield tapped."
   {
-    pattern: /enters the battlefield tapped\.$/im,
+    pattern: /enters (?:the battlefield )?tapped\.$/im,
     getCondition: () => ({ type: 'pay_life', amount: 0 }), // Placeholder, will be overridden
     confidence: 100,
   },
@@ -533,7 +533,7 @@ class LandService implements ILandService {
   private parseETBBehavior(oracleText: string): ETBParseResult {
     // Check for "enters the battlefield tapped" without conditions
     if (
-      /enters the battlefield tapped\.$/im.test(oracleText) &&
+      /enters (?:the battlefield )?tapped\.$/im.test(oracleText) &&
       !/unless/i.test(oracleText) &&
       !/you may pay/i.test(oracleText)
     ) {

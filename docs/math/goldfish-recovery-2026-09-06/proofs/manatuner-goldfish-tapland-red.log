@@ -1,0 +1,34 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stdout | tests/math-audit/goldfish-taplands.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ tests/math-audit/goldfish-taplands.test.ts (5 tests | 1 failed) 4ms
+   × plain Guildgates enter tapped: independent T1 and T2 hypergeometric oracles 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/goldfish-taplands.test.ts > plain Guildgates enter tapped: independent T1 and T2 hypergeometric oracles
+AssertionError: expected 'unsupported' to be 'exact' // Object.is equality
+
+Expected: "exact"
+Received: "unsupported"
+
+ ❯ tests/math-audit/goldfish-taplands.test.ts:17:21
+     15|   const lands = [...Array(8).fill(landService.getLandSync('Plains')!),…
+     16|   const t1 = result(lands, 1)
+     17|   expect(t1.status).toBe('exact')
+       |                     ^
+     18|   if (t1.status === 'exact') expect(t1.p2).toBeCloseTo(exactTail(40, 8…
+     19|   const t2 = result(Array(10).fill(gate), 2)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  07:33:57
+   Duration  310ms (transform 71ms, setup 26ms, import 81ms, tests 4ms, environment 134ms)
+

@@ -1,0 +1,41 @@
+
+Running 1 test using 1 worker
+
+(node:12303) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/e2e/core-flows/probability-recovery.spec.js:6:5 › Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish (6.3s)
+
+
+  1) tests/e2e/core-flows/probability-recovery.spec.js:6:5 › Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish 
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  getByText('Exact sequencing currently supports goldfish only (removal rate 0)', { exact: true })
+    Expected: 0
+    Received: 17
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" getByText('Exact sequencing currently supports goldfish only (removal rate 0)', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Exact sequencing currently supports goldfish only (removal rate 0)', { exact: true })
+        14 × locator resolved to 17 elements
+           - unexpected value "17"
+
+
+      31 |   await expect(
+      32 |     page.getByText('Exact sequencing currently supports goldfish only (removal rate 0)', { exact: true })
+    > 33 |   ).toHaveCount(0)
+         |     ^
+      34 |   // Exact T1 on the draw: only the 8 untapped Plains can pay W; gates enter tapped.
+      35 |   // Independent oracle: 1 - C(32,8)/C(40,8) = 86.322681%.
+      36 |   await expect(pathRow.getByText('Potential castability: 86%', { exact: true })).toBeVisible()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/probability-recovery.spec.js:33:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../tmp/manatuner-goldfish-test-results/core-flows-probability-rec-10754--operational-exact-goldfish/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../tmp/manatuner-goldfish-test-results/core-flows-probability-rec-10754--operational-exact-goldfish/error-context.md
+
+  1 failed
+    tests/e2e/core-flows/probability-recovery.spec.js:6:5 › Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish 

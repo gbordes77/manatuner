@@ -266,3 +266,25 @@ it('cached probabilities remain independent of caller mutation and budget change
   const draw = probability(deck, cost, 1, [], 'DRAW')
   if (draw.status === 'exact') expect(draw.p2).toBeCloseTo(0.8, 12)
 })
+
+it('grouping equivalent elves preserves physical copies and named online queries', () => {
+  const deck = profile(10, [land('Forest')])
+  const producers = ['Llanowar Elves', 'Elvish Mystic'].map((name) => ({
+    def: getProducerFromSeed(name)!,
+    copies: 1,
+  }))
+  const spell = { mv: 2, generic: 2, pips: {} }
+  // By T2: Forest plus either elf in the opener. Enumerate distinct physical cards.
+  const hands = enumerateHands(
+    Array.from({ length: 10 }, (_, i) => i),
+    7
+  )
+  const expected =
+    hands.filter((h) => h.includes(0) && (h.includes(1) || h.includes(2))).length / hands.length
+  const total = probability(deck, spell, 2, producers)
+  expect(total.status).toBe('exact')
+  if (total.status === 'exact') expect(total.p2).toBeCloseTo(expected, 12)
+  const named = probability(deck, spell, 2, producers, 'PLAY', 250_000, 'Elvish Mystic')
+  expect(named.status).toBe('exact')
+  if (named.status === 'exact') expect(named.p2).toBeCloseTo((7 * 6) / (10 * 9), 12)
+})
