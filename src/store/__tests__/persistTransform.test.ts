@@ -1,3 +1,4 @@
+import analyzerReducer, { setDeckList, setAnalysisResult } from '../slices/analyzerSlice'
 /**
  * T01 — redux-persist transform + migration v2 non-regression tests.
  * analysisResult must never land in the serialized blob; rehydrate forces null.
@@ -32,7 +33,8 @@ describe('T01 analyzerPersistTransform', () => {
     expect(out.deckList).toBe(fullState.deckList)
     expect(out.deckName).toBe('Burn')
     expect(out.activeTab).toBe(2)
-    expect(out.isDeckMinimized).toBe(true)
+    // No saved result exists to accompany a collapsed editor after reload.
+    expect(out.isDeckMinimized).toBe(false)
   })
 
   it('inbound (rehydrate) forces analysisResult null even if blob has one', () => {
@@ -81,4 +83,24 @@ describe('T01 analyzerPersistTransform', () => {
     expect(migrations[2]!(undefined as any)).toBeUndefined()
     expect(migrations[2]!(null as any)).toBeNull()
   })
+})
+
+it.each(['24 Forest', ''])(
+  'rehydrates legacy minimized state into an editable deck (%s)',
+  (deckList) => {
+    const saved = { deckList, deckName: 'My saved deck', activeTab: 0, isDeckMinimized: true }
+    const restored = analyzerPersistTransform.out(saved as any, 'analyzer', saved as any)
+    expect(restored.analysisResult).toBeNull()
+    expect(restored.isDeckMinimized).toBe(false)
+    expect(restored.deckList).toBe(deckList)
+    expect(restored.deckName).toBe('My saved deck')
+  }
+)
+
+it('clearing an analysis reopens its editor without deleting the deck', () => {
+  const ready = analyzerReducer(undefined, setDeckList('60 Forest'))
+  const collapsed = { ...ready, isDeckMinimized: true }
+  const recovered = analyzerReducer(collapsed, setAnalysisResult(null))
+  expect(recovered.isDeckMinimized).toBe(false)
+  expect(recovered.deckList).toBe('60 Forest')
 })

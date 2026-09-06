@@ -46,9 +46,7 @@ const analyzerSlice = createSlice({
     setAnalysisResult: (state, action: PayloadAction<AnalysisResult | null>) => {
       state.analysisResult = action.payload
       state.isAnalyzing = false
-      if (action.payload) {
-        state.isDeckMinimized = true
-      }
+      state.isDeckMinimized = Boolean(action.payload)
     },
 
     setIsAnalyzing: (state, action: PayloadAction<boolean>) => {

@@ -129,7 +129,7 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
           Your Deck {analysisResult && isDeckMinimized && '(Click to expand)'}
         </Typography>
 
-        {!isDeckMinimized && (
+        {(!isDeckMinimized || !analysisResult) && (
           <Box sx={{ mb: 3 }}>
             <TextField
               fullWidth

@@ -26,6 +26,8 @@ const analyzerPersistTransform = createTransform(
     const { snackbar: _s, isAnalyzing: _a, analysisResult: _r, ...rest } = inbound
     return {
       ...rest,
+      // A persisted result is discarded: its collapsed editor state must be too.
+      isDeckMinimized: false,
       isAnalyzing: false,
       analysisResult: null,
       snackbar: { open: false, message: '', severity: 'success' as const },
@@ -67,7 +69,8 @@ const analyzerPersistTransform = createTransform(
       deckList: data.deckList,
       deckName: data.deckName,
       activeTab: data.activeTab,
-      isDeckMinimized: data.isDeckMinimized,
+      // Also repairs already-saved v2 sessions without deleting the deck.
+      isDeckMinimized: false,
       isAnalyzing: false,
       analysisResult: null,
       snackbar: { open: false, message: '', severity: 'success' as const },
