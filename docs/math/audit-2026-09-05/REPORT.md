@@ -1,3 +1,5 @@
+> **Actualisation — 6 septembre 2026 :** la régression des probabilités aux réglages par défaut a été reproduite et réparée, avec les défauts du formulaire et des parcours voisins. Lire [la revue complète, ses distinctions de modèles et ses limites](../probability-recovery-2026-09-06/REPORT.md) et [les preuves de validation/publication](../probability-recovery-2026-09-06/validation.json). Les verdicts et chiffres ci-dessous restent historiques ; ils ne décrivent pas le HEAD actuel.
+
 > Mise à jour : voir [la vague de corrections après publication](../completion-2026-09-05/REPORT.md). Ce rapport conserve les résultats historiques de sa propre vague.
 
 # AUDIT MATHÉMATIQUE MTG

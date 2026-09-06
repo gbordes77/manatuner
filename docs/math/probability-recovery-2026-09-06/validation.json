@@ -1,0 +1,348 @@
+{
+  "codeSha": "b15d74075b346b34a0088493e46c74074b3da7ec",
+  "baselineBeforeSeptember5": "b87579a46b936e2b3192c9a5f1ceca3de97c4f50",
+  "productionReproducedSha": "2250f1231e8a1dea6d34aac6d3f1ef5aeb235901",
+  "unit": {
+    "passed": 688,
+    "files": 67,
+    "skipped": 0
+  },
+  "localBrowser": {
+    "passed": 12,
+    "failed": 0,
+    "retried": 0,
+    "projects": ["chromium", "webkit"]
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "types": "PASS",
+  "build": "PASS",
+  "bundle": "PASS",
+  "audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "linux": {
+    "run": 34013469156,
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/34013469156",
+    "status": "success",
+    "headSha": "b15d74075b346b34a0088493e46c74074b3da7ec",
+    "passed": 486,
+    "skipped": 0,
+    "failed": 0,
+    "flaky": 0,
+    "retried": 0,
+    "reports": [
+      {
+        "artifact": "browser-0",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:14:57.538Z",
+          "duration": 141685.101,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "d13eb7e400e20abd066b21810a01ba155540486381d49c0860f0c2703adc2100",
+        "compressedSha256": "61b4dbe39da9e562a9b3d2275469e8e40c9b720b2ed5f7e61361e6c46d6bc6b7"
+      },
+      {
+        "artifact": "browser-1",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:14:50.256Z",
+          "duration": 184730.37,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "7d7964f22b984bf4882334936b93d9caa8a1408104bbf3dad6c29bf0747af175",
+        "compressedSha256": "ac40047e396da1b95428e8072e750a22b0f4461a58e9ec5ce5c3d3d7aa1566e6"
+      },
+      {
+        "artifact": "browser-2",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:15:09.925Z",
+          "duration": 329274.09,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "e2719193926269cf38080f8000177ff81033b9297471a60f3802527040da4456",
+        "compressedSha256": "0922c58d31fda407c439a07e76c97b27fe1ff12fa09fc59c1103a44f7237058b"
+      },
+      {
+        "artifact": "browser-3",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:18:18.991Z",
+          "duration": 170827.053,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "7cd828b7afaadd5e88fb01ea2a5905090fd93842b6715234251dfd7b6d159c05",
+        "compressedSha256": "9e9221aea931657421de959cb251f2d1e2ef76b0893e8b212f6fc18adfe00135"
+      },
+      {
+        "artifact": "browser-4",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:19:24.280Z",
+          "duration": 359392.79,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "67358cae623cc722a1e58508d1f8e69787642f032a388ba015094dc81ee0bb0d",
+        "compressedSha256": "0a2dd547aeb26681d5ea2bf83cdca428e61ae94a332b0d5bde4c40ee3cc211fc"
+      },
+      {
+        "artifact": "browser-5",
+        "scenarios": 81,
+        "stats": {
+          "startTime": "2026-09-06T05:21:45.780Z",
+          "duration": 271604.124,
+          "expected": 81,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "rawSha256": "5ef6cf9e2cba87a493aac441a21987227d32c55aa6cd7ec7fa245762f9c47987",
+        "compressedSha256": "be6e382afa177aef2523dae400d3bf27d39eef4ac48b9eff188d75b94761e369"
+      }
+    ]
+  },
+  "production": {
+    "status": "verified",
+    "deployment": {
+      "id": "dpl_CU7GUxyaJrE3UpyoUoP9V4YUgi43",
+      "readyState": "READY",
+      "gitSource": {
+        "ref": "main",
+        "repoId": 1002485958,
+        "sha": "b15d74075b346b34a0088493e46c74074b3da7ec",
+        "type": "github",
+        "prId": null
+      },
+      "alias": [
+        "www.manatuner.app",
+        "manatuner-pro.vercel.app",
+        "manatuner.app",
+        "manatuner-pro-gbordes77s-projects.vercel.app",
+        "manatuner-pro-git-main-gbordes77s-projects.vercel.app"
+      ],
+      "url": "manatuner-b3xlzxh7h-gbordes77s-projects.vercel.app",
+      "target": "production",
+      "createdAt": 1788671643412,
+      "ready": 1788671674095
+    },
+    "browser": {
+      "startTime": "2026-09-06T05:15:09.950Z",
+      "duration": 9196.001,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "sampleDecks": [
+      {
+        "sample": "midrange",
+        "estimates": 14,
+        "unavailable": 0
+      },
+      {
+        "sample": "aggro",
+        "estimates": 11,
+        "unavailable": 0
+      },
+      {
+        "sample": "control",
+        "estimates": 12,
+        "unavailable": 0
+      },
+      {
+        "sample": "limited",
+        "estimates": 17,
+        "unavailable": 0
+      },
+      {
+        "sample": "edh",
+        "estimates": 56,
+        "unavailable": 1
+      }
+    ]
+  },
+  "proofs": {
+    "probability-unit-target.txt": "d78aadf650cf50b212dc3f4b8374de63aa30ff647fc8318e38510a4ed8385cab",
+    "production-deployment.json": "12a5b341fd30891a6e271545072183712007cc8ac71fbee9b67abf7c94e89626",
+    "local-runtime.json": "8d8da2f20a6b5d61dc521f360249b2569ff3a49ee63090a63f9e4ec8785b5b21",
+    "probability-lint-final.txt": "218e96414840321f9309c1eb7f8486a40fd7577d4e8c72852014bd9ee2503400",
+    "legacy-label-red.txt": "e47ebfe119a33c00cad826066112247b81d3675ff1f6fe1dc66a5f4cdea3d734",
+    "probability-red.txt": "9217b0e4e1d18b65d0b20c7f829f586ef8fd9a69548187702d4434dfb07976f6",
+    "ci.json": "e5863ddbf28b9e8d18f4c3cf660990e7df1318d49b88cfdb39e6c9352716c97c",
+    "probability-production-before.json.gz": "a72c1707ea7bdc3b3eb36bf8eb11dc08ad50ae355a486d9954769fa6983881fb",
+    "baseline-comparison.json": "76f7db9ac047004fb7ae99c9a9e48790655c0bfd6632f52bda10354181b8519d",
+    "baseline-limited.png": "e2496bf6abdaf6894c9dda7bfab714364ef33a26b71e35759ccb551b8e20d031",
+    "probability-budget.txt": "c15a0ad24db21f2e8584d5afa003951eaa385f6edc8c3e0f3e071f2ca7270998",
+    "linux-mobile-navigation-before.json.gz": "0040a1d4121c302d2a58d1130cf2e4a119a3e94ebde3a59f9b71c59dd626af68",
+    "producer-red.txt": "5dad3e16b8f6a6c880b45683b3e80bb10c7459702279c425d02ff2cc1d9a2e5b",
+    "history-red.json.gz": "2d1d2c302d451c64e25a9af40db4fc0d23d31aebc598e5f2b43576e464cca65c",
+    "production-samples.json": "a57d92ab8caf21f647f222d0bf89869a338502e552e961bdc1293852b8b67efc",
+    "production-browser.json.gz": "dbfb8c270c7dfe126ff52649818b80f706e49beafcb9e477225ce57bfa9c9c8f",
+    "probability-local.json.gz": "5c0b278ccf92518c07ef998c8c272ee854172ba4469e50e435957cbab9697c2c",
+    "sideboard-stability.json.gz": "cc96520782de4e4345da8c7efbc6f9a9722dda18081deca484fb6f1625d0e51c",
+    "producer-green.txt": "8ab410a954611e5e2094aefe6de69543f05a07ea55436078f6c7b1d2d4a4ca36",
+    "probability-types-final.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "probability-build-final.txt": "b67a3b28c2e741e6bf5bf5e647120996f61ae5ff2986d68baa90be0f40dad618",
+    "probability-local-final.json.gz": "8753fb24b4a855f9b410c072c4df0841489ae363a9fc51f421a549fd9173e1ae",
+    "probability-build.txt": "1f53a525737ffb8316adb15c008ea071d3704e2367df075032a104b4fc131975",
+    "front-face-red.txt": "23e0fe55fe73bc869b630abe851326a9112d8848f276fe7929b8a1eab0bd0b0b",
+    "probability-unit.txt": "33ecf67a4ebeea2b9f24fa5e7611e20ad74d6230877f5d63765c376dd9ecd92a",
+    "production-unavailable.png": "b9e34663d3f8305b816fe03b7980e4fee4567c868dadd4bbe45015bc843caef3",
+    "sample-decks-review.json": "a57d92ab8caf21f647f222d0bf89869a338502e552e961bdc1293852b8b67efc",
+    "probability-types.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "probability-audit.json": "5bf25e1d3afc33e1144bd608fa7304a13c7dbfb1f1f715575b0c5102a4e32800",
+    "linux-first-chromium.json.gz": "2a2b1e2e3ca784d54d9d8c64f4736b07a05db6bc999c65a95d0e72c791895aa0",
+    "probability-unit-final.txt": "ce57ad6ef39575fe1ad1f73f193bacd338257f738453243984c3f3c011f9eccf",
+    "postboard-red.json.gz": "29b6ac6b6ac672fee713d38b07583397ecce776d38a2b4687e9e25e2019eb7b0",
+    "ci-log.txt.gz": "021585aac573a0d0f6c41ef1fd5402e1adb9ab2a5f48a9a93a2b8ae579f6b59d",
+    "sample-input.json": "7bf01b6ca9f7bb210093271af7fb6e2772d29c6a0d973ad69d915a5bf9fd3908",
+    "probability-budget-final.txt": "9c696d41ee339969e6544fff8d4ad61c822f2cc111d85a4097be52329bc3265c",
+    "preview-deployment.json": "b1d9bf1c94f1eaadd2d7c0d15bbc80238378384546d95b158c466c59c3d0fd15",
+    "source-inventory.txt": "85e9d3a2d8554c5254970986303cb0316fad531a18c03612b2e950fcc9c03bf8",
+    "mobile-review.json.gz": "02068c4770eda8eb4b313fd7c7122273f53134507a3810747fce62f52dd39c8e",
+    "recovered-estimates.png": "5089675da5cadc0b2633d6f68cee17c6fa241635a744a2f13558f5cd1a454bff",
+    "sample-cards.json.gz": "25eea2d9cc37adbcabb52601a08f0649fee9d07afdf205a989151eda0d51f896",
+    "extra-review.json": "8364317aca7532cc2257f5dabe9dfb4d9cb472640d843e42e0cebfe799f64c7c",
+    "probability-lint.txt": "218e96414840321f9309c1eb7f8486a40fd7577d4e8c72852014bd9ee2503400",
+    "linux/browser-2.json.gz": "0922c58d31fda407c439a07e76c97b27fe1ff12fa09fc59c1103a44f7237058b",
+    "linux/browser-3.json.gz": "9e9221aea931657421de959cb251f2d1e2ef76b0893e8b212f6fc18adfe00135",
+    "linux/browser-1.json.gz": "ac40047e396da1b95428e8072e750a22b0f4461a58e9ec5ce5c3d3d7aa1566e6",
+    "linux/browser-0.json.gz": "61b4dbe39da9e562a9b3d2275469e8e40c9b720b2ed5f7e61361e6c46d6bc6b7",
+    "linux/browser-5.json.gz": "be6e382afa177aef2523dae400d3bf27d39eef4ac48b9eff188d75b94761e369",
+    "linux/browser-4.json.gz": "0a2dd547aeb26681d5ea2bf83cdca428e61ae94a332b0d5bde4c40ee3cc211fc",
+    "linux/artifacts.json": "ad5cab90300db1a4c3926145df4076edf013410c490d0d258261b94d9cfc5445"
+  },
+  "previousUnsuccessfulLinux": {
+    "run": 34012463785,
+    "status": "cancelled_after_reproduced_fixture_failure",
+    "chromium": {
+      "startTime": "2026-09-06T04:50:15.890Z",
+      "duration": 152379.45,
+      "expected": 79,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "reason": "Test read the sample before asynchronous hydration, then replaced it with a sideboard-only list. Added an explicit complete-sample precondition; numeric assertions unchanged."
+  },
+  "extraBrowserReview": [
+    {
+      "browser": "chromium",
+      "numericRows": 17,
+      "exports": {
+        "png": 517696,
+        "pdf": 19781414,
+        "csv": 1403
+      },
+      "importRecords": 2,
+      "backupRecords": 2,
+      "comparisonOpened": true
+    },
+    {
+      "browser": "webkit",
+      "numericRows": 17,
+      "exports": {
+        "png": 446889,
+        "pdf": 19640990,
+        "csv": 1405
+      },
+      "importRecords": 2,
+      "backupRecords": 2,
+      "comparisonOpened": true
+    }
+  ],
+  "sampleDeckReview": [
+    {
+      "sample": "midrange",
+      "estimates": 14,
+      "unavailable": 0
+    },
+    {
+      "sample": "aggro",
+      "estimates": 11,
+      "unavailable": 0
+    },
+    {
+      "sample": "control",
+      "estimates": 12,
+      "unavailable": 0
+    },
+    {
+      "sample": "limited",
+      "estimates": 17,
+      "unavailable": 0
+    },
+    {
+      "sample": "edh",
+      "estimates": 56,
+      "unavailable": 1
+    }
+  ],
+  "supersededLinux": {
+    "run": 34012783345,
+    "reason": "Replaced by final full campaign after front-face metadata fix; not counted as final validation."
+  },
+  "version": "2.7.9",
+  "packageLockSha256": "242df1422cd0ad363309329e1b4c3138ae4f58cf5b4d9b5a0855573d95a7b182",
+  "localRuntime": {
+    "node": "v25.2.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "preexistingFiles": {
+    "playwright-report/index.html": {
+      "preserved": true,
+      "sha256": "41736cddcba2f6d85aeffb7cc43240f0a467baded79c9b896146a351b51cbb44"
+    },
+    "test-results.json": {
+      "preserved": true,
+      "sha256": "b0474ad701edee38d8e22c4fb4be5e3d39c5336f4e48aed9787ac88f8c23c81e"
+    },
+    "test-results/.last-run.json": {
+      "preserved": true,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    }
+  },
+  "applicationChangesThrough": "ee828ccef4ada609e8d3cb545e7238a5aef423c9",
+  "previousMobileNavigationFixtureFailure": {
+    "run": 34012998634,
+    "reason": "New history review test targeted desktop link on mobile; corrected to open real navigation drawer. App source unchanged. Desktop profiles passed 81 each; campaign not used as final validation."
+  },
+  "localMobileReview": {
+    "passed": 12,
+    "failed": 0,
+    "retried": 0,
+    "projects": ["Mobile Chrome", "Mobile Safari", "iPad"]
+  },
+  "ci": {
+    "conclusion": "success",
+    "databaseId": 34013468685,
+    "headSha": "b15d74075b346b34a0088493e46c74074b3da7ec",
+    "status": "completed",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/34013468685"
+  }
+}

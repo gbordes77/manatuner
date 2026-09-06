@@ -1,0 +1,73 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stderr | tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Wedding Announcement
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 400
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:544:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at LandService.prefetchUnknownLands (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/landService.ts:316:19)
+    at DeckAnalyzer.parseDeckList (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/deckAnalyzer.ts:515:5)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/front-face-metadata.test.ts:19:18
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+stderr | tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Delver of Secrets
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 400
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:544:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at LandService.prefetchUnknownLands (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/landService.ts:316:19)
+    at DeckAnalyzer.parseDeckList (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/deckAnalyzer.ts:515:5)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/front-face-metadata.test.ts:19:18
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+stdout | tests/math-audit/front-face-metadata.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ tests/math-audit/front-face-metadata.test.ts (3 tests | 2 failed) 554ms
+   × the analyzer keeps the actual front-face cost of Wedding Announcement 185ms
+   × the analyzer keeps the actual front-face cost of Delver of Secrets 163ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Wedding Announcement
+AssertionError: expected '' to be '{2}{W}' // Object.is equality
+
+- Expected
++ Received
+
+- {2}{W}
+
+ ❯ tests/math-audit/front-face-metadata.test.ts:20:25
+     18|   })
+     19|   const [card] = await (DeckAnalyzer as any).parseDeckList(`1 ${name}`)
+     20|   expect(card.manaCost).toBe(cost)
+       |                         ^
+     21|   expect(card.cmc).toBe(cmc)
+     22|   expect(Boolean(card.isCreature)).toBe(creature)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Delver of Secrets
+AssertionError: expected '' to be '{U}' // Object.is equality
+
+- Expected
++ Received
+
+- {U}
+
+ ❯ tests/math-audit/front-face-metadata.test.ts:20:25
+     18|   })
+     19|   const [card] = await (DeckAnalyzer as any).parseDeckList(`1 ${name}`)
+     20|   expect(card.manaCost).toBe(cost)
+       |                         ^
+     21|   expect(card.cmc).toBe(cmc)
+     22|   expect(Boolean(card.isCreature)).toBe(creature)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  07:00:18
+   Duration  1.09s (transform 99ms, setup 59ms, import 116ms, tests 554ms, environment 286ms)
+

@@ -1,0 +1,33 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/manaProducerService.test.ts (27 tests | 1 failed) 6ms
+     × does not count Path to Exile as unconditional mana ramp 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/manaProducerService.test.ts > land search ownership > does not count Path to Exile as unconditional mana ramp
+AssertionError: expected 'LAND_RAMP' to be null
+
+- Expected:
+null
+
++ Received:
+"LAND_RAMP"
+
+ ❯ src/services/__tests__/manaProducerService.test.ts:210:47
+    208|   it('does not count Path to Exile as unconditional mana ramp', () => {
+    209|     const oracle = 'Exile target creature. Its controller may search t…
+    210|     expect(analyzeOracleForMana(oracle).type).toBeNull()
+       |                                               ^
+    211|   })
+    212|   it('does not count an opponent land search as our ramp', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 26 passed (27)
+   Start at  06:41:18
+   Duration  449ms (transform 65ms, setup 49ms, import 68ms, tests 6ms, environment 251ms)
+

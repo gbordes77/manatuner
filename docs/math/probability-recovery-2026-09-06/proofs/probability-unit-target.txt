@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+
+ Test Files  3 passed (3)
+      Tests  16 passed (16)
+   Start at  06:38:38
+   Duration  932ms (transform 285ms, setup 119ms, import 1.36s, tests 90ms, environment 468ms)
+

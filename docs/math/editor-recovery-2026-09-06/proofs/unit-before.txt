@@ -1,0 +1,112 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/store/__tests__/persistTransform.test.ts (7 tests | 2 failed) 6ms
+   × rehydrates legacy minimized state into an editable deck (24 Forest) 3ms
+   × rehydrates legacy minimized state into an editable deck () 0ms
+ ❯ tests/component/DeckInputRecovery.test.tsx (2 tests | 2 failed) 21ms
+   × keeps the editor usable without results despite a stale minimized flag (mobile=false) 17ms
+   × keeps the editor usable without results despite a stale minimized flag (mobile=true) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/component/DeckInputRecovery.test.tsx > keeps the editor usable without results despite a stale minimized flag (mobile=false)
+TestingLibraryElementError: Unable to find an element with the placeholder text of: /paste your decklist/i
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1alvmce-MuiPaper-root"[39m
+    [36m>[39m
+      [36m<h5[39m
+        [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-1kqaao6-MuiTypography-root"[39m
+      [36m>[39m
+        [36m<svg[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-colorAction MuiSvgIcon-fontSizeSmall css-ltyecm-MuiSvgIcon-root"[39m
+          [33mdata-testid[39m=[32m"DescriptionOutlinedIcon"[39m
+          [33mfocusable[39m=[32m"false"[39m
+          [33mviewBox[39m=[32m"0 0 24 24"[39m
+        [36m>[39m
+          [36m<path[39m
+            [33md[39m=[32m"M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8zm4 18H6V4h7v5h5z"[39m
+          [36m/>[39m
+        [36m</svg>[39m
+        [0mYour Deck [0m
+      [36m</h5>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/component/DeckInputRecovery.test.tsx:8:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/component/DeckInputRecovery.test.tsx > keeps the editor usable without results despite a stale minimized flag (mobile=true)
+TestingLibraryElementError: Unable to find an element with the placeholder text of: /paste your decklist/i
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1mppllu-MuiPaper-root"[39m
+    [36m>[39m
+      [36m<h6[39m
+        [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-ip9w29-MuiTypography-root"[39m
+      [36m>[39m
+        [36m<svg[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-colorAction MuiSvgIcon-fontSizeSmall css-ltyecm-MuiSvgIcon-root"[39m
+          [33mdata-testid[39m=[32m"DescriptionOutlinedIcon"[39m
+          [33mfocusable[39m=[32m"false"[39m
+          [33mviewBox[39m=[32m"0 0 24 24"[39m
+        [36m>[39m
+          [36m<path[39m
+            [33md[39m=[32m"M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8zm4 18H6V4h7v5h5z"[39m
+          [36m/>[39m
+        [36m</svg>[39m
+        [0mYour Deck [0m
+      [36m</h6>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/component/DeckInputRecovery.test.tsx:8:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/store/__tests__/persistTransform.test.ts > rehydrates legacy minimized state into an editable deck (24 Forest)
+ FAIL  src/store/__tests__/persistTransform.test.ts > rehydrates legacy minimized state into an editable deck ()
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/store/__tests__/persistTransform.test.ts:90:36
+     88|   const restored = analyzerPersistTransform.out(saved as any, 'analyze…
+     89|   expect(restored.analysisResult).toBeNull()
+     90|   expect(restored.isDeckMinimized).toBe(false)
+       |                                    ^
+     91|   expect(restored.deckList).toBe(deckList)
+     92|   expect(restored.deckName).toBe('My saved deck')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 5 passed (9)
+   Start at  06:27:22
+   Duration  1.20s (transform 97ms, setup 154ms, import 719ms, tests 27ms, environment 736ms)
+

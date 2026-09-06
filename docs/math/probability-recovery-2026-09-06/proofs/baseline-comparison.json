@@ -1,0 +1,29 @@
+{
+  "baseline": "b87579a46b936e2b3192c9a5f1ceca3de97c4f50",
+  "runtimeDependencies": "Current locked dependencies reused; historical application sources built separately",
+  "realisticRows": 17,
+  "unavailable": 0,
+  "body": "Skip to main content\nHelp us improve ManaTuner! (dismiss = hide banner; feedback stays in the footer)\nGive Feedback\nManaTuner\nAnalyzer\nMy Analyses\nLibrary\nLearn\nFeedback\n\nYour Deck\n\n40 cards • 17 lands\n\nClick to edit your deck or start a new analysis\n\n✏️ Edit Deck\nAnalysis Results\nShare\nHealth Score 97% · Excellent\n\nLimited (40-card) — 97% of spells cast on curve — excellent, but 1 color short of Karsten target; most 2–3-land hands are keeps in a 40-card deck.\n\nNote: in Limited (40-card), Karsten targets are scaled down from the 60-card tables (N/60) — a 2-pip spell still eats most of a draft fixing pool. Aim for ~17 lands and at most a 10/7 colour split.\nEngine v2.7.9 · Karsten tables · hypergeom + ramp K=3 · London mulligan / Bellman\nCastability\nAnalysis\nMulligan\nManabase\n1\nBlueprint\nCastability Analysis\n\nReal-time mana costs from Scryfall with probability calculations\n\nFormat\nLimited (Draft / Sealed)\nFormat\nStarting player\nOn the play\nOn the draw\n\nCount rocks & dorks\n\nAuto: Limited (40-card)\n15% removal\n3 ramp · 45% in opener\nAdvanced\n\nDetected: Limited — 17 lands in 40 — aim ~17 lands in a 40-card draft deck · Priority horizon T1–T4\n\nLimited is won on the early curve — priority spells are CMC 1–4. 17 spell lines in range listed first.\nFormat controls above set ramp/removal model. Change Format anytime; click the Auto chip if you locked a format and want detection again.\n\n3 mana rocks/dorks detected\n\n— 1x Llanowar Elves, 1x Elvish Mystic, 1x Path to Exile. Castability includes ramp acceleration.\n\nPerfect drops\n = right colors if lands on curve\n·\nRealistic\n = what to optimize (mana screw + rocks/dorks)\n\nCard\nMana Cost\nProbabilities\n\n1x Llanowar ElvesT1–T4\n\nCost: {G}\n\nCMC: 1\n\nRealistic:\n86%\nPerfect drops: 87%\n\n1x Elvish MysticT1–T4\n\nCost: {G}\n\nCMC: 1\n\nRealistic:\n86%\nPerfect drops: 87%\n\n1x Path to ExileT1–T4\n\nCost: {W}\n\nCMC: 1\n\nRealistic:\n89%\nPerfect drops: 90%\n\n1x Oath of NissaT1–T4\n\nCost: {G}\n\nCMC: 1\n\nRealistic:\n86%\nPerfect drops: 87%\n\n2x Scavenging OozeT1–T4\n\nCost: {1}{G}\n1\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n2x Elvish VisionaryT1–T4\n\nCost: {1}{G}\n1\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n1x Voice of ResurgenceT1–T4\n\nCost: {G}{W}\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n1x Qasali PridemageT1–T4\n\nCost: {G}{W}\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n2x Dromoka's CommandT1–T4\n\nCost: {G}{W}\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n2x Selesnya CharmT1–T4\n\nCost: {G}{W}\n\nCMC: 2\n\nRealistic:\n87%\nPerfect drops: 92%\n\n1x Sundering GrowthT1–T4\n\nCost: {G/W}{G/W}\n\nCMC: 2\n\nRealistic:\n66%\nPerfect drops: 70%\n\n1x Loxodon SmiterT1–T4\n\nCost: {1}{G}{W}\n1\n\nCMC: 3\n\nRealistic:\n+4% ramp\n85%\nLands (81%)\n+Ramp (4%)\nPerfect drops: 96%\n\n1x Centaur CourserT1–T4\n\nCost: {2}{G}\n2\n\nCMC: 3\n\nRealistic:\n+6% ramp\n87%\nLands (81%)\n+Ramp (6%)\nPerfect drops: 96%\n\n2x WildsizeT1–T4\n\nCost: {2}{G}\n2\n\nCMC: 3\n\nRealistic:\n+6% ramp\n87%\nLands (81%)\n+Ramp (6%)\nPerfect drops: 96%\n\n1x Banishing LightT1–T4\n\nCost: {2}{W}\n2\n\nCMC: 3\n\nRealistic:\n+4% ramp\n87%\nLands (83%)\n+Ramp (4%)\nPerfect drops: 98%\n\n2x Abzan Battle PriestT1–T4\n\nCost: {3}{W}\n3\n\nCMC: 4\n\nRealistic:\n+8% ramp\n78%\nLands (70%)\n+Ramp (8%)\nPerfect drops: 99%\n\n1x Collected CompanyT1–T4\n\nCost: {3}{G}\n3\n\nCMC: 4\n\nRealistic:\n+8% ramp\n78%\nLands (70%)\n+Ramp (8%)\nPerfect drops: 98%\nTip: optimize Realistic first — Perfect drops is always ≥ Realistic (same model).\n💾 Your Data\n\n📱 All your analyses are stored locally in your browser\n\nExport\nImport\nInfo\nReset\n\nCrafted with\n\n❤️\n\nfor the MTG community\n\n© 2025-2026 ManaTuner. Open source under MIT License.\n\nManaTuner is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.\nAnalyzer\nGuide\nMathematics\nLand Glossary\nAbout\nPrivacy\nGive Feedback\nGitHub\nScryfall API\nKeyrune Icons\nProbability mathematics based on Frank Karsten's research",
+  "tabs": [
+    {
+      "tab": "analysis",
+      "selected": "true",
+      "fatal": 0
+    },
+    {
+      "tab": "mulligan",
+      "selected": "true",
+      "fatal": 0
+    },
+    {
+      "tab": "manabase",
+      "selected": "true",
+      "fatal": 0
+    },
+    {
+      "tab": "blueprint",
+      "selected": "true",
+      "fatal": 0
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+
+> manatuner@2.7.9 prebuild
+> node scripts/generate-library-feeds.mjs && node scripts/generate-sitemap.mjs
+
+[library-feeds] Loading seed via esbuild…
+[library-feeds] Wrote public/library.json (65 articles)
+[library-feeds] Wrote public/library/feed.xml (top 30 newest)
+[sitemap] Loading seed…
+[sitemap] Wrote public/sitemap.xml (8 static + 65 articles + 27 authors)
+
+> manatuner@2.7.9 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2511 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+dist/index.html                                    12.45 kB │ gzip:   3.93 kB
+dist/assets/mulliganArchetype.worker-6DQT9pGx.js   13.90 kB
+dist/assets/index-qsdYYaTe.css                     16.39 kB │ gzip:   4.16 kB
+dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+dist/assets/FloatingManaSymbols-CGGG-Ofw.js         1.20 kB │ gzip:   0.65 kB
+dist/assets/CardImageTooltip-3-xLYXfB.js            1.35 kB │ gzip:   0.70 kB
+dist/assets/privacy-BNKyfWlP.js                     3.67 kB │ gzip:   1.61 kB
+dist/assets/AuthorPage-L-_gfPAd.js                  3.90 kB │ gzip:   1.77 kB
+dist/assets/PrivacySettings-DOCOt4u4.js             5.17 kB │ gzip:   2.12 kB
+dist/assets/ArticleDetailPage-CDbP2o3x.js           7.71 kB │ gzip:   2.91 kB
+dist/assets/EnhancedCharts-BoiJusXY.js              8.80 kB │ gzip:   2.57 kB
+dist/assets/AnalysisTab-CgR1q1lB.js                 9.03 kB │ gzip:   3.01 kB
+dist/assets/StaticPages-ChIhd8O3.js                 9.13 kB │ gzip:   3.13 kB
+dist/assets/EnhancedSpellAnalysis-B2-BK4rZ.js      12.90 kB │ gzip:   3.83 kB
+dist/assets/ManabaseFullTab-CfqpsPPM.js            13.40 kB │ gzip:   4.69 kB
+dist/assets/LandGlossaryPage-D7f8bGs4.js           13.66 kB │ gzip:   5.06 kB
+dist/assets/ManaBlueprint-Dd_R8gma.js              15.43 kB │ gzip:   4.83 kB
+dist/assets/MyAnalysesPage-vdEXGGK6.js             18.13 kB │ gzip:   5.48 kB
+dist/assets/MulliganTab-C623OGS9.js                24.71 kB │ gzip:   8.23 kB
+dist/assets/GuidePage-D10snbuO.js                  26.12 kB │ gzip:   8.15 kB
+dist/assets/MathematicsPage-D2Ma_X_K.js            26.24 kB │ gzip:   7.51 kB
+dist/assets/ReferenceArticlesPage-D4lBEGgL.js      28.17 kB │ gzip:   8.37 kB
+dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+dist/assets/vendor-mui-icons-CXd-WJEu.js           37.33 kB │ gzip:  11.34 kB
+dist/assets/PaymentPolicyPanel-CQ8ve-G3.js         44.15 kB │ gzip:   6.35 kB
+dist/assets/vendor-redux-Bc1t3V2X.js               46.95 kB │ gzip:  15.76 kB
+dist/assets/useLibraryProgress-CxTyAasP.js         63.40 kB │ gzip:  19.06 kB
+dist/assets/CastabilityTab-C42iG8Cz.js             70.17 kB │ gzip:  18.65 kB
+dist/assets/Onboarding-BYzdDrPn.js                101.80 kB │ gzip:  31.58 kB
+dist/assets/AnalyzerPage--p6cYohC.js              129.88 kB │ gzip:  35.60 kB
+dist/assets/index-DY4k7JPm.js                     153.86 kB │ gzip:  43.07 kB
+dist/assets/index.es-DmCRpKFg.js                  157.96 kB │ gzip:  52.59 kB
+dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+dist/assets/vendor-mui-CPNqbaNh.js                370.11 kB │ gzip: 111.38 kB
+dist/assets/jspdf.es.min-CrO7RXOy.js              385.89 kB │ gzip: 124.85 kB
+dist/assets/vendor-charts-Cry7PZGj.js             430.96 kB │ gzip: 114.25 kB
+✓ built in 2.76s

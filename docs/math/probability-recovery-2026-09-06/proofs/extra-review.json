@@ -1,0 +1,26 @@
+[
+  {
+    "browser": "chromium",
+    "numericRows": 17,
+    "exports": {
+      "png": 517696,
+      "pdf": 19781414,
+      "csv": 1403
+    },
+    "importRecords": 2,
+    "backupRecords": 2,
+    "comparisonOpened": true
+  },
+  {
+    "browser": "webkit",
+    "numericRows": 17,
+    "exports": {
+      "png": 446889,
+      "pdf": 19640990,
+      "csv": 1405
+    },
+    "importRecords": 2,
+    "backupRecords": 2,
+    "comparisonOpened": true
+  }
+]

@@ -1,0 +1,4 @@
+
+> manatuner@2.7.9 type-check
+> tsc --noEmit
+

@@ -1,0 +1,43 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stderr | tests/math-audit/legacy-summary-label.test.tsx > old saved estimates are never introduced as the current physical model
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ❯ tests/math-audit/legacy-summary-label.test.tsx (1 test | 1 failed) 38ms
+   × old saved estimates are never introduced as the current physical model 37ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/legacy-summary-label.test.tsx > old saved estimates are never introduced as the current physical model
+AssertionError: expected <div …(1)></div> to be null
+
+- Expected:
+null
+
++ Received:
+<div
+  class="MuiAlert-message css-1pxa9xg-MuiAlert-message"
+>
+  Current model: potential castability, lands only, on the play, without mulligans. The spell is an external mana demand; its draw probability is not included. A legal sequence may depend on future draws. X is set to 2. Summaries cover calculated spells only.
+</div>
+
+ ❯ tests/math-audit/legacy-summary-label.test.tsx:8:70
+      6|   render(<EnhancedSpellAnalysis spellAnalysis={{ Bolt: { castable: 1, …
+      7|   expect(screen.getByText(/Saved legacy estimates/)).toBeTruthy()
+      8|   expect(screen.queryByText(/Current model: potential castability/)).t…
+       |                                                                      ^
+      9| })
+     10|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  06:45:32
+   Duration  1.08s (transform 66ms, setup 50ms, import 663ms, tests 38ms, environment 252ms)
+

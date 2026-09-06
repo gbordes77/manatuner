@@ -1,0 +1,148 @@
+{
+  "baseline": "58648b6617b80257bd712ed19574495e523fc349",
+  "fix": "2250f1231e8a1dea6d34aac6d3f1ef5aeb235901",
+  "reproduction": {
+    "unitFailed": 4,
+    "productionBrowserFailed": 2,
+    "symptom": "Your Deck heading only; textarea and Analyze button absent after restoring isDeckMinimized=true with no analysisResult"
+  },
+  "local": {
+    "unitPassed": 674,
+    "unitSkipped": 0,
+    "unitFiles": 64,
+    "browserPassed": 4,
+    "browserProjects": ["chromium", "webkit"],
+    "lint": "PASS, zero warnings",
+    "types": "PASS",
+    "build": "PASS",
+    "bundle": "PASS"
+  },
+  "linuxFull": {
+    "status": "success",
+    "runId": 34011622357,
+    "sha": "2250f1231e8a1dea6d34aac6d3f1ef5aeb235901",
+    "expected": 462,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "retried": 0
+  },
+  "production": {
+    "status": "verified",
+    "deployment": {
+      "id": "dpl_7scaH5HNjoXgrDZC8DiKoa3Qp2zD",
+      "readyState": "READY",
+      "gitSource": {
+        "ref": "main",
+        "repoId": 1002485958,
+        "sha": "2250f1231e8a1dea6d34aac6d3f1ef5aeb235901",
+        "type": "github",
+        "prId": null
+      },
+      "alias": [
+        "www.manatuner.app",
+        "manatuner-pro.vercel.app",
+        "manatuner.app",
+        "manatuner-pro-gbordes77s-projects.vercel.app",
+        "manatuner-pro-git-main-gbordes77s-projects.vercel.app"
+      ],
+      "url": "manatuner-7kudcxt2c-gbordes77s-projects.vercel.app",
+      "target": "production",
+      "createdAt": 1788668955895,
+      "ready": 1788668985867
+    },
+    "browser": {
+      "startTime": "2026-09-06T04:30:47.133Z",
+      "duration": 3969.264,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "ci": {
+    "conclusion": "success",
+    "headSha": "2250f1231e8a1dea6d34aac6d3f1ef5aeb235901",
+    "status": "completed",
+    "url": "https://github.com/gbordes77/manatuner/actions/runs/34011618921"
+  },
+  "linux": {
+    "run": 34011622357,
+    "status": "success",
+    "expected": 462,
+    "reports": [
+      {
+        "artifact": "browser-0",
+        "stats": {
+          "startTime": "2026-09-06T04:30:13.802Z",
+          "duration": 124706.322,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "48e7c33f97df9c427bf286c46bcfab6472c39b040a66d90f22471dd6d20be409"
+      },
+      {
+        "artifact": "browser-1",
+        "stats": {
+          "startTime": "2026-09-06T04:30:09.066Z",
+          "duration": 173178.117,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "b15fe07e4b04920a66d1785019b34f80dcfacf2f919ea1a78833c84f3adf587f"
+      },
+      {
+        "artifact": "browser-2",
+        "stats": {
+          "startTime": "2026-09-06T04:30:23.633Z",
+          "duration": 218114.775,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "edd008eb51590b9329c9cf4df34a446e90cbb145e96da1f8a908786a0b0ee061"
+      },
+      {
+        "artifact": "browser-3",
+        "stats": {
+          "startTime": "2026-09-06T04:33:15.271Z",
+          "duration": 165836.116,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "9b7a3230359065f56da5b1e4e94054ca99cbf2dd97709557f520848e13167053"
+      },
+      {
+        "artifact": "browser-4",
+        "stats": {
+          "startTime": "2026-09-06T04:34:02.799Z",
+          "duration": 329683.16000000003,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "f92d04c3e19fe8b5e726ca131d0ff092be695376009619c64eff21c73842a5a9"
+      },
+      {
+        "artifact": "browser-5",
+        "stats": {
+          "startTime": "2026-09-06T04:35:10.487Z",
+          "duration": 243327.02899999998,
+          "expected": 77,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "sha256": "09697da21f9f83068f310e848feaa5420346d01ada33a17b31e54a342c76c0af"
+      }
+    ]
+  }
+}
