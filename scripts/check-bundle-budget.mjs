@@ -13,7 +13,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
-const DIST = join(process.cwd(), 'dist')
+const DIST = process.env.PRERENDER_DIST || join(process.cwd(), 'dist')
 const ASSETS = join(DIST, 'assets')
 
 const BUDGETS = {

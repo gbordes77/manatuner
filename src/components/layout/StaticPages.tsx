@@ -125,7 +125,7 @@ export const AboutPage: React.FC = () => {
               sx={{ bgcolor: '#e8f5e9', color: '#2e7d32', fontWeight: 600 }}
             />
             <Chip
-              label="100% Local"
+              label="Local calculations"
               sx={{ bgcolor: '#e3f2fd', color: '#1565c0', fontWeight: 600 }}
             />
             <Chip
@@ -369,7 +369,7 @@ export const PrivacyPage: React.FC = () => (
   <Container maxWidth="lg" sx={{ py: 4 }}>
     <SEO
       title="Privacy Policy | ManaTuner"
-      description="ManaTuner privacy policy. 100% local processing, no cookies, no tracking, no account required. Your deck data never leaves your browser."
+      description="How ManaTuner stores analyses locally, uses Scryfall and external fonts, and handles deletion, sharing and optional error monitoring."
       path="/privacy"
     />
     <Box sx={{ textAlign: 'center', mb: 4 }}>
@@ -389,19 +389,71 @@ export const PrivacyPage: React.FC = () => (
       </Typography>
     </Box>
     <Paper sx={{ p: 4, borderRadius: 3 }}>
-      <Typography variant="h6" gutterBottom fontWeight={700}>
-        Your Privacy Matters
+      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
+        Calculations and saved analyses
       </Typography>
-      <Typography variant="body1" paragraph>
-        ManaTuner is designed with privacy as a core principle. We don't collect, store, or transmit
-        any of your personal data or deck information.
+      <Typography paragraph>
+        ManaTuner calculates results in your browser and saves analyses on this device. No account
+        is required. This does not mean the site makes no network requests.
       </Typography>
-      <Typography variant="body1" paragraph>
-        <strong>100% Local:</strong> All your analyses are stored in your browser's local storage.
-        Your decklists never leave your device.
+      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
+        External services
       </Typography>
-      <Typography variant="body1">
-        <strong>No Tracking:</strong> We don't use analytics, cookies, or any form of user tracking.
+      <Typography paragraph>
+        Card lookups send card names, identifiers or search terms to api.scryfall.com to retrieve
+        card rules and metadata, including during analysis and card-image lookup. Card images load
+        from cards.scryfall.io. These requests can reveal which cards you are looking up; the analysis
+        result and saved history are not uploaded by these lookups. Local caches reduce repeat requests.
+      </Typography>
+      <Typography paragraph>
+        Google Fonts (fonts.googleapis.com and fonts.gstatic.com) supplies the display font.
+        jsDelivr (cdn.jsdelivr.net) supplies the mana-symbol stylesheet and font. The page also
+        preconnects to Scryfall. The site host and external services receive connection information
+        such as your IP address and browser request metadata. Their retention practices are not
+        controlled by the local Reset button. Loading the site is therefore not fully offline.
+      </Typography>
+      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
+        Browser storage and deletion
+      </Typography>
+      <Typography paragraph>
+        Local storage holds saved analyses, the current deck, preferences and library progress until
+        you delete them or your browser clears them. Public card metadata is cached in IndexedDB
+        (30 days), land metadata in local storage (30 days), and mana-producer metadata in local
+        storage (7 days). Expiration is checked when caches are read; it is not a scheduled erasure.
+        Session storage holds temporary navigation and recovery flags for the browser session.
+      </Typography>
+      <Typography paragraph>
+        Reset requests deletion of ManaTuner local and session storage and asynchronously clears its
+        IndexedDB cache. This is best effort if browser storage is blocked; it does not verify every
+        deletion. Reload after resetting to release in-memory caches. For a broader cleanup, use your
+        browser’s site-data controls. Reset does not delete exported files, shared links, browser
+        history, third-party logs or copies on other devices. Export a backup first if needed; browser
+        storage can also be lost in private browsing or when site data is cleared.
+      </Typography>
+      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
+        Sharing
+      </Typography>
+      <Typography paragraph>
+        Share links encode the deck in the URL fragment. Anyone with the link can recover the deck.
+        Copying or sending a link or an exported backup discloses it to its recipients; deleting the
+        local analysis does not revoke those copies. Legacy links can contain deck data in the URL
+        query, which may reach the hosting service and its logs.
+      </Typography>
+      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
+        Optional error monitoring
+      </Typography>
+      <Typography paragraph>
+        {import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN
+          ? 'The Sentry SDK is configured in this build. Delivery depends on network access and the site’s Content Security Policy; configuration alone does not confirm that events are received.'
+          : 'Error monitoring is disabled in this build. Sentry initializes only in a production build with a configured DSN.'}
+        {' '}There is no session replay configured. The application does not configure audience analytics.
+      </Typography>
+      <Typography paragraph>
+        Before enabling Sentry, the operator must review the actual event payloads with non-sensitive
+        fixtures, confirm redaction and retention, verify the permitted monitoring destination in the Content Security Policy, determine the required information and user controls
+        with a competent reviewer, and update this policy. Redaction is a safeguard, not a guarantee
+        that arbitrary error text contains no sensitive data. This technical description does not
+        constitute a declaration of legal compliance.
       </Typography>
     </Paper>
   </Container>

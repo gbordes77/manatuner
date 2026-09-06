@@ -17,10 +17,11 @@ import './styles/ux-improvements.css'
  * - Init ONLY if PROD && VITE_SENTRY_DSN (default: DSN unset → no Sentry traffic)
  * - beforeSend scrubber strips URL query (?d= decks), PII, heavy breadcrumbs
  * - No session replay (would capture deck UI text)
- * Before enabling DSN in Vercel: update PrivacySettings disclosure + GDPR opt-out.
+ * Before enabling DSN: follow docs/privacy/DATA-FLOWS.md, including competent
+ * review of legal requirements and user controls; do not assume redaction is complete.
  */
 function scrubSentryEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
-  // Strip share payloads (?d= legacy query and #d= hash) so decks never reach Sentry.
+  // Strip share payloads from request URLs; arbitrary error text still needs payload review.
   if (event.request?.url) {
     try {
       const u = new URL(event.request.url)

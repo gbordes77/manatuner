@@ -6,9 +6,9 @@
  *   2. IndexedDB warm cache (this module — survives reloads, ~10ms read)
  *   3. network (Scryfall API fallback)
  *
- * Card metadata is public Scryfall data — not user-private. Storing it
- * locally is pure perf optimization; no GDPR/privacy implication. The
- * privacy panel claim "decklists never leave your browser" is unaffected.
+ * Card metadata is public Scryfall data, but cache keys reveal looked-up cards.
+ * Network cache misses disclose lookup names/identifiers to Scryfall.
+ * See docs/privacy/DATA-FLOWS.md for storage and deletion limits.
  *
  * Errors are silenced: IDB can be blocked (private browsing, quota full,
  * Safari ITP). Memory cache always works as fallback.

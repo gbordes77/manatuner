@@ -128,7 +128,7 @@ export const ArticleDetailPage: React.FC = () => {
   return (
     <Container maxWidth="md" sx={{ py: 4, position: 'relative' }}>
       <SEO
-        title={`${article.title} — ${article.author} | ManaTuner Library`}
+        title={`${article.title}${article.subtitle ? ` — ${article.subtitle}` : ''} — ${article.author} | ManaTuner Library`}
         description={descriptionForSeo}
         path={canonicalPath}
         jsonLd={jsonLd}

@@ -1,0 +1,67 @@
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] All candidate checks passed; build may finish.
+✔ every failing check prevents later build/publish readiness (4.100416ms)
+✔ a killed check also blocks readiness (0.238042ms)
+✔ successful checks run exactly once and in order (0.699583ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44.457959

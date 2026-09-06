@@ -1,0 +1,16 @@
+scripts/prerender.mjs 33ms
+scripts/check-html-contract.mjs 6ms
+scripts/delivery-gate.mjs 2ms
+scripts/delivery-gate.test.mjs 2ms
+scripts/serve-candidate.mjs 2ms
+playwright.delivery.config.js 1ms
+tests/e2e/delivery/html-contract.spec.js 3ms
+tests/e2e/accessibility/a11y.spec.js 8ms
+src/utils/prerenderLib.ts 21ms (unchanged)
+src/utils/__tests__/prerenderLib.test.ts 5ms
+src/App.tsx 11ms
+src/pages/ArticleDetailPage.tsx 15ms (unchanged)
+.github/workflows/ci.yml 6ms
+.github/workflows/pr-validation.yml 2ms
+.github/workflows/nightly-quality.yml 2ms (unchanged)
+vercel.json 2ms (unchanged)

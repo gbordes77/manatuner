@@ -1,3 +1,4 @@
+import { healthScoreBand } from '../utils/healthScore'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import CheckIcon from '@mui/icons-material/CheckCircle'
 import CloseIcon from '@mui/icons-material/Close'
@@ -82,10 +83,8 @@ const HealthBadge: React.FC<{
 }> = ({ consistency, unavailable, size = 'large' }) => {
   if (unavailable) return <Typography color="text.secondary">Health Score unavailable</Typography>
   const percent = Math.round(consistency * 100)
-  const color =
-    percent >= 85 ? 'success' : percent >= 70 ? 'primary' : percent >= 55 ? 'warning' : 'error'
-  const label =
-    percent >= 85 ? 'Excellent' : percent >= 70 ? 'Good' : percent >= 55 ? 'Average' : 'Needs Work'
+  const { label, severity } = healthScoreBand(percent)
+  const color = severity === 'info' ? 'primary' : severity
 
   return (
     <Box sx={{ textAlign: 'center' }}>

@@ -1,0 +1,32 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+·····x··
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/utils/__tests__/prerenderLib.test.ts > prerenderLib > injectPrerenderMarker / looksPrerendered > rejects a shell even when its default OpenGraph title exists
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ src/utils/__tests__/prerenderLib.test.ts:63:190
+     61|
+     62|     it('rejects a shell even when its default OpenGraph title exists',…
+     63|       expect(looksPrerendered(injectPrerenderMarker('<html><head><meta…
+       |                                                                                                                                                                                              ^
+     64|     })
+     65|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 passed (8)
+   Start at  12:39:09
+   Duration  506ms (transform 69ms, setup 56ms, import 67ms, tests 6ms, environment 302ms)
+

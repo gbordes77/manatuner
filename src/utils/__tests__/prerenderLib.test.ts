@@ -59,6 +59,18 @@ describe('prerenderLib', () => {
       expect(twice.match(/<!-- prerendered -->/g)?.length).toBe(1)
     })
 
+    it('rejects a shell even when its default OpenGraph title exists', () => {
+      expect(
+        looksPrerendered(
+          injectPrerenderMarker(
+            '<html><head><meta property="og:title" content="Home"></head><body><div id="root">Loading' +
+              ' '.repeat(250) +
+              '</div></body></html>'
+          )
+        )
+      ).toBe(false)
+    })
+
     it('detects contentful prerender HTML', () => {
       const weak = '<html><head></head><body></body></html>'
       expect(looksPrerendered(weak)).toBe(false)

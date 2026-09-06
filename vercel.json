@@ -2,12 +2,6 @@
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/((?!sw\\.js$|boot-watchdog\\.js$|assets/|favicon\\.svg|manifest\\.json|robots\\.txt|sitemap\\.xml|library\\.json|og-image|llms).*)",
-      "destination": "/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -144,6 +138,19 @@
           "value": "public, s-maxage=86400, stale-while-revalidate=604800"
         }
       ]
+    }
+  ],
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/mes-analyses",
+      "destination": "/my-analyses",
+      "permanent": true
+    },
+    {
+      "source": "/reading-list",
+      "destination": "/library",
+      "permanent": true
     }
   ]
 }

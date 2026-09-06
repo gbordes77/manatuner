@@ -223,16 +223,18 @@ export const PrivacySettings: React.FC = () => {
               <ListItemText primary="• Saved analyses and the current deck stay in this browser only (no ManaTuner server)" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="• Card names/images are resolved via Scryfall (public API) when you Analyze" />
+              <ListItemText primary="• Card lookups send names or identifiers to Scryfall; images and fonts also use external services" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="• No accounts, no tracking, no analytics, no crash reports" />
+              <ListItemText primary={import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN
+                ? '• No account required. The Sentry SDK is configured in this build; event delivery is not confirmed.'
+                : '• No account required. Sentry error monitoring is disabled in this build.'} />
             </ListItem>
             <ListItem>
               <ListItemText primary="• Share links encode your deck in the URL hash — anyone with the link can open it" />
             </ListItem>
             <ListItem>
-              <ListItemText primary="• Reset deletes all local ManaTuner data (analyses, deck, caches, prefs)" />
+              <ListItemText primary="• Reset requests deletion of local data; IndexedDB cleanup is asynchronous and best effort. Reload to release memory caches." />
             </ListItem>
           </List>
 
@@ -258,7 +260,9 @@ export const PrivacySettings: React.FC = () => {
 
           <Alert severity="info" sx={{ mt: 2 }}>
             <Typography variant="body2">
-              <strong>Privacy:</strong> ManaTuner does not collect any data.
+              <strong>Privacy:</strong> External services receive connection metadata. Reset does not
+              revoke shared links or delete exported files, browser history or third-party logs.
+              Read the <a href="/privacy">privacy policy</a> for storage durations and monitoring details.
             </Typography>
           </Alert>
         </DialogContent>
@@ -274,8 +278,9 @@ export const PrivacySettings: React.FC = () => {
         <DialogTitle color="error">⚠️ Delete all local data</DialogTitle>
         <DialogContent>
           <Typography gutterBottom>
-            This permanently deletes saved analyses, the current deck in this browser, land/producer
-            caches, library progress, and preferences.
+            This requests deletion of saved analyses, the current deck in this browser, caches,
+            library progress, and preferences. IndexedDB cleanup is asynchronous and best effort.
+            Reload afterward to release memory caches. Exported files and shared links remain.
           </Typography>
           <Alert severity="warning" sx={{ mt: 2 }}>
             This action is irreversible! Consider exporting first.
@@ -289,7 +294,7 @@ export const PrivacySettings: React.FC = () => {
               store.dispatch(clearAnalyzer())
               void persistor.purge()
               setShowDataDialog(false)
-              setSnackbarMessage('All local ManaTuner data has been deleted')
+              setSnackbarMessage('Local reset requested. Reload to release memory caches; see Info for limits.')
               setShowSnackbar(true)
             }}
             color="error"

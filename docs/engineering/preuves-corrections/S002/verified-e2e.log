@@ -1,0 +1,81 @@
+[WebServer] (node:49362) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 31 tests using 1 worker
+
+(node:49363) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/31] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution aborts the pending request and remains empty after reload
+[2/31] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+[3/31] [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+[4/31] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px
+[5/31] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px
+[6/31] [chromium] › tests/e2e/core-flows/history-audit.spec.js:27:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+[7/31] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 invalid import preserves existing history and reports outcome
+[8/31] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 quota import preserves existing history and reports outcome
+[9/31] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 merge import preserves existing history and reports outcome
+[10/31] [chromium] › tests/e2e/core-flows/history-audit.spec.js:84:5 › F06 comparison handles validated results and F03 unavailable score
+[11/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[12/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[13/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[14/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[15/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[16/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[17/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:5 › F01 reports the offending line and retains valid experimental decks
+[18/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 excluded sections: saved populations match input
+[19/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 local SB prefix and transitions: saved populations match input
+[20/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 categories and blank lines: saved populations match input
+[21/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[22/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[23/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[24/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[25/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:134:5 › F02 preserves post-board swaps and returning to the main population
+[26/31] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+[27/31] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+[28/31] [chromium] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring
+  1) [chromium] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Info', exact: true })
+
+
+      14 |   await expect(page.getByText(/Before enabling Sentry/)).toBeVisible()
+      15 |   await page.goto('/my-analyses')
+    > 16 |   await page.getByRole('button', { name: 'Info', exact: true }).click()
+         |                                                                 ^
+      17 |   const dialog = page.getByRole('dialog')
+      18 |   await expect(dialog.getByText(/Sentry error monitoring is disabled/)).toBeVisible()
+      19 |   await expect(dialog.getByText(/External services receive connection metadata/)).toBeVisible()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/privacy-audit.spec.js:16:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/verified-browser/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/verified-browser/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/verified-browser/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/verified-browser/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:49823) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[29/31] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:33:5 › F03 hybrid can be supported by green, with honest target limitation and exact detail
+[30/31] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:46:5 › F03 strict RG still reports missing red and phyrexian score is unavailable
+[31/31] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:59:5 › F04 adding a blue sideboard does not change the red main-deck verdict
+  1 failed
+    [chromium] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring 
+  30 passed (57.3s)

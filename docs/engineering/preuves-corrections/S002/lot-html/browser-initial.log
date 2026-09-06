@@ -1,0 +1,1319 @@
+[WebServer] (node:45518) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 16 tests using 1 worker
+
+(node:45522) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:15:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear
+  1) [chromium] › tests/e2e/accessibility/a11y.spec.js:15:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear 
+
+    Error: [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#68a1ca",
+                  "bgColor": "#eaf2f7",
+                  "contrastRatio": 2.45,
+                  "fontSize": "15.0pt (20px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-xy3e21\">",
+                    "target": [
+                      ".css-xy3e21"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.45 (foreground color: #68a1ca, background color: #eaf2f7, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-nvh9ff\">Castability Models</h5>",
+            "target": [
+              ".css-nvh9ff"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.45 (foreground color: #68a1ca, background color: #eaf2f7, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#90949b",
+                  "bgColor": "#eaf2f7",
+                  "contrastRatio": 2.68,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-xy3e21\">",
+                    "target": [
+                      ".css-xy3e21"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.68 (foreground color: #90949b, background color: #eaf2f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-ny9qqk\">Default estimates and explicit exact-model limits</p>",
+            "target": [
+              ".css-xy3e21 > .css-ny9qqk.MuiTypography-body2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.68 (foreground color: #90949b, background color: #eaf2f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#c8ddce",
+                  "bgColor": "#f3f3ed",
+                  "contrastRatio": 1.28,
+                  "fontSize": "15.0pt (20px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-19ro6sy\">",
+                    "target": [
+                      ".css-19ro6sy"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.28 (foreground color: #c8ddce, background color: #f3f3ed, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-n91h3h\">Proven Land Targets</h5>",
+            "target": [
+              ".css-n91h3h"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.28 (foreground color: #c8ddce, background color: #f3f3ed, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#d7d7d3",
+                  "bgColor": "#f3f3ed",
+                  "contrastRatio": 1.29,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-19ro6sy\">",
+                    "target": [
+                      ".css-19ro6sy"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.29 (foreground color: #d7d7d3, background color: #f3f3ed, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-ny9qqk\">How many color sources you need to cast your spells on curve</p>",
+            "target": [
+              ".css-19ro6sy > .css-ny9qqk.MuiTypography-body2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.29 (foreground color: #d7d7d3, background color: #f3f3ed, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#f5f1ed",
+                  "bgColor": "#f5f3ee",
+                  "contrastRatio": 1.01,
+                  "fontSize": "15.0pt (20px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1lqqve8\">",
+                    "target": [
+                      ".css-1lqqve8"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.01 (foreground color: #f5f1ed, background color: #f5f3ee, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-1uyyix8\">Smart Mulligan Advice</h5>",
+            "target": [
+              ".css-1uyyix8"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.01 (foreground color: #f5f1ed, background color: #f5f3ee, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#767980",
+                  "bgColor": "#fbfaf8",
+                  "contrastRatio": 4.17,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+                    "target": [
+                      ".css-1yxdtzw"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 4.17 (foreground color: #767980, background color: #fbfaf8, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Castability</h6>",
+            "target": [
+              ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #767980, background color: #fbfaf8, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#97979b",
+                  "bgColor": "#fbfaf8",
+                  "contrastRatio": 2.78,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+                    "target": [
+                      ".css-1yxdtzw"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-kzregh\">Model-based <span class=\"MuiTypography-root MuiTypography-body1 css-wxjjo9\">cast probability</span>. The default estimate includes mana rocks and dorks; exact modes cover only their stated supported model.</p>",
+            "target": [
+              ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#97979b",
+                  "bgColor": "#fbfaf8",
+                  "contrastRatio": 2.78,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+                    "target": [
+                      ".css-1yxdtzw"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span class=\"MuiTypography-root MuiTypography-body1 css-wxjjo9\">cast probability</span>",
+            "target": [
+              ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2 > .css-wxjjo9.MuiTypography-body1"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#d0d0ce",
+                  "bgColor": "#f7f5f1",
+                  "contrastRatio": 1.41,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1nqiq82\">",
+                    "target": [
+                      ".css-1nqiq82"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.41 (foreground color: #d0d0ce, background color: #f7f5f1, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Analysis Dashboard</h6>",
+            "target": [
+              ".css-1nqiq82 > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.41 (foreground color: #d0d0ce, background color: #f7f5f1, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#dad8d7",
+                  "bgColor": "#f7f5f1",
+                  "contrastRatio": 1.3,
+                  "fontSize": "10.5pt (14px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1nqiq82\">",
+                    "target": [
+                      ".css-1nqiq82"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.3 (foreground color: #dad8d7, background color: #f7f5f1, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-kzregh\">Visual breakdown of your spells by category, curve insights, and performance diagnostics at a glance.</p>",
+            "target": [
+              ".css-1nqiq82 > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.3 (foreground color: #dad8d7, background color: #f7f5f1, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#f3f1ed",
+                  "bgColor": "#f5f3ee",
+                  "contrastRatio": 1.01,
+                  "fontSize": "12.0pt (16px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1eoxf42\">",
+                    "target": [
+                      ".css-1eoxf42"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 1.01 (foreground color: #f3f1ed, background color: #f5f3ee, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Mulligan Simulator</h6>",
+            "target": [
+              ".css-1eoxf42 > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.01 (foreground color: #f3f1ed, background color: #f5f3ee, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 408
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#eaf2f7",
+    +               "contrastRatio": 2.45,
+    +               "expectedContrastRatio": "3:1",
+    +               "fgColor": "#68a1ca",
+    +               "fontSize": "15.0pt (20px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.45 (foreground color: #68a1ca, background color: #eaf2f7, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-xy3e21\">",
+    +                 "target": Array [
+    +                   ".css-xy3e21",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.45 (foreground color: #68a1ca, background color: #eaf2f7, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +         "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-nvh9ff\">Castability Models</h5>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-nvh9ff",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#eaf2f7",
+    +               "contrastRatio": 2.68,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#90949b",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.68 (foreground color: #90949b, background color: #eaf2f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-xy3e21\">",
+    +                 "target": Array [
+    +                   ".css-xy3e21",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.68 (foreground color: #90949b, background color: #eaf2f7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-ny9qqk\">Default estimates and explicit exact-model limits</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-xy3e21 > .css-ny9qqk.MuiTypography-body2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f3f3ed",
+    +               "contrastRatio": 1.28,
+    +               "expectedContrastRatio": "3:1",
+    +               "fgColor": "#c8ddce",
+    +               "fontSize": "15.0pt (20px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.28 (foreground color: #c8ddce, background color: #f3f3ed, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-19ro6sy\">",
+    +                 "target": Array [
+    +                   ".css-19ro6sy",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.28 (foreground color: #c8ddce, background color: #f3f3ed, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +         "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-n91h3h\">Proven Land Targets</h5>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-n91h3h",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f3f3ed",
+    +               "contrastRatio": 1.29,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#d7d7d3",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.29 (foreground color: #d7d7d3, background color: #f3f3ed, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-19ro6sy\">",
+    +                 "target": Array [
+    +                   ".css-19ro6sy",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.29 (foreground color: #d7d7d3, background color: #f3f3ed, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-ny9qqk\">How many color sources you need to cast your spells on curve</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-19ro6sy > .css-ny9qqk.MuiTypography-body2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f5f3ee",
+    +               "contrastRatio": 1.01,
+    +               "expectedContrastRatio": "3:1",
+    +               "fgColor": "#f5f1ed",
+    +               "fontSize": "15.0pt (20px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.01 (foreground color: #f5f1ed, background color: #f5f3ee, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 css-1lqqve8\">",
+    +                 "target": Array [
+    +                   ".css-1lqqve8",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.01 (foreground color: #f5f1ed, background color: #f5f3ee, font size: 15.0pt (20px), font weight: bold). Expected contrast ratio of 3:1",
+    +         "html": "<h5 class=\"MuiTypography-root MuiTypography-h5 css-1uyyix8\">Smart Mulligan Advice</h5>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1uyyix8",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfaf8",
+    +               "contrastRatio": 4.17,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#767980",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 4.17 (foreground color: #767980, background color: #fbfaf8, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+    +                 "target": Array [
+    +                   ".css-1yxdtzw",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 4.17 (foreground color: #767980, background color: #fbfaf8, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Castability</h6>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfaf8",
+    +               "contrastRatio": 2.78,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#97979b",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+    +                 "target": Array [
+    +                   ".css-1yxdtzw",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-kzregh\">Model-based <span class=\"MuiTypography-root MuiTypography-body1 css-wxjjo9\">cast probability</span>. The default estimate includes mana rocks and dorks; exact modes cover only their stated supported model.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fbfaf8",
+    +               "contrastRatio": 2.78,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#97979b",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1yxdtzw\">",
+    +                 "target": Array [
+    +                   ".css-1yxdtzw",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.78 (foreground color: #97979b, background color: #fbfaf8, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"MuiTypography-root MuiTypography-body1 css-wxjjo9\">cast probability</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1yxdtzw > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2 > .css-wxjjo9.MuiTypography-body1",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f7f5f1",
+    +               "contrastRatio": 1.41,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#d0d0ce",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.41 (foreground color: #d0d0ce, background color: #f7f5f1, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1nqiq82\">",
+    +                 "target": Array [
+    +                   ".css-1nqiq82",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.41 (foreground color: #d0d0ce, background color: #f7f5f1, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Analysis Dashboard</h6>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1nqiq82 > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f7f5f1",
+    +               "contrastRatio": 1.3,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#dad8d7",
+    +               "fontSize": "10.5pt (14px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.3 (foreground color: #dad8d7, background color: #f7f5f1, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1nqiq82\">",
+    +                 "target": Array [
+    +                   ".css-1nqiq82",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.3 (foreground color: #dad8d7, background color: #f7f5f1, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<p class=\"MuiTypography-root MuiTypography-body2 css-kzregh\">Visual breakdown of your spells by category, curve insights, and performance diagnostics at a glance.</p>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1nqiq82 > .css-lu93mv.MuiCardContent-root > .css-kzregh.MuiTypography-body2",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#f5f3ee",
+    +               "contrastRatio": 1.01,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#f3f1ed",
+    +               "fontSize": "12.0pt (16px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 1.01 (foreground color: #f3f1ed, background color: #f5f3ee, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiCard-root css-1eoxf42\">",
+    +                 "target": Array [
+    +                   ".css-1eoxf42",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 1.01 (foreground color: #f3f1ed, background color: #f5f3ee, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+    +         "html": "<h6 class=\"MuiTypography-root MuiTypography-h6 css-114o6ff\">Mulligan Simulator</h6>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1eoxf42 > .css-lu93mv.MuiCardContent-root > .css-1a9re40.MuiBox-root > .css-114o6ff",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      19 |       .analyze()
+      20 |     const critical = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')
+    > 21 |     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
+         |                                                         ^
+      22 |   })
+      23 |
+      24 |   test('Analyzer empty — axe critical/serious clear', async ({ page }) => {
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/a11y.spec.js:21:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-96779--axe-critical-serious-clear-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-96779--axe-critical-serious-clear-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-96779--axe-critical-serious-clear-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-96779--axe-critical-serious-clear-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:45542) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:24:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear
+  2) [chromium] › tests/e2e/accessibility/a11y.spec.js:24:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear 
+
+    Error: [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#e65100",
+                  "bgColor": "#fff3e0",
+                  "contrastRatio": 3.45,
+                  "fontSize": "9.8pt (13px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-296x5v\">",
+                    "target": [
+                      ".css-296x5v"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 3.45 (foreground color: #e65100, background color: #fff3e0, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Karsten Math</span>",
+            "target": [
+              ".css-296x5v > .css-tavflp.MuiChip-label.MuiChip-labelSmall"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.45 (foreground color: #e65100, background color: #fff3e0, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#ffffff",
+                  "bgColor": "#3e86bb",
+                  "contrastRatio": 3.93,
+                  "fontSize": "9.8pt (13px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-12zxxiy\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Castability</span></div>",
+                    "target": [
+                      ".css-12zxxiy"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 3.93 (foreground color: #ffffff, background color: #3e86bb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Castability</span>",
+            "target": [
+              ".css-12zxxiy > .css-tavflp.MuiChip-label.MuiChip-labelSmall"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.93 (foreground color: #ffffff, background color: #3e86bb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#ffffff",
+                  "bgColor": "#ba68c8",
+                  "contrastRatio": 3.55,
+                  "fontSize": "9.8pt (13px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-1o0k340\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Mulligan</span></div>",
+                    "target": [
+                      ".css-1o0k340"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 3.55 (foreground color: #ffffff, background color: #ba68c8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Mulligan</span>",
+            "target": [
+              ".css-1o0k340 > .css-tavflp.MuiChip-label.MuiChip-labelSmall"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.55 (foreground color: #ffffff, background color: #ba68c8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+          },
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#ffffff",
+                  "bgColor": "#338f64",
+                  "contrastRatio": 3.99,
+                  "fontSize": "9.8pt (13px)",
+                  "fontWeight": "normal",
+                  "messageKey": null,
+                  "expectedContrastRatio": "4.5:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-7ul5w4\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Manabase</span></div>",
+                    "target": [
+                      ".css-7ul5w4"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #338f64, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Manabase</span>",
+            "target": [
+              ".css-7ul5w4 > .css-tavflp.MuiChip-label.MuiChip-labelSmall"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #338f64, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ]
+      }
+    ]
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -   1
+    + Received  + 163
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#fff3e0",
+    +               "contrastRatio": 3.45,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#e65100",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.45 (foreground color: #e65100, background color: #fff3e0, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-296x5v\">",
+    +                 "target": Array [
+    +                   ".css-296x5v",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.45 (foreground color: #e65100, background color: #fff3e0, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Karsten Math</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-296x5v > .css-tavflp.MuiChip-label.MuiChip-labelSmall",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#3e86bb",
+    +               "contrastRatio": 3.93,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#ffffff",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.93 (foreground color: #ffffff, background color: #3e86bb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-12zxxiy\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Castability</span></div>",
+    +                 "target": Array [
+    +                   ".css-12zxxiy",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.93 (foreground color: #ffffff, background color: #3e86bb, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Castability</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-12zxxiy > .css-tavflp.MuiChip-label.MuiChip-labelSmall",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#ba68c8",
+    +               "contrastRatio": 3.55,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#ffffff",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.55 (foreground color: #ffffff, background color: #ba68c8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-1o0k340\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Mulligan</span></div>",
+    +                 "target": Array [
+    +                   ".css-1o0k340",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.55 (foreground color: #ffffff, background color: #ba68c8, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Mulligan</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-1o0k340 > .css-tavflp.MuiChip-label.MuiChip-labelSmall",
+    +         ],
+    +       },
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#338f64",
+    +               "contrastRatio": 3.99,
+    +               "expectedContrastRatio": "4.5:1",
+    +               "fgColor": "#ffffff",
+    +               "fontSize": "9.8pt (13px)",
+    +               "fontWeight": "normal",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #338f64, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<div class=\"MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-filledDefault css-7ul5w4\"><span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Manabase</span></div>",
+    +                 "target": Array [
+    +                   ".css-7ul5w4",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 3.99 (foreground color: #ffffff, background color: #338f64, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1",
+    +         "html": "<span class=\"MuiChip-label MuiChip-labelSmall css-tavflp\">Manabase</span>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-7ul5w4 > .css-tavflp.MuiChip-label.MuiChip-labelSmall",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      29 |     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+      30 |     const critical = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')
+    > 31 |     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
+         |                                                         ^
+      32 |   })
+      33 |
+      34 |   test('Analyzer after Try Example — no critical/serious axe', async ({ page }) => {
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/a11y.spec.js:31:57
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-110ff--axe-critical-serious-clear-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-110ff--axe-critical-serious-clear-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-110ff--axe-critical-serious-clear-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-110ff--axe-critical-serious-clear-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:45562) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:34:7 › Accessibility smoke (EN) › Analyzer after Try Example — no critical/serious axe
+  3) [chromium] › tests/e2e/accessibility/a11y.spec.js:34:7 › Accessibility smoke (EN) › Analyzer after Try Example — no critical/serious axe 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('analysis-results')
+    Expected: visible
+    Timeout: 60000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('analysis-results') with timeout 60000ms
+      - waiting for getByTestId('analysis-results')
+
+
+      37 |     await page.getByRole('button', { name: /try example/i }).click()
+      38 |     await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
+    > 39 |     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 60000 })
+         |                                                        ^
+      40 |
+      41 |     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+      42 |     const critical = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious')
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/a11y.spec.js:39:56
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-078f4-e-—-no-critical-serious-axe-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-078f4-e-—-no-critical-serious-axe-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-078f4-e-—-no-critical-serious-axe-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-078f4-e-—-no-critical-serious-axe-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:46132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[4/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:46:7 › Accessibility smoke (EN) › Analyzer navigation is unique in the active desktop or mobile menu
+[5/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:60:7 › Accessibility smoke (EN) › Keyboard: tab reaches primary actions on home
+[6/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:71:7 › Accessibility smoke (EN) › Footer contrast text is readable (grey.800 / grey.300)
+[7/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:80:7 › Accessibility smoke (EN) › Home hero shows product preview (P2-2)
+[8/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:86:7 › Accessibility smoke (EN) › Analyzer primary buttons use text + icons (no emoji-only)
+[9/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:96:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11)
+  4) [chromium] › tests/e2e/accessibility/a11y.spec.js:96:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11) 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByTestId('quick-verdict')
+    Expected: visible
+    Timeout: 60000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByTestId('quick-verdict') with timeout 60000ms
+      - waiting for getByTestId('quick-verdict')
+
+
+       99 |     await page.goto('/analyzer')
+      100 |     const tryExample = page.getByRole('button', { name: /try example/i })
+    > 101 |     await expect(tryExample).toBeVisible({ timeout: 15000 })
+          |                                                     ^
+      102 |     const label = (await tryExample.innerText()).replace(/\s+/g, ' ').trim()
+      103 |     expect(label).toMatch(/Try Example/i)
+      104 |     // Emoji-only would be short / symbol-heavy; require latin letters
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/a11y.spec.js:101:53
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-1d6f1-Health-Score-verdict-P2-11--chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-1d6f1-Health-Score-verdict-P2-11--chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-1d6f1-Health-Score-verdict-P2-11--chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/lot-html/browser-initial/accessibility-a11y-Accessi-1d6f1-Health-Score-verdict-P2-11--chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:46642) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[10/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[11/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[12/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[13/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[14/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:4:5 › initial HTTP content, 404, asset and direct analyzer reload
+[15/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:24:5 › direct analyzer query and reload mount the candidate chunks
+[16/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:34:5 › contrast checker detects a real footer regression
+  4 failed
+    [chromium] › tests/e2e/accessibility/a11y.spec.js:15:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear 
+    [chromium] › tests/e2e/accessibility/a11y.spec.js:24:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear 
+    [chromium] › tests/e2e/accessibility/a11y.spec.js:34:7 › Accessibility smoke (EN) › Analyzer after Try Example — no critical/serious axe 
+    [chromium] › tests/e2e/accessibility/a11y.spec.js:96:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11) 
+  12 passed (2.3m)

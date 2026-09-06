@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:44048) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+  1) [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 195.359375
+    Received:    214.296875
+
+      22 |   })
+      23 |   expect(bounds.left).toBeGreaterThanOrEqual(bounds.clipLeft)
+    > 24 |   expect(bounds.right).toBeLessThanOrEqual(bounds.clipRight)
+         |                        ^
+      25 |   await tab.click()
+      26 |   await expect(tab).toHaveAttribute('aria-selected', 'true')
+      27 |   await expect(page.getByText('36 Lightning Bolt', { exact: false }).first()).toBeVisible()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/final-audit.spec.js:24:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/mobile-red/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/mobile-red/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/mobile-red/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/error-context.md
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 

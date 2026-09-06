@@ -1,3 +1,4 @@
+import { healthScoreBand } from '../../utils/healthScore'
 import { calculateStabilityScore } from './manaStability'
 import DownloadIcon from '@mui/icons-material/Download'
 import ImageIcon from '@mui/icons-material/Image'
@@ -52,26 +53,12 @@ const getStabilityLevel = (
       color: BLUEPRINT_COLORS.textMuted,
       description: 'Unrepresented payment symbols',
     }
-  if (score >= 95)
-    return {
-      label: 'Optimal',
-      color: BLUEPRINT_COLORS.success,
-      description: 'Tournament-ready manabase',
-    }
-  if (score >= 85)
-    return {
-      label: 'Highly Stable',
-      color: BLUEPRINT_COLORS.cyan,
-      description: 'Excellent consistency',
-    }
-  if (score >= 75) return { label: 'Stable', color: '#4FC3F7', description: 'Good reliability' }
-  if (score >= 60)
-    return {
-      label: 'Functional',
-      color: BLUEPRINT_COLORS.warning,
-      description: 'Room for improvement',
-    }
-  return { label: 'Unstable', color: BLUEPRINT_COLORS.error, description: 'Needs optimization' }
+  const { label, severity } = healthScoreBand(score)
+  return {
+    label,
+    color: severity === 'info' ? BLUEPRINT_COLORS.cyan : BLUEPRINT_COLORS[severity],
+    description: 'Heuristic turn-two color access; not spell castability',
+  }
 }
 
 interface ManaBlueprintProps {
@@ -163,15 +150,22 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
         })
 
         const imgWidth = 190
-        const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-        const pdf = new jsPDF({
-          orientation: imgHeight > 270 ? 'portrait' : 'portrait',
-          unit: 'mm',
-          format: 'a4',
-        })
-
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, imgWidth, imgHeight)
+        const pageHeight = 277 // A4 height minus two 10 mm margins.
+        const sliceHeight = Math.max(1, Math.floor((canvas.width * pageHeight) / imgWidth))
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+        // Crop contiguous source rows so a tall/mobile blueprint is never cut off
+        // at the first A4 page and each page retains its margins.
+        for (let y = 0; y < canvas.height; y += sliceHeight) {
+          if (y > 0) pdf.addPage()
+          const slice = document.createElement('canvas')
+          slice.width = canvas.width
+          slice.height = Math.min(sliceHeight, canvas.height - y)
+          const context = slice.getContext('2d')
+          if (!context) throw new Error('PDF canvas unavailable')
+          context.drawImage(canvas, 0, y, canvas.width, slice.height, 0, 0, slice.width, slice.height)
+          pdf.addImage(slice.toDataURL('image/png'), 'PNG', 10, 10, imgWidth,
+            (slice.height * imgWidth) / slice.width)
+        }
 
         pdf.save(`mana-blueprint-${deckName.replace(/\s+/g, '-').toLowerCase()}.pdf`)
       }
@@ -309,10 +303,16 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
         </Menu>
       </Box>
 
+      <Typography variant="caption" sx={{ display: { xs: 'block', md: 'none' }, mb: 1 }}>
+        Scroll horizontally to view the full blueprint. Exports include its entire width.
+      </Typography>
+      <Box role="region" aria-label="Scrollable mana blueprint" tabIndex={0} sx={{ overflowX: 'auto' }}>
       {/* Blueprint Card - This is what gets exported */}
       <Paper
         ref={blueprintRef}
+        data-testid="blueprint-card"
         sx={{
+          minWidth: 720,
           background: BLUEPRINT_COLORS.background,
           borderRadius: 3,
           overflow: 'hidden',
@@ -655,7 +655,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
             </Typography>
 
             <Box sx={{ flex: 1 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-between', mb: 0.5 }}>
                 <Typography
                   sx={{
                     color: stability.color,
@@ -1085,6 +1085,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           </Typography>
         </Box>
       </Paper>
+      </Box>
     </Box>
   )
 }

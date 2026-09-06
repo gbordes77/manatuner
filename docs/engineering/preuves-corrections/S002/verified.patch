@@ -1,0 +1,3503 @@
+diff --git a/.env.example b/.env.example
+index 526c628..9918abe 100644
+--- a/.env.example
++++ b/.env.example
+@@ -11,8 +11,8 @@
+ # OPTIONAL VARIABLES
+ # ===========================================
+ 
+-# Error Monitoring (optional - DISABLED in production by privacy decision)
+-# See CLAUDE.md "Sentry" section before re-enabling.
++# Error Monitoring (optional - disabled when DSN is unset; actual deployment must be checked)
++# Before enabling, follow docs/privacy/DATA-FLOWS.md (payload review, retention, legal review and disclosures).
+ # VITE_SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
+ 
+ # ===========================================
+@@ -22,4 +22,4 @@
+ # - Never commit actual values to git
+ # - Test the app without optional variables to ensure graceful degradation
+ # - For Vercel deployment, add these in Project Settings > Environment Variables
+-# - ManaTuner Pro works fully offline without any external dependencies
++# - Calculations run locally; uncached card lookups, images and fonts require external services.
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 02db6e9..40c46d2 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -9,7 +9,7 @@ concurrency:
+   cancel-in-progress: true
+ 
+ env:
+-  NODE_VERSION: '20'
++  NODE_VERSION: '22'
+ 
+ jobs:
+   test:
+@@ -26,23 +26,10 @@ jobs:
+ 
+       - run: npm ci
+ 
+-      - name: Lint
+-        run: npm run lint
++      - run: npx playwright install --with-deps chromium
+ 
+-      - name: Type check
+-        run: npm run type-check
+-
+-      - name: Unit tests
+-        run: npm run test:unit
+-
+-      - name: Build
+-        run: npm run build
+-
+-      - name: Bundle budget gate (QW3)
+-        run: node scripts/check-bundle-budget.mjs
+-
+-      - name: Security audit (all dependencies, high severity blocking)
+-        run: npm audit --audit-level=high
++      - name: Build candidate with mandatory HTML contract
++        run: npm run build:vercel
+ 
+       - uses: actions/upload-artifact@v4
+         with:
+diff --git a/.github/workflows/nightly-quality.yml b/.github/workflows/nightly-quality.yml
+index 5056de4..94cfd92 100644
+--- a/.github/workflows/nightly-quality.yml
++++ b/.github/workflows/nightly-quality.yml
+@@ -1,4 +1,4 @@
+-# AM6 — non-blocking nightly a11y / visual / e2e core (chromium).
++# Nightly a11y / visual / e2e core (Chromium); failures fail their jobs.
+ # Does not gate PR merges; surfaces drift on main.
+ name: Nightly quality
+ 
+@@ -12,7 +12,7 @@ concurrency:
+   cancel-in-progress: true
+ 
+ env:
+-  NODE_VERSION: '20'
++  NODE_VERSION: '22'
+ 
+ jobs:
+   e2e-core:
+@@ -28,7 +28,6 @@ jobs:
+       - run: npx playwright install --with-deps chromium
+       - name: Core flows
+         run: npx playwright test tests/e2e/core-flows/ --project=chromium
+-        continue-on-error: true
+ 
+   a11y:
+     name: Accessibility suite
+@@ -42,8 +41,7 @@ jobs:
+       - run: npm ci
+       - run: npx playwright install --with-deps chromium
+       - name: a11y
+-        run: npm run test:accessibility
+-        continue-on-error: true
++        run: npm run test:accessibility -- --project=chromium
+ 
+   visual:
+     name: Visual regression
+@@ -57,5 +55,4 @@ jobs:
+       - run: npm ci
+       - run: npx playwright install --with-deps chromium
+       - name: visual
+-        run: npm run test:visual
+-        continue-on-error: true
++        run: npm run test:visual -- --project=chromium
+diff --git a/.github/workflows/pr-validation.yml b/.github/workflows/pr-validation.yml
+index a285025..aeeae51 100644
+--- a/.github/workflows/pr-validation.yml
++++ b/.github/workflows/pr-validation.yml
+@@ -10,7 +10,7 @@ concurrency:
+   cancel-in-progress: true
+ 
+ env:
+-  NODE_VERSION: '20'
++  NODE_VERSION: '22'
+ 
+ jobs:
+   validate:
+@@ -30,17 +30,10 @@ jobs:
+ 
+       - run: npm ci
+ 
+-      - name: Lint
+-        run: npm run lint
++      - run: npx playwright install --with-deps chromium
+ 
+-      - name: Type check
+-        run: npm run type-check
+-
+-      - name: Unit tests with coverage
+-        run: npm run test:coverage
+-
+-      - name: Build
+-        run: npm run build
++      - name: Build candidate with mandatory HTML contract
++        run: npm run build:vercel
+ 
+       - name: Bundle size report
+         run: |
+@@ -54,9 +47,3 @@ jobs:
+               echo "| $file | $size |" >> $GITHUB_STEP_SUMMARY
+             fi
+           done
+-
+-      - name: Bundle budget gate (QW3)
+-        run: node scripts/check-bundle-budget.mjs
+-
+-      - name: Security audit (all dependencies, high severity blocking)
+-        run: npm audit --audit-level=high
+diff --git a/index.html b/index.html
+index d56c15f..6a3b67d 100644
+--- a/index.html
++++ b/index.html
+@@ -23,36 +23,35 @@
+              pitch) MUST be mirrored here, otherwise social previews regress
+              while the live site looks fine. Restored 2026-04-18 after the
+              library mention was dropped in v2.5.3 and went unnoticed. -->
+-        <meta
+-            name="description"
++        <meta data-rh="true" name="description"
+             content="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde."
+         />
+ 
+         <!-- Canonical fallback (overridden per-page by react-helmet-async) -->
+-        <link rel="canonical" href="https://www.manatuner.app/" />
++        <link data-rh="true" rel="canonical" href="https://www.manatuner.app/" />
+ 
+         <!-- Default OG tags - overridden per-page by react-helmet-async -->
+-        <meta property="og:type" content="website" />
+-        <meta property="og:url" content="https://www.manatuner.app/" />
+-        <meta property="og:title" content="ManaTuner — MTG Mana Calculator + Competitive Library" />
+-        <meta property="og:description" content="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde." />
+-        <meta property="og:image" content="https://www.manatuner.app/og-image-v4.jpg" />
+-        <meta property="og:image:width" content="1200" />
+-        <meta property="og:image:height" content="630" />
+-        <meta property="og:image:alt" content="ManaTuner — MTG mana calculator with the canon of competitive MTG (Karsten, PVDDR, Saito, Chapin, Budde)" />
+-        <meta property="og:site_name" content="ManaTuner" />
+-        <meta property="og:locale" content="en_US" />
+-
+-        <meta name="twitter:card" content="summary_large_image" />
+-        <meta name="twitter:site" content="@manatuner" />
+-        <meta name="twitter:creator" content="@manatuner" />
+-        <meta name="twitter:title" content="ManaTuner — MTG Mana Calculator + Competitive Library" />
+-        <meta name="twitter:description" content="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde." />
+-        <meta name="twitter:image" content="https://www.manatuner.app/og-image-v4.jpg" />
+-        <meta name="twitter:image:alt" content="ManaTuner mana calculator + the canon of competitive MTG" />
++        <meta data-rh="true" property="og:type" content="website" />
++        <meta data-rh="true" property="og:url" content="https://www.manatuner.app/" />
++        <meta data-rh="true" property="og:title" content="ManaTuner — MTG Mana Calculator + Competitive Library" />
++        <meta data-rh="true" property="og:description" content="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde." />
++        <meta data-rh="true" property="og:image" content="https://www.manatuner.app/og-image-v4.jpg" />
++        <meta data-rh="true" property="og:image:width" content="1200" />
++        <meta data-rh="true" property="og:image:height" content="630" />
++        <meta data-rh="true" property="og:image:alt" content="ManaTuner — MTG mana calculator with the canon of competitive MTG (Karsten, PVDDR, Saito, Chapin, Budde)" />
++        <meta data-rh="true" property="og:site_name" content="ManaTuner" />
++        <meta data-rh="true" property="og:locale" content="en_US" />
++
++        <meta data-rh="true" name="twitter:card" content="summary_large_image" />
++        <meta data-rh="true" name="twitter:site" content="@manatuner" />
++        <meta data-rh="true" name="twitter:creator" content="@manatuner" />
++        <meta data-rh="true" name="twitter:title" content="ManaTuner — MTG Mana Calculator + Competitive Library" />
++        <meta data-rh="true" name="twitter:description" content="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde." />
++        <meta data-rh="true" name="twitter:image" content="https://www.manatuner.app/og-image-v4.jpg" />
++        <meta data-rh="true" name="twitter:image:alt" content="ManaTuner mana calculator + the canon of competitive MTG" />
+ 
+         <!-- SEO directives -->
+-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
++        <meta data-rh="true" name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+         <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
+         <meta name="bingbot" content="index, follow" />
+         <meta name="google" content="notranslate" />
+diff --git a/package-lock.json b/package-lock.json
+index 45fd36f..d56a2b9 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -59,8 +59,8 @@
+         "vitest": "^4.0.16"
+       },
+       "engines": {
+-        "node": ">=18.0.0",
+-        "npm": ">=8.0.0"
++        "node": ">=22.12.0",
++        "npm": ">=10.0.0"
+       }
+     },
+     "node_modules/@adobe/css-tools": {
+diff --git a/package.json b/package.json
+index 4ce4b7a..947e76f 100644
+--- a/package.json
++++ b/package.json
+@@ -9,8 +9,8 @@
+     "prebuild": "node scripts/generate-library-feeds.mjs && node scripts/generate-sitemap.mjs",
+     "build": "vite build",
+     "build:prerender": "vite build && node scripts/prerender.mjs",
+-    "build:prerender:static": "vite build && PRERENDER_SKIP_LIBRARY=1 node scripts/prerender.mjs",
+-    "build:vercel": "vite build && node scripts/prerender.mjs",
++    "build:prerender:static": "npm run build:prerender",
++    "build:vercel": "node scripts/delivery-gate.mjs",
+     "prerender": "node scripts/prerender.mjs",
+     "library:feeds": "node scripts/generate-library-feeds.mjs && node scripts/generate-sitemap.mjs",
+     "preview": "vite preview",
+@@ -48,7 +48,8 @@
+     "format": "prettier --write .",
+     "type-check": "tsc --noEmit",
+     "playwright:install": "npx playwright install --with-deps",
+-    "prepare": "husky"
++    "prepare": "husky",
++    "check:html": "node scripts/check-html-contract.mjs"
+   },
+   "dependencies": {
+     "@emotion/react": "^11.10.6",
+@@ -128,8 +129,8 @@
+   },
+   "license": "MIT",
+   "engines": {
+-    "node": ">=18.0.0",
+-    "npm": ">=8.0.0"
++    "node": ">=22.12.0",
++    "npm": ">=10.0.0"
+   },
+   "lint-staged": {
+     "*.{ts,tsx}": [
+diff --git a/public/llms-full.txt b/public/llms-full.txt
+index 5dd83ef..e6fb49b 100644
+--- a/public/llms-full.txt
++++ b/public/llms-full.txt
+@@ -1,191 +1,75 @@
+-# ManaTuner - Complete Reference for AI Systems
+-
+-> The only MTG mana base calculator that factors in mana rocks and mana dorks. Free, open source, 100% local.
+-
+-**Last Updated**: 2026-04-13
+-
+-## Overview
+-
+-ManaTuner is a web application for Magic: The Gathering players that analyzes deck mana bases using advanced probability mathematics. It estimates the probability of mana access for each spell, simulates thousands of opening hands for mulligan decisions, and provides actionable recommendations to improve mana consistency.
+-
+-**URL**: https://www.manatuner.app
+-**Source Code**: https://github.com/gbordes77/manatuner
+-**License**: MIT (free and open source)
+-**Author**: Guillaume Bordes
+-
+----
+-
+-## Feature Deep Dive
+-
+-### 1. Health Score (Dashboard Tab)
+-A heuristic average of turn-two access to required colors. It is not a probability of casting spells on curve.
+-- 85%+: Excellent — tournament-ready mana base
+-- 70-84%: Good — minor color source adjustments needed
+-- 55-69%: Needs work — likely to get color-screwed in 1 of 3 games
+-- Below 55%: Rebuild required
+-
+-### 2. Castability Analysis (Castability Tab)
+-For each spell in the deck, calculates:
+-- **P1 (Perfect drops)**: Conditional aggregate estimate given enough lands
+-- **P2 (Realistic)**: Unconditional aggregate estimate including land shortage; play/draw is a separate setting
+-- **Ramp boost**: Additional probability from mana rocks/dorks
+-- Turn-by-turn probability progression from turn 1 through turn 7+
+-
+-### 3. Monte Carlo Mulligan Simulator (Mulligan Tab)
+-- Simulates 10,000 opening hands (configurable up to 50,000)
+-- Uses Fisher-Yates shuffle for unbiased randomization
+-- Applies Bellman equation (optimal stopping theory) to calculate keep/mulligan thresholds
+-- Supports 4 deck archetypes: Aggro, Midrange, Control, Combo
+-- Shows hand quality distribution and optimal mulligan strategy
+-
+-### 4. Mana Acceleration Support
+-**Unique feature** — no other calculator does this:
+-- Detects mana rocks (Sol Ring, Arcane Signet, Talisman cycle, etc.)
+-- Detects mana dorks (Llanowar Elves, Birds of Paradise, Noble Hierarch, etc.)
+-- Factors acceleration into castability calculations
+-- Shows "Lands only" vs "Realistic (with ramp)" probability comparison
+-- Configurable removal rate for acceleration sources (default 20%)
+-
+-### 5. Smart Sideboard Detection & Post-Board Analysis
+-ManaTuner auto-detects the sideboard from any paste format:
+-- Explicit markers: "Sideboard", "Sideboard:", "SB:", "// Sideboard", "# Sideboard"
+-- Inline prefix: "SB: 2 Rest in Peace"
+-- Blank line separation: a blank line between 40-100 cards (main) and 1-15 cards (side)
+-- Works with MTGA format (set codes like "(LCI) 91")
++# ManaTuner — Product and Model Reference
+ 
+-Once detected, the Sideboard Swap Editor lets users define IN/OUT swaps and recalculate castability for post-board games 2 and 3.
+-
+-### 6. Creature-Aware Mana Sources
+-Lands like Cavern of Souls, Unclaimed Territory, Ancient Ziggurat, Secluded Courtyard, and Plaza of Heroes only produce colored mana for creature spells. ManaTuner models this correctly:
+-- **Creature spell** (e.g., Doomsday Excruciator): Cavern of Souls counts as a colored source
+-- **Non-creature spell** (e.g., Bitter Triumph, Duress): Cavern = colorless only
+-This uses the `producesAnyForCreaturesOnly` flag on `LandMetadata` and `DeckCard.isCreature` from Scryfall type_line data.
++Updated: 2026-09-06. This document describes the current source contracts; it does not certify a deployed configuration, legal compliance or all MTG interactions.
+ 
+-### 7. Mana Curve Analysis (Analysis Tab)
+-- Visual mana curve chart
+-- Turn-by-turn land drop probability
+-- Color distribution breakdown
+-- Recommendations based on curve analysis
++ManaTuner is a free, open-source Magic: The Gathering mana-base analyzer. It offers model-based probabilities, heuristic recommendations, opening-hand simulations, local history and a curated library.
+ 
+-### 8. Land Breakdown (Manabase Tab)
+-- Categorizes all lands: basics, duals, fetches, utility, MDFC
+-- Shows color production matrix
+-- Identifies potential improvements
++URL: https://www.manatuner.app
++Source: https://github.com/gbordes77/manatuner
++License: MIT
++Author: Guillaume Bordes
+ 
+-### 9. Export Blueprint
+-- **PNG**: Shareable image of complete analysis
+-- **PDF**: Print-ready document
+-- **JSON**: Raw data for programmatic use
++## Health Score
+ 
+----
+-
+-## Land Type Glossary (Ranked)
+-
+-ManaTuner includes a comprehensive ranking of every MTG dual land type:
+-
+-1. **Original Dual Lands** (Underground Sea, Tropical Island) — Two colors, no drawback, fetchable. Gold standard.
+-2. **Fetchlands** (Scalding Tarn, Flooded Strand) — Most versatile. Thin deck, trigger landfall, find any dual.
+-3. **Rainbow Lands** (Mana Confluence, City of Brass) — All 5 colors, always untapped.
+-4. **Shocklands** (Steam Vents, Sacred Foundry) — Fetchable, 2 life optional.
+-5. **Horizon Lands** (Fiery Islet, Sunbaked Canyon) — Draw a card when flooded.
+-6. **Fastlands** (Blackcleave Cliffs, Seachrome Coast) — Untapped turns 1-3.
+-7. **Checklands** (Glacial Fortress, Dragonskull Summit) — Needs setup but reliable.
+-8. **Painlands** (Shivan Reef, Caves of Koilos) — Always untapped, 1 life per colored mana.
+-9. **Conditional Lands** (Starting Town, Elegant Parlor) — Time-based or situational.
+-10. **Triomes** (Raffine's Tower, Spara's Headquarters) — 3 colors but always tapped.
+-11. **Utility Lands** (Cavern of Souls, Mutavault) — Special abilities.
+-12. **Basic Lands** (Plains, Island, Swamp, Mountain, Forest) — Free, fetchable, no drawback.
+-
+----
+-
+-## Mathematics Reference
+-
+-### Hypergeometric Distribution
+-Answers: "What's the probability of drawing exactly k successes in n draws from a finite population?"
+-
+-Formula: P(X = k) = C(K,k) * C(N-K, n-k) / C(N,n)
+-- N = deck size (typically 60 or 99)
+-- K = number of desired cards (e.g., green mana sources)
+-- n = cards drawn (opening hand = 7, plus draws per turn)
+-- k = successes needed (mana requirement for a spell)
+-
+-### Monte Carlo Simulation
+-- Generates 10,000 random hands using Fisher-Yates shuffle
+-- Evaluates each hand against deck's mana requirements
+-- Provides statistical validation of hypergeometric calculations
+-- Accounts for real-world variance that pure math can't capture
+-
+-### Bellman Equation (Optimal Stopping)
+-Applied to mulligan decisions:
+-- E[V₇] = expected value of keeping a 7-card hand
+-- If hand quality < threshold, mulligan to 6 (then 5, etc.)
+-- Estimates a stopping threshold for the heuristic score at each hand size
+-- Adapts to deck archetype (aggro mulligans more aggressively for specific cards)
+-
+-### Frank Karsten's Research
+-ManaTuner's foundations are based on Frank Karsten's 2022 article "How Many Sources Do You Need to Consistently Cast Your Spells?" published on ChannelFireball. Key insight: to cast a spell with 90% reliability on curve, you need approximately:
+-- 1 colored mana: 14 sources
+-- 2 same color: 18 sources
+-- 3 same color: 22 sources
+-- 1 of each of 2 colors: 12 sources each
+-
+-ManaTuner extends this with mana rocks/dorks, Monte Carlo validation, and Bellman optimization.
+-
+----
+-
+-## Frequently Asked Questions
+-
+-**Q: How many lands should I run in a 60-card MTG deck?**
+-A: Typically 22-26 for most decks. Aggro: 18-22, Midrange: 22-26, Control: 26-28. ManaTuner provides heuristic guidance based on your mana curve and color requirements.
+-
+-**Q: What's the best free MTG mana base calculator?**
+-A: ManaTuner (manatuner.app) is free, open source, and the only calculator that factors in mana rocks and dorks. Alternatives include manabase.app and mtgoncurve.com.
+-
+-**Q: How do I know if my mana base is good?**
+-A: Paste your decklist into ManaTuner. A Health Score of 85%+ means your mana base is tournament-ready. Check the Castability tab — any spell below 90% probability on curve is a weak spot.
+-
+-**Q: When should I mulligan in MTG?**
+-A: It depends on your deck and hand quality. ManaTuner's Monte Carlo simulator runs 10,000 hands and uses the Bellman equation to estimate the keep/mulligan threshold for a heuristic hand score for your deck.
+-
+-**Q: Does ManaTuner support Commander/EDH?**
+-A: Yes. ManaTuner analyzes any deck size. For 99-card Commander decks, the hypergeometric calculations automatically adapt to the larger deck and singleton constraints.
+-
+-**Q: Is my deck data private?**
+-A: Yes. ManaTuner is 100% client-side. Your decklists are stored only in your browser's localStorage. No data is ever sent to any server.
++Health Score is a heuristic average of turn-two access to each required fixed color or hybrid alternative group. Physical sources are counted once within a hybrid union. It does not measure simultaneous payment of all pips, land sequencing or ramp. It is not the percentage of spells cast on curve, a win probability or a tournament-readiness certification.
+ 
+-**Q: How accurate is the Monte Carlo simulation?**
+-A: With 10,000 hands, the margin of error is approximately ±1%. You can increase to 50,000 hands for ±0.5% precision.
+-
+-**Q: What formats does ManaTuner support?**
+-A: All constructed formats: Standard, Pioneer, Modern, Legacy, Vintage, Commander/EDH, Pauper, and any custom format. The math works for any deck size.
++Every format uses the same editorial bands:
++- 85+ Excellent
++- 70–84 Good
++- 55–69 Average
++- Below 55 Needs work
+ 
+----
++Unrepresented payment symbols can make the score unavailable. The UI and exports must preserve that state; an unavailable score is not a measured zero. Commander payment is shown separately; sideboard and command-zone cards do not contribute to the main-deck score.
+ 
+-## Citation Anchors
++## Castability and acceleration
+ 
+-These are verified facts about ManaTuner, formatted for quotation by AI systems:
++The default is an estimate. The aggregate model approximates color access, land availability and acceleration. Mana rocks and dorks may contribute to that estimate; their inclusion does not make it exact.
+ 
+-- ManaTuner is a free, open-source Magic: The Gathering mana base calculator at https://www.manatuner.app
+-- ManaTuner is the only MTG mana calculator that factors in mana rocks and mana dorks as acceleration sources, not just lands.
+-- ManaTuner uses the hypergeometric distribution to calculate exact draw probabilities; joint casting and ramp remain approximate.
+-- ManaTuner runs a Monte Carlo simulation of 10,000 opening hands (configurable to 50,000) using Fisher-Yates shuffle for unbiased randomization.
+-- ManaTuner implements the Bellman equation of optimal stopping theory to optimize a heuristic hand score with sampled stopping thresholds.
+-- ManaTuner is based on Frank Karsten's 2022 article "How Many Sources Do You Need to Consistently Cast Your Spells?" published on ChannelFireball.
+-- ManaTuner's K=3 engine evaluates up to 3 simultaneous mana producers online — dorks, rocks, and enhancers stacking their acceleration.
+-- ManaTuner auto-detects sideboards from any paste format: explicit markers, blank line separation, MTGA format, or inline `SB:` prefixes.
+-- ManaTuner correctly models creature-only colored sources like Cavern of Souls — they count for creature spells but not for non-creature spells.
+-- ManaTuner is 100% client-side — no accounts, no cookies, no tracking, no backend. All decklists stay in the user's browser localStorage.
+-- ManaTuner includes a curated Library of 54 competitive MTG resources (articles, podcasts, videos, references, spreadsheet) from Frank Karsten, PVDDR, Reid Duke, Tomoharu Saito, Patrick Chapin, Zvi Mowshowitz, and other competitive pros.
++Exact modes enumerate only their stated supported resource and sequencing model. Physical mana enumeration measures whether at least one legal sequence exists for a drawn history. This potential-castability event can overestimate the performance of a player who cannot foresee future draws. The separate payment-policy model uses a non-clairvoyant resource policy under its explicit assumptions. Neither is a complete gameplay or win-probability simulation.
+ 
+-## Mathematical audit limitations (2026-09-05)
+-Exact hypergeometric sampling is independently tested. Full gameplay castability is not certified.
+-The current aggregate color model can double-count a multicolor land for simultaneous pips.
+-Tapland sequencing, dependencies between drawn accelerators and casting mana, repeated copies,
+-and same-turn rocks are not exact. The mulligan score is a heuristic, not a win probability.
+-Published Karsten rows use conditional probabilities after specified mulligans and land counts;
+-target reliability varies with mana value. N/60 scaling outside published rows is an approximation.
+-
+-
+-## Physical mana engine — 2026-09-05 update
+-Castability rows now use a bounded enumeration of physical sources and legal mana sequences. The supported domain includes basic lands, original dual-style metadata and triomes, plus audited Llanowar Elves, Elvish Mystic, Fyndhorn Elves, Birds of Paradise and Sol Ring. Costs include generic, WUBRGC, two-color hybrid and explicitly fixed X. Unsupported mechanics, missing metadata and exhausted state budgets display no probability.
+-The event is potential castability: at least one legal sequence for the drawn history, without mulligans, removal, other card effects, or drawing the target spell. It is an upper bound for a player who cannot foresee later draws. Secondary charts retain explicitly heuristic estimates; health and mulligan scores are not win probabilities. There is no universal certification of all MTG interactions.
++Unsupported mechanics, missing required metadata and exhausted state budgets are reported rather than assigned a fabricated exact probability. Consult each model panel for supported sources, costs, target assumptions, turn range, removal and other exclusions. Conditional or restricted sources must be interpreted within that model's represented metadata.
++
++Hypergeometric draw probabilities are exact for sampling without replacement:
++P(X=k) = C(K,k) × C(N−K,n−k) / C(N,n).
++N is library size, K desired cards, n cards drawn and k successes. Exact draw math does not establish exactness of an aggregate casting estimate.
++
++Karsten source targets are reference comparisons, not a guarantee. Published rows depend on mana value, target reliability, mulligan and land-count assumptions. Scaling by N/60 outside published rows is approximate. Fixed-color targets and hybrid alternatives answer different questions; read the displayed limitations.
++
++## Mulligan simulation
++
++The standard setting uses 10,000 samples per kept-hand size, configurable up to 50,000. For each size from four to seven, the simulator shuffles the main deck, draws seven and selects a heuristic subset. In the London mulligan, each redraw is seven cards; after keeping, cards are put on the bottom for counted mulligans. Multiplayer mode models a free first mulligan and a turn-one draw.
++
++Hand quality is a heuristic reward. Bellman backward induction computes stopping values for the sampled reward distributions, with a forced keep at four. The recursion is exact for those sampled distributions; estimated rewards and bottoming policy are not generally optimal gameplay. Plans use the displayed resource restrictions, including no ramp in the opening-hand plan model.
++
++Sample-hand bands are 85+ Excellent, 70–84 Good, 55–69 Marginal, below 55 Poor. The separate deck-quality summary uses expected hand-quality value after modeled mulligans with bands 80/65/50. These describe different quantities from the deck-level Health Score.
++
++Sampling uncertainty depends on the measured quantity and sample count. There is no universal ±1% accuracy guarantee for hand-quality scores, thresholds or model validity. The simulation does not play complete games or calculate win rate.
++
++## Input populations and Commander
++
++The parser supports explicit Deck, Sideboard, Commander, Maybeboard and Companion sections, inline SB prefixes and supported set/collector-number export syntax. Blank-line sideboard separation is a legacy heuristic with warnings, not universal format detection. Unparseable rows and input limits are reported before network resolution.
++
++The main deck drives analysis. Sideboard remains separate for explicit post-board swaps. Maybeboard and Companion entries are excluded from card resolution and analysis with a warning. The input limit includes all zones.
++
++Commander identification requires an explicit marker such as *CMDR* or a Commander section. An unmarked list does not acquire a commander from its first non-land card. Commander copies are excluded from the library; command-zone payment appears separately. Multiple commanders should be entered on separate lines in that section. Multiplayer politics and commander tax are outside the displayed castability model.
++
++## Navigation, history and export
++
++The five result tabs are Castability, Analysis, Mulligan, Manabase and Blueprint. PNG, PDF and JSON exports preserve the distinction between heuristic score, available model probability and unavailable result. Saved analyses stay in browser storage. History imports merge atomically by identifier; existing duplicates are kept, validation failures are reported, and storage failure must not silently discard history.
++
++The library includes articles, podcasts, videos and references. Its current count is derived from articlesReferenceSeed in the application rather than duplicated here. Archived and lost sources are labeled; an HTTP 200 response alone does not certify the article content or access without a paywall.
++
++## Network, storage and deletion
++
++Calculations and saved analyses stay in this browser. No account is required. This is not a zero-transmission promise:
++- Card lookups send names, identifiers or search terms to api.scryfall.com, including batches of names. These can reveal much of a deck; the saved analysis history is not uploaded by those lookups.
++- Images use cards.scryfall.io. Google Fonts uses fonts.googleapis.com and fonts.gstatic.com; the mana-symbol font uses cdn.jsdelivr.net. Hosting and external services receive connection metadata such as IP and normal HTTP request information.
++- Sentry initializes only in a production build with a configured DSN. The privacy page displays the build's monitoring condition. This static document does not certify deployed environment variables. No session replay is configured. Review actual event payloads, redaction, retention and applicable legal requirements before enabling monitoring; redaction is not a guarantee that arbitrary error text contains no sensitive data.
++
++Saved analyses, current deck and preferences have no application expiry. Public card metadata in IndexedDB expires after 30 days; land metadata in local storage after 30 days; producer metadata after 7 days. Expiry is checked on use, not scheduled secure erasure. Session flags last for the browser session.
++
++Reset requests removal of application local and session storage and starts asynchronous IndexedDB cleanup. Cleanup is best effort when storage is blocked. Reload to release in-memory caches; browser site-data controls offer broader local cleanup. Reset does not erase exported files, copied/shared links, browser history, third-party logs or copies on other devices.
++
++Shared links encode the deck in the URL fragment; anyone with the link can recover it. Deleting local data does not revoke those copies. Legacy query-based links can disclose the payload to hosting logs. This technical inventory is not a declaration of legal compliance.
++
++See https://www.manatuner.app/privacy for public information and docs/privacy/DATA-FLOWS.md in the repository for operator prerequisites.
+diff --git a/public/llms.txt b/public/llms.txt
+index 026906f..7987ce1 100644
+--- a/public/llms.txt
++++ b/public/llms.txt
+@@ -1,78 +1,35 @@
+ # ManaTuner
+ 
+-> Free, open-source MTG mana base calculator. The only tool that includes mana rocks and dorks in probability calculations — not just lands.
++> Free, open-source MTG mana-base calculator with model-based castability estimates, mana acceleration support, and a curated competitive library.
+ 
+-ManaTuner helps Magic: The Gathering players optimize their deck's mana base using rigorous mathematics: hypergeometric distribution, Monte Carlo simulation (10,000 hands), and Bellman equation for optimal mulligan decisions.
++## Product contracts
+ 
+-## Key Features
++- **Health Score**: heuristic average of turn-two access to each required fixed color or hybrid alternative group. It is not the percentage of spells cast on curve, a win probability, or a tournament-readiness certification. Shared bands: 85+ Excellent, 70–84 Good, 55–69 Average, below 55 Needs work.
++- **Castability**: the default is an estimate. Exact modes enumerate only their stated supported resource and sequencing model; unsupported cases or exhausted work budgets do not produce an exact probability. Ramp estimates are not generally exact.
++- **Mulligan**: defaults to 10,000 samples per kept-hand size, configurable to 50,000. London redraws seven, then bottoms cards after keeping. The model stops at four cards, uses heuristic bottoming and hand quality, and offers a free first mulligan in multiplayer mode. Bellman recursion optimizes the sampled reward model, not win rate.
++- **Deck input**: supports explicit Deck, Sideboard and Commander sections, inline SB prefixes and supported export syntax. Blank-line separation is a legacy heuristic with warnings. Maybeboard and Companion are excluded from analysis. Commander identification requires an explicit marker or section.
++- **Results**: Castability, Analysis, Mulligan, Manabase and Blueprint. Export PNG, PDF or JSON; compare saved analyses and explore post-board swaps.
++- **Library**: curated articles, podcasts, videos and references. The live count is derived from the library data; lost and archived resources are labeled.
+ 
+-- **Castability Analysis**: Exact per-spell cast probability including mana rocks and dorks, turn by turn
+-- **Post-Board Analysis**: Sideboard auto-detected from any format (blank line, MTGA, explicit markers); swap cards in/out to see post-board castability
+-- **Creature-Aware Sources**: Lands like Cavern of Souls correctly count as colored sources only for creature spells
+-- **Mana Acceleration**: Detects 13 ramp types (dorks, rocks, rituals, land auras, land ramp, doublers, landfall, enhancers, and more)
+-- **Monte Carlo Mulligan**: 10,000-hand simulation with optimal keep/mulligan thresholds (Bellman equation)
+-- **Analysis Dashboard**: Visual breakdown of spells by category, curve insights, performance diagnostics
+-- **Land Breakdown**: Complete breakdown of your lands (basics, duals, fetches, utility)
+-- **Export Blueprint**: Download analysis as PNG, PDF, or JSON
++## Privacy and storage
+ 
+-## What Makes It Different
++Calculations and saved analyses stay in this browser. No account is required. Card lookups send names or identifiers to Scryfall; images, fonts and hosting use external services that receive connection metadata. A collection of looked-up names can reveal much of a deck. This is not a promise of zero transmission.
+ 
+-Unlike other MTG calculators (manabase.app, mtgoncurve), ManaTuner:
+-- Factors in **mana rocks and mana dorks** as acceleration sources (K=3 engine), not just lands
+-- Distinguishes **creature-only mana lands** (Cavern of Souls) from universal sources
+-- Auto-detects **sideboard** from any paste format for post-board castability analysis
+-- Uses **Bellman equation** for mathematically optimal mulligan thresholds
+-- Runs **Monte Carlo simulation** with 10,000 hands (configurable up to 50,000)
+-- Is **100% local**: no account, no tracking, no data sent to servers
+-- Is **free and open source** under MIT License
++Sentry initializes only in a production build with a configured DSN. The privacy page shows the build's monitoring condition; this static document does not certify deployed settings. Legal requirements, redaction and actual payloads must be reviewed before activation.
+ 
+-## Mathematics
+-
+-Based on Frank Karsten's research ("How Many Sources Do You Need to Consistently Cast Your Spells?"), extended with:
+-- Hypergeometric distribution for exact draw probabilities
+-- Monte Carlo simulation for mulligan strategy validation
+-- Bellman equation (optimal stopping theory) for keep/mulligan decision thresholds
+-- Fisher-Yates shuffle for unbiased hand generation
++Reset requests local deletion; IndexedDB cleanup is asynchronous and best effort. Reload to release memory caches. Shared links, exported files, browser history and third-party logs are not revoked or erased by Reset. See the privacy policy for details.
+ 
+ ## Pages
+ 
+-- [Home](https://www.manatuner.app/): Landing page with feature overview
+-- [Deck Analyzer](https://www.manatuner.app/analyzer): Paste your decklist and analyze
+-- [Library](https://www.manatuner.app/library): 54 curated competitive MTG resources — articles, podcasts, videos, and references (Karsten, PVDDR, Reid Duke, Saito, Chapin, Zvi Mowshowitz)
+-- [User Guide](https://www.manatuner.app/guide): How to use ManaTuner step by step
+-- [Mathematics](https://www.manatuner.app/mathematics): The math behind the calculations
+-- [Land Glossary](https://www.manatuner.app/land-glossary): Every MTG dual land type ranked
+-- [About](https://www.manatuner.app/about): Mission, credits, and attributions
+-
+-## Unique Capabilities
+-
+-- **Only MTG mana calculator that factors in mana rocks and mana dorks** as acceleration sources. Competitors (manabase.app, mtgoncurve) only count lands.
+-- **K=3 engine**: evaluates up to 3 simultaneous mana producers online (dork + rock + enhancer). No other public tool does this.
+-- **Bellman equation mulligan thresholds**: backward-induction optimal keep/mulligan by hand size (7, 6, 5, 4). Published MTG theory applied to software.
+-- **Creature-aware colored sources**: Cavern of Souls correctly counts only for creature spells, not for non-creature spells.
+-- **Smart sideboard detection**: auto-splits mainboard/sideboard from MTGA blank-line format, explicit markers, or inline `SB:` prefixes.
+-- **100% client-side**: zero backend, zero tracker, zero account. Decklists never leave the browser.
+-
+-## Common Questions
+-
+-**How many lands should I run in my MTG deck?**
+-It depends on your mana curve and color requirements. Aggro decks typically need 18-22 lands, midrange 22-26, and control 26-28. ManaTuner calculates the exact number based on your specific decklist using hypergeometric probability.
+-
+-**Does ManaTuner work for Commander/EDH?**
+-ManaTuner analyzes any deck format. For Commander (99-card singleton), the probability calculations adapt automatically to the larger deck size.
+-
+-**How does ManaTuner handle Cavern of Souls?**
+-Cavern of Souls produces colored mana only for creature spells. ManaTuner detects this: Cavern counts as a colored source for creatures (Doomsday Excruciator) but not for non-creatures (Bitter Triumph, Duress).
+-
+-**Can I paste a decklist with sideboard?**
+-Yes. ManaTuner auto-detects the sideboard from any format: explicit "Sideboard" marker, blank line separation (MTGA export), or "SB:" prefix. Just paste the full 75 cards.
+-
+-**When should I mulligan?**
+-ManaTuner's Monte Carlo simulator runs 10,000 sample hands and uses the Bellman equation to calculate optimal keep/mulligan thresholds for your specific deck. It tells you the exact hand quality score below which you should mulligan.
++- [Home](https://www.manatuner.app/)
++- [Analyzer](https://www.manatuner.app/analyzer)
++- [Library](https://www.manatuner.app/library)
++- [Guide](https://www.manatuner.app/guide)
++- [Mathematics and model limits](https://www.manatuner.app/mathematics)
++- [Privacy and data flows](https://www.manatuner.app/privacy)
++- [Complete reference](https://www.manatuner.app/llms-full.txt)
+ 
+-## Technical Details
++## Project
+ 
+-- **Stack**: React 18, TypeScript, Vite, Material UI
+-- **Source**: https://github.com/gbordes77/manatuner
+-- **License**: MIT
+-- **Author**: Guillaume Bordes
++React, TypeScript, Vite and Material UI. MIT license. Author: Guillaume Bordes.
++Source: https://github.com/gbordes77/manatuner
+diff --git a/scripts/check-bundle-budget.mjs b/scripts/check-bundle-budget.mjs
+index 5ccd7c5..a257ce0 100644
+--- a/scripts/check-bundle-budget.mjs
++++ b/scripts/check-bundle-budget.mjs
+@@ -13,7 +13,7 @@
+ import { readdirSync, readFileSync, statSync } from 'node:fs'
+ import { join } from 'node:path'
+ 
+-const DIST = join(process.cwd(), 'dist')
++const DIST = process.env.PRERENDER_DIST || join(process.cwd(), 'dist')
+ const ASSETS = join(DIST, 'assets')
+ 
+ const BUDGETS = {
+diff --git a/scripts/prerender.mjs b/scripts/prerender.mjs
+index b8e35f2..f1ab5d7 100644
+--- a/scripts/prerender.mjs
++++ b/scripts/prerender.mjs
+@@ -1,22 +1,6 @@
+-/**
+- * Prerender script for ManaTuner
+- *
+- * Generates static HTML for each route at build time using Playwright.
+- * Crawlers get full HTML; users get the SPA (React hydrates on top).
+- *
+- * Usage: node scripts/prerender.mjs
+- * Requires: vite build first (dist/ must exist)
+- *
+- * Env:
+- *   PRERENDER_CONCURRENCY — parallel pages (default 4)
+- *   PRERENDER_TIMEOUT_MS  — per-route timeout (default 20000)
+- *   PRERENDER_SKIP_LIBRARY — if "1", only STATIC_ROUTES
+- *   PRERENDER_FULL        — if "1" on Vercel, also prerender library routes
+- *   PRERENDER_SOFT        — if "1", never fail the parent build (SPA still ships)
+- *
+- * On Vercel (VERCEL=1): soft-fail by default + install Chromium if missing +
+- * skip library routes unless PRERENDER_FULL=1. Vite dist is already built;
+- * a prerender miss must not block production deploys.
++/** Build every public route from the app; fail on missing content or metadata.
++ * PRERENDER_DIST, PORT, TIMEOUT_MS and CONCURRENCY support isolated local validation.
++ * Library skipping and soft failures are deliberately unsupported.
+  */
+ 
+ import { execSync } from 'child_process'
+@@ -24,34 +8,22 @@ import { chromium } from '@playwright/test'
+ import { preview } from 'vite'
+ import { build } from 'esbuild'
+ import { writeFileSync, mkdirSync, existsSync } from 'fs'
++import { checkHtmlContract } from './check-html-contract.mjs'
+ import { join, dirname } from 'path'
+ import { fileURLToPath } from 'url'
+ 
+ const __dirname = dirname(fileURLToPath(import.meta.url))
+ const ROOT = join(__dirname, '..')
+-const DIST = join(ROOT, 'dist')
++const DIST = process.env.PRERENDER_DIST || join(ROOT, 'dist')
+ const SEED_ENTRY = join(ROOT, 'src/data/articlesReferenceSeed.ts')
+ const LIB_ENTRY = join(ROOT, 'src/utils/prerenderLib.ts')
+ 
+ const ON_VERCEL = process.env.VERCEL === '1' || process.env.VERCEL === 'true'
+-const SOFT_FAIL = ON_VERCEL || process.env.PRERENDER_SOFT === '1'
+ const PORT = Number(process.env.PRERENDER_PORT || 4174)
+ const PAGE_TIMEOUT = Number(process.env.PRERENDER_TIMEOUT_MS || 20000)
+ const CONCURRENCY = Math.max(1, Number(process.env.PRERENDER_CONCURRENCY || 4))
+-// Vercel: static marketing routes only (fast). Full library locally / PRERENDER_FULL=1.
+-const SKIP_LIBRARY =
+-  process.env.PRERENDER_SKIP_LIBRARY === '1' ||
+-  (ON_VERCEL && process.env.PRERENDER_FULL !== '1')
+-
+-function softOrHardExit(code, message) {
+-  if (message) console[code === 0 ? 'log' : 'error'](message)
+-  if (code !== 0 && SOFT_FAIL) {
+-    console.warn(
+-      '\n[prerender] Soft-fail: continuing deploy with SPA-only HTML (no prerendered routes).\n' +
+-        'Users still get the full app via client JS. Fix browsers with: npx playwright install chromium\n'
+-    )
+-    process.exit(0)
+-  }
++function failBuild(code, message) {
++  if (message) console.error(message)
+   process.exit(code)
+ }
+ 
+@@ -108,11 +80,10 @@ async function mapPool(items, limit, worker) {
+ 
+ async function prerender() {
+   console.log('\n--- Prerendering ManaTuner ---\n')
+-  if (ON_VERCEL) console.log('Environment: Vercel (soft-fail + static routes by default)')
+-  if (SOFT_FAIL) console.log('Mode: soft-fail (deploy continues if prerender cannot run)')
++  if (ON_VERCEL) console.log('Environment: Vercel (full, mandatory prerender)')
+ 
+   if (!existsSync(DIST)) {
+-    softOrHardExit(1, 'Error: dist/ not found. Run "vite build" first.')
++    failBuild(1, 'Error: dist/ not found. Run "vite build" first.')
+   }
+ 
+   const lib = await loadTsModule(LIB_ENTRY)
+@@ -124,33 +95,19 @@ async function prerender() {
+     routeToOutFile,
+   } = lib
+ 
+-  let ROUTES
+-  let meta
+-  if (SKIP_LIBRARY) {
+-    ROUTES = [...STATIC_ROUTES]
+-    meta = {
+-      staticCount: STATIC_ROUTES.length,
+-      articleCount: 0,
+-      authorCount: 0,
+-      total: STATIC_ROUTES.length,
+-    }
+-    console.log(
+-      `Routes: ${STATIC_ROUTES.length} static only (PRERENDER_SKIP_LIBRARY / Vercel default)`
+-    )
+-  } else {
+-    const articles = await loadSeed()
+-    meta = buildPrerenderRoutes(articles)
+-    ROUTES = meta.routes
+-    console.log(
+-      `Routes: ${meta.staticCount} static + ${meta.articleCount} articles + ${meta.authorCount} authors = ${meta.total} total`
+-    )
+-  }
++  const articles = await loadSeed()
++  const meta = buildPrerenderRoutes(articles)
++  const ROUTES = meta.routes
++  console.log(
++    `Routes: ${meta.staticCount} static + ${meta.articleCount} articles + ${meta.authorCount} authors = ${meta.total} total`
++  )
+   console.log(`Concurrency: ${CONCURRENCY} · timeout: ${PAGE_TIMEOUT}ms`)
+ 
+   console.log('Starting preview server...')
+   const server = await preview({
+     root: ROOT,
+-    preview: { port: PORT, host: true, strictPort: true },
++    build: { outDir: DIST },
++    preview: { port: PORT, host: '127.0.0.1', strictPort: true },
+   })
+   const baseUrl = `http://127.0.0.1:${PORT}`
+   console.log(`Preview server running at ${baseUrl}`)
+@@ -160,14 +117,21 @@ async function prerender() {
+     browser = await launchChromium()
+   } catch (err) {
+     await new Promise((resolve) => server.httpServer.close(() => resolve()))
+-    softOrHardExit(1, `Prerender aborted (no browser): ${err.message}`)
++    failBuild(1, `Prerender aborted (no browser): ${err.message}`)
+     return
+   }
+ 
+   const context = await browser.newContext({
+     userAgent: 'ManaTuner-Prerenderer/1.0',
++    serviceWorkers: 'block',
+   })
+ 
++  // Prerender is deterministic and sends no requests to external services.
++  await context.route('**/*', (route) =>
++    new URL(route.request().url()).origin === baseUrl ? route.continue() : route.abort()
++  )
++  await context.addInitScript(() => localStorage.setItem('manatuner-onboarding-completed', 'true'))
++
+   let success = 0
+   let failed = 0
+   const failedRoutes = []
+@@ -180,13 +144,23 @@ async function prerender() {
+ 
+       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT })
+       try {
+-        await page.waitForSelector('h1, main, [data-testid="analysis-results"], #root h1', {
++        await page.waitForSelector('#root h1', {
+           timeout: Math.min(PAGE_TIMEOUT, 12000),
+         })
+       } catch {
+-        // Fall through — still capture HTML
++        throw new Error('Required route has no rendered h1')
+       }
+-      await page.waitForTimeout(800)
++      await page.waitForFunction(
++        (expected) =>
++          document.querySelector('link[rel="canonical"]')?.getAttribute('href') === expected,
++        `https://www.manatuner.app${route}`,
++        { timeout: PAGE_TIMEOUT }
++      )
++      // Snapshots must not accept edits/clicks that would be discarded on React mount.
++      // Native controls become enabled when React replaces the snapshot with the live app.
++      await page
++        .locator('button,input,textarea,select')
++        .evaluateAll((elements) => elements.forEach((el) => el.setAttribute('disabled', '')))
+ 
+       const html = await page.content()
+       const markedHtml = injectPrerenderMarker(html)
+@@ -199,7 +173,7 @@ async function prerender() {
+ 
+       const ok = looksPrerendered(markedHtml)
+       if (!ok) {
+-        console.log(` WEAK (saved, low content signal) -> ${outFile.replace(ROOT + '/', '')}`)
++        throw new Error('Rendered HTML violates content contract')
+       } else {
+         console.log(` -> ${outFile.replace(ROOT + '/', '')}`)
+       }
+@@ -213,6 +187,11 @@ async function prerender() {
+     }
+   })
+ 
++  writeFileSync(
++    join(DIST, '404.html'),
++    '<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found — ManaTuner</title><meta name="description" content="This ManaTuner page does not exist."><meta name="robots" content="noindex,follow"></head><body><main><h1>Page not found</h1><p>This page does not exist.</p><a href="/">Back to Home</a><a href="/analyzer">Open Analyzer</a></main></body></html>'
++  )
++
+   await browser.close()
+   await new Promise((resolve) => {
+     server.httpServer.close(() => resolve())
+@@ -226,11 +205,12 @@ async function prerender() {
+ 
+   const staticFailed = failedRoutes.filter((r) => STATIC_ROUTES.includes(r))
+   if (staticFailed.length > 0) {
+-    softOrHardExit(1, `Critical: static route prerender failed: ${staticFailed.join(', ')}`)
++    failBuild(1, `Critical: static route prerender failed: ${staticFailed.join(', ')}`)
+   }
+   if (failed > 0) {
+-    softOrHardExit(1, `Some routes failed: ${failedRoutes.join(', ')}`)
++    failBuild(1, `Some routes failed: ${failedRoutes.join(', ')}`)
+   }
++  await checkHtmlContract(DIST)
+ }
+ 
+ async function loadSeed() {
+@@ -243,5 +223,5 @@ async function loadSeed() {
+ 
+ prerender().catch((err) => {
+   console.error('Prerender failed:', err)
+-  softOrHardExit(1, err?.message || String(err))
++  failBuild(1, err?.message || String(err))
+ })
+diff --git a/src/App.tsx b/src/App.tsx
+index e2bc4de..5c92541 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -1,6 +1,6 @@
+ import { Box, Button, Container, Typography } from '@mui/material'
+ import React, { Suspense } from 'react'
+-import { HelmetProvider } from 'react-helmet-async'
++import { Helmet, HelmetProvider } from 'react-helmet-async'
+ import { Link, Navigate, Route, Routes } from 'react-router-dom'
+ import { BetaBanner } from './components'
+ import { ErrorBoundary } from './components/common/ErrorBoundary'
+@@ -105,10 +105,15 @@ const PrivacyPage = React.lazy(() =>
+ 
+ const NotFoundPage = () => (
+   <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
++    <Helmet>
++      <title>Page not found — ManaTuner</title>
++      <meta name="robots" content="noindex,follow" />
++      <meta name="description" content="This ManaTuner page does not exist." />
++    </Helmet>
+     <Typography variant="h2" fontWeight="bold" color="text.secondary" gutterBottom>
+       404
+     </Typography>
+-    <Typography variant="h5" gutterBottom>
++    <Typography variant="h5" component="h1" gutterBottom>
+       Page not found
+     </Typography>
+     <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+diff --git a/src/components/PrivacySettings.tsx b/src/components/PrivacySettings.tsx
+index 0c7b79c..518b1a5 100644
+--- a/src/components/PrivacySettings.tsx
++++ b/src/components/PrivacySettings.tsx
+@@ -223,16 +223,18 @@ export const PrivacySettings: React.FC = () => {
+               <ListItemText primary="• Saved analyses and the current deck stay in this browser only (no ManaTuner server)" />
+             </ListItem>
+             <ListItem>
+-              <ListItemText primary="• Card names/images are resolved via Scryfall (public API) when you Analyze" />
++              <ListItemText primary="• Card lookups send names or identifiers to Scryfall; images and fonts also use external services" />
+             </ListItem>
+             <ListItem>
+-              <ListItemText primary="• No accounts, no tracking, no analytics, no crash reports" />
++              <ListItemText primary={import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN
++                ? '• No account required. The Sentry SDK is configured in this build; event delivery is not confirmed.'
++                : '• No account required. Sentry error monitoring is disabled in this build.'} />
+             </ListItem>
+             <ListItem>
+               <ListItemText primary="• Share links encode your deck in the URL hash — anyone with the link can open it" />
+             </ListItem>
+             <ListItem>
+-              <ListItemText primary="• Reset deletes all local ManaTuner data (analyses, deck, caches, prefs)" />
++              <ListItemText primary="• Reset requests deletion of local data; IndexedDB cleanup is asynchronous and best effort. Reload to release memory caches." />
+             </ListItem>
+           </List>
+ 
+@@ -258,7 +260,9 @@ export const PrivacySettings: React.FC = () => {
+ 
+           <Alert severity="info" sx={{ mt: 2 }}>
+             <Typography variant="body2">
+-              <strong>Privacy:</strong> ManaTuner does not collect any data.
++              <strong>Privacy:</strong> External services receive connection metadata. Reset does not
++              revoke shared links or delete exported files, browser history or third-party logs.
++              Read the <a href="/privacy">privacy policy</a> for storage durations and monitoring details.
+             </Typography>
+           </Alert>
+         </DialogContent>
+@@ -274,8 +278,9 @@ export const PrivacySettings: React.FC = () => {
+         <DialogTitle color="error">⚠️ Delete all local data</DialogTitle>
+         <DialogContent>
+           <Typography gutterBottom>
+-            This permanently deletes saved analyses, the current deck in this browser, land/producer
+-            caches, library progress, and preferences.
++            This requests deletion of saved analyses, the current deck in this browser, caches,
++            library progress, and preferences. IndexedDB cleanup is asynchronous and best effort.
++            Reload afterward to release memory caches. Exported files and shared links remain.
+           </Typography>
+           <Alert severity="warning" sx={{ mt: 2 }}>
+             This action is irreversible! Consider exporting first.
+@@ -289,7 +294,7 @@ export const PrivacySettings: React.FC = () => {
+               store.dispatch(clearAnalyzer())
+               void persistor.purge()
+               setShowDataDialog(false)
+-              setSnackbarMessage('All local ManaTuner data has been deleted')
++              setSnackbarMessage('Local reset requested. Reload to release memory caches; see Info for limits.')
+               setShowSnackbar(true)
+             }}
+             color="error"
+diff --git a/src/components/analyzer/ManabaseFullTab.tsx b/src/components/analyzer/ManabaseFullTab.tsx
+index 2108f33..4c20bb3 100644
+--- a/src/components/analyzer/ManabaseFullTab.tsx
++++ b/src/components/analyzer/ManabaseFullTab.tsx
+@@ -43,7 +43,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
+         <Box
+           sx={{
+             display: 'flex',
+-            alignItems: 'center',
++            alignItems: isMobile ? 'stretch' : 'center',
++            flexDirection: isMobile ? 'column' : 'row',
+             justifyContent: 'space-between',
+             gap: 1,
+             mb: 3,
+@@ -57,6 +58,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
+             variant={isMobile ? 'fullWidth' : 'standard'}
+             sx={{
+               flex: 1,
++              minWidth: 0,
++              width: isMobile ? '100%' : undefined,
+               '& .MuiTab-root': {
+                 textTransform: 'none',
+                 fontWeight: 'medium',
+@@ -73,7 +76,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
+             startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
+             onClick={handleCopyLink}
+             sx={{
+-              ml: 1,
++              ml: isMobile ? 0 : 1,
++              alignSelf: isMobile ? 'flex-end' : undefined,
+               mb: 1,
+               textTransform: 'none',
+               fontWeight: 600,
+diff --git a/src/components/analyzer/MulliganTab.tsx b/src/components/analyzer/MulliganTab.tsx
+index c8ba089..b5e3c07 100644
+--- a/src/components/analyzer/MulliganTab.tsx
++++ b/src/components/analyzer/MulliganTab.tsx
+@@ -337,7 +337,7 @@ Your deck's strategy type completely changes mulligan criteria:
+ 
+   deckQuality: `Deck Quality
+ 
+-Overall evaluation of your deck's consistency based on simulations:
++Expected hand-quality value after modeled mulligans; these bands differ from the deck Health Score:
+ 
+ • Excellent (80+): Most hands are keepable
+ • Good (65-79): Good hands frequent
+@@ -376,9 +376,9 @@ interface ExpectedValuesProps {
+ 
+ const ExpectedValues: React.FC<ExpectedValuesProps> = ({ result }) => {
+   const getScoreColor = (score: number): string => {
+-    if (score >= 90) return '#4caf50'
+-    if (score >= 75) return '#8bc34a'
+-    if (score >= 60) return '#ff9800'
++    if (score >= 85) return '#4caf50'
++    if (score >= 70) return '#8bc34a'
++    if (score >= 55) return '#ff9800'
+     if (score >= 40) return '#f44336'
+     return '#b71c1c'
+   }
+@@ -798,8 +798,8 @@ interface SampleHandsSectionProps {
+ 
+ const SampleHandsSection: React.FC<SampleHandsSectionProps> = ({ sampleHands }) => {
+   const categories = [
+-    { key: 'excellent', label: '🌟 Excellent Hands (90+)', hands: sampleHands.excellent },
+-    { key: 'good', label: '✅ Good Hands (70-89)', hands: sampleHands.good },
++    { key: 'excellent', label: '🌟 Excellent Hands (85+)', hands: sampleHands.excellent },
++    { key: 'good', label: '✅ Good Hands (70-84)', hands: sampleHands.good },
+     { key: 'marginal', label: '⚠️ Marginal Hands (55-69)', hands: sampleHands.marginal },
+     { key: 'poor', label: '❌ Poor Hands (<55)', hands: sampleHands.poor },
+   ]
+@@ -1163,9 +1163,10 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
+                       What is a Mulligan?
+                     </Typography>
+                     <Typography variant="body2" color="text.secondary">
+-                      At game start, you draw 7 cards. If your hand is bad (wrong lands, no playable
+-                      spells), you can shuffle it back and draw a new hand with 1 fewer card. This
+-                      is called a "mulligan".
++                      London mulligan: shuffle your hand into the library and draw seven again.
++                      Once you keep, put one card on the bottom for each counted mulligan.
++                      The simulator evaluates kept hands from seven down to a forced keep at four cards. Enable multiplayer
++                      mode to model a free first mulligan.
+                     </Typography>
+                   </Box>
+ 
+@@ -1174,8 +1175,9 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
+                       Understanding the Scores (0–100)
+                     </Typography>
+                     <Typography variant="body2" color="text.secondary">
+-                      Each hand gets a score based on how well you can play your first turns.
+-                      <strong> 90+</strong> = excellent hand, <strong>70-89</strong> = good,
++                      Each hand gets a heuristic score for its first turns. These hand-quality bands
++                      differ from the deck-level Health Score because they measure a different quantity.
++                      <strong> 85+</strong> = excellent hand, <strong>70-84</strong> = good,
+                       <strong> 55-69</strong> = playable but risky, <strong>&lt;55</strong> =
+                       consider mulligan.
+                     </Typography>
+diff --git a/src/components/analyzer/QuickVerdict.tsx b/src/components/analyzer/QuickVerdict.tsx
+index ec8a92d..efb3d20 100644
+--- a/src/components/analyzer/QuickVerdict.tsx
++++ b/src/components/analyzer/QuickVerdict.tsx
+@@ -1,6 +1,7 @@
+ import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+ import { Alert, Box, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material'
+ import React from 'react'
++import { healthScoreBand } from '../../utils/healthScore'
+ import { AnalysisResult } from '../../services/deckAnalyzer'
+ 
+ const HEALTH_SCORE_HELP =
+@@ -67,39 +68,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
+   const isEDH = format === 'edh'
+   const isLimited = format === 'limited'
+ 
+-  // Tier bands calibrated per format. Both Limited and EDH have naturally
+-  // lower consistency than Constructed (weaker fixing in Limited; singleton
+-  // + 100-card variance in EDH) so we widen the bands 10 points.
+-  let tier: 'excellent' | 'solid' | 'shaky' | 'weak'
+-  if (isEDH || isLimited) {
+-    if (consistencyPct >= 80) tier = 'excellent'
+-    else if (consistencyPct >= 70) tier = 'solid'
+-    else if (consistencyPct >= 60) tier = 'shaky'
+-    else tier = 'weak'
+-  } else {
+-    if (consistencyPct >= 90) tier = 'excellent'
+-    else if (consistencyPct >= 80) tier = 'solid'
+-    else if (consistencyPct >= 70) tier = 'shaky'
+-    else tier = 'weak'
+-  }
+-
+-  const mulliganRate = analysisResult.mulliganAnalysis?.poorHand ?? 0
+-  const mulliganRider = (() => {
+-    if (isEDH) {
+-      // EDH London mulligan keeps free at 7; the ManaTuner "poor hand" %
+-      // is less load-bearing than in 60-card. Use a generic EDH rider.
+-      return 'plan mulligans around at least 1 ramp + 2 castable lands'
+-    }
+-    if (isLimited) {
+-      // Bo3 Limited (draft/sealed) plays the London mulligan too, but the
+-      // deck is 40 cards so every mulligan is costlier (smaller library =
+-      // bigger variance). Lean towards keeping borderline hands.
+-      return 'most 2–3-land hands are keeps in a 40-card deck'
+-    }
+-    return mulliganRate >= 20
+-      ? 'mulligan aggressively on borderline hands'
+-      : 'keep almost any 2–4-land opener'
+-  })()
++  const { label: healthBand, severity } = healthScoreBand(consistencyPct)
++  const mulliganRider = 'review actual opening hands in the Mulligan tab'
+ 
+   const colorClause = (() => {
+     if (!manabaseVerdict || manabaseVerdict.verdict === 'ok') return null
+@@ -111,22 +81,6 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
+     return `${n} color${n > 1 ? 's' : ''} close to limit`
+   })()
+ 
+-  const tierLabel: Record<typeof tier, string> = {
+-    excellent: 'excellent',
+-    solid: 'solid',
+-    shaky: 'shaky',
+-    weak: 'rough',
+-  }
+-
+-  const severity: 'success' | 'info' | 'warning' | 'error' =
+-    tier === 'excellent'
+-      ? 'success'
+-      : tier === 'solid'
+-        ? 'info'
+-        : tier === 'shaky'
+-          ? 'warning'
+-          : 'error'
+-
+   const headline = isEDH
+     ? `EDH — color access score ${consistencyPct}/100`
+     : isLimited
+@@ -134,17 +88,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
+       : `Your deck has a color access score of ${consistencyPct}/100`
+ 
+   const phrase = colorClause
+-    ? `${headline} — ${tierLabel[tier]}, but ${colorClause}; ${mulliganRider}.`
+-    : `${headline} — ${tierLabel[tier]}; ${mulliganRider}.`
+-
+-  const healthBand =
+-    consistencyPct >= 85
+-      ? 'Excellent'
+-      : consistencyPct >= 70
+-        ? 'Good'
+-        : consistencyPct >= 55
+-          ? 'Average'
+-          : 'Needs work'
++    ? `${headline} — ${healthBand.toLowerCase()}, but ${colorClause}; ${mulliganRider}.`
++    : `${headline} — ${healthBand.toLowerCase()}; ${mulliganRider}.`
+ 
+   return (
+     <Alert
+diff --git a/src/components/export/ManaBlueprint.tsx b/src/components/export/ManaBlueprint.tsx
+index bb244c0..bca93bb 100644
+--- a/src/components/export/ManaBlueprint.tsx
++++ b/src/components/export/ManaBlueprint.tsx
+@@ -1,3 +1,4 @@
++import { healthScoreBand } from '../../utils/healthScore'
+ import { calculateStabilityScore } from './manaStability'
+ import DownloadIcon from '@mui/icons-material/Download'
+ import ImageIcon from '@mui/icons-material/Image'
+@@ -52,26 +53,12 @@ const getStabilityLevel = (
+       color: BLUEPRINT_COLORS.textMuted,
+       description: 'Unrepresented payment symbols',
+     }
+-  if (score >= 95)
+-    return {
+-      label: 'Optimal',
+-      color: BLUEPRINT_COLORS.success,
+-      description: 'Tournament-ready manabase',
+-    }
+-  if (score >= 85)
+-    return {
+-      label: 'Highly Stable',
+-      color: BLUEPRINT_COLORS.cyan,
+-      description: 'Excellent consistency',
+-    }
+-  if (score >= 75) return { label: 'Stable', color: '#4FC3F7', description: 'Good reliability' }
+-  if (score >= 60)
+-    return {
+-      label: 'Functional',
+-      color: BLUEPRINT_COLORS.warning,
+-      description: 'Room for improvement',
+-    }
+-  return { label: 'Unstable', color: BLUEPRINT_COLORS.error, description: 'Needs optimization' }
++  const { label, severity } = healthScoreBand(score)
++  return {
++    label,
++    color: severity === 'info' ? BLUEPRINT_COLORS.cyan : BLUEPRINT_COLORS[severity],
++    description: 'Heuristic turn-two color access; not spell castability',
++  }
+ }
+ 
+ interface ManaBlueprintProps {
+@@ -163,15 +150,22 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
+         })
+ 
+         const imgWidth = 190
+-        const imgHeight = (canvas.height * imgWidth) / canvas.width
+-
+-        const pdf = new jsPDF({
+-          orientation: imgHeight > 270 ? 'portrait' : 'portrait',
+-          unit: 'mm',
+-          format: 'a4',
+-        })
+-
+-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 10, 10, imgWidth, imgHeight)
++        const pageHeight = 277 // A4 height minus two 10 mm margins.
++        const sliceHeight = Math.max(1, Math.floor((canvas.width * pageHeight) / imgWidth))
++        const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
++        // Crop contiguous source rows so a tall/mobile blueprint is never cut off
++        // at the first A4 page and each page retains its margins.
++        for (let y = 0; y < canvas.height; y += sliceHeight) {
++          if (y > 0) pdf.addPage()
++          const slice = document.createElement('canvas')
++          slice.width = canvas.width
++          slice.height = Math.min(sliceHeight, canvas.height - y)
++          const context = slice.getContext('2d')
++          if (!context) throw new Error('PDF canvas unavailable')
++          context.drawImage(canvas, 0, y, canvas.width, slice.height, 0, 0, slice.width, slice.height)
++          pdf.addImage(slice.toDataURL('image/png'), 'PNG', 10, 10, imgWidth,
++            (slice.height * imgWidth) / slice.width)
++        }
+ 
+         pdf.save(`mana-blueprint-${deckName.replace(/\s+/g, '-').toLowerCase()}.pdf`)
+       }
+@@ -309,10 +303,16 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
+         </Menu>
+       </Box>
+ 
++      <Typography variant="caption" sx={{ display: { xs: 'block', md: 'none' }, mb: 1 }}>
++        Scroll horizontally to view the full blueprint. Exports include its entire width.
++      </Typography>
++      <Box role="region" aria-label="Scrollable mana blueprint" tabIndex={0} sx={{ overflowX: 'auto' }}>
+       {/* Blueprint Card - This is what gets exported */}
+       <Paper
+         ref={blueprintRef}
++        data-testid="blueprint-card"
+         sx={{
++          minWidth: 720,
+           background: BLUEPRINT_COLORS.background,
+           borderRadius: 3,
+           overflow: 'hidden',
+@@ -655,7 +655,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
+             </Typography>
+ 
+             <Box sx={{ flex: 1 }}>
+-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
++              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-between', mb: 0.5 }}>
+                 <Typography
+                   sx={{
+                     color: stability.color,
+@@ -1085,6 +1085,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
+           </Typography>
+         </Box>
+       </Paper>
++      </Box>
+     </Box>
+   )
+ }
+diff --git a/src/components/layout/StaticPages.tsx b/src/components/layout/StaticPages.tsx
+index 1b950cf..ecdae59 100644
+--- a/src/components/layout/StaticPages.tsx
++++ b/src/components/layout/StaticPages.tsx
+@@ -125,7 +125,7 @@ export const AboutPage: React.FC = () => {
+               sx={{ bgcolor: '#e8f5e9', color: '#2e7d32', fontWeight: 600 }}
+             />
+             <Chip
+-              label="100% Local"
++              label="Local calculations"
+               sx={{ bgcolor: '#e3f2fd', color: '#1565c0', fontWeight: 600 }}
+             />
+             <Chip
+@@ -369,7 +369,7 @@ export const PrivacyPage: React.FC = () => (
+   <Container maxWidth="lg" sx={{ py: 4 }}>
+     <SEO
+       title="Privacy Policy | ManaTuner"
+-      description="ManaTuner privacy policy. 100% local processing, no cookies, no tracking, no account required. Your deck data never leaves your browser."
++      description="How ManaTuner stores analyses locally, uses Scryfall and external fonts, and handles deletion, sharing and optional error monitoring."
+       path="/privacy"
+     />
+     <Box sx={{ textAlign: 'center', mb: 4 }}>
+@@ -389,19 +389,71 @@ export const PrivacyPage: React.FC = () => (
+       </Typography>
+     </Box>
+     <Paper sx={{ p: 4, borderRadius: 3 }}>
+-      <Typography variant="h6" gutterBottom fontWeight={700}>
+-        Your Privacy Matters
++      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
++        Calculations and saved analyses
+       </Typography>
+-      <Typography variant="body1" paragraph>
+-        ManaTuner is designed with privacy as a core principle. We don't collect, store, or transmit
+-        any of your personal data or deck information.
++      <Typography paragraph>
++        ManaTuner calculates results in your browser and saves analyses on this device. No account
++        is required. This does not mean the site makes no network requests.
+       </Typography>
+-      <Typography variant="body1" paragraph>
+-        <strong>100% Local:</strong> All your analyses are stored in your browser's local storage.
+-        Your decklists never leave your device.
++      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
++        External services
+       </Typography>
+-      <Typography variant="body1">
+-        <strong>No Tracking:</strong> We don't use analytics, cookies, or any form of user tracking.
++      <Typography paragraph>
++        Card lookups send card names, identifiers or search terms to api.scryfall.com to retrieve
++        card rules and metadata, including during analysis and card-image lookup. Card images load
++        from cards.scryfall.io. These requests can reveal which cards you are looking up; the analysis
++        result and saved history are not uploaded by these lookups. Local caches reduce repeat requests.
++      </Typography>
++      <Typography paragraph>
++        Google Fonts (fonts.googleapis.com and fonts.gstatic.com) supplies the display font.
++        jsDelivr (cdn.jsdelivr.net) supplies the mana-symbol stylesheet and font. The page also
++        preconnects to Scryfall. The site host and external services receive connection information
++        such as your IP address and browser request metadata. Their retention practices are not
++        controlled by the local Reset button. Loading the site is therefore not fully offline.
++      </Typography>
++      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
++        Browser storage and deletion
++      </Typography>
++      <Typography paragraph>
++        Local storage holds saved analyses, the current deck, preferences and library progress until
++        you delete them or your browser clears them. Public card metadata is cached in IndexedDB
++        (30 days), land metadata in local storage (30 days), and mana-producer metadata in local
++        storage (7 days). Expiration is checked when caches are read; it is not a scheduled erasure.
++        Session storage holds temporary navigation and recovery flags for the browser session.
++      </Typography>
++      <Typography paragraph>
++        Reset requests deletion of ManaTuner local and session storage and asynchronously clears its
++        IndexedDB cache. This is best effort if browser storage is blocked; it does not verify every
++        deletion. Reload after resetting to release in-memory caches. For a broader cleanup, use your
++        browser’s site-data controls. Reset does not delete exported files, shared links, browser
++        history, third-party logs or copies on other devices. Export a backup first if needed; browser
++        storage can also be lost in private browsing or when site data is cleared.
++      </Typography>
++      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
++        Sharing
++      </Typography>
++      <Typography paragraph>
++        Share links encode the deck in the URL fragment. Anyone with the link can recover the deck.
++        Copying or sending a link or an exported backup discloses it to its recipients; deleting the
++        local analysis does not revoke those copies. Legacy links can contain deck data in the URL
++        query, which may reach the hosting service and its logs.
++      </Typography>
++      <Typography variant="h6" component="h2" gutterBottom fontWeight={700}>
++        Optional error monitoring
++      </Typography>
++      <Typography paragraph>
++        {import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN
++          ? 'The Sentry SDK is configured in this build. Delivery depends on network access and the site’s Content Security Policy; configuration alone does not confirm that events are received.'
++          : 'Error monitoring is disabled in this build. Sentry initializes only in a production build with a configured DSN.'}
++        {' '}There is no session replay configured. The application does not configure audience analytics.
++      </Typography>
++      <Typography paragraph>
++        Before enabling Sentry, the operator must review the actual event payloads with non-sensitive
++        fixtures, confirm redaction and retention, verify the permitted monitoring destination in the Content Security Policy, determine the required information and user controls
++        with a competent reviewer, and update this policy. Redaction is a safeguard, not a guarantee
++        that arbitrary error text contains no sensitive data. This technical description does not
++        constitute a declaration of legal compliance.
+       </Typography>
+     </Paper>
+   </Container>
+diff --git a/src/main.tsx b/src/main.tsx
+index 5b45455..bf07e79 100644
+--- a/src/main.tsx
++++ b/src/main.tsx
+@@ -17,10 +17,11 @@ import './styles/ux-improvements.css'
+  * - Init ONLY if PROD && VITE_SENTRY_DSN (default: DSN unset → no Sentry traffic)
+  * - beforeSend scrubber strips URL query (?d= decks), PII, heavy breadcrumbs
+  * - No session replay (would capture deck UI text)
+- * Before enabling DSN in Vercel: update PrivacySettings disclosure + GDPR opt-out.
++ * Before enabling DSN: follow docs/privacy/DATA-FLOWS.md, including competent
++ * review of legal requirements and user controls; do not assume redaction is complete.
+  */
+ function scrubSentryEvent(event: Sentry.ErrorEvent): Sentry.ErrorEvent | null {
+-  // Strip share payloads (?d= legacy query and #d= hash) so decks never reach Sentry.
++  // Strip share payloads from request URLs; arbitrary error text still needs payload review.
+   if (event.request?.url) {
+     try {
+       const u = new URL(event.request.url)
+diff --git a/src/pages/AnalyzerPage.tsx b/src/pages/AnalyzerPage.tsx
+index 760b2e1..5f8bf38 100644
+--- a/src/pages/AnalyzerPage.tsx
++++ b/src/pages/AnalyzerPage.tsx
+@@ -1,3 +1,4 @@
++import { ANALYZER_TABS } from '../data/analyzerTabs'
+ import AnalyticsIcon from '@mui/icons-material/Analytics'
+ import AssessmentIcon from '@mui/icons-material/Assessment'
+ import CasinoIcon from '@mui/icons-material/Casino'
+@@ -387,7 +388,7 @@ const AnalyzerPage: React.FC = () => {
+     <>
+       <SEO
+         title="MTG Deck Analyzer — Paste Deck, See Castability | ManaTuner"
+-        description="Free MTG deck analyzer. Paste your decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell — including mana rocks and dorks. No signup, results in 3 seconds."
++        description="Free MTG deck analyzer. Paste your decklist (MTGO, MTGA, Moxfield) and get model-based castability estimates per spell, including mana rocks and dorks. Exact modes state their supported scope. No signup."
+         path="/analyzer"
+         jsonLd={{
+           '@context': 'https://schema.org',
+@@ -400,7 +401,7 @@ const AnalyzerPage: React.FC = () => {
+           operatingSystem: 'Any (browser-based)',
+           browserRequirements: 'Requires a modern browser with JavaScript enabled',
+           description:
+-            'Interactive MTG deck analyzer. Paste any decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell, turn by turn, including mana rocks and dorks.',
++            'Interactive MTG deck analyzer. Paste any decklist (MTGO, MTGA, Moxfield) and get default castability estimates per spell, turn by turn. Exact modes cover only their stated supported model.',
+           featureList: [
+             'Castability analysis with P1/P2 probabilities',
+             'Post-board sideboard swap editor',
+@@ -463,12 +464,12 @@ const AnalyzerPage: React.FC = () => {
+           >
+             <Typography variant="body2" sx={{ fontWeight: 600 }}>
+               Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled N/60,
+-              command zone detection, EDH tier bands.
++              explicit command zone detection.
+             </Typography>
+             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
+               Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
+               pins the commander first and prioritizes CMC 4–8; library size excludes the commander
+-              for other spells when detected (*CMDR*, Commander section, or first non-land).
++              for other spells only when explicitly marked (*CMDR* or Commander section).
+               Manabase uses deck-size-scaled Karsten sources. Rule 0 / multiplayer politics are out
+               of scope.{' '}
+               <Box component="a" href="/guide#commander" sx={{ color: 'inherit', fontWeight: 600 }}>
+@@ -530,7 +531,7 @@ const AnalyzerPage: React.FC = () => {
+             >
+               <Chip
+                 icon={<ShowChartIcon />}
+-                label="Castability"
++                label={ANALYZER_TABS[0]}
+                 size="small"
+                 sx={{
+                   bgcolor: '#e3f2fd',
+@@ -556,9 +557,9 @@ const AnalyzerPage: React.FC = () => {
+                 size="small"
+                 sx={{
+                   bgcolor: '#fff3e0',
+-                  color: '#e65100',
++                  color: '#a63b00',
+                   fontWeight: 600,
+-                  '& .MuiChip-icon': { color: '#e65100' },
++                  '& .MuiChip-icon': { color: '#a63b00' },
+                 }}
+               />
+             </Box>
+@@ -757,19 +758,19 @@ const AnalyzerPage: React.FC = () => {
+                     }}
+                   >
+                     <Chip
+-                      label="Castability"
++                      label={ANALYZER_TABS[0]}
+                       size="small"
+-                      sx={{ bgcolor: 'info.light', color: 'info.contrastText' }}
++                      sx={{ bgcolor: '#e3f2fd', color: '#1565c0' }}
+                     />
+                     <Chip
+-                      label="Mulligan"
++                      label={ANALYZER_TABS[2]}
+                       size="small"
+-                      sx={{ bgcolor: 'secondary.light', color: 'secondary.contrastText' }}
++                      sx={{ bgcolor: '#f3e5f5', color: '#7b1fa2' }}
+                     />
+                     <Chip
+-                      label="Manabase"
++                      label={ANALYZER_TABS[3]}
+                       size="small"
+-                      sx={{ bgcolor: 'success.light', color: 'success.contrastText' }}
++                      sx={{ bgcolor: '#e8f5e9', color: '#1b5e20' }}
+                     />
+                   </Box>
+                 </Box>
+@@ -877,7 +878,7 @@ const AnalyzerPage: React.FC = () => {
+                     <Tab
+                       icon={<ShowChartIcon sx={{ fontSize: 18 }} />}
+                       iconPosition="start"
+-                      label="Castability"
++                      label={ANALYZER_TABS[0]}
+                       aria-label="Castability - Spell casting probabilities"
+                       id="analyzer-tab-0"
+                       aria-controls="analyzer-tabpanel-0"
+@@ -886,7 +887,7 @@ const AnalyzerPage: React.FC = () => {
+                     <Tab
+                       icon={<AnalyticsIcon sx={{ fontSize: 18 }} />}
+                       iconPosition="start"
+-                      label="Analysis"
++                      label={ANALYZER_TABS[1]}
+                       aria-label="Analysis - Detailed spell analysis"
+                       id="analyzer-tab-1"
+                       aria-controls="analyzer-tabpanel-1"
+@@ -895,7 +896,7 @@ const AnalyzerPage: React.FC = () => {
+                     <Tab
+                       icon={<CasinoIcon sx={{ fontSize: 18 }} />}
+                       iconPosition="start"
+-                      label="Mulligan"
++                      label={ANALYZER_TABS[2]}
+                       aria-label="Mulligan - Hand simulation and strategy"
+                       id="analyzer-tab-2"
+                       aria-controls="analyzer-tabpanel-2"
+@@ -912,7 +913,7 @@ const AnalyzerPage: React.FC = () => {
+                             gap: 0.75,
+                           }}
+                         >
+-                          <span>Manabase</span>
++                          <span>{ANALYZER_TABS[3]}</span>
+                           {manabaseVerdict && manabaseVerdict.verdict !== 'ok' && (
+                             <Box
+                               component="span"
+@@ -984,7 +985,7 @@ const AnalyzerPage: React.FC = () => {
+                     <Tab
+                       icon={<DownloadIcon sx={{ fontSize: 18 }} />}
+                       iconPosition="start"
+-                      label="Blueprint"
++                      label={ANALYZER_TABS[4]}
+                       aria-label="Blueprint - Export analysis as PNG, PDF or JSON"
+                       id="analyzer-tab-4"
+                       aria-controls="analyzer-tabpanel-4"
+diff --git a/src/pages/ArticleDetailPage.tsx b/src/pages/ArticleDetailPage.tsx
+index 650f0f2..d25fd45 100644
+--- a/src/pages/ArticleDetailPage.tsx
++++ b/src/pages/ArticleDetailPage.tsx
+@@ -128,7 +128,7 @@ export const ArticleDetailPage: React.FC = () => {
+   return (
+     <Container maxWidth="md" sx={{ py: 4, position: 'relative' }}>
+       <SEO
+-        title={`${article.title} — ${article.author} | ManaTuner Library`}
++        title={`${article.title}${article.subtitle ? ` — ${article.subtitle}` : ''} — ${article.author} | ManaTuner Library`}
+         description={descriptionForSeo}
+         path={canonicalPath}
+         jsonLd={jsonLd}
+diff --git a/src/pages/GuidePage.tsx b/src/pages/GuidePage.tsx
+index d021406..a3b7440 100644
+--- a/src/pages/GuidePage.tsx
++++ b/src/pages/GuidePage.tsx
+@@ -23,6 +23,7 @@ import {
+   Paper,
+   Typography,
+ } from '@mui/material'
++import { HEALTH_SCORE_BANDS } from '../utils/healthScore'
+ import React, { useEffect } from 'react'
+ import { useNavigate } from 'react-router-dom'
+ import { SEO } from '../components/common/SEO'
+@@ -67,7 +68,7 @@ export const GuidePage: React.FC = () => {
+       icon: <ShowChartIcon sx={{ fontSize: 32 }} />,
+       title: 'Castability',
+       description:
+-        'Exact probability of casting each spell on curve, turn by turn. This is the first tab you see after analysis.',
++        'Model-based castability by turn. The default is an estimate; exact modes state their supported scope. This is the first tab you see after analysis.',
+       color: '#2196f3',
+       badge: 'Core Feature',
+     },
+@@ -103,13 +104,13 @@ export const GuidePage: React.FC = () => {
+ 
+   const mathFoundations = [
+     {
+-      title: 'Exact Math',
++      title: 'Draw Math',
+       formula: 'P(X≥k)',
+-      desc: 'Your real chance of casting each spell on curve',
++      desc: 'Chance of drawing the required number of sources under the draw model',
+       color: '#e3f2fd',
+       borderColor: '#1976d2',
+       details:
+-        'Hypergeometric distribution — the exact odds of drawing the right mana from your deck',
++        'Hypergeometric distribution — exact draws under sampling without replacement; casting adds model assumptions',
+     },
+     {
+       title: 'Karsten Standards',
+@@ -138,10 +139,10 @@ export const GuidePage: React.FC = () => {
+     {
+       title: 'Health Score',
+       formula: '0-100',
+-      desc: 'One number that tells you if your manabase is tournament-ready',
++      desc: 'Heuristic average of turn-two access to each required color or hybrid group',
+       color: '#e0f7fa',
+       borderColor: '#00bcd4',
+-      details: '85%+ excellent | 70-84% good | 55-69% needs work | below 55% rebuild',
++      details: HEALTH_SCORE_BANDS,
+     },
+     {
+       title: 'Archetype Weights',
+@@ -170,7 +171,7 @@ export const GuidePage: React.FC = () => {
+                   name: 'What makes ManaTuner different?',
+                   acceptedAnswer: {
+                     '@type': 'Answer',
+-                    text: "The only tool combining Frank Karsten's exact hypergeometric calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.",
++                    text: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.",
+                   },
+                 },
+                 {
+@@ -202,7 +203,7 @@ export const GuidePage: React.FC = () => {
+                   name: 'Is my deck data saved anywhere?',
+                   acceptedAnswer: {
+                     '@type': 'Answer',
+-                    text: "No. ManaTuner is 100% local. Your decks are saved in your browser's localStorage only. We never see your decklists.",
++                    text: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
+                   },
+                 },
+                 {
+@@ -210,7 +211,7 @@ export const GuidePage: React.FC = () => {
+                   name: 'How many lands should I run in an aggro MTG deck?',
+                   acceptedAnswer: {
+                     '@type': 'Answer',
+-                    text: 'Aggro decks typically run 18-22 lands. The exact number depends on your curve peak and how many sub-2-mana plays you have. Paste your list into ManaTuner — the Health Score will tell you if you are land-light.',
++                    text: 'Aggro decks typically run 18-22 lands. The exact number depends on your curve peak and how many sub-2-mana plays you have. Paste your list into ManaTuner — inspect the land ratio and land-drop probabilities alongside the heuristic Health Score.',
+                   },
+                 },
+                 {
+@@ -218,7 +219,7 @@ export const GuidePage: React.FC = () => {
+                   name: 'What is the hypergeometric distribution and why does it apply to MTG?',
+                   acceptedAnswer: {
+                     '@type': 'Answer',
+-                    text: 'The hypergeometric distribution calculates the probability of drawing k successes from a finite deck without replacement. In MTG terms: given a 60-card deck with K colored sources, what is the probability of having ≥1 in your opening 7 plus draws? This is the exact math ManaTuner uses for every castability figure.',
++                    text: 'The hypergeometric distribution calculates the probability of drawing k successes from a finite deck without replacement. In MTG terms: given a 60-card deck with K colored sources, what is the probability of having ≥1 in your opening 7 plus draws? This draw distribution is exact. Default castability is an aggregate estimate; exact modes apply only to their stated supported resource and sequencing model.',
+                   },
+                 },
+                 {
+@@ -226,7 +227,7 @@ export const GuidePage: React.FC = () => {
+                   name: 'How many sources do I need for a turn-2 double-colored spell like Counterspell?',
+                   acceptedAnswer: {
+                     '@type': 'Answer',
+-                    text: 'Per Frank Karsten 2022, you need approximately 20 sources of that color in a 60-card deck to cast a UU spell on turn 2 with 90% reliability (including mulligans). ManaTuner recalculates this exactly for your specific decklist.',
++                    text: 'Per Frank Karsten 2022, you need approximately 20 sources of that color in a 60-card deck to cast a UU spell on turn 2 with 90% reliability (including mulligans). ManaTuner compares your sources with scaled reference targets; its default castability estimate answers a different, no-mulligan question.',
+                   },
+                 },
+                 {
+@@ -267,19 +268,19 @@ export const GuidePage: React.FC = () => {
+                   '@type': 'HowToStep',
+                   position: 2,
+                   name: 'Read your Health Score',
+-                  text: 'After Analyze, the Health Score (0–100%) sits above the result tabs with a plain-English verdict. Above 85% = strong. Between 70 and 85% = solid with room to improve. Below 70% = rebuild manabase priorities.',
++                  text: 'After Analyze, the Health Score (0–100%) sits above the result tabs with a plain-English verdict. Bands in every format: 85+ Excellent, 70–84 Good, 55–69 Average, below 55 Needs work. It is a heuristic color-access score, not the proportion of spells cast on curve.',
+                 },
+                 {
+                   '@type': 'HowToStep',
+                   position: 3,
+                   name: 'Check Castability per spell',
+-                  text: 'The Castability tab shows exact probabilities (P1 Play First, P2 Draw First, Realistic with ramp) turn by turn for every spell in the deck. Anything below 90% on curve is a weak spot.',
++                  text: 'The Castability tab opens in Estimate mode. P1 and P2 distinguish play and draw. Exact modes enumerate only their represented model; unsupported cases are flagged. Ramp estimates and gameplay outcomes are not generally exact.',
+                 },
+                 {
+                   '@type': 'HowToStep',
+                   position: 4,
+                   name: 'Run the Monte Carlo mulligan',
+-                  text: 'The Mulligan tab simulates 10,000 opening hands with the Bellman equation to tell you the exact keep/mulligan threshold for your deck and archetype.',
++                  text: 'The Mulligan tab simulates 10,000 opening hands with the Bellman equation to tell you a sampled-model keep/mulligan threshold for your deck and archetype.',
+                 },
+                 {
+                   '@type': 'HowToStep',
+@@ -562,7 +563,7 @@ export const GuidePage: React.FC = () => {
+                 },
+                 {
+                   text: 'Calculate probabilities using hypergeometric formulas',
+-                  sub: 'Exact results, not approximations',
++                  sub: 'Default estimates; exact modes show their limits',
+                 },
+               ].map((item, i) => (
+                 <ListItem key={i}>
+@@ -903,11 +904,11 @@ export const GuidePage: React.FC = () => {
+               </Typography>
+               <List dense sx={{ pl: 0 }}>
+                 {[
+-                  'Command zone: detected via *CMDR*, a Commander section, or the first non-land on a 99–100 list. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
++                  'Command zone: identified only via *CMDR* or an explicit Commander section. Unmarked lists have no inferred commander. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
+                   'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
+                   'Castability priority horizon is T4–T8 in Commander mode (CMC 4–8 listed after the commander). Early rocks/dorks still appear below.',
+                   'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
+-                  'Partners, Backgrounds, and "one of two commanders" decks should be entered as a single commander line (or two lines under Commander:).',
++                  'Partners or Backgrounds must be entered on separate lines under Commander:. Their payment results are separate; multiplayer rules and commander tax are outside the model.',
+                 ].map((item, i) => (
+                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
+                     <ListItemIcon sx={{ minWidth: 30 }}>
+@@ -1032,7 +1033,7 @@ export const GuidePage: React.FC = () => {
+         {[
+           {
+             q: 'What makes ManaTuner different?',
+-            a: "The only tool combining Frank Karsten's exact hypergeometric calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.",
++            a: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.",
+           },
+           {
+             q: 'What do Best Case and Realistic mean in Castability?',
+@@ -1048,7 +1049,7 @@ export const GuidePage: React.FC = () => {
+           },
+           {
+             q: 'Is my deck data saved anywhere?',
+-            a: "No. ManaTuner is 100% local. Your decks are saved in your browser's localStorage only. We never see your decklists.",
++            a: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
+           },
+         ].map((faq, index) => (
+           <Accordion
+diff --git a/src/pages/HomePage.tsx b/src/pages/HomePage.tsx
+index c7f8446..4388b78 100644
+--- a/src/pages/HomePage.tsx
++++ b/src/pages/HomePage.tsx
+@@ -1,3 +1,4 @@
++import { ANALYZER_TABS } from '../data/analyzerTabs'
+ import AnalyticsIcon from '@mui/icons-material/Analytics'
+ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+ import AutoStoriesIcon from '@mui/icons-material/AutoStories'
+@@ -19,6 +20,8 @@ import {
+ } from '@mui/material'
+ import React from 'react'
+ import { useNavigate } from 'react-router-dom'
++import { articlesReferenceSeed } from '../data/articlesReferenceSeed'
++import { healthScoreBand } from '../utils/healthScore'
+ import { AnimatedContainer } from '../components/common/AnimatedContainer'
+ import { SEO } from '../components/common/SEO'
+ import { Term } from '../components/common/Term'
+@@ -111,8 +114,8 @@ export const HomePage: React.FC = () => {
+       title: 'Castability',
+       description: (
+         <>
+-          Exact <Term id="castability">cast probability</Term> including mana rocks and dorks — not
+-          just lands.
++          Model-based <Term id="castability">cast probability</Term>. The default estimate includes
++          mana rocks and dorks; exact modes cover only their stated supported model.
+         </>
+       ),
+       color: theme.palette.mana.blue,
+@@ -151,8 +154,8 @@ export const HomePage: React.FC = () => {
+   // Les fondations mathématiques avec mana colors
+   const mathFoundations = [
+     {
+-      title: 'Exact Probabilities',
+-      desc: 'Real cast odds for every spell, every turn',
++      title: 'Castability Models',
++      desc: 'Default estimates and explicit exact-model limits',
+       formula: 'Per spell',
+       techTerm: 'Hypergeometric distribution',
+       manaColor: 'u' as const,
+@@ -467,10 +470,11 @@ export const HomePage: React.FC = () => {
+               variant="caption"
+               sx={{ fontWeight: 700, letterSpacing: 0.4, opacity: 0.85, display: 'block', mb: 0.5 }}
+             >
+-              Sample result · Health Score 87% · Good
++              Sample result · Health Score 87% · {healthScoreBand(87).label}
+             </Typography>
+             <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.45, mb: 1 }}>
+-              Your deck casts 87% of spells on curve — solid; keep almost any 2–4-land opener.
++              Illustrative color access score: average turn-two access to required colors. This is
++              not the percentage of spells cast on curve or a keep recommendation.
+             </Typography>
+             <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
+               <Chip size="small" label="Lightning Bolt 94%" color="success" variant="outlined" />
+@@ -504,9 +508,9 @@ export const HomePage: React.FC = () => {
+           >
+             Free. No signup.{' '}
+             <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
+-              Decklists stay on your device
++              Calculations and saved analyses stay in this browser.
+             </Box>{' '}
+-            — only card names ping Scryfall to fetch oracle text.
++            Card lookups and images use Scryfall; fonts use external providers. <a href="/privacy">See our privacy policy.</a>
+           </Typography>
+ 
+           {/* Format coverage caption — replaces the 3 sample-deck shortcuts
+@@ -655,7 +659,7 @@ export const HomePage: React.FC = () => {
+               <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                 Saito&apos;s
+               </Box>{' '}
+-              tournament mindset — 54 must-read articles organized by skill level. Dead links
++              tournament mindset — {articlesReferenceSeed.length} curated references organized by skill level. Dead links
+               restored via archive.org.
+             </Typography>
+ 
+@@ -696,7 +700,7 @@ export const HomePage: React.FC = () => {
+                 letterSpacing: '0.03em',
+               }}
+             >
+-              54 articles · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
++              {articlesReferenceSeed.length} references · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
+             </Typography>
+           </Box>
+         </Box>
+@@ -1282,7 +1286,7 @@ export const HomePage: React.FC = () => {
+         {[
+           {
+             icon: <i className="ms ms-w ms-cost" aria-hidden="true" style={{ fontSize: 16 }} />,
+-            text: '100% Local',
++            text: 'Local calculations',
+           },
+           {
+             icon: <i className="ms ms-u ms-cost" aria-hidden="true" style={{ fontSize: 16 }} />,
+@@ -1318,9 +1322,9 @@ export const HomePage: React.FC = () => {
+       >
+         {[
+           { value: 'Free & Open Source', sub: 'MIT License' },
+-          { value: '10,000', sub: 'Hands simulated per analysis' },
+-          { value: '6', sub: 'Analysis tabs' },
+-          { value: '0', sub: 'Data sent to servers' },
++          { value: '10,000', sub: 'Samples per kept-hand size' },
++          { value: String(ANALYZER_TABS.length), sub: 'Analysis tabs' },
++          { value: 'No account', sub: 'Required to analyze' },
+         ].map((stat, index) => (
+           <Box key={index} sx={{ textAlign: 'center', minWidth: 100 }}>
+             <Typography variant="h6" fontWeight={700} color="primary" sx={{ lineHeight: 1.2 }}>
+diff --git a/src/pages/MathematicsPage.tsx b/src/pages/MathematicsPage.tsx
+index 4d6ac12..79cf3e7 100644
+--- a/src/pages/MathematicsPage.tsx
++++ b/src/pages/MathematicsPage.tsx
+@@ -274,7 +274,7 @@ const MathematicsPage: React.FC = () => {
+               icon: <CasinoIcon sx={{ fontSize: 32 }} />,
+               question: 'Should I keep or mulligan?',
+               detail:
+-                '10,000 simulated games with your exact decklist. Optimal stopping theory calculates the hand quality threshold below which you should mulligan — customized for your archetype.',
++                '10,000 sampled hands per kept-hand size from your main deck. Optimal stopping theory calculates the hand quality threshold below which you should mulligan — customized for your archetype.',
+               color: '#9c27b0',
+               bgColor: '#f3e5f5',
+               example: 'Keep 7 if hand score > 62, otherwise mulligan to 6',
+@@ -636,16 +636,17 @@ const MathematicsPage: React.FC = () => {
+                   Monte Carlo Simulation
+                 </Typography>
+                 <Typography variant="caption" color="text.secondary">
+-                  10,000 games with your exact decklist
++                  10,000 samples per kept-hand size
+                 </Typography>
+               </Box>
+             </Box>
+           </AccordionSummary>
+           <AccordionDetails>
+             <Typography variant="body1" paragraph>
+-              Instead of doing math, we let the computer play 10,000 games for you. It shuffles your
+-              deck, draws hands, makes mulligan decisions, and tracks how often things work out.
+-              Think of it as playtesting on fast-forward.
++              The simulator samples 10,000 hands for each kept-hand size from four to seven by default.
++              It shuffles the main deck, draws seven, chooses a heuristic subset, and evaluates
++              opening-hand quality. Bellman recursion compares keeping with another mulligan;
++              this is not a simulation of complete games or win rate.
+             </Typography>
+ 
+             <Grid container spacing={2} sx={{ my: 2 }}>
+@@ -653,17 +654,17 @@ const MathematicsPage: React.FC = () => {
+                 {
+                   step: '1',
+                   title: 'Shuffle',
+-                  text: 'Your exact 60 cards are randomly shuffled using an unbiased algorithm (Fisher-Yates)',
++                  text: 'Your main-deck cards are randomly shuffled using an unbiased algorithm (Fisher-Yates)',
+                 },
+                 {
+                   step: '2',
+                   title: 'Draw & Decide',
+-                  text: 'Draw 7 cards. The engine decides keep or mulligan using optimal theory (Bellman equation)',
++                  text: 'Draw seven, then select a heuristic subset for the kept-hand size.',
+                 },
+                 {
+                   step: '3',
+-                  title: 'Play Out',
+-                  text: 'Track mana availability each turn. Repeat 10,000 times. Count the results.',
++                  title: 'Score & Compare',
++                  text: 'Score first-turn plans under the stated model; compare sampled keep and mulligan values.',
+                 },
+               ].map((item, i) => (
+                 <Grid item xs={12} md={4} key={i}>
+@@ -696,7 +697,7 @@ const MathematicsPage: React.FC = () => {
+ 
+             <Paper sx={{ p: 2, bgcolor: '#f3e5f5', borderRadius: 2 }}>
+               <Typography variant="body2" fontWeight={600} color="#7b1fa2">
+-                <strong>Why both?</strong> The hypergeometric formula gives instant exact answers.
++                <strong>Why both?</strong> The hypergeometric formula gives exact draw probabilities under sampling without replacement.
+                 Monte Carlo can check simple draw events against those answers. Mulligan results
+                 additionally depend on the reward model and sampling uncertainty; this does not
+                 establish the accuracy of every castability estimate.
+diff --git a/src/pages/MyAnalysesPage.tsx b/src/pages/MyAnalysesPage.tsx
+index f37138a..7b9caa0 100644
+--- a/src/pages/MyAnalysesPage.tsx
++++ b/src/pages/MyAnalysesPage.tsx
+@@ -1,3 +1,4 @@
++import { healthScoreBand } from '../utils/healthScore'
+ import AnalyticsIcon from '@mui/icons-material/Analytics'
+ import CheckIcon from '@mui/icons-material/CheckCircle'
+ import CloseIcon from '@mui/icons-material/Close'
+@@ -82,10 +83,8 @@ const HealthBadge: React.FC<{
+ }> = ({ consistency, unavailable, size = 'large' }) => {
+   if (unavailable) return <Typography color="text.secondary">Health Score unavailable</Typography>
+   const percent = Math.round(consistency * 100)
+-  const color =
+-    percent >= 85 ? 'success' : percent >= 70 ? 'primary' : percent >= 55 ? 'warning' : 'error'
+-  const label =
+-    percent >= 85 ? 'Excellent' : percent >= 70 ? 'Good' : percent >= 55 ? 'Average' : 'Needs Work'
++  const { label, severity } = healthScoreBand(percent)
++  const color = severity === 'info' ? 'primary' : severity
+ 
+   return (
+     <Box sx={{ textAlign: 'center' }}>
+diff --git a/src/services/scryfallPersistentCache.ts b/src/services/scryfallPersistentCache.ts
+index 903c174..33926a0 100644
+--- a/src/services/scryfallPersistentCache.ts
++++ b/src/services/scryfallPersistentCache.ts
+@@ -6,9 +6,9 @@
+  *   2. IndexedDB warm cache (this module — survives reloads, ~10ms read)
+  *   3. network (Scryfall API fallback)
+  *
+- * Card metadata is public Scryfall data — not user-private. Storing it
+- * locally is pure perf optimization; no GDPR/privacy implication. The
+- * privacy panel claim "decklists never leave your browser" is unaffected.
++ * Card metadata is public Scryfall data, but cache keys reveal looked-up cards.
++ * Network cache misses disclose lookup names/identifiers to Scryfall.
++ * See docs/privacy/DATA-FLOWS.md for storage and deletion limits.
+  *
+  * Errors are silenced: IDB can be blocked (private browsing, quota full,
+  * Safari ITP). Memory cache always works as fallback.
+diff --git a/src/utils/__tests__/prerenderLib.test.ts b/src/utils/__tests__/prerenderLib.test.ts
+index 1d00670..acec7ec 100644
+--- a/src/utils/__tests__/prerenderLib.test.ts
++++ b/src/utils/__tests__/prerenderLib.test.ts
+@@ -59,6 +59,18 @@ describe('prerenderLib', () => {
+       expect(twice.match(/<!-- prerendered -->/g)?.length).toBe(1)
+     })
+ 
++    it('rejects a shell even when its default OpenGraph title exists', () => {
++      expect(
++        looksPrerendered(
++          injectPrerenderMarker(
++            '<html><head><meta property="og:title" content="Home"></head><body><div id="root">Loading' +
++              ' '.repeat(250) +
++              '</div></body></html>'
++          )
++        )
++      ).toBe(false)
++    })
++
+     it('detects contentful prerender HTML', () => {
+       const weak = '<html><head></head><body></body></html>'
+       expect(looksPrerendered(weak)).toBe(false)
+diff --git a/src/utils/prerenderLib.ts b/src/utils/prerenderLib.ts
+index 714e229..3d65ba9 100644
+--- a/src/utils/prerenderLib.ts
++++ b/src/utils/prerenderLib.ts
+@@ -83,6 +83,5 @@ export function looksPrerendered(html: string): boolean {
+   if (typeof html !== 'string' || html.length < 200) return false
+   const hasMarker = html.includes('<!-- prerendered -->')
+   const hasH1 = /<h1[\s>]/i.test(html)
+-  const hasOg = /property=["']og:title["']/i.test(html)
+-  return hasMarker && (hasH1 || hasOg)
++  return hasMarker && hasH1
+ }
+diff --git a/tests/e2e/accessibility/a11y.spec.js b/tests/e2e/accessibility/a11y.spec.js
+index 14852f8..d7f60da 100644
+--- a/tests/e2e/accessibility/a11y.spec.js
++++ b/tests/e2e/accessibility/a11y.spec.js
+@@ -2,51 +2,78 @@
+  * Accessibility smoke (EN UI) — WCAG-oriented axe scans + keyboard basics.
+  * Replaces stale FR selectors that broke after the English product copy ship.
+  */
+-import { test, expect } from '@playwright/test'
++import { test, expect } from '../../fixtures/audit-browser.js'
+ import AxeBuilder from '@axe-core/playwright'
+ 
++async function settleAnimations(page) {
++  await page.evaluate(async () => {
++    await document.fonts.ready
++    await Promise.all(
++      document
++        .getAnimations()
++        .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
++        .map((animation) => animation.finished.catch(() => {}))
++    )
++  })
++}
++
+ test.describe('Accessibility smoke (EN)', () => {
++  test.use({ reducedMotion: 'reduce' })
+   test.beforeEach(async ({ page }) => {
+     await page.addInitScript(() => {
+       window.localStorage.setItem('manatuner-onboarding-completed', 'true')
+     })
+   })
+ 
+-  test('Home page — axe critical/serious (no critical)', async ({ page }) => {
++  test('Home page — axe critical/serious clear', async ({ page }) => {
+     await page.goto('/')
+-    const results = await new AxeBuilder({ page })
+-      .withTags(['wcag2a', 'wcag2aa'])
+-      .analyze()
+-    const critical = results.violations.filter((v) => v.impact === 'critical')
++    await settleAnimations(page)
++    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
++    const critical = results.violations.filter(
++      (v) => v.impact === 'critical' || v.impact === 'serious'
++    )
+     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
+   })
+ 
+-  test('Analyzer empty — axe critical clear', async ({ page }) => {
++  test('Analyzer empty — axe critical/serious clear', async ({ page }) => {
+     await page.goto('/analyzer')
+     await expect(page.getByRole('button', { name: /try example|analyze/i }).first()).toBeVisible({
+       timeout: 15000,
+     })
++    await settleAnimations(page)
+     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+-    const critical = results.violations.filter((v) => v.impact === 'critical')
++    const critical = results.violations.filter(
++      (v) => v.impact === 'critical' || v.impact === 'serious'
++    )
+     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
+   })
+ 
+-  test('Analyzer after Try Example — no critical axe', async ({ page }) => {
++  test('Analyzer with fixed card metadata — no critical/serious axe', async ({ page }) => {
+     test.setTimeout(90000)
+     await page.goto('/analyzer')
+-    await page.getByRole('button', { name: /try example/i }).click()
+-    await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
++    await page
++      .getByRole('textbox', { name: /Paste your decklist/ })
++      .fill('24 Mountain\n36 Lightning Bolt')
++    await page
++      .getByRole('button', { name: /analyze manabase|analyze/i })
++      .first()
++      .click()
+     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 60000 })
+ 
++    await settleAnimations(page)
+     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+-    const critical = results.violations.filter((v) => v.impact === 'critical')
++    const critical = results.violations.filter(
++      (v) => v.impact === 'critical' || v.impact === 'serious'
++    )
+     expect(critical, JSON.stringify(critical, null, 2)).toEqual([])
+   })
+ 
+   test('Analyzer navigation is unique in the active desktop or mobile menu', async ({ page }) => {
+     await page.goto('/')
+     const menu = page.getByRole('button', { name: 'Open navigation menu' })
+-    await expect(menu.or(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true }))).toBeVisible()
++    await expect(
++      menu.or(page.getByRole('banner').getByRole('link', { name: 'Analyzer', exact: true }))
++    ).toBeVisible()
+     const mobile = await menu.isVisible()
+     if (mobile) await menu.click()
+     const bannerAnalyzer = mobile
+@@ -73,11 +100,12 @@ test.describe('Accessibility smoke (EN)', () => {
+     const footer = page.locator('footer')
+     await expect(footer).toBeVisible()
+     await expect(footer.getByText(/Fan Content Policy/i)).toBeVisible()
+-    // Spot-check: caption should not use near-invisible grey
+-    const color = await footer.locator('p, span').first().evaluate((el) => {
+-      return window.getComputedStyle(el).color
+-    })
+-    expect(color).toBeTruthy()
++    await settleAnimations(page)
++    const results = await new AxeBuilder({ page })
++      .include('footer')
++      .withRules(['color-contrast'])
++      .analyze()
++    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([])
+   })
+ 
+   test('Home hero shows product preview (P2-2)', async ({ page }) => {
+@@ -99,8 +127,13 @@ test.describe('Accessibility smoke (EN)', () => {
+   test('After analyze, focus lands on Health Score verdict (P2-11)', async ({ page }) => {
+     test.setTimeout(90000)
+     await page.goto('/analyzer')
+-    await page.getByRole('button', { name: /try example/i }).click()
+-    await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
++    await page
++      .getByRole('textbox', { name: /Paste your decklist/ })
++      .fill('24 Mountain\n36 Lightning Bolt')
++    await page
++      .getByRole('button', { name: /analyze manabase|analyze/i })
++      .first()
++      .click()
+     await expect(page.getByTestId('quick-verdict')).toBeVisible({ timeout: 60000 })
+     // Focus should move to verdict region for keyboard users
+     await expect
+diff --git a/tests/math-audit/canonical.test.ts b/tests/math-audit/canonical.test.ts
+index 26a2dec..e43a5f7 100644
+--- a/tests/math-audit/canonical.test.ts
++++ b/tests/math-audit/canonical.test.ts
+@@ -4,7 +4,7 @@ import { hypergeom } from '../../src/services/castability/hypergeom'
+ import { computeBaseCastabilityAtTurn } from '../../src/services/castability/acceleratedAnalyticEngine'
+ import { canPay, enumerateHands, exactTail } from './oracle'
+ const rows: unknown[] = []
+-afterAll(() => writeFileSync('/tmp/mtg-audit-canonical.json', JSON.stringify(rows, null, 2)))
++afterAll(() => writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-canonical.json`, JSON.stringify(rows, null, 2)))
+ it.each([0, 1, 24, 60])('canonical 60-card deck with %i relevant sources', (K) => {
+   const expected = exactTail(60, K, 7, 1)
+   const actual = hypergeom.atLeastOneCopy(60, K, 7)
+diff --git a/tests/math-audit/independent.test.ts b/tests/math-audit/independent.test.ts
+index 3f94710..a6b701f 100644
+--- a/tests/math-audit/independent.test.ts
++++ b/tests/math-audit/independent.test.ts
+@@ -130,7 +130,7 @@ describe('Independent exact and exhaustive validation', () => {
+         })
+         expect(actual).toBeCloseTo(expected, 11)
+       }
+-    writeFileSync('/tmp/mtg-audit-exact-results.json', JSON.stringify(rows, null, 2))
++    writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-exact-results.json`, JSON.stringify(rows, null, 2))
+   })
+   it('compares one million production shuffles to exact hypergeometric, with an independent sampler', () => {
+     const count = 1_000_000,
+@@ -179,7 +179,7 @@ describe('Independent exact and exhaustive validation', () => {
+       margin95: 1.96 * se,
+     }
+     console.log('MONTE_CARLO', JSON.stringify(result))
+-    writeFileSync('/tmp/mtg-audit-monte-carlo.json', JSON.stringify(result, null, 2))
++    writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-monte-carlo.json`, JSON.stringify(result, null, 2))
+     // Six sigma deterministic guard; report the actual 95% interval separately.
+     expect(Math.abs(result.production - expected)).toBeLessThan(6 * se)
+     expect(Math.abs(result.independent - expected)).toBeLessThan(6 * se)
+diff --git a/tests/math-audit/known-limitations.test.ts b/tests/math-audit/known-limitations.test.ts
+index ad70cad..d5dfb86 100644
+--- a/tests/math-audit/known-limitations.test.ts
++++ b/tests/math-audit/known-limitations.test.ts
+@@ -30,7 +30,7 @@ function compare(id: string, actual: number, expected: number) {
+   expect(actual).toBeCloseTo(expected, 10)
+ }
+ afterAll(() =>
+-  writeFileSync('/tmp/mtg-audit-known-limitations.json', JSON.stringify(rows, null, 2))
++  writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-known-limitations.json`, JSON.stringify(rows, null, 2))
+ )
+ finding('M01: min of marginal color probabilities overstates joint WU', () => {
+   const cards = [['W'], ['W'], ['U'], ['U'], [], [], [], [], [], []]
+diff --git a/tests/math-audit/pathways.test.ts b/tests/math-audit/pathways.test.ts
+index fbc758a..b9244a8 100644
+--- a/tests/math-audit/pathways.test.ts
++++ b/tests/math-audit/pathways.test.ts
+@@ -78,7 +78,7 @@ function oracle(cards: Card[], pips: string[], generic: number, turn: number, dr
+ }
+ const evidence: unknown[] = []
+ afterAll(() =>
+-  writeFileSync('/tmp/manatuner-pathway-oracle.json', JSON.stringify(evidence, null, 2))
++  writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/manatuner-pathway-oracle.json`, JSON.stringify(evidence, null, 2))
+ )
+ const pathway = landService.getLandSync('Cragcrown Pathway')!
+ const forest = landService.getLandSync('Forest')!
+diff --git a/vercel.json b/vercel.json
+index 462e915..381441d 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -2,12 +2,6 @@
+   "buildCommand": "npm run build:vercel",
+   "outputDirectory": "dist",
+   "framework": "vite",
+-  "rewrites": [
+-    {
+-      "source": "/((?!sw\\.js$|boot-watchdog\\.js$|assets/|favicon\\.svg|manifest\\.json|robots\\.txt|sitemap\\.xml|library\\.json|og-image|llms).*)",
+-      "destination": "/index.html"
+-    }
+-  ],
+   "headers": [
+     {
+       "source": "/(.*)",
+@@ -145,5 +139,18 @@
+         }
+       ]
+     }
++  ],
++  "cleanUrls": true,
++  "redirects": [
++    {
++      "source": "/mes-analyses",
++      "destination": "/my-analyses",
++      "permanent": true
++    },
++    {
++      "source": "/reading-list",
++      "destination": "/library",
++      "permanent": true
++    }
+   ]
+ }
+diff --git a/docs/engineering/DELIVERY-CONTRACT.md b/docs/engineering/DELIVERY-CONTRACT.md
+new file mode 100644
+index 0000000..77c5d13
+--- /dev/null
++++ b/docs/engineering/DELIVERY-CONTRACT.md
+@@ -0,0 +1,29 @@
++# ManaTuner delivery contract
++
++The public build is `npm run build:vercel`, configured by `vercel.json` and used by both CI and PR validation. It runs the following checks in order and exits nonzero on any failure:
++
++1. ESLint and TypeScript.
++2. Source, component and mathematical regression tests. Mathematical evidence is written to a fresh temporary directory, or to the explicit `MANATUNER_MATH_EVIDENCE_DIR`; historical audit proofs are not overwritten.
++3. The delivery gate's own negative and positive tests.
++4. Vite build of the candidate.
++5. Bundle budget and dependency audit (high severity blocks).
++6. Mandatory prerender and HTML contract verification on that same candidate.
++7. Chromium accessibility, keyboard and HTTP/direct-load tests on that same candidate, using a strict static server. Accessibility scans block serious and critical axe findings; footer contrast uses the quantitative axe rule and a failing-contrast fixture proves detection.
++
++There is no second publication path. The disabled GitHub deployment job remains disabled. Vercel's native integration may start before GitHub checks finish, but its configured build cannot finish successfully before these shared checks pass. A failed gate must remain a failed build; do not add soft-fail switches or `continue-on-error`. GitHub branch protection and Vercel private settings are separate controls, and this repository does not establish that GitHub required checks are enabled. The setting inspection and local execution evidence for the September audit live in `preuves-corrections/S002/`; no deployment was triggered to test a failure.
++
++## HTML and routing
++
++The delivery contract includes every route returned by `buildPrerenderRoutes(articlesReferenceSeed)`: the nine static pages, every article, and every author (101 routes at this change). Each is a real `route/index.html` with rendered content, a unique title and description, a route canonical and matching social metadata. Default HTML metadata is owned by Helmet, so route metadata replaces it. Native form controls in snapshots are disabled until React mounts, preventing input from being lost during mount. Links and editorial content remain available without JavaScript.
++
++Library skipping and soft prerender failures are unsupported. Missing rendered content, duplicate or wrong metadata, missing local entry assets and missing route files fail the build. `npm run check:html -- /absolute/candidate/path` can inspect a saved artifact independently.
++
++Vercel uses filesystem routing with `cleanUrls: true`; there is no catch-all SPA rewrite. Existing aliases `/mes-analyses` and `/reading-list` have explicit permanent redirects. Unknown URLs and missing assets reach the generated `404.html`, with meaningful content and `noindex`, rather than an indexable homepage. This follows Vercel's [static custom 404 contract](https://vercel.com/kb/guide/custom-404-page) and [filesystem precedence/configuration](https://vercel.com/docs/project-configuration/vercel-json), consulted 2026-09-06. React's client-side fallback also declares noindex.
++
++`scripts/serve-candidate.mjs` provides local static HTTP verification, including 404 status, without Vite's SPA fallback. It is a local implementation of the selected static contract, not a Vercel emulator and not proof of a deployed HTTP response. Production HTTP, native integration behavior after a real authorized deployment, Search Console and full WCAG compliance require their own evidence.
++
++## Isolated local run
++
++Use absolute paths for `PRERENDER_DIST`, `DELIVERY_TEST_OUTPUT` and optionally `MANATUNER_MATH_EVIDENCE_DIR`. The first controls Vite, prerender, bundle budget, HTML checks and the candidate server consistently. The second keeps test artifacts away from existing reports. The candidate server reserves port 4175 and refuses to reuse an existing server; prerender uses port 4174 by default. Set no Sentry credentials/DSN for an offline telemetry-free local candidate.
++
++Nightly suites install and request Chromium explicitly. Failures fail their jobs. These scheduled runs are supplementary signals and do not establish publication gating or WCAG certification.
+diff --git a/docs/privacy/DATA-FLOWS.md b/docs/privacy/DATA-FLOWS.md
+new file mode 100644
+index 0000000..048de5c
+--- /dev/null
++++ b/docs/privacy/DATA-FLOWS.md
+@@ -0,0 +1,43 @@
++# ManaTuner: technical data-flow inventory
++
++Reviewed 2026-09-06 for F12. This is a source-level inventory, not legal certification or proof of deployed configuration. Public wording is in `/privacy`, the data settings dialog and the home/guide pages.
++
++## Network
++
++| Destination | Trigger and information | Purpose / limits |
++| --- | --- | --- |
++| Site hosting service | Document, asset and route requests; IP and normal HTTP metadata | Delivery. Host logging/retention and current deployed settings require operator verification. Legacy `?d=` share payloads can reach host logs. |
++| `api.scryfall.com` | Uncached resolution, image lookup, land/producer searches. `/cards/collection` POST includes arrays of `{name}`; named endpoints include exact/fuzzy names; other endpoints include card IDs or search queries. | Retrieve public metadata. These queries reveal looked-up cards. They do not upload the stored analysis result/history, but an array of names can reveal much of a deck. Index HTML also preconnects. |
++| `cards.scryfall.io` | Card image URL requests, preconnect | Images; IP and request metadata visible to service. |
++| `fonts.googleapis.com`, `fonts.gstatic.com` | Display-font stylesheet and font requests on page load | External Google Fonts resources, visible connection metadata. |
++| `cdn.jsdelivr.net` | Pinned mana-font stylesheet, referenced fonts | Symbols, visible connection metadata. |
++| Sentry DSN destination, only when configured | `PROD && VITE_SENTRY_DSN` in `src/main.tsx` | SDK configuration does not establish delivery: the current `vercel.json` connect-src permits self/Scryfall but no Sentry destination. No session replay configured. No DSN is introduced by F12. The policy displays actual build condition; it does not assert the production deployment's variables were inspected. |
++| Recipients chosen by user | Shared link or exported JSON file | Deck/analysis disclosure to recipients. URL fragment sharing avoids sending the fragment in the HTTP request, but does not make a copied link secret or revocable. |
++
++Sources: `index.html`, `src/services/cardResolver.ts`, `scryfall.ts`, `landService.ts`, `manaProducerService.ts`, `src/hooks/useCardImage.ts`, `src/main.tsx`, `src/utils/urlCodec.ts`. External retention is not inferred from client code. No new telemetry or third-party dependency added.
++
++## Storage
++
++| Storage | Contents / keys | Lifetime |
++| --- | --- | --- |
++| localStorage | `manatuner_analyses`, legacy `manatuner-analyses`, `persist:root` (current deck/settings), preferences `manatuner-theme`, onboarding/banner state, acceleration settings, `manatuner-library-progress-v1` | No application expiry for history/preferences; removed by user reset or browser. Private browsing, quotas or browser eviction can make persistence unavailable. |
++| localStorage | `manatuner_lands_cache` | Land records expire after 30 days, checked on use. |
++| localStorage | `manatuner_producer_cache` | Producer records expire after 7 days, checked on use. |
++| IndexedDB `manatuner-scryfall`, store `cards-v1` | Card metadata keyed by lookup, which can reveal cards looked up | 30-day expiry checked on read, stale deletion asynchronous. |
++| sessionStorage | `manatuner-commander-preset`, `mt-sw-cleared` | Browser session; reset removes these keys. |
++| Memory | Resolver/image/land/producer caches, active UI state | Page lifetime; reload releases memory. |
++
++`PrivacyStorage.clearAllLocalData` removes registered local keys (including legacy `userCode`, `manatuner_user_code`, `manatuner_privacy_mode`) and sweeps `manatuner*`/`persist:*` localStorage keys, removes known session keys and starts asynchronous IDB clearing. Exceptions are swallowed, so this is best effort, not an audited erasure guarantee. Settings also clears analyzer state and requests redux-persist purge. Remaining in-memory service caches can exist until reload. No storage algorithm was changed in F12.
++
++Reset does not remove exported files, copied/shared links, browser history, third-party or host logs, or copies on other devices. Browser site-data controls provide a broader local cleanup; they do not revoke external copies. Old service workers and CacheStorage entries are cleared by app boot (`main.tsx`). Expiry periods are cache freshness windows, not scheduled secure erasure.
++
++## Before enabling Sentry
++
++Keep DSN unset until these tasks are completed by the operator:
++
++1. Inspect the target environment's settings and establish the intended destination, purposes and retention. Verify its Content Security Policy permits only the approved monitoring destination before any authorized activation. The current source CSP does not allow Sentry; setting a DSN alone can configure the SDK while the browser blocks transmission. F12 does not open this CSP. Do not assume source comments establish deployed status.
++2. Capture test events with non-sensitive fixtures in an isolated environment. Inspect errors, URLs, breadcrumbs and contexts as actually received. The current scrubber removes URL query/fragment, request payload/headers, user and extra data, but arbitrary exception and breadcrumb text can still contain sensitive values. Session replay stays disabled; review other default integrations.
++3. Have a competent reviewer determine required legal information, legal qualifications and any user controls. Implement those requirements and update both policy and settings before activation. This checklist is not a legal conclusion or a consent implementation.
++4. Review the build with monitoring enabled and disabled; confirm the public status and actual traffic agree. Record non-sensitive evidence and rollback procedure. Production testing or activation needs separate authorization.
++
++F12-AC5 / V09 remain open: no competent legal validation is available in this correction session. V08 remains open: no real Sentry receipt was tested. The presence of this inventory does not establish compliance.
+diff --git a/playwright.audit.config.js b/playwright.audit.config.js
+new file mode 100644
+index 0000000..63362bf
+--- /dev/null
++++ b/playwright.audit.config.js
+@@ -0,0 +1,24 @@
++import { defineConfig, devices } from '@playwright/test'
++export default defineConfig({
++  testDir: './tests/e2e',
++  testMatch: [
++    'core-flows/input-contract-audit.spec.js',
++    'core-flows/cancellation-audit.spec.js',
++    'core-flows/synthesis-audit.spec.js',
++    'core-flows/history-audit.spec.js',
++    'core-flows/mulligan-worker-recovery.spec.js',
++    'core-flows/privacy-audit.spec.js',
++    'core-flows/final-audit.spec.js',
++  ],
++  retries: 0,
++  workers: 1,
++  reporter: 'line',
++  outputDir: process.env.AUDIT_TEST_OUTPUT || 'test-results/audit',
++  use: { baseURL: 'http://127.0.0.1:3000', screenshot: 'only-on-failure', trace: 'retain-on-failure' },
++  projects: [
++    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
++    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
++    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
++  ],
++  webServer: { command: 'CANDIDATE_PORT=3000 node scripts/serve-candidate.mjs', url: 'http://127.0.0.1:3000', reuseExistingServer: false },
++})
+diff --git a/playwright.delivery.config.js b/playwright.delivery.config.js
+new file mode 100644
+index 0000000..b289432
+--- /dev/null
++++ b/playwright.delivery.config.js
+@@ -0,0 +1,21 @@
++import { defineConfig, devices } from '@playwright/test'
++export default defineConfig({
++  testDir: './tests/e2e',
++  testMatch: ['accessibility/*.spec.js', 'delivery/*.spec.js'],
++  forbidOnly: true,
++  retries: 0,
++  workers: 1,
++  reporter: 'line',
++  outputDir: process.env.DELIVERY_TEST_OUTPUT || 'test-results/delivery',
++  use: {
++    baseURL: 'http://127.0.0.1:4175',
++    screenshot: 'only-on-failure',
++    trace: 'retain-on-failure',
++  },
++  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
++  webServer: {
++    command: 'node scripts/serve-candidate.mjs',
++    url: 'http://127.0.0.1:4175',
++    reuseExistingServer: false,
++  },
++})
+diff --git a/scripts/check-html-contract.mjs b/scripts/check-html-contract.mjs
+new file mode 100644
+index 0000000..6fdaf9b
+--- /dev/null
++++ b/scripts/check-html-contract.mjs
+@@ -0,0 +1,113 @@
++/** Inspect the actual candidate, not a manifest that could describe missing files. */
++import { readFileSync, existsSync } from 'node:fs'
++import { resolve, join } from 'node:path'
++import { pathToFileURL } from 'node:url'
++import { build } from 'esbuild'
++import { JSDOM, VirtualConsole } from 'jsdom'
++
++export async function deliveryRoutes() {
++  const result = await build({
++    stdin: {
++      contents: `import { articlesReferenceSeed } from './src/data/articlesReferenceSeed'; import { buildPrerenderRoutes } from './src/utils/prerenderLib'; export default buildPrerenderRoutes(articlesReferenceSeed).routes;`,
++      resolveDir: process.cwd(),
++      loader: 'ts',
++    },
++    bundle: true,
++    write: false,
++    platform: 'node',
++    format: 'esm',
++  })
++  return (
++    await import(
++      'data:text/javascript;base64,' + Buffer.from(result.outputFiles[0].text).toString('base64')
++    )
++  ).default
++}
++
++export async function checkHtmlContract(dist = 'dist') {
++  const routes = await deliveryRoutes()
++  const titles = new Set()
++  const descriptions = new Set()
++  for (const route of routes) {
++    const file = join(dist, route, 'index.html')
++    if (!existsSync(file)) throw new Error(`HTML contract: missing ${route}`)
++    const html = readFileSync(file, 'utf8')
++    const dom = new JSDOM(html, { virtualConsole: new VirtualConsole() })
++    const doc = dom.window.document
++    const fail = (message) => {
++      throw new Error(`HTML contract ${route}: ${message}`)
++    }
++    if (
++      !html.includes('<!-- prerendered -->') ||
++      !doc.querySelector('#root h1')?.textContent.trim()
++    )
++      fail('missing rendered h1')
++    for (const selector of [
++      'title',
++      'meta[name="description"]',
++      'link[rel="canonical"]',
++      'meta[property="og:title"]',
++      'meta[property="og:url"]',
++      'meta[property="og:description"]',
++      'meta[name="twitter:title"]',
++      'meta[name="twitter:description"]',
++      'meta[name="twitter:url"]',
++    ]) {
++      if (doc.querySelectorAll(selector).length !== 1) fail(`expected exactly one ${selector}`)
++    }
++    const title = doc.title.trim()
++    if (!title || titles.has(title)) fail('empty or duplicate route title')
++    titles.add(title)
++    const description = doc.querySelector('meta[name="description"]').content.trim()
++    if (!description || descriptions.has(description)) fail('empty or duplicate route description')
++    descriptions.add(description)
++    if (
++      doc.querySelector('meta[property="og:title"]').content !== title ||
++      doc.querySelector('meta[name="twitter:title"]').content !== title
++    )
++      fail('contradictory social title')
++    if (
++      doc.querySelector('meta[property="og:description"]').content !== description ||
++      doc.querySelector('meta[name="twitter:description"]').content !== description
++    )
++      fail('contradictory social description')
++    if (
++      doc.querySelector('link[rel="canonical"]').getAttribute('href') !==
++      `https://www.manatuner.app${route}`
++    )
++      fail('wrong canonical')
++    if (
++      doc.querySelector('meta[property="og:url"]').content !== `https://www.manatuner.app${route}`
++    )
++      fail('wrong social URL')
++    for (const asset of doc.querySelectorAll(
++      'script[src],link[rel="stylesheet"][href],link[rel="modulepreload"][href]'
++    )) {
++      const url = asset.getAttribute('src') || asset.getAttribute('href')
++      if (url.startsWith('/') && !existsSync(join(dist, url))) fail(`missing asset ${url}`)
++    }
++    dom.window.close()
++  }
++  const missing = new JSDOM(readFileSync(join(dist, '404.html'), 'utf8')).window.document
++  if (
++    !missing.querySelector('h1') ||
++    !missing.querySelector('meta[name="robots"]')?.content.includes('noindex') ||
++    missing.querySelector('link[rel="canonical"]')
++  )
++    throw new Error('HTML contract: 404 must have content, noindex and no homepage canonical')
++  const config = JSON.parse(readFileSync('vercel.json', 'utf8'))
++  if (config.rewrites?.length || config.routes?.length || config.cleanUrls !== true)
++    throw new Error(
++      'HTML contract: filesystem routing required; catch-all SPA rewrites are forbidden'
++    )
++  console.log(
++    `HTML contract passed: ${routes.length} public routes, unique metadata, local assets and noindex 404. Vercel serves unmatched static paths with 404.html; local preview is not evidence of deployed routing.`
++  )
++  return routes
++}
++if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
++  checkHtmlContract(process.argv[2]).catch((error) => {
++    console.error(error.message)
++    process.exitCode = 1
++  })
++}
+diff --git a/scripts/delivery-gate.mjs b/scripts/delivery-gate.mjs
+new file mode 100644
+index 0000000..8be91b7
+--- /dev/null
++++ b/scripts/delivery-gate.mjs
+@@ -0,0 +1,59 @@
++/** The native Vercel build cannot succeed before every local candidate check succeeds. */
++import { spawnSync } from 'node:child_process'
++import { resolve, join } from 'node:path'
++import { mkdtempSync, rmSync } from 'node:fs'
++import { tmpdir } from 'node:os'
++import { pathToFileURL } from 'node:url'
++export const checks = [
++  ['npm', ['run', 'lint']],
++  ['npm', ['run', 'type-check']],
++  [
++    'npx',
++    [
++      'vitest',
++      'run',
++      'src',
++      'tests/component',
++      'tests/math-audit',
++      '--configLoader',
++      'runner',
++      '--no-cache',
++    ],
++  ],
++  ['node', ['--test', 'scripts/delivery-gate.test.mjs']],
++  ['npx', ['vite', 'build', '--outDir', process.env.PRERENDER_DIST || 'dist']],
++  ['node', ['scripts/check-bundle-budget.mjs']],
++  ['npm', ['audit', '--audit-level=high']],
++  ['node', ['scripts/prerender.mjs']],
++  ['npx', ['playwright', 'test', '--config=playwright.delivery.config.js', '--project=chromium']],
++]
++export function runDeliveryGate(run = spawnSync, sequence = checks) {
++  const ownedEvidence = process.env.MANATUNER_MATH_EVIDENCE_DIR
++    ? null
++    : mkdtempSync(join(tmpdir(), 'manatuner-gate-math-'))
++  const env = {
++    ...process.env,
++    MANATUNER_MATH_EVIDENCE_DIR: process.env.MANATUNER_MATH_EVIDENCE_DIR || ownedEvidence,
++  }
++  try {
++    for (const [command, args] of sequence) {
++      console.log(`[delivery gate] ${command} ${args.join(' ')}`)
++      const result = run(command, args, { stdio: 'inherit', env })
++      if (result.error || result.status !== 0)
++        throw new Error(
++          `Delivery blocked by ${command}: ${result.error?.message || `exit ${result.status}`}`
++        )
++    }
++    console.log('[delivery gate] All candidate checks passed; build may finish.')
++  } finally {
++    if (ownedEvidence) rmSync(ownedEvidence, { recursive: true, force: true })
++  }
++}
++if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
++  try {
++    runDeliveryGate()
++  } catch (error) {
++    console.error(error.message)
++    process.exitCode = 1
++  }
++}
+diff --git a/scripts/delivery-gate.test.mjs b/scripts/delivery-gate.test.mjs
+new file mode 100644
+index 0000000..d18bb4e
+--- /dev/null
++++ b/scripts/delivery-gate.test.mjs
+@@ -0,0 +1,27 @@
++import { test } from 'node:test'
++import assert from 'node:assert/strict'
++import { checks, runDeliveryGate } from './delivery-gate.mjs'
++test('every failing check prevents later build/publish readiness', () => {
++  for (let failure = 0; failure < checks.length; failure++) {
++    let calls = 0
++    assert.throws(
++      () => runDeliveryGate(() => ({ status: calls++ === failure ? 1 : 0 })),
++      /Delivery blocked/
++    )
++    assert.equal(calls, failure + 1)
++  }
++})
++test('a killed check also blocks readiness', () => {
++  assert.throws(
++    () => runDeliveryGate(() => ({ status: null, signal: 'SIGTERM' })),
++    /Delivery blocked/
++  )
++})
++test('successful checks run exactly once and in order', () => {
++  const seen = []
++  runDeliveryGate((cmd, args) => {
++    seen.push([cmd, args])
++    return { status: 0 }
++  })
++  assert.deepEqual(seen, checks)
++})
+diff --git a/scripts/serve-candidate.mjs b/scripts/serve-candidate.mjs
+new file mode 100644
+index 0000000..519838c
+--- /dev/null
++++ b/scripts/serve-candidate.mjs
+@@ -0,0 +1,44 @@
++/** Strict static preview: never use Vite's SPA fallback as evidence of HTTP 404s.
++ * This mirrors the selected filesystem/404 contract; it is not a Vercel emulator.
++ */
++import { createServer } from 'node:http'
++import { readFileSync, statSync } from 'node:fs'
++import { resolve, join, extname, sep } from 'node:path'
++const root = resolve(process.env.PRERENDER_DIST || 'dist')
++const types = {
++  '.html': 'text/html; charset=utf-8',
++  '.js': 'text/javascript',
++  '.css': 'text/css',
++  '.json': 'application/json',
++  '.svg': 'image/svg+xml',
++  '.png': 'image/png',
++  '.jpg': 'image/jpeg',
++  '.woff2': 'font/woff2',
++}
++createServer((req, res) => {
++  try {
++    const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
++    const aliases = { '/reading-list': '/library', '/mes-analyses': '/my-analyses' }
++    if (aliases[path]) {
++      res.writeHead(308, { Location: aliases[path] })
++      res.end()
++      return
++    }
++    let file = resolve(root, '.' + path)
++    if (file !== root && !file.startsWith(root + sep)) throw new Error('invalid path')
++    try {
++      if (statSync(file).isDirectory()) file = join(file, 'index.html')
++    } catch {
++      /* missing */
++    }
++    if (!extname(file)) file += '.html'
++    const body = readFileSync(file)
++    res.writeHead(200, { 'Content-Type': types[extname(file)] || 'application/octet-stream' })
++    res.end(body)
++  } catch {
++    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'X-Robots-Tag': 'noindex' })
++    res.end(readFileSync(join(root, '404.html')))
++  }
++}).listen(Number(process.env.CANDIDATE_PORT || 4175), '127.0.0.1', () =>
++  console.log(`Strict candidate server: ${root}`)
++)
+diff --git a/src/data/analyzerTabs.ts b/src/data/analyzerTabs.ts
+new file mode 100644
+index 0000000..56bcc22
+--- /dev/null
++++ b/src/data/analyzerTabs.ts
+@@ -0,0 +1,2 @@
++/** Visible top-level result tabs, also used by public product counts. */
++export const ANALYZER_TABS = ['Castability', 'Analysis', 'Mulligan', 'Manabase', 'Blueprint'] as const
+diff --git a/src/utils/__tests__/editorialContract.test.js b/src/utils/__tests__/editorialContract.test.js
+new file mode 100644
+index 0000000..99c53c8
+--- /dev/null
++++ b/src/utils/__tests__/editorialContract.test.js
+@@ -0,0 +1,51 @@
++import { describe, expect, it } from 'vitest'
++import { readFileSync } from 'node:fs'
++import { healthScoreBand } from '../healthScore'
++import { ANALYZER_TABS } from '../../data/analyzerTabs'
++import { articlesReferenceSeed } from '../../data/articlesReferenceSeed'
++const source = (file) => readFileSync(`src/${file}`, 'utf8')
++
++describe('F10 editorial contracts', () => {
++  it.each([[54, 'Needs work'], [55, 'Average'], [69, 'Average'], [70, 'Good'], [84, 'Good'], [85, 'Excellent'], [100, 'Excellent']])('labels the shared boundary %s consistently', (score, label) => {
++    expect(healthScoreBand(Number(score)).label).toBe(label)
++  })
++  it('keeps public AI references aligned with model and privacy contracts', () => {
++    for (const file of ['public/llms.txt', 'public/llms-full.txt']) {
++      const copy = readFileSync(file, 'utf8')
++      expect(copy).not.toMatch(/100% local|No data is ever sent|no data sent to servers|54 curated|Library of 54|Exact per-spell cast probability|means your mana base is tournament-ready/)
++      expect(copy).toContain('default is an estimate')
++      expect(copy).toContain('Exact modes enumerate only their stated supported')
++      expect(copy).toMatch(/scryfall/i)
++      expect(copy).toContain('Sentry initializes only in a production build with a configured DSN')
++      expect(copy).toContain('best effort')
++      expect(copy).toContain('Commander identification requires an explicit marker')
++      expect(copy).toContain('55–69 Average')
++    }
++  })
++  it('uses one score definition for verdict, history and export', () => {
++    for (const file of ['components/analyzer/QuickVerdict.tsx', 'pages/MyAnalysesPage.tsx', 'components/export/ManaBlueprint.tsx']) expect(source(file)).toContain('healthScoreBand(')
++    expect(source('pages/GuidePage.tsx')).toContain('details: HEALTH_SCORE_BANDS')
++  })
++  it('does not teach the audited false on-curve, exact-ramp or commander promises', () => {
++    const publicCopy = ['pages/HomePage.tsx', 'pages/AnalyzerPage.tsx', 'pages/GuidePage.tsx'].map(source).join('\n')
++    expect(publicCopy).not.toMatch(/casts 87% of spells|first non-land|exact hypergeometric castability|Exact results, not approximations/)
++    expect(publicCopy).toContain('default is an estimate')
++    expect(publicCopy).toContain('only when explicitly marked')
++    expect(publicCopy).toContain('not the percentage of spells cast on curve')
++  })
++  it('explains seven-card redraw and bottoming, separately from deck Health Score', () => {
++    const help = source('components/analyzer/MulliganTab.tsx')
++    expect(help).toContain('draw seven again')
++    expect(help).toContain('put one card on the bottom')
++    expect(help).not.toContain('draw a new hand with 1 fewer card')
++    expect(help).toContain('differ from the deck-level Health Score')
++  })
++  it('derives reference counts and keeps the advertised tab count equal to accessible tabs', () => {
++    const home = source('pages/HomePage.tsx')
++    expect(articlesReferenceSeed.length).toBeGreaterThan(54)
++    expect(home.match(/articlesReferenceSeed.length/g)).toHaveLength(2)
++    const tabs = source('pages/AnalyzerPage.tsx').match(/id="analyzer-tab-\d+"/g) ?? []
++    expect(ANALYZER_TABS).toHaveLength(tabs.length)
++    expect(home).toContain('String(ANALYZER_TABS.length)')
++  })
++})
+diff --git a/src/utils/healthScore.ts b/src/utils/healthScore.ts
+new file mode 100644
+index 0000000..3a0020a
+--- /dev/null
++++ b/src/utils/healthScore.ts
+@@ -0,0 +1,8 @@
++/** Shared editorial bands for the heuristic color-access score, in every format. */
++export const HEALTH_SCORE_BANDS = '85+ Excellent · 70–84 Good · 55–69 Average · below 55 Needs work'
++export function healthScoreBand(percent: number) {
++  if (percent >= 85) return { label: 'Excellent', severity: 'success' as const }
++  if (percent >= 70) return { label: 'Good', severity: 'info' as const }
++  if (percent >= 55) return { label: 'Average', severity: 'warning' as const }
++  return { label: 'Needs work', severity: 'error' as const }
++}
+diff --git a/tests/component/PrivacyDisclosure.test.tsx b/tests/component/PrivacyDisclosure.test.tsx
+new file mode 100644
+index 0000000..09642f1
+--- /dev/null
++++ b/tests/component/PrivacyDisclosure.test.tsx
+@@ -0,0 +1,29 @@
++import React from 'react'
++import { render, screen, cleanup } from '@testing-library/react'
++import { afterEach, describe, expect, it, vi } from 'vitest'
++import { PrivacyPage } from '../../src/components/layout/StaticPages'
++
++vi.mock('../../src/components/common/SEO', () => ({ SEO: () => null }))
++afterEach(() => { cleanup(); vi.unstubAllEnvs() })
++
++describe('privacy information matches actual data flows', () => {
++  it('identifies third parties, transmitted information and storage deletion limits', () => {
++    vi.stubEnv('PROD', false)
++    render(<PrivacyPage />)
++    const text = document.body.textContent || ''
++    for (const disclosure of ['api.scryfall.com', 'cards.scryfall.io', 'Google Fonts', 'jsDelivr', 'IP address', 'IndexedDB', '30 days', '7 days', 'exported files', 'shared links', 'best effort']) {
++      expect(text).toContain(disclosure)
++    }
++    expect(text).not.toMatch(/never leave your device|don't collect, store, or transmit|no data.*transmit/i)
++    expect(screen.getByText(/Error monitoring is disabled in this build/)).toBeTruthy()
++  })
++  it('discloses configured monitoring without claiming delivery when a production DSN exists', () => {
++    vi.stubEnv('PROD', true)
++    vi.stubEnv('VITE_SENTRY_DSN', 'https://public@example.invalid/1')
++    render(<PrivacyPage />)
++    expect(screen.getByText(/The Sentry SDK is configured in this build/)).toBeTruthy()
++    expect(document.body.textContent).toContain('Before enabling Sentry')
++    expect(document.body.textContent).toContain('Content Security Policy')
++    expect(document.body.textContent).toContain('does not confirm that events are received')
++  })
++})
+diff --git a/tests/e2e/core-flows/final-audit.spec.js b/tests/e2e/core-flows/final-audit.spec.js
+new file mode 100644
+index 0000000..2d5f735
+--- /dev/null
++++ b/tests/e2e/core-flows/final-audit.spec.js
+@@ -0,0 +1,124 @@
++import { test, expect } from '../../fixtures/audit-browser.js'
++
++async function analyze(page) {
++  await page.goto('/analyzer')
++  await page.getByPlaceholder(/paste your decklist/i).fill('24 Mountain\n36 Lightning Bolt')
++  await page.getByRole('button', { name: /analyze manabase/i }).click()
++  await expect(page.getByTestId('analysis-results')).toBeVisible()
++}
++
++test('E02 mobile manabase tabs show their complete labels and open the deck', async ({ page }, testInfo) => {
++  await page.setViewportSize({ width: 360, height: 900 })
++  await analyze(page)
++  await page.getByTestId('tab-manabase').click()
++  const tab = page.getByRole('tab', { name: 'Full Deck List', exact: true })
++  const bounds = await tab.evaluate(el => {
++    const range = document.createRange()
++    const node = [...el.childNodes].find(n => n.nodeType === Node.TEXT_NODE && n.textContent.includes('Full Deck List'))
++    range.selectNode(node)
++    const text = range.getBoundingClientRect()
++    const scroller = el.closest('.MuiTabs-scroller').getBoundingClientRect()
++    return { left: text.left, right: text.right, clipLeft: scroller.left, clipRight: scroller.right }
++  })
++  expect(bounds.left).toBeGreaterThanOrEqual(bounds.clipLeft)
++  expect(bounds.right).toBeLessThanOrEqual(bounds.clipRight)
++  await tab.click()
++  await expect(tab).toHaveAttribute('aria-selected', 'true')
++  await expect(page.getByText('Lightning Bolt', { exact: true }).first()).toBeVisible()
++  await page.screenshot({ path: testInfo.outputPath('manabase-mobile.png') })
++})
++
++test('V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint', async ({ page }, testInfo) => {
++  test.setTimeout(90000)
++  await page.setViewportSize({ width: 360, height: 900 })
++  await analyze(page)
++  await page.getByTestId('tab-blueprint').click()
++  const card = page.getByTestId('blueprint-card')
++  expect(await card.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
++  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
++  const downloads = {}
++  for (const [kind, label] of [['json', 'JSON (Backup)'], ['png', 'PNG (Social Media)'], ['pdf', 'PDF (Documentation)']]) {
++    await page.getByRole('button', { name: 'Export Blueprint', exact: true }).click()
++    const pending = page.waitForEvent('download')
++    await page.getByRole('menuitem', { name: label, exact: true }).click()
++    const download = await pending
++    const path = testInfo.outputPath(`blueprint.${kind}`)
++    await download.saveAs(path)
++    downloads[kind] = await (await import('node:fs/promises')).readFile(path)
++  }
++  const json = JSON.parse(downloads.json)
++  expect(json.analysis.totalCards).toBe(60)
++  expect(json.analysis.totalLands).toBe(24)
++  expect(json.stabilityScore).toBe(Math.round(json.analysis.consistency * 100))
++  expect(downloads.png.subarray(1, 4).toString()).toBe('PNG')
++  const width = downloads.png.readUInt32BE(16)
++  const height = downloads.png.readUInt32BE(20)
++  const expectedPages = Math.ceil(height / Math.floor(width * 277 / 190))
++  expect(expectedPages).toBeGreaterThan(1)
++  const pageCount = [...downloads.pdf.toString('latin1').matchAll(/\/Type \/Page\b/g)].length
++  expect(pageCount).toBe(expectedPages)
++  await page.screenshot({ path: testInfo.outputPath('blueprint-display.png'), fullPage: true })
++})
++
++for (const width of [768, 1440]) {
++  test(`NR-M21/M27 shared deck survives direct navigation and back at ${width}px`, async ({ page }, testInfo) => {
++    await page.setViewportSize({ width, height: 1000 })
++    await page.addInitScript(() => {
++      Object.defineProperty(navigator, 'clipboard', { value: { writeText: async value => { window.__sharedLink = value } } })
++    })
++    await analyze(page)
++    await page.getByTestId('tab-manabase').click()
++    await page.getByRole('button', { name: 'Copy shareable link to this manabase analysis', exact: true }).click()
++    const url = await page.evaluate(() => window.__sharedLink)
++    expect(new URL(url).hash).toContain('d=')
++    expect(new URL(url).search).toBe('')
++    await page.goto('/library')
++    await page.goBack()
++    await page.goto(url)
++    await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue('24 Mountain\n36 Lightning Bolt')
++    await page.reload()
++    await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue('24 Mountain\n36 Lightning Bolt')
++    await page.getByRole('button', { name: /analyze manabase/i }).click()
++    await expect(page.getByTestId('analysis-results')).toBeVisible()
++    await page.getByTestId('tab-manabase').click()
++    await expect(page.getByRole('tab', { name: 'Full Deck List', exact: true })).toBeVisible()
++    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
++    await page.screenshot({ path: testInfo.outputPath(`manabase-${width}.png`) })
++  })
++}
++
++test('NR-M02 actual Try Example resolves all twenty public card names and saves sixty cards', async ({ page }) => {
++  const { default: sampleCards } = await import('../../fixtures/scryfall-sample-audit.json', { with: { type: 'json' } })
++  await page.route('https://api.scryfall.com/**', async route => {
++    if (route.request().url().includes('/cards/collection')) {
++      const names = route.request().postDataJSON().identifiers.map(c => c.name)
++      await route.fulfill({ json: { object: 'list', data: sampleCards.filter(c => names.includes(c.name)) } })
++    } else await route.fallback()
++  })
++  await page.goto('/analyzer')
++  await expect(page.getByRole('button', { name: /analyze manabase/i })).toBeDisabled()
++  await page.getByRole('button', { name: 'Try Example', exact: true }).click()
++  await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue(/4 Llanowar Elves/)
++  await page.getByRole('button', { name: /analyze manabase/i }).click()
++  await expect(page.getByTestId('analysis-results')).toBeVisible()
++  const record = await page.evaluate(() => JSON.parse(localStorage.getItem('manatuner_analyses'))[0])
++  expect(record.analysis.totalCards).toBe(60)
++  expect(record.analysis.cards).toHaveLength(20)
++  expect(record.deckName).toBe("Nature's Rhythm (Midrange Combo)")
++})
++
++test('NR-M24 global metadata outage reports an error and the same deck can be retried', async ({ page }) => {
++  test.setTimeout(45000)
++  // No seeded lands: every card needs remote metadata, so a total outage cannot resolve any card.
++  const outage = async route => route.fulfill({ status: 503, json: { object: 'error', code: 'unavailable' } })
++  await page.route('https://api.scryfall.com/**', outage)
++  await page.goto('/analyzer')
++  await page.getByPlaceholder(/paste your decklist/i).fill('60 Lightning Bolt')
++  await page.getByRole('button', { name: /analyze manabase/i }).click()
++  await expect(page.getByRole('alert').filter({ hasText: /Failed to analyze deck/ })).toBeVisible({ timeout: 35000 })
++  await expect(page.getByTestId('analysis-results')).toHaveCount(0)
++  await page.unroute('https://api.scryfall.com/**', outage)
++  await page.getByRole('button', { name: /analyze manabase/i }).click()
++  await expect(page.getByTestId('analysis-results')).toBeVisible()
++  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('manatuner_analyses')).length)).toBe(1)
++})
+diff --git a/tests/e2e/core-flows/privacy-audit.spec.js b/tests/e2e/core-flows/privacy-audit.spec.js
+new file mode 100644
+index 0000000..ae618bb
+--- /dev/null
++++ b/tests/e2e/core-flows/privacy-audit.spec.js
+@@ -0,0 +1,23 @@
++import { test, expect } from '../../fixtures/audit-browser.js'
++
++test('F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring', async ({ page }) => {
++  const monitoringRequests = []
++  page.on('request', (request) => {
++    if (/sentry\.io|\/api\/\d+\/envelope\//.test(request.url())) monitoringRequests.push(request.url())
++  })
++  await page.goto('/privacy')
++  await expect(page.getByRole('heading', { name: 'Privacy Policy', exact: true })).toBeVisible()
++  await expect(page.getByText(/Card lookups send card names/)).toContainText('api.scryfall.com')
++  await expect(page.getByText(/Google Fonts \(/)).toContainText('jsDelivr')
++  await expect(page.getByText(/Reset requests deletion/)).toContainText('best effort')
++  await expect(page.getByText(/Error monitoring is disabled in this build/)).toBeVisible()
++  await expect(page.getByText(/Before enabling Sentry/)).toBeVisible()
++  await page.goto('/analyzer')
++  await page.getByRole('button', { name: 'Info', exact: true }).click()
++  const dialog = page.getByRole('dialog')
++  await expect(dialog.getByText(/Sentry error monitoring is disabled/)).toBeVisible()
++  await expect(dialog.getByText(/External services receive connection metadata/)).toBeVisible()
++  await dialog.getByRole('link', { name: 'privacy policy' }).click()
++  await expect(page).toHaveURL(/\/privacy$/)
++  expect(monitoringRequests).toEqual([])
++})
+diff --git a/tests/e2e/delivery/html-contract.spec.js b/tests/e2e/delivery/html-contract.spec.js
+new file mode 100644
+index 0000000..bfb0bc2
+--- /dev/null
++++ b/tests/e2e/delivery/html-contract.spec.js
+@@ -0,0 +1,62 @@
++import { test, expect } from '@playwright/test'
++import AxeBuilder from '@axe-core/playwright'
++
++test('initial HTTP content, 404, asset and direct analyzer reload', async ({
++  request,
++  browser,
++}) => {
++  for (const route of [
++    '/',
++    '/analyzer',
++    '/library',
++    '/library/saito-part-1-concentration',
++    '/library/author/frank-karsten',
++    '/privacy',
++  ]) {
++    const response = await request.get(route)
++    expect(response.status()).toBe(200)
++    expect(await response.text()).toContain('<!-- prerendered -->')
++    expect(await response.text()).toMatch(/<h1[\s>]/)
++  }
++  const absent = await request.get('/audit-nonexistent-20260906')
++  expect(absent.status()).toBe(404)
++  expect(await absent.text()).toContain('noindex')
++  expect(await absent.text()).not.toContain('rel="canonical"')
++  const asset = await request.get('/boot-watchdog.js')
++  expect(asset.status()).toBe(200)
++  expect(asset.headers()['content-type']).toContain('javascript')
++  const alias = await request.get('/mes-analyses', { maxRedirects: 0 })
++  expect(alias.status()).toBe(308)
++  expect(alias.headers().location).toBe('/my-analyses')
++  const missingAsset = await request.get('/assets/does-not-exist.js')
++  expect(missingAsset.status()).toBe(404)
++  const context = await browser.newContext({ javaScriptEnabled: false })
++  const staticPage = await context.newPage()
++  await staticPage.goto('http://127.0.0.1:4175/library')
++  await expect(staticPage.getByRole('heading', { level: 1 })).toBeVisible()
++  await context.close()
++})
++
++test('direct analyzer query and reload mount the candidate chunks', async ({ page }) => {
++  const errors = []
++  page.on('pageerror', (error) => errors.push(error.message))
++  await page.goto('/analyzer?source=direct-link#deck')
++  await expect(page.getByRole('button', { name: /try example/i })).toBeEnabled()
++  await page.reload()
++  await expect(page.getByRole('button', { name: /try example/i })).toBeEnabled()
++  expect(errors).toEqual([])
++})
++
++test('contrast checker detects a real footer regression', async ({ page }) => {
++  await page.goto('/')
++  await page.locator('footer').scrollIntoViewIfNeeded()
++  await page.locator('footer').evaluate((footer) => {
++    footer.innerHTML =
++      '<p style="font-size:16px;color:rgb(238,238,238);background:rgb(255,255,255)">Contrast regression fixture: this footer text must fail.</p>'
++  })
++  const results = await new AxeBuilder({ page })
++    .include('footer')
++    .withRules(['color-contrast'])
++    .analyze()
++  expect(results.violations.some((v) => v.id === 'color-contrast')).toBe(true)
++})
+diff --git a/tests/fixtures/scryfall-sample-audit.json b/tests/fixtures/scryfall-sample-audit.json
+new file mode 100644
+index 0000000..cd1be92
+--- /dev/null
++++ b/tests/fixtures/scryfall-sample-audit.json
+@@ -0,0 +1,600 @@
++[
++  {
++    "name": "Llanowar Elves",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.jpg?1783909057",
++      "normal": "https://cards.scryfall.io/normal/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.jpg?1783909057",
++      "large": "https://cards.scryfall.io/large/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.jpg?1783909057",
++      "png": "https://cards.scryfall.io/png/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.png?1783909057",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.jpg?1783909057",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.jpg?1783909057",
++      "thumb": "https://cards.scryfall.io/thumb/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.webp?1783909057",
++      "grid": "https://cards.scryfall.io/grid/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.webp?1783909057",
++      "display": "https://cards.scryfall.io/display/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.webp?1783909057",
++      "art": "https://cards.scryfall.io/art/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.webp?1783909057",
++      "crop": "https://cards.scryfall.io/crop/front/6/a/6a0b230b-d391-4998-a3f7-7b158a0ec2cd.webp?1783909057"
++    },
++    "mana_cost": "{G}",
++    "cmc": 1.0,
++    "type_line": "Creature \u2014 Elf Druid",
++    "oracle_text": "{T}: Add {G}.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "G"
++    ]
++  },
++  {
++    "name": "Gene Pollinator",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.jpg?1783905937",
++      "normal": "https://cards.scryfall.io/normal/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.jpg?1783905937",
++      "large": "https://cards.scryfall.io/large/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.jpg?1783905937",
++      "png": "https://cards.scryfall.io/png/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.png?1783905937",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.jpg?1783905937",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.jpg?1783905937",
++      "thumb": "https://cards.scryfall.io/thumb/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.webp?1783905937",
++      "grid": "https://cards.scryfall.io/grid/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.webp?1783905937",
++      "display": "https://cards.scryfall.io/display/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.webp?1783905937",
++      "art": "https://cards.scryfall.io/art/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.webp?1783905937",
++      "crop": "https://cards.scryfall.io/crop/front/c/e/ce7a8eec-a029-4ee1-b2d6-405d903d4640.webp?1783905937"
++    },
++    "mana_cost": "{G}",
++    "cmc": 1.0,
++    "type_line": "Artifact Creature \u2014 Robot Insect",
++    "oracle_text": "{T}, Tap an untapped permanent you control: Add one mana of any color.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "B",
++      "G",
++      "R",
++      "U",
++      "W"
++    ]
++  },
++  {
++    "name": "Spider Manifestation",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.jpg?1783905310",
++      "normal": "https://cards.scryfall.io/normal/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.jpg?1783905310",
++      "large": "https://cards.scryfall.io/large/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.jpg?1783905310",
++      "png": "https://cards.scryfall.io/png/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.png?1783905310",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.jpg?1783905310",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.jpg?1783905310",
++      "thumb": "https://cards.scryfall.io/thumb/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.webp?1783905310",
++      "grid": "https://cards.scryfall.io/grid/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.webp?1783905310",
++      "display": "https://cards.scryfall.io/display/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.webp?1783905310",
++      "art": "https://cards.scryfall.io/art/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.webp?1783905310",
++      "crop": "https://cards.scryfall.io/crop/front/9/9/99223677-b8a5-48f1-8009-e8475eada7db.webp?1783905310"
++    },
++    "mana_cost": "{1}{R/G}",
++    "cmc": 2.0,
++    "type_line": "Creature \u2014 Spider Avatar",
++    "oracle_text": "Reach\n{T}: Add {R} or {G}.\nWhenever you cast a spell with mana value 4 or greater, untap this creature.",
++    "colors": [
++      "G",
++      "R"
++    ],
++    "color_identity": [
++      "G",
++      "R"
++    ],
++    "keywords": [
++      "Reach"
++    ],
++    "produced_mana": [
++      "G",
++      "R"
++    ]
++  },
++  {
++    "name": "Badgermole Cub",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.jpg?1786399172",
++      "normal": "https://cards.scryfall.io/normal/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.jpg?1786399172",
++      "large": "https://cards.scryfall.io/large/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.jpg?1786399172",
++      "png": "https://cards.scryfall.io/png/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.png?1786399172",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.jpg?1786399172",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.jpg?1786399172",
++      "thumb": "https://cards.scryfall.io/thumb/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.webp?1786399172",
++      "grid": "https://cards.scryfall.io/grid/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.webp?1786399172",
++      "display": "https://cards.scryfall.io/display/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.webp?1786399172",
++      "art": "https://cards.scryfall.io/art/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.webp?1786399172",
++      "crop": "https://cards.scryfall.io/crop/front/3/4/340c5799-4964-44dd-8c48-8f3f3aba5211.webp?1786399172"
++    },
++    "mana_cost": "{1}{G}",
++    "cmc": 2.0,
++    "type_line": "Creature \u2014 Badger Mole",
++    "oracle_text": "When this creature enters, earthbend 1. (Target land you control becomes a 0/0 creature with haste that's still a land. Put a +1/+1 counter on it. When it dies or is exiled, return it to the battlefield tapped.)\nWhenever you tap a creature for mana, add an additional {G}.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [
++      "Earthbend"
++    ],
++    "produced_mana": [
++      "G"
++    ]
++  },
++  {
++    "name": "Nature's Rhythm",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.jpg?1783907340",
++      "normal": "https://cards.scryfall.io/normal/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.jpg?1783907340",
++      "large": "https://cards.scryfall.io/large/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.jpg?1783907340",
++      "png": "https://cards.scryfall.io/png/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.png?1783907340",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.jpg?1783907340",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.jpg?1783907340",
++      "thumb": "https://cards.scryfall.io/thumb/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.webp?1783907340",
++      "grid": "https://cards.scryfall.io/grid/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.webp?1783907340",
++      "display": "https://cards.scryfall.io/display/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.webp?1783907340",
++      "art": "https://cards.scryfall.io/art/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.webp?1783907340",
++      "crop": "https://cards.scryfall.io/crop/front/1/3/1397d904-c51d-451e-8505-7f3118acc1f6.webp?1783907340"
++    },
++    "mana_cost": "{X}{G}{G}",
++    "cmc": 2.0,
++    "type_line": "Sorcery",
++    "oracle_text": "Search your library for a creature card with mana value X or less, put it onto the battlefield, then shuffle.\nHarmonize {X}{G}{G}{G}{G} (You may cast this card from your graveyard for its harmonize cost. You may tap a creature you control to reduce that cost by an amount of generic mana equal to its power. Then exile this spell.)",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [
++      "Harmonize"
++    ]
++  },
++  {
++    "name": "Ouroboroid",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.jpg?1783905933",
++      "normal": "https://cards.scryfall.io/normal/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.jpg?1783905933",
++      "large": "https://cards.scryfall.io/large/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.jpg?1783905933",
++      "png": "https://cards.scryfall.io/png/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.png?1783905933",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.jpg?1783905933",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.jpg?1783905933",
++      "thumb": "https://cards.scryfall.io/thumb/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.webp?1783905933",
++      "grid": "https://cards.scryfall.io/grid/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.webp?1783905933",
++      "display": "https://cards.scryfall.io/display/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.webp?1783905933",
++      "art": "https://cards.scryfall.io/art/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.webp?1783905933",
++      "crop": "https://cards.scryfall.io/crop/front/2/0/209c591a-4ab2-4e89-9523-a7b766cf4e51.webp?1783905933"
++    },
++    "mana_cost": "{2}{G}{G}",
++    "cmc": 4.0,
++    "type_line": "Creature \u2014 Plant Wurm",
++    "oracle_text": "At the beginning of combat on your turn, put X +1/+1 counters on each creature you control, where X is this creature's power.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": []
++  },
++  {
++    "name": "Brightglass Gearhulk",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.jpg?1783907862",
++      "normal": "https://cards.scryfall.io/normal/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.jpg?1783907862",
++      "large": "https://cards.scryfall.io/large/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.jpg?1783907862",
++      "png": "https://cards.scryfall.io/png/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.png?1783907862",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.jpg?1783907862",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.jpg?1783907862",
++      "thumb": "https://cards.scryfall.io/thumb/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.webp?1783907862",
++      "grid": "https://cards.scryfall.io/grid/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.webp?1783907862",
++      "display": "https://cards.scryfall.io/display/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.webp?1783907862",
++      "art": "https://cards.scryfall.io/art/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.webp?1783907862",
++      "crop": "https://cards.scryfall.io/crop/front/3/d/3dea5b45-925c-4732-8e9d-fa8232792736.webp?1783907862"
++    },
++    "mana_cost": "{G}{G}{W}{W}",
++    "cmc": 4.0,
++    "type_line": "Artifact Creature \u2014 Construct",
++    "oracle_text": "First strike, trample\nWhen this creature enters, you may search your library for up to two artifact, creature, and/or enchantment cards with mana value 1 or less, reveal them, put them into your hand, then shuffle.",
++    "colors": [
++      "G",
++      "W"
++    ],
++    "color_identity": [
++      "G",
++      "W"
++    ],
++    "keywords": [
++      "First strike",
++      "Trample"
++    ]
++  },
++  {
++    "name": "Archdruid's Charm",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.jpg?1783912870",
++      "normal": "https://cards.scryfall.io/normal/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.jpg?1783912870",
++      "large": "https://cards.scryfall.io/large/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.jpg?1783912870",
++      "png": "https://cards.scryfall.io/png/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.png?1783912870",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.jpg?1783912870",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.jpg?1783912870",
++      "thumb": "https://cards.scryfall.io/thumb/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.webp?1783912870",
++      "grid": "https://cards.scryfall.io/grid/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.webp?1783912870",
++      "display": "https://cards.scryfall.io/display/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.webp?1783912870",
++      "art": "https://cards.scryfall.io/art/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.webp?1783912870",
++      "crop": "https://cards.scryfall.io/crop/front/5/c/5caae5ae-845f-42c2-b1ae-956df2739433.webp?1783912870"
++    },
++    "mana_cost": "{G}{G}{G}",
++    "cmc": 3.0,
++    "type_line": "Instant",
++    "oracle_text": "Choose one \u2014\n\u2022 Search your library for a creature or land card and reveal it. Put it onto the battlefield tapped if it's a land card. Otherwise, put it into your hand. Then shuffle.\n\u2022 Put a +1/+1 counter on target creature you control. It deals damage equal to its power to target creature you don't control.\n\u2022 Exile target artifact or enchantment.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": []
++  },
++  {
++    "name": "Craterhoof Behemoth",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.jpg?1783907345",
++      "normal": "https://cards.scryfall.io/normal/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.jpg?1783907345",
++      "large": "https://cards.scryfall.io/large/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.jpg?1783907345",
++      "png": "https://cards.scryfall.io/png/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.png?1783907345",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.jpg?1783907345",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.jpg?1783907345",
++      "thumb": "https://cards.scryfall.io/thumb/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.webp?1783907345",
++      "grid": "https://cards.scryfall.io/grid/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.webp?1783907345",
++      "display": "https://cards.scryfall.io/display/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.webp?1783907345",
++      "art": "https://cards.scryfall.io/art/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.webp?1783907345",
++      "crop": "https://cards.scryfall.io/crop/front/2/7/276f5cee-a501-4658-bd4d-7a044bf1ccbc.webp?1783907345"
++    },
++    "mana_cost": "{5}{G}{G}{G}",
++    "cmc": 8.0,
++    "type_line": "Creature \u2014 Beast",
++    "oracle_text": "Haste\nWhen this creature enters, creatures you control gain trample and get +X/+X until end of turn, where X is the number of creatures you control.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [
++      "Haste"
++    ]
++  },
++  {
++    "name": "Insidious Fungus",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.jpg?1783909452",
++      "normal": "https://cards.scryfall.io/normal/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.jpg?1783909452",
++      "large": "https://cards.scryfall.io/large/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.jpg?1783909452",
++      "png": "https://cards.scryfall.io/png/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.png?1783909452",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.jpg?1783909452",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.jpg?1783909452",
++      "thumb": "https://cards.scryfall.io/thumb/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.webp?1783909452",
++      "grid": "https://cards.scryfall.io/grid/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.webp?1783909452",
++      "display": "https://cards.scryfall.io/display/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.webp?1783909452",
++      "art": "https://cards.scryfall.io/art/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.webp?1783909452",
++      "crop": "https://cards.scryfall.io/crop/front/d/6/d60d2e62-06da-410a-81ed-6cebb2632fb6.webp?1783909452"
++    },
++    "mana_cost": "{G}",
++    "cmc": 1.0,
++    "type_line": "Creature \u2014 Fungus",
++    "oracle_text": "{2}, Sacrifice this creature: Choose one \u2014\n\u2022 Destroy target artifact.\n\u2022 Destroy target enchantment.\n\u2022 Draw a card. Then you may put a land card from your hand onto the battlefield tapped.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": []
++  },
++  {
++    "name": "Nurturing Pixie",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.jpg?1783911855",
++      "normal": "https://cards.scryfall.io/normal/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.jpg?1783911855",
++      "large": "https://cards.scryfall.io/large/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.jpg?1783911855",
++      "png": "https://cards.scryfall.io/png/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.png?1783911855",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.jpg?1783911855",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.jpg?1783911855",
++      "thumb": "https://cards.scryfall.io/thumb/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.webp?1783911855",
++      "grid": "https://cards.scryfall.io/grid/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.webp?1783911855",
++      "display": "https://cards.scryfall.io/display/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.webp?1783911855",
++      "art": "https://cards.scryfall.io/art/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.webp?1783911855",
++      "crop": "https://cards.scryfall.io/crop/front/0/f/0fe155f6-888b-41a0-a9a0-be7bea998718.webp?1783911855"
++    },
++    "mana_cost": "{W}",
++    "cmc": 1.0,
++    "type_line": "Creature \u2014 Faerie Rogue",
++    "oracle_text": "Flying\nWhen this creature enters, return up to one target non-Faerie, nonland permanent you control to its owner's hand. If a permanent was returned this way, put a +1/+1 counter on this creature.",
++    "colors": [
++      "W"
++    ],
++    "color_identity": [
++      "W"
++    ],
++    "keywords": [
++      "Flying"
++    ]
++  },
++  {
++    "name": "Meltstrider's Resolve",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.jpg?1783905933",
++      "normal": "https://cards.scryfall.io/normal/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.jpg?1783905933",
++      "large": "https://cards.scryfall.io/large/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.jpg?1783905933",
++      "png": "https://cards.scryfall.io/png/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.png?1783905933",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.jpg?1783905933",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.jpg?1783905933",
++      "thumb": "https://cards.scryfall.io/thumb/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.webp?1783905933",
++      "grid": "https://cards.scryfall.io/grid/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.webp?1783905933",
++      "display": "https://cards.scryfall.io/display/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.webp?1783905933",
++      "art": "https://cards.scryfall.io/art/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.webp?1783905933",
++      "crop": "https://cards.scryfall.io/crop/front/5/3/53c08af4-b975-4d9d-baba-73e6727f2778.webp?1783905933"
++    },
++    "mana_cost": "{G}",
++    "cmc": 1.0,
++    "type_line": "Enchantment \u2014 Aura",
++    "oracle_text": "Enchant creature you control\nWhen this Aura enters, enchanted creature fights up to one target creature an opponent controls. (Each deals damage equal to its power to the other.)\nEnchanted creature gets +0/+2 and can't be blocked by more than one creature.",
++    "colors": [
++      "G"
++    ],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [
++      "Fight",
++      "Enchant"
++    ]
++  },
++  {
++    "name": "Seam Rip",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.jpg?1783905989",
++      "normal": "https://cards.scryfall.io/normal/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.jpg?1783905989",
++      "large": "https://cards.scryfall.io/large/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.jpg?1783905989",
++      "png": "https://cards.scryfall.io/png/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.png?1783905989",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.jpg?1783905989",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.jpg?1783905989",
++      "thumb": "https://cards.scryfall.io/thumb/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.webp?1783905989",
++      "grid": "https://cards.scryfall.io/grid/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.webp?1783905989",
++      "display": "https://cards.scryfall.io/display/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.webp?1783905989",
++      "art": "https://cards.scryfall.io/art/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.webp?1783905989",
++      "crop": "https://cards.scryfall.io/crop/front/9/d/9d298847-2d02-4593-b4d3-c5b722edac1e.webp?1783905989"
++    },
++    "mana_cost": "{W}",
++    "cmc": 1.0,
++    "type_line": "Enchantment",
++    "oracle_text": "When this enchantment enters, exile target nonland permanent an opponent controls with mana value 2 or less until this enchantment leaves the battlefield.",
++    "colors": [
++      "W"
++    ],
++    "color_identity": [
++      "W"
++    ],
++    "keywords": []
++  },
++  {
++    "name": "Soul-Guide Lantern",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.jpg?1783906018",
++      "normal": "https://cards.scryfall.io/normal/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.jpg?1783906018",
++      "large": "https://cards.scryfall.io/large/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.jpg?1783906018",
++      "png": "https://cards.scryfall.io/png/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.png?1783906018",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.jpg?1783906018",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.jpg?1783906018",
++      "thumb": "https://cards.scryfall.io/thumb/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.webp?1783906018",
++      "grid": "https://cards.scryfall.io/grid/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.webp?1783906018",
++      "display": "https://cards.scryfall.io/display/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.webp?1783906018",
++      "art": "https://cards.scryfall.io/art/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.webp?1783906018",
++      "crop": "https://cards.scryfall.io/crop/front/f/4/f4907e7b-d6d5-4e9b-968f-bce34ae4a577.webp?1783906018"
++    },
++    "mana_cost": "{1}",
++    "cmc": 1.0,
++    "type_line": "Artifact",
++    "oracle_text": "When this artifact enters, exile target card from a graveyard.\n{T}, Sacrifice this artifact: Exile each opponent's graveyard.\n{1}, {T}, Sacrifice this artifact: Draw a card.",
++    "colors": [],
++    "color_identity": [],
++    "keywords": []
++  },
++  {
++    "name": "Abandoned Air Temple",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.jpg?1783904914",
++      "normal": "https://cards.scryfall.io/normal/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.jpg?1783904914",
++      "large": "https://cards.scryfall.io/large/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.jpg?1783904914",
++      "png": "https://cards.scryfall.io/png/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.png?1783904914",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.jpg?1783904914",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.jpg?1783904914",
++      "thumb": "https://cards.scryfall.io/thumb/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.webp?1783904914",
++      "grid": "https://cards.scryfall.io/grid/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.webp?1783904914",
++      "display": "https://cards.scryfall.io/display/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.webp?1783904914",
++      "art": "https://cards.scryfall.io/art/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.webp?1783904914",
++      "crop": "https://cards.scryfall.io/crop/front/9/c/9c0433f9-8f1e-4a19-a83f-a41925f1b1a9.webp?1783904914"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Land",
++    "oracle_text": "This land enters tapped unless you control a basic land.\n{T}: Add {W}.\n{3}{W}, {T}: Put a +1/+1 counter on each creature you control.",
++    "colors": [],
++    "color_identity": [
++      "W"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "W"
++    ]
++  },
++  {
++    "name": "Hushwood Verge",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.jpg?1783909428",
++      "normal": "https://cards.scryfall.io/normal/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.jpg?1783909428",
++      "large": "https://cards.scryfall.io/large/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.jpg?1783909428",
++      "png": "https://cards.scryfall.io/png/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.png?1783909428",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.jpg?1783909428",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.jpg?1783909428",
++      "thumb": "https://cards.scryfall.io/thumb/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.webp?1783909428",
++      "grid": "https://cards.scryfall.io/grid/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.webp?1783909428",
++      "display": "https://cards.scryfall.io/display/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.webp?1783909428",
++      "art": "https://cards.scryfall.io/art/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.webp?1783909428",
++      "crop": "https://cards.scryfall.io/crop/front/e/c/ec288d76-c1f5-471b-8a53-504f88469c1b.webp?1783909428"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Land",
++    "oracle_text": "{T}: Add {G}.\n{T}: Add {W}. Activate only if you control a Forest or a Plains.",
++    "colors": [],
++    "color_identity": [
++      "G",
++      "W"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "G",
++      "W"
++    ]
++  },
++  {
++    "name": "Temple Garden",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.jpg?1784036854",
++      "normal": "https://cards.scryfall.io/normal/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.jpg?1784036854",
++      "large": "https://cards.scryfall.io/large/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.jpg?1784036854",
++      "png": "https://cards.scryfall.io/png/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.png?1784036854",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.jpg?1784036854",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.jpg?1784036854",
++      "thumb": "https://cards.scryfall.io/thumb/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.webp?1784036854",
++      "grid": "https://cards.scryfall.io/grid/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.webp?1784036854",
++      "display": "https://cards.scryfall.io/display/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.webp?1784036854",
++      "art": "https://cards.scryfall.io/art/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.webp?1784036854",
++      "crop": "https://cards.scryfall.io/crop/front/b/9/b9b0589d-f327-46a7-8bac-06b7654c547a.webp?1784036854"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Land \u2014 Forest Plains",
++    "oracle_text": "({T}: Add {G} or {W}.)\nAs this land enters, you may pay 2 life. If you don't, it enters tapped.",
++    "colors": [],
++    "color_identity": [
++      "G",
++      "W"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "G",
++      "W"
++    ]
++  },
++  {
++    "name": "Multiversal Passage",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.jpg?1783905299",
++      "normal": "https://cards.scryfall.io/normal/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.jpg?1783905299",
++      "large": "https://cards.scryfall.io/large/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.jpg?1783905299",
++      "png": "https://cards.scryfall.io/png/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.png?1783905299",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.jpg?1783905299",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.jpg?1783905299",
++      "thumb": "https://cards.scryfall.io/thumb/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.webp?1783905299",
++      "grid": "https://cards.scryfall.io/grid/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.webp?1783905299",
++      "display": "https://cards.scryfall.io/display/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.webp?1783905299",
++      "art": "https://cards.scryfall.io/art/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.webp?1783905299",
++      "crop": "https://cards.scryfall.io/crop/front/f/5/f5fb426a-5618-4dd4-9c51-0cc847be8c1d.webp?1783905299"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Land",
++    "oracle_text": "As this land enters, choose a basic land type. Then you may pay 2 life. If you don't, it enters tapped.\nThis land is the chosen type.",
++    "colors": [],
++    "color_identity": [],
++    "keywords": []
++  },
++  {
++    "name": "Plains",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.jpg?1785981632",
++      "normal": "https://cards.scryfall.io/normal/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.jpg?1785981632",
++      "large": "https://cards.scryfall.io/large/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.jpg?1785981632",
++      "png": "https://cards.scryfall.io/png/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.png?1785981632",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.jpg?1785981632",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.jpg?1785981632",
++      "thumb": "https://cards.scryfall.io/thumb/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.webp?1785981632",
++      "grid": "https://cards.scryfall.io/grid/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.webp?1785981632",
++      "display": "https://cards.scryfall.io/display/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.webp?1785981632",
++      "art": "https://cards.scryfall.io/art/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.webp?1785981632",
++      "crop": "https://cards.scryfall.io/crop/front/8/a/8ab0f4c0-b331-4c57-b68f-2e24bb5ba06c.webp?1785981632"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Basic Land \u2014 Plains",
++    "oracle_text": "({T}: Add {W}.)",
++    "colors": [],
++    "color_identity": [
++      "W"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "W"
++    ]
++  },
++  {
++    "name": "Forest",
++    "layout": "normal",
++    "image_uris": {
++      "small": "https://cards.scryfall.io/small/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.jpg?1785981675",
++      "normal": "https://cards.scryfall.io/normal/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.jpg?1785981675",
++      "large": "https://cards.scryfall.io/large/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.jpg?1785981675",
++      "png": "https://cards.scryfall.io/png/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.png?1785981675",
++      "art_crop": "https://cards.scryfall.io/art_crop/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.jpg?1785981675",
++      "border_crop": "https://cards.scryfall.io/border_crop/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.jpg?1785981675",
++      "thumb": "https://cards.scryfall.io/thumb/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.webp?1785981675",
++      "grid": "https://cards.scryfall.io/grid/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.webp?1785981675",
++      "display": "https://cards.scryfall.io/display/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.webp?1785981675",
++      "art": "https://cards.scryfall.io/art/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.webp?1785981675",
++      "crop": "https://cards.scryfall.io/crop/front/d/c/dce15387-4114-4b3e-91aa-5b42b45c44ac.webp?1785981675"
++    },
++    "mana_cost": "",
++    "cmc": 0.0,
++    "type_line": "Basic Land \u2014 Forest",
++    "oracle_text": "({T}: Add {G}.)",
++    "colors": [],
++    "color_identity": [
++      "G"
++    ],
++    "keywords": [],
++    "produced_mana": [
++      "G"
++    ]
++  }
++]

@@ -1,4 +1,4 @@
-# AM6 — non-blocking nightly a11y / visual / e2e core (chromium).
+# Nightly a11y / visual / e2e core (Chromium); failures fail their jobs.
 # Does not gate PR merges; surfaces drift on main.
 name: Nightly quality
 
@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   e2e-core:
@@ -28,7 +28,6 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Core flows
         run: npx playwright test tests/e2e/core-flows/ --project=chromium
-        continue-on-error: true
 
   a11y:
     name: Accessibility suite
@@ -42,8 +41,7 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - name: a11y
-        run: npm run test:accessibility
-        continue-on-error: true
+        run: npm run test:accessibility -- --project=chromium
 
   visual:
     name: Visual regression
@@ -57,5 +55,4 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - name: visual
-        run: npm run test:visual
-        continue-on-error: true
+        run: npm run test:visual -- --project=chromium

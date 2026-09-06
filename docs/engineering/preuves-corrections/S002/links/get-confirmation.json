@@ -1,0 +1,58 @@
+[
+  {
+    "id": "pvddr-when-to-mulligan",
+    "url": "https://www.channelfireball.com/articles/when-to-mulligan/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:31.581775+00:00",
+    "status": 200,
+    "finalUrl": "https://www.tcgplayer.com/content/magic-the-gathering/channelfireball"
+  },
+  {
+    "id": "karsten-commander-manabase",
+    "url": "https://web.archive.org/web/20230315090726/https://strategy.channelfireball.com/all-strategy/home/whats-an-optimal-mana-curve-and-land-ramp-count-for-commander/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:31.582339+00:00",
+    "status": 200,
+    "finalUrl": "https://web.archive.org/web/20230315090726/https://strategy.channelfireball.com/all-strategy/home/whats-an-optimal-mana-curve-and-land-ramp-count-for-commander/"
+  },
+  {
+    "id": "pvddr-ten-commandments",
+    "url": "https://www.channelfireball.com/articles/the-ten-commandments-of-deckbuilding/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:31.582408+00:00",
+    "status": 200,
+    "finalUrl": "https://www.tcgplayer.com/content/magic-the-gathering/channelfireball"
+  },
+  {
+    "id": "karsten-london-mulligan",
+    "url": "https://www.channelfireball.com/articles/what-are-the-new-london-mulligan-odds/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:32.384046+00:00",
+    "status": 200,
+    "finalUrl": "https://www.tcgplayer.com/content/magic-the-gathering/channelfireball"
+  },
+  {
+    "id": "lsv-mulligans",
+    "url": "https://www.channelfireball.com/articles/mulligans/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:32.388366+00:00",
+    "status": 200,
+    "finalUrl": "https://www.tcgplayer.com/content/magic-the-gathering/channelfireball"
+  },
+  {
+    "id": "pvddr-how-to-sideboard",
+    "url": "https://www.channelfireball.com/articles/how-to-sideboard/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:32.846306+00:00",
+    "status": 200,
+    "finalUrl": "https://www.tcgplayer.com/content/magic-the-gathering/channelfireball"
+  },
+  {
+    "id": "lsv-looter-problem-lost",
+    "url": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/luis-scott-vargas-articles/whats-the-play-the-looter-problem/",
+    "method": "GET",
+    "checkedAt": "2026-09-06T10:46:32.853843+00:00",
+    "status": 404,
+    "finalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/luis-scott-vargas-articles/whats-the-play-the-looter-problem/"
+  }
+]

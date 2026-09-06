@@ -1,0 +1,608 @@
+{
+  "deckName": "Deck 9/6/2026",
+  "format": "Constructed",
+  "generatedAt": "2026-09-06T10:58:03.691Z",
+  "stabilityScore": 99,
+  "analysis": {
+    "totalCards": 60,
+    "totalLands": 24,
+    "totalNonLands": 36,
+    "colorDistribution": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 24,
+      "G": 0,
+      "C": 0
+    },
+    "manaRequirements": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 22,
+      "G": 0,
+      "C": 0
+    },
+    "consistency": 0.988173183197861,
+    "consistencyUnavailable": false,
+    "colorAccessNotes": [],
+    "colorAccessByTurn": {
+      "turn2": 0.988173183197861,
+      "turn4": 0.996628554486274
+    },
+    "rating": "excellent",
+    "inputWarnings": [],
+    "recommendations": [
+      "🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources."
+    ],
+    "probabilities": {
+      "turn1": {
+        "anyColor": 0.9783854727409045,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 0.9783854727409045,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn2": {
+        "anyColor": 0.988173183197861,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 0.988173183197861,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn3": {
+        "anyColor": 0.9936317140296269,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 0.9936317140296269,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn4": {
+        "anyColor": 0.996628554486274,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 0.996628554486274,
+          "G": 1,
+          "C": 1
+        }
+      }
+    },
+    "averageCMC": 1,
+    "landRatio": 0.4,
+    "manaCurve": {
+      "0": 0,
+      "1": 36,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7+": 0
+    },
+    "mulliganAnalysis": {
+      "perfectHand": 77,
+      "goodHand": 77,
+      "averageHand": 19,
+      "poorHand": 3,
+      "terribleHand": 0
+    },
+    "spellAnalysis": {
+      "Lightning Bolt": {
+        "castable": 35.22187701867175,
+        "total": 36,
+        "percentage": 97.8385472740882
+      }
+    },
+    "unsupportedSpellAnalysis": {},
+    "spellAnalysisModel": "physical-v1",
+    "tempoImpactByColor": {
+      "R": {
+        "color": "R",
+        "method": "exact",
+        "rawSources": 24,
+        "effectiveSources": 24,
+        "rawProbability": 0.994,
+        "tempoAdjustedProbability": 0.994,
+        "impact": 0,
+        "impactPercent": "0%"
+      }
+    },
+    "landMetadata": [
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Mountain",
+        "category": "basic",
+        "produces": [
+          "R"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Mountain"
+        ],
+        "confidence": 100
+      }
+    ],
+    "cards": [
+      {
+        "name": "Mountain",
+        "quantity": 24,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "R"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Mountain",
+          "category": "basic",
+          "produces": [
+            "R"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Mountain"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Lightning Bolt",
+        "quantity": 36,
+        "manaCost": "{R}",
+        "colors": [
+          "R"
+        ],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+[WebServer] (node:52600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 1 test using 1 worker
+
+(node:52601) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried
+  1 passed (7.3s)

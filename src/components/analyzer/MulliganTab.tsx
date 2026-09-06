@@ -337,7 +337,7 @@ Your deck's strategy type completely changes mulligan criteria:
 
   deckQuality: `Deck Quality
 
-Overall evaluation of your deck's consistency based on simulations:
+Expected hand-quality value after modeled mulligans; these bands differ from the deck Health Score:
 
 • Excellent (80+): Most hands are keepable
 • Good (65-79): Good hands frequent
@@ -376,9 +376,9 @@ interface ExpectedValuesProps {
 
 const ExpectedValues: React.FC<ExpectedValuesProps> = ({ result }) => {
   const getScoreColor = (score: number): string => {
-    if (score >= 90) return '#4caf50'
-    if (score >= 75) return '#8bc34a'
-    if (score >= 60) return '#ff9800'
+    if (score >= 85) return '#4caf50'
+    if (score >= 70) return '#8bc34a'
+    if (score >= 55) return '#ff9800'
     if (score >= 40) return '#f44336'
     return '#b71c1c'
   }
@@ -798,8 +798,8 @@ interface SampleHandsSectionProps {
 
 const SampleHandsSection: React.FC<SampleHandsSectionProps> = ({ sampleHands }) => {
   const categories = [
-    { key: 'excellent', label: '🌟 Excellent Hands (90+)', hands: sampleHands.excellent },
-    { key: 'good', label: '✅ Good Hands (70-89)', hands: sampleHands.good },
+    { key: 'excellent', label: '🌟 Excellent Hands (85+)', hands: sampleHands.excellent },
+    { key: 'good', label: '✅ Good Hands (70-84)', hands: sampleHands.good },
     { key: 'marginal', label: '⚠️ Marginal Hands (55-69)', hands: sampleHands.marginal },
     { key: 'poor', label: '❌ Poor Hands (<55)', hands: sampleHands.poor },
   ]
@@ -1163,9 +1163,10 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                       What is a Mulligan?
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      At game start, you draw 7 cards. If your hand is bad (wrong lands, no playable
-                      spells), you can shuffle it back and draw a new hand with 1 fewer card. This
-                      is called a "mulligan".
+                      London mulligan: shuffle your hand into the library and draw seven again.
+                      Once you keep, put one card on the bottom for each counted mulligan.
+                      The simulator evaluates kept hands from seven down to a forced keep at four cards. Enable multiplayer
+                      mode to model a free first mulligan.
                     </Typography>
                   </Box>
 
@@ -1174,8 +1175,9 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                       Understanding the Scores (0–100)
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Each hand gets a score based on how well you can play your first turns.
-                      <strong> 90+</strong> = excellent hand, <strong>70-89</strong> = good,
+                      Each hand gets a heuristic score for its first turns. These hand-quality bands
+                      differ from the deck-level Health Score because they measure a different quantity.
+                      <strong> 85+</strong> = excellent hand, <strong>70-84</strong> = good,
                       <strong> 55-69</strong> = playable but risky, <strong>&lt;55</strong> =
                       consider mulligan.
                     </Typography>

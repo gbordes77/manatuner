@@ -1,6 +1,7 @@
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import { Alert, Box, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material'
 import React from 'react'
+import { healthScoreBand } from '../../utils/healthScore'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 
 const HEALTH_SCORE_HELP =
@@ -67,39 +68,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
   const isEDH = format === 'edh'
   const isLimited = format === 'limited'
 
-  // Tier bands calibrated per format. Both Limited and EDH have naturally
-  // lower consistency than Constructed (weaker fixing in Limited; singleton
-  // + 100-card variance in EDH) so we widen the bands 10 points.
-  let tier: 'excellent' | 'solid' | 'shaky' | 'weak'
-  if (isEDH || isLimited) {
-    if (consistencyPct >= 80) tier = 'excellent'
-    else if (consistencyPct >= 70) tier = 'solid'
-    else if (consistencyPct >= 60) tier = 'shaky'
-    else tier = 'weak'
-  } else {
-    if (consistencyPct >= 90) tier = 'excellent'
-    else if (consistencyPct >= 80) tier = 'solid'
-    else if (consistencyPct >= 70) tier = 'shaky'
-    else tier = 'weak'
-  }
-
-  const mulliganRate = analysisResult.mulliganAnalysis?.poorHand ?? 0
-  const mulliganRider = (() => {
-    if (isEDH) {
-      // EDH London mulligan keeps free at 7; the ManaTuner "poor hand" %
-      // is less load-bearing than in 60-card. Use a generic EDH rider.
-      return 'plan mulligans around at least 1 ramp + 2 castable lands'
-    }
-    if (isLimited) {
-      // Bo3 Limited (draft/sealed) plays the London mulligan too, but the
-      // deck is 40 cards so every mulligan is costlier (smaller library =
-      // bigger variance). Lean towards keeping borderline hands.
-      return 'most 2–3-land hands are keeps in a 40-card deck'
-    }
-    return mulliganRate >= 20
-      ? 'mulligan aggressively on borderline hands'
-      : 'keep almost any 2–4-land opener'
-  })()
+  const { label: healthBand, severity } = healthScoreBand(consistencyPct)
+  const mulliganRider = 'review actual opening hands in the Mulligan tab'
 
   const colorClause = (() => {
     if (!manabaseVerdict || manabaseVerdict.verdict === 'ok') return null
@@ -111,22 +81,6 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
     return `${n} color${n > 1 ? 's' : ''} close to limit`
   })()
 
-  const tierLabel: Record<typeof tier, string> = {
-    excellent: 'excellent',
-    solid: 'solid',
-    shaky: 'shaky',
-    weak: 'rough',
-  }
-
-  const severity: 'success' | 'info' | 'warning' | 'error' =
-    tier === 'excellent'
-      ? 'success'
-      : tier === 'solid'
-        ? 'info'
-        : tier === 'shaky'
-          ? 'warning'
-          : 'error'
-
   const headline = isEDH
     ? `EDH — color access score ${consistencyPct}/100`
     : isLimited
@@ -134,17 +88,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
       : `Your deck has a color access score of ${consistencyPct}/100`
 
   const phrase = colorClause
-    ? `${headline} — ${tierLabel[tier]}, but ${colorClause}; ${mulliganRider}.`
-    : `${headline} — ${tierLabel[tier]}; ${mulliganRider}.`
-
-  const healthBand =
-    consistencyPct >= 85
-      ? 'Excellent'
-      : consistencyPct >= 70
-        ? 'Good'
-        : consistencyPct >= 55
-          ? 'Average'
-          : 'Needs work'
+    ? `${headline} — ${healthBand.toLowerCase()}, but ${colorClause}; ${mulliganRider}.`
+    : `${headline} — ${healthBand.toLowerCase()}; ${mulliganRider}.`
 
   return (
     <Alert

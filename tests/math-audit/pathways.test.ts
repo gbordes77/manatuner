@@ -78,7 +78,7 @@ function oracle(cards: Card[], pips: string[], generic: number, turn: number, dr
 }
 const evidence: unknown[] = []
 afterAll(() =>
-  writeFileSync('/tmp/manatuner-pathway-oracle.json', JSON.stringify(evidence, null, 2))
+  writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/manatuner-pathway-oracle.json`, JSON.stringify(evidence, null, 2))
 )
 const pathway = landService.getLandSync('Cragcrown Pathway')!
 const forest = landService.getLandSync('Forest')!

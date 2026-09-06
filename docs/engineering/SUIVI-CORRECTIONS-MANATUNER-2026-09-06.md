@@ -24,10 +24,10 @@ Référence : [audit complet](AUDIT-POST-CORRECTIFS-MANATUNER-2026-09-06.md), ve
 - Modifications préexistantes protégées : [statut S001](preuves-corrections/S001/status-initial.txt) ; diff préexistant conservé, aucun nettoyage
 - Environnement local et versions Node/navigateur : macOS, Node v25.2.0, npm 11.6.2 ; Playwright 1.63.0, navigateur à relever
 - Référence de l’état initial des tests : [baseline S001](preuves-corrections/S001/baseline-unit.log), 38 fichiers/449 tests ; types et lint code 0
-- Dernière mise à jour du suivi : 6 septembre 2026, S001 terminée à12h27 CEST
-- Dernier point de reprise : **S001 — autorisation de commit et push**, en fin de fichier
-- Prochaine session de correction : S002 ; poursuivre F09/F11 puis F10/F12
-- Blocages actifs : aucun blocage local sur les prochains F09/F10/F11/F12 ; accès privés/terrain non examinés, validation juridique compétente nécessaire pour V09/F12-AC5
+- Dernière mise à jour du suivi : 6 septembre 2026, S002 terminée après validation locale
+- Dernier point de reprise : **S002 — bilan final et reprise**, en fin de fichier
+- Session S002 terminée ; corrections techniques vérifiées, F12-AC5 juridique bloqué, E/V complémentaires suivis séparément
+- Blocages actifs : validation juridique compétente F12-AC5/V09 ; Firefox ne démarre pas localement ; terrain, matériel physique, Search Console et réception Sentry non vérifiés. Réglages GitHub/Vercel lus, candidat non publié
 
 ## Ordre de travail
 
@@ -47,10 +47,10 @@ Les lots indépendants peuvent avancer en parallèle avec des fichiers et contra
 | F06 | P1 | Vérifié | [S001 intégrée](preuves-corrections/S001/SESSION-VERIFIEE.md) | Non publiée |
 | F07 | P1 | Vérifié | [S001 lot A/UI](preuves-corrections/S001/LOT-A-UI.md) | Non publiée |
 | F08 | P2 | Vérifié | [S001 intégrée](preuves-corrections/S001/SESSION-VERIFIEE.md) | Non publiée |
-| F09 | P2 | Ouvert | À produire | Non évaluée |
-| F10 | P2 | Ouvert | À produire | Non évaluée |
-| F11 | P2 | En cours | AC1 : S001 test clavier red/green ; reste ouvert | Non publiée |
-| F12 | P2 | Ouvert | À produire | Non évaluée |
+| F09 | P2 | Vérifié | [S002 intégrée](preuves-corrections/S002/SESSION-VERIFIEE.md) | Non publiée |
+| F10 | P2 | Vérifié | [S002 intégrée](preuves-corrections/S002/SESSION-VERIFIEE.md) | Non publiée |
+| F11 | P2 | Vérifié | [S002 intégrée](preuves-corrections/S002/SESSION-VERIFIEE.md) | Non publiée |
+| F12 | P2 | Bloqué | [S002 intégrée](preuves-corrections/S002/SESSION-VERIFIEE.md) — AC5 juridique ouvert | Non publiée |
 | F13 | P2 | Vérifié | [S001 intégrée](preuves-corrections/S001/SESSION-VERIFIEE.md) | Non publiée |
 
 ## Fiches de correction
@@ -417,171 +417,133 @@ Abort avant fetch, durant requête, lecture JSON et Retry-After ; corps qui ne t
 
 ### F09 HTML initial générique et soft 404
 
-Priorité : P2. État : ouvert. Responsable : à attribuer. Référence : section 5 de l’audit, fiche F09.
+Priorité : P2. État : vérifié. Responsable : équipe S002. Référence : section 5 de l’audit, fiche F09.
 
 **Jalons obligatoires**
 
-- [ ] F09-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
-- [ ] F09-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
-- [ ] F09-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
-- [ ] F09-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
-- [ ] F09-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
-- [ ] F09-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
-- [ ] F09-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
-- [ ] F09-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
+- [x] F09-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
+- [x] F09-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
+- [x] F09-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
+- [x] F09-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
+- [x] F09-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
+- [x] F09-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
+- [x] F09-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
+- [x] F09-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
 
 **Critères de l’audit**
 
-- [ ] F09-AC1 : les routes éditoriales critiques renvoient leur contenu sans exécution JavaScript.
-- [ ] F09-AC2 : titre, description et canonical correspondent à chaque route, sans doublon contradictoire.
-- [ ] F09-AC3 : une route absente renvoie un statut et des directives adaptés, pas une page d’accueil indexable.
-- [ ] F09-AC4 : les liens directs, les chunks et le rechargement de l’analyseur restent fonctionnels.
-- [ ] F09-AC5 : le pipeline échoue ou alerte explicitement si le contrat de prérendu choisi n’est pas respecté.
+- [x] F09-AC1 : les routes éditoriales critiques renvoient leur contenu sans exécution JavaScript.
+- [x] F09-AC2 : titre, description et canonical correspondent à chaque route, sans doublon contradictoire.
+- [x] F09-AC3 : une route absente renvoie un statut et des directives adaptés, pas une page d’accueil indexable.
+- [x] F09-AC4 : les liens directs, les chunks et le rechargement de l’analyseur restent fonctionnels.
+- [x] F09-AC5 : le pipeline échoue ou alerte explicitement si le contrat de prérendu choisi n’est pas respecté.
 
 **Non-régression attendue**
 
 HTTP initial et DOM de l’accueil, analyseur, bibliothèque, article, auteur, privacy, route absente et asset ; titres/canonical cohérents ; liens directs, rechargement SPA, chunks et partage ; comparer artefact candidat et environnement servi. Ne pas confondre preview Vite et routage Vercel.
 
-**Journal de preuves à compléter**
+**Journal de preuves S002 — version intégrée du 6 septembre 2026**
 
-- Version avant et résultat initial : à renseigner
-- Version corrigée ou référence du diff : à renseigner
-- Fichiers modifiés et choix de correction : à renseigner
-- Tests unitaires/intégration, commandes et résultats : à renseigner
-- Parcours navigateur/HTTP, environnement et résultats : à renseigner
-- Correspondance critères → preuves : à renseigner
-- Non-régression exécutée, résultats et lien vers sorties : à renseigner
-- Lint, types, build nécessaires et résultats : à renseigner
-- Relecteur, date et résultat de revue : à renseigner
-- Limites, blocages et tests non exécutés : à renseigner
-- Validation après intégration et date de clôture : à renseigner
-- Livraison éventuelle, version et contrôle après publication : non effectuée
+[Contrats, critères, commandes, revue et limites](preuves-corrections/S002/SESSION-VERIFIEE.md), [diff testé](preuves-corrections/S002/verified.patch), [manifest source/tests/artefact](preuves-corrections/S002/verified-manifest.json). Les logs rouges et verts restent dans chaque lot, les contrôles finaux dans `final-delivery.log`, `final-e2e.log` et `network-final.log`. La revue et les lectures privées ne valent pas preuve de publication.
+
 
 ### F10 Textes et promesses désalignés avec les modèles
 
-Priorité : P2. État : ouvert. Responsable : à attribuer. Référence : section 5 de l’audit, fiche F10.
+Priorité : P2. État : vérifié. Responsable : équipe S002. Référence : section 5 de l’audit, fiche F10.
 
 **Jalons obligatoires**
 
-- [ ] F10-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
-- [ ] F10-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
-- [ ] F10-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
-- [ ] F10-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
-- [ ] F10-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
-- [ ] F10-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
-- [ ] F10-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
-- [ ] F10-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
+- [x] F10-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
+- [x] F10-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
+- [x] F10-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
+- [x] F10-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
+- [x] F10-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
+- [x] F10-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
+- [x] F10-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
+- [x] F10-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
 
 **Critères de l’audit**
 
-- [ ] F10-AC1 : aucune équivalence Health Score / proportion de sorts sur la courbe.
-- [ ] F10-AC2 : « exact » comporte le périmètre du modèle et ne qualifie pas l’estimation par défaut.
-- [ ] F10-AC3 : règles de mulligan et identification du commandant décrivent le comportement réel.
-- [ ] F10-AC4 : compteurs de bibliothèque et d’onglets cohérents partout.
-- [ ] F10-AC5 : seuils et qualificatifs du score sont unifiés ou leur différence est expliquée.
+- [x] F10-AC1 : aucune équivalence Health Score / proportion de sorts sur la courbe.
+- [x] F10-AC2 : « exact » comporte le périmètre du modèle et ne qualifie pas l’estimation par défaut.
+- [x] F10-AC3 : règles de mulligan et identification du commandant décrivent le comportement réel.
+- [x] F10-AC4 : compteurs de bibliothèque et d’onglets cohérents partout.
+- [x] F10-AC5 : seuils et qualificatifs du score sont unifiés ou leur différence est expliquée.
 
 **Non-régression attendue**
 
 Accueil, métadonnées, guide, aide, résultats et exports ; score heuristique versus probabilité exacte ; mode estimation, limites exact, ramp, Commander et London ; compteurs dérivés ; revue sémantique humaine sans snapshots textuels aveugles.
 
-**Journal de preuves à compléter**
+**Journal de preuves S002 — version intégrée du 6 septembre 2026**
 
-- Version avant et résultat initial : à renseigner
-- Version corrigée ou référence du diff : à renseigner
-- Fichiers modifiés et choix de correction : à renseigner
-- Tests unitaires/intégration, commandes et résultats : à renseigner
-- Parcours navigateur/HTTP, environnement et résultats : à renseigner
-- Correspondance critères → preuves : à renseigner
-- Non-régression exécutée, résultats et lien vers sorties : à renseigner
-- Lint, types, build nécessaires et résultats : à renseigner
-- Relecteur, date et résultat de revue : à renseigner
-- Limites, blocages et tests non exécutés : à renseigner
-- Validation après intégration et date de clôture : à renseigner
-- Livraison éventuelle, version et contrôle après publication : non effectuée
+[Contrats, critères, commandes, revue et limites](preuves-corrections/S002/SESSION-VERIFIEE.md), [diff testé](preuves-corrections/S002/verified.patch), [manifest source/tests/artefact](preuves-corrections/S002/verified-manifest.json). Les logs rouges et verts restent dans chaque lot, les contrôles finaux dans `final-delivery.log`, `final-e2e.log` et `network-final.log`. La revue et les lectures privées ne valent pas preuve de publication.
+
 
 ### F11 Contrôles qualité insuffisamment reliés à la livraison
 
-Priorité : P2. État : en cours (AC1 seul). Responsable : équipe S001. Référence : section 5 de l’audit, fiche F11.
+Priorité : P2. État : vérifié. Responsable : équipe S002. Référence : section 5 de l’audit, fiche F11.
 
 **Jalons obligatoires**
 
-- [ ] F11-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
-- [ ] F11-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
-- [ ] F11-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
-- [ ] F11-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
-- [ ] F11-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
-- [ ] F11-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
-- [ ] F11-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
-- [ ] F11-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
+- [x] F11-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
+- [x] F11-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
+- [x] F11-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
+- [x] F11-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
+- [x] F11-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
+- [x] F11-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
+- [x] F11-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
+- [x] F11-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
 
 **Critères de l’audit**
 
 - [x] F11-AC1 : un défaut connu de réédition clavier échoue dans la validation ciblée.
-- [ ] F11-AC2 : un défaut de contraste pertinent ne passe pas grâce à une valeur CSS simplement non vide.
-- [ ] F11-AC3 : les suites automatiques ne demandent que les navigateurs installés.
-- [ ] F11-AC4 : le contrat HTML de F09 est vérifié sur l’artefact candidat.
-- [ ] F11-AC5 : la condition de publication après checks est documentée et vérifiée sans modifier la production pour un test.
+- [x] F11-AC2 : un défaut de contraste pertinent ne passe pas grâce à une valeur CSS simplement non vide.
+- [x] F11-AC3 : les suites automatiques ne demandent que les navigateurs installés.
+- [x] F11-AC4 : le contrat HTML de F09 est vérifié sur l’artefact candidat.
+- [x] F11-AC5 : la condition de publication après checks est documentée et vérifiée sans modifier la production pour un test.
 
 **Non-régression attendue**
 
 Une assertion doit détecter un défaut connu, puis passer après correction ; sélectionner les navigateurs effectivement installés ; contrôler les suites requises et le build/prérendu candidat ; préserver le pipeline nominal et éviter deux chemins de publication concurrents.
 
-**Journal de preuves à compléter**
+**Journal de preuves S002 — version intégrée du 6 septembre 2026**
 
-- Version avant et résultat initial : à renseigner
-- Version corrigée ou référence du diff : à renseigner
-- Fichiers modifiés et choix de correction : à renseigner
-- Tests unitaires/intégration, commandes et résultats : à renseigner
-- Parcours navigateur/HTTP, environnement et résultats : à renseigner
-- Correspondance critères → preuves : à renseigner
-- Non-régression exécutée, résultats et lien vers sorties : à renseigner
-- Lint, types, build nécessaires et résultats : à renseigner
-- Relecteur, date et résultat de revue : à renseigner
-- Limites, blocages et tests non exécutés : à renseigner
-- Validation après intégration et date de clôture : à renseigner
-- Livraison éventuelle, version et contrôle après publication : non effectuée
+[Contrats, critères, commandes, revue et limites](preuves-corrections/S002/SESSION-VERIFIEE.md), [diff testé](preuves-corrections/S002/verified.patch), [manifest source/tests/artefact](preuves-corrections/S002/verified-manifest.json). Les logs rouges et verts restent dans chaque lot, les contrôles finaux dans `final-delivery.log`, `final-e2e.log` et `network-final.log`. La revue et les lectures privées ne valent pas preuve de publication.
+
 
 ### F12 Information de confidentialité incomplète
 
-Priorité : P2. État : ouvert. Responsable : à attribuer. Référence : section 5 de l’audit, fiche F12.
+Priorité : P2. État : bloqué (validation juridique AC5 ; technique vérifiée). Responsable : équipe S002. Référence : section 5 de l’audit, fiche F12.
 
 **Jalons obligatoires**
 
-- [ ] F12-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
-- [ ] F12-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
-- [ ] F12-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
+- [x] F12-J1 : code actuel relu et comportement initial établi par reproduction ou preuve adaptée ; périmètre et fichiers concernés identifiés.
+- [x] F12-J2 : test pertinent échouant avant correction, ou preuve de défaut statique/HTTP/editorial justifiée ; résultat attendu défini indépendamment du code fautif.
+- [x] F12-J3 : correction implémentée, changements limités au contrat et compatibilité des données préservée.
 - [ ] F12-J4 : critères d’acceptation ci-dessous validés avec preuves ; exceptions éventuelles explicitement examinées.
-- [ ] F12-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
-- [ ] F12-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
-- [ ] F12-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
+- [x] F12-J5 : tests de non-régression propres à cette fiche et parcours voisins passants sur la version corrigée.
+- [x] F12-J6 : lint/typecheck pertinents et contrôles de build si impactés passants ; absence de nouvelle erreur dans les parcours joués.
+- [x] F12-J7 : diff relu avec regard critique, par un autre membre si disponible ; risques d’intégration examinés et validation de la version intégrée réalisée.
 - [ ] F12-J8 : preuves consignées, suivi mis à jour et état passé à « vérifié » uniquement si tous les jalons sont acquis.
 
 **Critères de l’audit**
 
-- [ ] F12-AC1 : les échanges Scryfall sont clairement décrits dans la politique détaillée.
-- [ ] F12-AC2 : aucune promesse absolue de zéro transmission ne contredit les dépendances réseau.
-- [ ] F12-AC3 : les stockages et leur effacement sont documentés avec les limites utiles.
-- [ ] F12-AC4 : le statut de Sentry et la procédure préalable à son activation sont explicites.
+- [x] F12-AC1 : les échanges Scryfall sont clairement décrits dans la politique détaillée.
+- [x] F12-AC2 : aucune promesse absolue de zéro transmission ne contredit les dépendances réseau.
+- [x] F12-AC3 : les stockages et leur effacement sont documentés avec les limites utiles.
+- [x] F12-AC4 : le statut de Sentry et la procédure préalable à son activation sont explicites.
 - [ ] F12-AC5 : les qualifications juridiques sont validées par une personne compétente avant déclaration de conformité.
 
 **Non-régression attendue**
 
 Comparer mentions et flux effectifs Scryfall/fonts/CDN/stockage ; préservation sauvegarde, restauration et suppression ; cohérence des écrans privacy ; état conditionnel de Sentry ; aucune nouvelle télémétrie ou transmission sensible introduite par la correction.
 
-**Journal de preuves à compléter**
+**Journal de preuves S002 — version intégrée du 6 septembre 2026**
 
-- Version avant et résultat initial : à renseigner
-- Version corrigée ou référence du diff : à renseigner
-- Fichiers modifiés et choix de correction : à renseigner
-- Tests unitaires/intégration, commandes et résultats : à renseigner
-- Parcours navigateur/HTTP, environnement et résultats : à renseigner
-- Correspondance critères → preuves : à renseigner
-- Non-régression exécutée, résultats et lien vers sorties : à renseigner
-- Lint, types, build nécessaires et résultats : à renseigner
-- Relecteur, date et résultat de revue : à renseigner
-- Limites, blocages et tests non exécutés : à renseigner
-- Validation après intégration et date de clôture : à renseigner
-- Livraison éventuelle, version et contrôle après publication : non effectuée
+[Contrats, critères, commandes, revue et limites](preuves-corrections/S002/SESSION-VERIFIEE.md), [diff testé](preuves-corrections/S002/verified.patch), [manifest source/tests/artefact](preuves-corrections/S002/verified-manifest.json). Les logs rouges et verts restent dans chaque lot, les contrôles finaux dans `final-delivery.log`, `final-e2e.log` et `network-final.log`. La revue et les lectures privées ne valent pas preuve de publication.
+
+F12-AC1..AC4 vérifiés. **F12-AC5 non acquis**, faute de validation juridique compétente ; J4/J8 restent ouverts et la fiche ne peut être clôturée. Aucun texte ne déclare une conformité globale.
+
 
 ### F13 Erreur fatale du worker de mulligan non récupérée
 
@@ -639,15 +601,15 @@ Ces travaux restent distincts de la clôture des défauts F. Pour chacun, rensei
 
 ### E02 Compréhension du résultat
 
-- [ ] Deck interprété, population, format et définition de la métrique présentés de manière cohérente.
+- [x] Deck interprété, population, format et définition de la métrique présentés de manière cohérente.
 - [ ] Parcours principal et post-board testés ; utilisateur capable d’expliquer ce que mesure le résultat.
-- [ ] Contrôle clavier/mobile et non-régression des calculs ; preuves consignées.
+- [x] Contrôle clavier/mobile et non-régression des calculs ; preuves consignées.
 
 ### E03 Cohérence des scores et composants d’aide
 
-- [ ] Vocabulaire, couleurs, seuils et unités communs définis ; divergences intentionnelles expliquées.
-- [ ] Accueil, aides, résultats et exports comparés ; seuils limites testés.
-- [ ] Focus, contraste pertinent, mobile et absence de changement mathématique involontaire vérifiés ; preuves consignées.
+- [x] Vocabulaire, couleurs, seuils et unités communs définis ; divergences intentionnelles expliquées.
+- [x] Accueil, aides, résultats et exports comparés ; seuils limites testés.
+- [x] Focus, contraste pertinent, mobile et absence de changement mathématique involontaire vérifiés ; preuves consignées.
 
 ### E04 Mesures et optimisation de performance
 
@@ -664,87 +626,86 @@ Ces travaux restent distincts de la clôture des défauts F. Pour chacun, rensei
 ### E06 Réduction de dette technique
 
 - [ ] Usages des helpers, caches et gros composants inventoriés ; extraction précise et bénéfice justifié.
-- [ ] Compatibilité runtime/engines et configuration documentée à partir des versions réellement utilisées.
-- [ ] Tests des contrats inchangés passants ; aucun export retiré sans vérification de ses consommateurs ; lint/types/build passants.
+- [x] Compatibilité runtime/engines et configuration documentée à partir des versions réellement utilisées.
+- [x] Tests des contrats inchangés passants ; aucun export retiré sans vérification de ses consommateurs ; lint/types/build passants.
 
-Journal E01 à E06 : ajouter un bloc daté par amélioration avec portée, décision, version, tests, résultats, preuve et risques restants.
+Journal E01 à E06 — S002 : [preuve intégrée](preuves-corrections/S002/SESSION-VERIFIEE.md). E01 partiel : diagnostics locaux et récupération existants, aucun service activé ; contrat d’observabilité complet non produit. E02 partiel : populations, métrique, post-board et commandes mobiles vérifiés, pas d’étude utilisateur de compréhension. E03 vérifié pour le score heuristique : source de seuils/qualificatifs commune, aides et exports relus, bornes testées, axe/clavier/largeurs contrôlés. E04 ouvert : aucune baseline terrain/distribution comparable, aucune optimisation revendiquée. E05 partiel : textes produit/métadonnées/compteurs et disponibilité des liens revus ; pas de vérification sémantique des 65 ressources externes. E06 partiel : runtime Node>=22.12/npm>=10 cohérent et extraction score/onglets justifiée ; aucun inventaire général ni refonte des caches/gros composants revendiqués.
 
 ## Vérifications restant ouvertes
 
 Cocher seulement quand la preuve attendue a été obtenue. Un accès externe manquant est un blocage explicite, pas une validation réussie. Une décision de périmètre doit conserver l’historique de la vérification initialement ouverte.
 
-- [ ] **V01 — LCP INP CLS et TTFB terrain**. Preuve attendue : Mesures datées, profil et distribution. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V02 — Vercel et protection de branche**. Preuve attendue : Configuration de checks et publication. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V03 — WCAG 2.2 AA complète**. Preuve attendue : Audit automatisé pertinent et manuel. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V04 — Safari et mobile physiques**. Preuve attendue : Parcours ciblés sur risques identifiés. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V05 — Export PNG PDF JSON**. Preuve attendue : Fichiers comparés aux résultats affichés. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V06 — Comparaison et post-board complets**. Preuve attendue : Parcours avec oracles de populations. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V07 — Cartes MTG spéciales exhaustives**. Preuve attendue : Matrice de support versionnée. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V08 — Sentry effectif et données reçues**. Preuve attendue : Événement non sensible vérifié. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V09 — Conformité juridique globale**. Preuve attendue : Validation compétente des mentions. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V10 — Search Console et indexation réelle**. Preuve attendue : Inspection des URLs et statuts. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V11 — Tous les retours arrière et liens partagés**. Preuve attendue : Scénarios navigation versionnés. État : ouvert. Référence de preuve ou blocage : à renseigner.
-- [ ] **V12 — Liens externes de la bibliothèque**. Preuve attendue : Inventaire daté des destinations. État : ouvert. Référence de preuve ou blocage : à renseigner.
+- [ ] **V01 — LCP INP CLS et TTFB terrain**. Preuve attendue : Mesures datées, profil et distribution. Ouvert : données terrain et distribution réelles non disponibles ; aucun score de bundle assimilé aux CWV. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V02 — Vercel et protection de branche**. Preuve attendue : Configuration de checks et publication. Partiel : réglages GitHub/Vercel lus et gate local exécuté ; publication du nouveau candidat non effectuée. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V03 — WCAG 2.2 AA complète**. Preuve attendue : Audit automatisé pertinent et manuel. Partiel : axe serious/critical et clavier ciblés passent ; audit manuel WCAG complet/lecteur écran non effectué. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V04 — Safari et mobile physiques**. Preuve attendue : Parcours ciblés sur risques identifiés. Bloqué : pas d’appareil physique. WebKit 8 parcours passent ; Firefox bloque avant ouverture sur erreur de profil local. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **V05 — Export PNG PDF JSON**. Preuve attendue : Fichiers comparés aux résultats affichés. Vérifié sur fixture publique : PNG/PDF/JSON comparés, pagination et largeur corrigées, pages PDF rendues/inspectées ; PDF raster non certifié accessible. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V06 — Comparaison et post-board complets**. Preuve attendue : Parcours avec oracles de populations. Partiel : post-board et comparaison ciblés passent ; matrice complète non parcourue. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V07 — Cartes MTG spéciales exhaustives**. Preuve attendue : Matrice de support versionnée. Partiel : oracles et limites math passants ; matrice exhaustive de toutes cartes/interactions non attestée. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V08 — Sentry effectif et données reçues**. Preuve attendue : Événement non sensible vérifié. Bloqué : aucune activation ni réception réelle de Sentry autorisée/exécutée ; absence de trafic sur candidat sans DSN contrôlée. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V09 — Conformité juridique globale**. Preuve attendue : Validation compétente des mentions. Bloqué : validation par une personne juridiquement compétente requise ; aucune conformité déclarée. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V10 — Search Console et indexation réelle**. Preuve attendue : Inspection des URLs et statuts. Bloqué : aucun accès Search Console examiné ni preuve d’indexation réelle. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [ ] **V11 — Tous les retours arrière et liens partagés**. Preuve attendue : Scénarios navigation versionnés. Partiel : nouveaux liens partagés, reload/retour et restaurations passent ; tous les parcours possibles ne sont pas attestés. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **V12 — Liens externes de la bibliothèque**. Preuve attendue : Inventaire daté des destinations. Vérifié pour inventaire de disponibilité daté : 59 HTTP200, 5 redirections génériques et 1 HTTP404 déjà lost ; contenu/paywalls non certifiés. Preuve : [S002](preuves-corrections/S002/SESSION-VERIFIEE.md).
 
 ## Campagne finale de non-régression
 
 Cette campagne porte sur la version intégrée finale, après les validations par correction. Elle ne remplace pas les tests de chaque fiche. Pour les scénarios négatifs, « réussi » signifie rejet ou récupération conforme au contrat corrigé.
 
 - [ ] **NR-M01 — Accueil et premier démarrage** : Rôle et CTA clairs. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M02 — Exemple puis analyse** : Deck reconnu et résultats. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M03 — Champ vide** : Pas de lancement. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M04 — Texte non interprétable** : Erreur de format. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M05 — Quantité un million** : Refus avant allocation. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M06 — Section Maybeboard** : Cartes exclues. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M07 — SB inline puis principal** : Préfixe limité à sa ligne. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M08 — Coût hybride payable en vert** : Pas de besoin rouge obligatoire. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M09 — Sort bleu dans sideboard rouge** : Principal inchangé. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M10 — Clear pendant analyse** : Fin durable du travail. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M11 — Exact avec 24 Plains** : 97,84 % arrondi. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M12 — Mulligan sur cas simple** : Simulation aboutie. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M13 — Sauvegarde automatique** : Entrée historique. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M14 — Restauration de l’historique** : Nom et texte récupérés. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M15 — Recharger après restauration** : Deck récupérable. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M16 — Import de résultat mal typé** : Refus ou réparation. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M17 — Réédition au clavier** : Tab puis activation. Version, résultat et preuve : à renseigner.
+- [x] **NR-M02 — Exemple puis analyse** : Deck reconnu et résultats. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M03 — Champ vide** : Pas de lancement. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M04 — Texte non interprétable** : Erreur de format. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M05 — Quantité un million** : Refus avant allocation. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M06 — Section Maybeboard** : Cartes exclues. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M07 — SB inline puis principal** : Préfixe limité à sa ligne. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M08 — Coût hybride payable en vert** : Pas de besoin rouge obligatoire. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M09 — Sort bleu dans sideboard rouge** : Principal inchangé. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M10 — Clear pendant analyse** : Fin durable du travail. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M11 — Exact avec 24 Plains** : 97,84 % arrondi. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M12 — Mulligan sur cas simple** : Simulation aboutie. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M13 — Sauvegarde automatique** : Entrée historique. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M14 — Restauration de l’historique** : Nom et texte récupérés. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M15 — Recharger après restauration** : Deck récupérable. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M16 — Import de résultat mal typé** : Refus ou réparation. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M17 — Réédition au clavier** : Tab puis activation. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
 - [ ] **NR-M18 — Menu mobile puis restauration** : Parcours utilisable. Version, résultat et preuve : à renseigner.
 - [ ] **NR-M19 — Recherche Karsten** : Filtrage pertinent. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M20 — URL inexistante** : HTTP 404. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M21 — Partage encodage et décodage** : Aller-retour du deck. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M22 — Échanges post-board** : Population et résultats cohérents. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M23 — Export PNG PDF JSON** : Fichier fidèle. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M24 — Panne réseau globale** : Erreur puis reprise. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M25 — Comparaison de deux analyses** : Valeurs comparables. Version, résultat et preuve : à renseigner.
+- [x] **NR-M20 — URL inexistante** : HTTP 404. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M21 — Partage encodage et décodage** : Aller-retour du deck. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M22 — Échanges post-board** : Population et résultats cohérents. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M23 — Export PNG PDF JSON** : Fichier fidèle. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M24 — Panne réseau globale** : Erreur puis reprise. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
+- [x] **NR-M25 — Comparaison de deux analyses** : Valeurs comparables. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
 - [ ] **NR-M26 — Double clic et clics rapides** : Une génération active. Version, résultat et preuve : à renseigner.
-- [ ] **NR-M27 — Retour arrière et lien direct partagé** : État cohérent. Version, résultat et preuve : à renseigner.
+- [x] **NR-M27 — Retour arrière et lien direct partagé** : État cohérent. S002 : passant sur candidat local, correspondance dans [bilan intégré](preuves-corrections/S002/SESSION-VERIFIEE.md).
 - [ ] **NR-M28 — Deck incomplet ou sans terrain** : Diagnostic explicite. Version, résultat et preuve : à renseigner.
 
 ### Contrôles transversaux de clôture
 
-- [ ] Tous les F01 à F13 vérifiés, ou liste explicite des écarts restant ouverts ; aucun « tout corrigé » si un défaut reste non vérifié.
-- [ ] Suites unitaires et d’intégration pertinentes passantes sur l’ensemble intégré ; échecs préexistants séparés des régressions nouvelles.
-- [ ] E2E Chromium des parcours principaux et cas asynchrones/import/clavier à risque passants ; tests supplémentaires sur navigateurs pertinents selon V04.
-- [ ] Lint, types et build du candidat passants ; contrat de prérendu/routage réellement visé par F09/F11 vérifié.
-- [ ] Au moins les largeurs 360, 768 et 1440 px vérifiées sur les composants modifiés ; ni débordement involontaire ni commande essentielle inaccessible.
-- [ ] Console et réseau des parcours testés inspectés ; erreurs attendues distinguées des nouvelles erreurs.
-- [ ] Anciennes sauvegardes, import/export et reprise du deck contrôlés sur stockage isolé ; aucune perte de données utilisateur réelles.
-- [ ] Résultats mathématiques comparés aux oracles indépendants ; populations, hybrides et disponibilité des modèles cohérents.
-- [ ] V01 à V12 et E01 à E06 disposent chacun d’un état explicite avec preuve ou blocage ; aucune certification globale déduite d’un simple score.
-- [ ] Diff final relu ; modifications préexistantes préservées ; aucun secret, jeu privé ou artefact de test inutile intégré.
-- [ ] Bilan final rédigé avec version, défauts clos, tests exécutés, résultats, limites et éléments encore ouverts.
+- [x] Tous les F01 à F13 vérifiés, ou liste explicite des écarts restant ouverts ; aucun « tout corrigé » si un défaut reste non vérifié.
+- [x] Suites unitaires et d’intégration pertinentes passantes sur l’ensemble intégré ; échecs préexistants séparés des régressions nouvelles.
+- [x] E2E Chromium des parcours principaux et cas asynchrones/import/clavier à risque passants ; tests supplémentaires sur navigateurs pertinents selon V04.
+- [x] Lint, types et build du candidat passants ; contrat de prérendu/routage réellement visé par F09/F11 vérifié.
+- [x] Au moins les largeurs 360, 768 et 1440 px vérifiées sur les composants modifiés ; ni débordement involontaire ni commande essentielle inaccessible.
+- [x] Console et réseau des parcours testés inspectés ; erreurs attendues distinguées des nouvelles erreurs.
+- [x] Anciennes sauvegardes, import/export et reprise du deck contrôlés sur stockage isolé ; aucune perte de données utilisateur réelles.
+- [x] Résultats mathématiques comparés aux oracles indépendants ; populations, hybrides et disponibilité des modèles cohérents.
+- [x] V01 à V12 et E01 à E06 disposent chacun d’un état explicite avec preuve ou blocage ; aucune certification globale déduite d’un simple score.
+- [x] Diff final relu ; modifications préexistantes préservées ; aucun secret, jeu privé ou artefact de test inutile intégré.
+- [x] Bilan final rédigé avec version, défauts clos, tests exécutés, résultats, limites et éléments encore ouverts.
 - [ ] Si publication explicitement demandée : contrôle de la version effectivement publiée, GET critiques, parcours nominal et procédure de retour arrière. Sinon noter « non publiée » sans cocher cette case.
 
-## Bilan de clôture à remplir
+## Bilan de clôture courant
 
-- Date et version intégrée : 6 septembre 2026, main/148d5f85ee26e60cdb10c6351031c89c03fd7ed0 + [diff S001 testé](preuves-corrections/S001/verified.patch)
-- F vérifiés sur 13 : **9** à la fin de S001 (F01..F08 etF13)
-- Critères Fxx-ACn validés sur 62 : **43** à la fin de S001 (42 des9 F + F11-AC1)
-- E réalisés ou décisions de périmètre : E01..E06 ouverts ; preuves partielles parsing/score/worker réutilisables, pas de jalon global coché
-- V vérifiés, non applicables justifiés et bloqués : V01..V12 ouverts ; limites et contrôles partiels dans le bilan S001
-- Régressions nouvelles ouvertes : aucune identifiée dans les lots intégrés S001 ; en-têtes comptés/debounce/score ancien/quota/Retry-After corrigés après revue. Libellé mobile Manabase tronqué préexistant à reprendre E02/V03
-- Tests non exécutés et conséquences :4 suites réécrivant preuves historiques, campagne NR complète, autres navigateurs/matériel/lecteur écran, exports PNG/PDF, prérendu/HTTP et validations externes ; mission non close
-- Publication : non effectuée par ce suivi
-- Conclusion étayée et prochaines actions : [bilan S001](preuves-corrections/S001/SESSION-VERIFIEE.md) ; reprendre F09/F11 sur artefact local puis F10/F12. Aucun tout-corrigé ni publication revendiqués
+- Version : 6 septembre 2026, `main/c8bdb8f5416562a2e7715fad54e2eb6f2aa342c3` + [diff S002 vérifié](preuves-corrections/S002/verified.patch).
+- **12 F vérifiés sur 13 (92,3 %)** : F01..F11 et F13. F12 technique corrigé et vérifié ; validation juridique AC5 bloquée, donc fiche non close.
+- **61 AC validés sur 62 (98,4 %)**. Reste **1 AC (1,6 %)**, F12-AC5 ; ce pourcentage compte les critères, pas le temps restant.
+- Compléments : E03 vérifié dans son périmètre score ; E01/E02/E05/E06 partiels, E04 ouvert. V05 exports et V12 inventaire de disponibilité vérifiés ; autres V ouverts/partiels/bloqués avec motifs ci-dessus.
+- Tests : 796 tests/78 fichiers, 3 tests négatifs/positifs du gate, 101 routes HTML, lint/types/build/budget/audit high passants. 49 scénarios Chromium acquis (16 livraison +33 campagne, dont le cas panne requalifié puis rejoué) ; 8 WebKit passants. Firefox bloque au lancement local, aucune réussite revendiquée.
+- Préservation : rapports préexistants inchangés, aucun nettoyage de données utilisateur. Nouveaux correctifs supplémentaires mobile/PDF et contrastes validés ; aucun nouveau défaut bloquant identifié dans les parcours passants.
+- Publication : **S002 non commitée, non poussée, non publiée**. La dernière version distante reste celle de S001 ; le nouveau build devra être publié avec autorisation distincte puis contrôlé en HTTP réel.
+- Conclusion : corrections techniques des 13 fiches traitées ; **mission étendue non certifiée close**, car validation juridique et vérifications complémentaires restent explicites. [Commandes, preuves, revue et limites](preuves-corrections/S002/SESSION-VERIFIEE.md).
 
 ## Journal chronologique
 
@@ -837,3 +798,27 @@ L’utilisateur a demandé explicitement « commit push ». Les corrections, tes
 Le hook local `lint-staged` lance des réécritures automatiques ESLint/Prettier et un stash : pour conserver les octets source et preuves déjà vérifiés, le commit de livraison utilise `HUSKY=0`, après lint/types et contrôle du diff indexé. Aucun correctif applicatif supplémentaire dans cette étape. Le push de `main` peut déclencher l’intégration Vercel native ; une réussite du push ne prouve pas la réussite de la CI ou de la publication. L’état distant et le hash sont rapportés dans la réponse de livraison ; la prochaine reprise relève HEAD actuel.
 
 Compteurs inchangés :9/13 défauts vérifiés (69,2 %),4/13 restants (30,8 %) :F09/F10/F11 partiel/F12.43/62 critères vérifiés (69,4 %),19/62 restants (30,6 %). Ce sont des proportions d’éléments, pas une estimation de durée. E01..E06 etV01..V12 restent ouverts séparément. Prochaine étape :F09/F11, puis F10/F12.
+
+### S002 — reprise des quatre défauts restants — 6 septembre 2026
+
+État : en cours. HEAD de départ `c8bdb8f5416562a2e7715fad54e2eb6f2aa342c3` sur main, déjà poussé par S001. Les 49 fichiers source/tests de HEAD correspondent au manifest S001 (voir [baseline](preuves-corrections/S002/baseline.json)). Les rapports préexistants, worktrees et fichiers personnels sont préservés ([statut](preuves-corrections/S002/status-initial.txt)).
+
+Lots : html_delivery F09/F11 ; editorial F10 ; privacy F12 ; lead intégration, vérifications externes en lecture seule, campagne et revue. Neuf F/13 et 43 AC/62 restent acquis sur la version S001 ; aucun nouveau critère coché avant preuve intégrée. Aucun déploiement ni modification de réglage externe.
+
+### S002 — bilan final et reprise — 6 septembre 2026
+
+**État :** corrections techniques terminées et vérifiées localement ; mission étendue non close.
+
+- Base/destination locale : main, HEAD `c8bdb8f5416562a2e7715fad54e2eb6f2aa342c3` inchangé. Aucun commit/push/publication S002.
+- F09/F10/F11 clos après revue et validation intégrée ; F12-AC1..4 acquis, AC5 juridique bloqué. Compteurs : **12/13 F, 61/62 AC**.
+- Preuves : [bilan S002](preuves-corrections/S002/SESSION-VERIFIEE.md), [manifest](preuves-corrections/S002/verified-manifest.json), [diff](preuves-corrections/S002/verified.patch), [préservation](preuves-corrections/S002/preservation.json). Les erreurs initiales de contraste, HTML, export et les corrections de fixtures restent documentées.
+- Livraisons natives futures : nouveau gate obligatoire, pas de déploiement GitHub concurrent ; required checks GitHub absents dans les règles privées lues. La vérification HTTP après déploiement reste nécessaire, pas simulée.
+- Prochaine action technique de livraison si explicitement demandée : comparer HEAD/statut/manifest, préserver les rapports/fichiers personnels, commiter le périmètre corrigé et ses preuves puis pousser ; contrôler le build natif et les URLs publiées. Ne pas recommencer les 13 corrections.
+- Prochaine validation externe : obtenir revue juridique compétente F12-AC5/V09 ; poursuivre V01/03/04/08/10 et matrices V06/07/11 selon accès. Ne pas activer Sentry ni prétendre à une conformité globale par défaut.
+- Reproduction locale : commande complète de build et tests dans le bilan S002. Serveurs de test gérés par Playwright et arrêtés à la fin ; aucun service de production modifié.
+
+### S002 — autorisation de commit et push — 6 septembre 2026
+
+L’utilisateur demande explicitement « ok commit push ». Les 50 fichiers source/tests/contrats correspondent au manifest final ; ESLint et TypeScript relancés passent. Les trois rapports préexistants sont inchangés ; worktrees, fichiers MCP personnels et prompt de reprise préexistant restent hors commit. Les preuves finales et logs S002 sont conservés ; quatre copies PDF intermédiaires redondantes restent locales et ignorées, les PDF finaux et preuves rouges sont inclus.
+
+Le hook lint-staged réécrit automatiquement les fichiers et crée un stash. Comme en S001, le commit utilise HUSKY=0 après contrôles indépendants pour préserver les octets vérifiés. Aucun changement applicatif supplémentaire. Le push main peut déclencher Vercel natif ; une réussite du push ne prouve pas le déploiement. Compteurs inchangés : 12/13 fiches closes, 61/62 critères validés ; F12-AC5 juridique reste bloqué.

@@ -274,7 +274,7 @@ const MathematicsPage: React.FC = () => {
               icon: <CasinoIcon sx={{ fontSize: 32 }} />,
               question: 'Should I keep or mulligan?',
               detail:
-                '10,000 simulated games with your exact decklist. Optimal stopping theory calculates the hand quality threshold below which you should mulligan — customized for your archetype.',
+                '10,000 sampled hands per kept-hand size from your main deck. Optimal stopping theory calculates the hand quality threshold below which you should mulligan — customized for your archetype.',
               color: '#9c27b0',
               bgColor: '#f3e5f5',
               example: 'Keep 7 if hand score > 62, otherwise mulligan to 6',
@@ -636,16 +636,17 @@ const MathematicsPage: React.FC = () => {
                   Monte Carlo Simulation
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  10,000 games with your exact decklist
+                  10,000 samples per kept-hand size
                 </Typography>
               </Box>
             </Box>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body1" paragraph>
-              Instead of doing math, we let the computer play 10,000 games for you. It shuffles your
-              deck, draws hands, makes mulligan decisions, and tracks how often things work out.
-              Think of it as playtesting on fast-forward.
+              The simulator samples 10,000 hands for each kept-hand size from four to seven by default.
+              It shuffles the main deck, draws seven, chooses a heuristic subset, and evaluates
+              opening-hand quality. Bellman recursion compares keeping with another mulligan;
+              this is not a simulation of complete games or win rate.
             </Typography>
 
             <Grid container spacing={2} sx={{ my: 2 }}>
@@ -653,17 +654,17 @@ const MathematicsPage: React.FC = () => {
                 {
                   step: '1',
                   title: 'Shuffle',
-                  text: 'Your exact 60 cards are randomly shuffled using an unbiased algorithm (Fisher-Yates)',
+                  text: 'Your main-deck cards are randomly shuffled using an unbiased algorithm (Fisher-Yates)',
                 },
                 {
                   step: '2',
                   title: 'Draw & Decide',
-                  text: 'Draw 7 cards. The engine decides keep or mulligan using optimal theory (Bellman equation)',
+                  text: 'Draw seven, then select a heuristic subset for the kept-hand size.',
                 },
                 {
                   step: '3',
-                  title: 'Play Out',
-                  text: 'Track mana availability each turn. Repeat 10,000 times. Count the results.',
+                  title: 'Score & Compare',
+                  text: 'Score first-turn plans under the stated model; compare sampled keep and mulligan values.',
                 },
               ].map((item, i) => (
                 <Grid item xs={12} md={4} key={i}>
@@ -696,7 +697,7 @@ const MathematicsPage: React.FC = () => {
 
             <Paper sx={{ p: 2, bgcolor: '#f3e5f5', borderRadius: 2 }}>
               <Typography variant="body2" fontWeight={600} color="#7b1fa2">
-                <strong>Why both?</strong> The hypergeometric formula gives instant exact answers.
+                <strong>Why both?</strong> The hypergeometric formula gives exact draw probabilities under sampling without replacement.
                 Monte Carlo can check simple draw events against those answers. Mulligan results
                 additionally depend on the reward model and sampling uncertainty; this does not
                 establish the accuracy of every castability estimate.

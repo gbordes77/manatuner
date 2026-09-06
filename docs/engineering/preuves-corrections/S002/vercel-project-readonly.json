@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-06T10:39:56.480317+00:00",
+  "project": {
+    "name": "manatuner-pro",
+    "framework": "vite",
+    "buildCommand": null,
+    "nodeVersion": "22.x",
+    "gitProviderOptions": {
+      "createDeployments": "enabled"
+    },
+    "gitComments": {
+      "onCommit": false,
+      "onPullRequest": true
+    },
+    "commandForIgnoringBuildStep": null,
+    "autoAssignCustomDomains": true,
+    "enableAffectedProjectsDeployments": null,
+    "productionDeploymentsFastLane": true
+  },
+  "link": {
+    "type": "github",
+    "repo": "manatuner",
+    "org": "gbordes77",
+    "productionBranch": "main"
+  },
+  "availableGateFields": [
+    "deploymentExpiration",
+    "gitForkProtection",
+    "gitLFS",
+    "productionDeploymentsFastLane",
+    "gitComments",
+    "gitProviderOptions",
+    "hasDeployments",
+    "latestDeployments"
+  ]
+}

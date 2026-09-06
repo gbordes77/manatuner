@@ -130,7 +130,7 @@ describe('Independent exact and exhaustive validation', () => {
         })
         expect(actual).toBeCloseTo(expected, 11)
       }
-    writeFileSync('/tmp/mtg-audit-exact-results.json', JSON.stringify(rows, null, 2))
+    writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-exact-results.json`, JSON.stringify(rows, null, 2))
   })
   it('compares one million production shuffles to exact hypergeometric, with an independent sampler', () => {
     const count = 1_000_000,
@@ -179,7 +179,7 @@ describe('Independent exact and exhaustive validation', () => {
       margin95: 1.96 * se,
     }
     console.log('MONTE_CARLO', JSON.stringify(result))
-    writeFileSync('/tmp/mtg-audit-monte-carlo.json', JSON.stringify(result, null, 2))
+    writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-monte-carlo.json`, JSON.stringify(result, null, 2))
     // Six sigma deterministic guard; report the actual 95% interval separately.
     expect(Math.abs(result.production - expected)).toBeLessThan(6 * se)
     expect(Math.abs(result.independent - expected)).toBeLessThan(6 * se)

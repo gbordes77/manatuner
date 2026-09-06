@@ -1,3 +1,4 @@
+import { ANALYZER_TABS } from '../data/analyzerTabs'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import CasinoIcon from '@mui/icons-material/Casino'
@@ -387,7 +388,7 @@ const AnalyzerPage: React.FC = () => {
     <>
       <SEO
         title="MTG Deck Analyzer — Paste Deck, See Castability | ManaTuner"
-        description="Free MTG deck analyzer. Paste your decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell — including mana rocks and dorks. No signup, results in 3 seconds."
+        description="Free MTG deck analyzer. Paste your decklist (MTGO, MTGA, Moxfield) and get model-based castability estimates per spell, including mana rocks and dorks. Exact modes state their supported scope. No signup."
         path="/analyzer"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -400,7 +401,7 @@ const AnalyzerPage: React.FC = () => {
           operatingSystem: 'Any (browser-based)',
           browserRequirements: 'Requires a modern browser with JavaScript enabled',
           description:
-            'Interactive MTG deck analyzer. Paste any decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell, turn by turn, including mana rocks and dorks.',
+            'Interactive MTG deck analyzer. Paste any decklist (MTGO, MTGA, Moxfield) and get default castability estimates per spell, turn by turn. Exact modes cover only their stated supported model.',
           featureList: [
             'Castability analysis with P1/P2 probabilities',
             'Post-board sideboard swap editor',
@@ -463,12 +464,12 @@ const AnalyzerPage: React.FC = () => {
           >
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
               Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled N/60,
-              command zone detection, EDH tier bands.
+              explicit command zone detection.
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
               Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
               pins the commander first and prioritizes CMC 4–8; library size excludes the commander
-              for other spells when detected (*CMDR*, Commander section, or first non-land).
+              for other spells only when explicitly marked (*CMDR* or Commander section).
               Manabase uses deck-size-scaled Karsten sources. Rule 0 / multiplayer politics are out
               of scope.{' '}
               <Box component="a" href="/guide#commander" sx={{ color: 'inherit', fontWeight: 600 }}>
@@ -530,7 +531,7 @@ const AnalyzerPage: React.FC = () => {
             >
               <Chip
                 icon={<ShowChartIcon />}
-                label="Castability"
+                label={ANALYZER_TABS[0]}
                 size="small"
                 sx={{
                   bgcolor: '#e3f2fd',
@@ -556,9 +557,9 @@ const AnalyzerPage: React.FC = () => {
                 size="small"
                 sx={{
                   bgcolor: '#fff3e0',
-                  color: '#e65100',
+                  color: '#a63b00',
                   fontWeight: 600,
-                  '& .MuiChip-icon': { color: '#e65100' },
+                  '& .MuiChip-icon': { color: '#a63b00' },
                 }}
               />
             </Box>
@@ -757,19 +758,19 @@ const AnalyzerPage: React.FC = () => {
                     }}
                   >
                     <Chip
-                      label="Castability"
+                      label={ANALYZER_TABS[0]}
                       size="small"
-                      sx={{ bgcolor: 'info.light', color: 'info.contrastText' }}
+                      sx={{ bgcolor: '#e3f2fd', color: '#1565c0' }}
                     />
                     <Chip
-                      label="Mulligan"
+                      label={ANALYZER_TABS[2]}
                       size="small"
-                      sx={{ bgcolor: 'secondary.light', color: 'secondary.contrastText' }}
+                      sx={{ bgcolor: '#f3e5f5', color: '#7b1fa2' }}
                     />
                     <Chip
-                      label="Manabase"
+                      label={ANALYZER_TABS[3]}
                       size="small"
-                      sx={{ bgcolor: 'success.light', color: 'success.contrastText' }}
+                      sx={{ bgcolor: '#e8f5e9', color: '#1b5e20' }}
                     />
                   </Box>
                 </Box>
@@ -877,7 +878,7 @@ const AnalyzerPage: React.FC = () => {
                     <Tab
                       icon={<ShowChartIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
-                      label="Castability"
+                      label={ANALYZER_TABS[0]}
                       aria-label="Castability - Spell casting probabilities"
                       id="analyzer-tab-0"
                       aria-controls="analyzer-tabpanel-0"
@@ -886,7 +887,7 @@ const AnalyzerPage: React.FC = () => {
                     <Tab
                       icon={<AnalyticsIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
-                      label="Analysis"
+                      label={ANALYZER_TABS[1]}
                       aria-label="Analysis - Detailed spell analysis"
                       id="analyzer-tab-1"
                       aria-controls="analyzer-tabpanel-1"
@@ -895,7 +896,7 @@ const AnalyzerPage: React.FC = () => {
                     <Tab
                       icon={<CasinoIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
-                      label="Mulligan"
+                      label={ANALYZER_TABS[2]}
                       aria-label="Mulligan - Hand simulation and strategy"
                       id="analyzer-tab-2"
                       aria-controls="analyzer-tabpanel-2"
@@ -912,7 +913,7 @@ const AnalyzerPage: React.FC = () => {
                             gap: 0.75,
                           }}
                         >
-                          <span>Manabase</span>
+                          <span>{ANALYZER_TABS[3]}</span>
                           {manabaseVerdict && manabaseVerdict.verdict !== 'ok' && (
                             <Box
                               component="span"
@@ -984,7 +985,7 @@ const AnalyzerPage: React.FC = () => {
                     <Tab
                       icon={<DownloadIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
-                      label="Blueprint"
+                      label={ANALYZER_TABS[4]}
                       aria-label="Blueprint - Export analysis as PNG, PDF or JSON"
                       id="analyzer-tab-4"
                       aria-controls="analyzer-tabpanel-4"

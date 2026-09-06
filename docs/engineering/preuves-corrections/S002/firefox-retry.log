@@ -1,0 +1,343 @@
+[WebServer] (node:50434) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 8 tests using 1 worker
+
+(node:50435) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/8] [firefox] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+  1) [firefox] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-NIs6Ax -juggler-pipe -silent
+    <launched> pid=50436
+    [pid=50436][err] *** You are running in headless mode.
+    [pid=50436][err] Could not find profile folder.
+    [pid=50436] <process did exit: exitCode=1, signal=null>
+    [pid=50436] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-NIs6Ax -juggler-pipe -silent
+      - <launched> pid=50436
+      - [pid=50436][err] *** You are running in headless mode.
+      - [pid=50436][err] Could not find profile folder.
+      - [pid=50436] <process did exit: exitCode=1, signal=null>
+      - [pid=50436] starting temporary directories cleanup
+      - [pid=50436] <gracefully close start>
+      - [pid=50436] <kill>
+      - [pid=50436] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50436] finished temporary directories cleanup
+      - [pid=50436] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/8] [firefox] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+  2) [firefox] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-rvp95T -juggler-pipe -silent
+    <launched> pid=50448
+    [pid=50448][err] *** You are running in headless mode.
+    [pid=50448][err] Could not find profile folder.
+    [pid=50448] <process did exit: exitCode=1, signal=null>
+    [pid=50448] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-rvp95T -juggler-pipe -silent
+      - <launched> pid=50448
+      - [pid=50448][err] *** You are running in headless mode.
+      - [pid=50448][err] Could not find profile folder.
+      - [pid=50448] <process did exit: exitCode=1, signal=null>
+      - [pid=50448] starting temporary directories cleanup
+      - [pid=50448] <gracefully close start>
+      - [pid=50448] <kill>
+      - [pid=50448] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50448] finished temporary directories cleanup
+      - [pid=50448] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50452) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/8] [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px
+  3) [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-7JD2ul -juggler-pipe -silent
+    <launched> pid=50453
+    [pid=50453][err] *** You are running in headless mode.
+    [pid=50453][err] Could not find profile folder.
+    [pid=50453] <process did exit: exitCode=1, signal=null>
+    [pid=50453] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-7JD2ul -juggler-pipe -silent
+      - <launched> pid=50453
+      - [pid=50453][err] *** You are running in headless mode.
+      - [pid=50453][err] Could not find profile folder.
+      - [pid=50453] <process did exit: exitCode=1, signal=null>
+      - [pid=50453] starting temporary directories cleanup
+      - [pid=50453] <gracefully close start>
+      - [pid=50453] <kill>
+      - [pid=50453] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50453] finished temporary directories cleanup
+      - [pid=50453] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50454) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[4/8] [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px
+  4) [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-kTBahO -juggler-pipe -silent
+    <launched> pid=50457
+    [pid=50457][err] *** You are running in headless mode.
+    [pid=50457][err] Could not find profile folder.
+    [pid=50457] <process did exit: exitCode=1, signal=null>
+    [pid=50457] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-kTBahO -juggler-pipe -silent
+      - <launched> pid=50457
+      - [pid=50457][err] *** You are running in headless mode.
+      - [pid=50457][err] Could not find profile folder.
+      - [pid=50457] <process did exit: exitCode=1, signal=null>
+      - [pid=50457] starting temporary directories cleanup
+      - [pid=50457] <gracefully close start>
+      - [pid=50457] <kill>
+      - [pid=50457] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50457] finished temporary directories cleanup
+      - [pid=50457] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--9bc99-vigation-and-back-at-1440px-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--9bc99-vigation-and-back-at-1440px-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--9bc99-vigation-and-back-at-1440px-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50460) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[5/8] [firefox] › tests/e2e/core-flows/final-audit.spec.js:90:5 › NR-M02 actual Try Example resolves all twenty public card names and saves sixty cards
+  5) [firefox] › tests/e2e/core-flows/final-audit.spec.js:90:5 › NR-M02 actual Try Example resolves all twenty public card names and saves sixty cards 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-9lpDqx -juggler-pipe -silent
+    <launched> pid=50466
+    [pid=50466][err] *** You are running in headless mode.
+    [pid=50466][err] Could not find profile folder.
+    [pid=50466] <process did exit: exitCode=1, signal=null>
+    [pid=50466] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-9lpDqx -juggler-pipe -silent
+      - <launched> pid=50466
+      - [pid=50466][err] *** You are running in headless mode.
+      - [pid=50466][err] Could not find profile folder.
+      - [pid=50466] <process did exit: exitCode=1, signal=null>
+      - [pid=50466] starting temporary directories cleanup
+      - [pid=50466] <gracefully close start>
+      - [pid=50466] <kill>
+      - [pid=50466] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50466] finished temporary directories cleanup
+      - [pid=50466] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--a9411-names-and-saves-sixty-cards-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--a9411-names-and-saves-sixty-cards-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-final-audit-NR--a9411-names-and-saves-sixty-cards-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[6/8] [firefox] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+  6) [firefox] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-F07Tfw -juggler-pipe -silent
+    <launched> pid=50472
+    [pid=50472][err] *** You are running in headless mode.
+    [pid=50472][err] Could not find profile folder.
+    [pid=50472] <process did exit: exitCode=1, signal=null>
+    [pid=50472] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-F07Tfw -juggler-pipe -silent
+      - <launched> pid=50472
+      - [pid=50472][err] *** You are running in headless mode.
+      - [pid=50472][err] Could not find profile folder.
+      - [pid=50472] <process did exit: exitCode=1, signal=null>
+      - [pid=50472] starting temporary directories cleanup
+      - [pid=50472] <gracefully close start>
+      - [pid=50472] <kill>
+      - [pid=50472] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50472] finished temporary directories cleanup
+      - [pid=50472] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-input-contract--ac7d5--rounds-to-98-in-exact-mode-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-input-contract--ac7d5--rounds-to-98-in-exact-mode-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-input-contract--ac7d5--rounds-to-98-in-exact-mode-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50474) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[7/8] [firefox] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+  7) [firefox] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-IT0ZsE -juggler-pipe -silent
+    <launched> pid=50475
+    [pid=50475][err] *** You are running in headless mode.
+    [pid=50475][err] Could not find profile folder.
+    [pid=50475] <process did exit: exitCode=1, signal=null>
+    [pid=50475] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-IT0ZsE -juggler-pipe -silent
+      - <launched> pid=50475
+      - [pid=50475][err] *** You are running in headless mode.
+      - [pid=50475][err] Could not find profile folder.
+      - [pid=50475] <process did exit: exitCode=1, signal=null>
+      - [pid=50475] starting temporary directories cleanup
+      - [pid=50475] <gracefully close start>
+      - [pid=50475] <kill>
+      - [pid=50475] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50475] finished temporary directories cleanup
+      - [pid=50475] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:50478) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[8/8] [firefox] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring
+  8) [firefox] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-HR0ckS -juggler-pipe -silent
+    <launched> pid=50485
+    [pid=50485][err] *** You are running in headless mode.
+    [pid=50485][err] Could not find profile folder.
+    [pid=50485] <process did exit: exitCode=1, signal=null>
+    [pid=50485] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /tmp/playwright_firefoxdev_profile-HR0ckS -juggler-pipe -silent
+      - <launched> pid=50485
+      - [pid=50485][err] *** You are running in headless mode.
+      - [pid=50485][err] Could not find profile folder.
+      - [pid=50485] <process did exit: exitCode=1, signal=null>
+      - [pid=50485] starting temporary directories cleanup
+      - [pid=50485] <gracefully close start>
+      - [pid=50485] <kill>
+      - [pid=50485] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=50485] finished temporary directories cleanup
+      - [pid=50485] <gracefully close end>
+
+
+    Error Context: docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/firefox-retry/core-flows-privacy-audit-F-531fa-sabled-candidate-monitoring-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  8 failed
+    [firefox] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 
+    [firefox] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint 
+    [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px 
+    [firefox] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px 
+    [firefox] › tests/e2e/core-flows/final-audit.spec.js:90:5 › NR-M02 actual Try Example resolves all twenty public card names and saves sixty cards 
+    [firefox] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode 
+    [firefox] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision 
+    [firefox] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring 

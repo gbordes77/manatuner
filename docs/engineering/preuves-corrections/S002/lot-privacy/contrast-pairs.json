@@ -1,0 +1,26 @@
+[
+  {
+    "foreground": "#a63b00",
+    "background": "#fff3e0",
+    "ratio": 5.897349713054193,
+    "required": 4.5
+  },
+  {
+    "foreground": "#1565c0",
+    "background": "#e3f2fd",
+    "ratio": 5.03087670811536,
+    "required": 4.5
+  },
+  {
+    "foreground": "#7b1fa2",
+    "background": "#f3e5f5",
+    "ratio": 6.772566424392079,
+    "required": 4.5
+  },
+  {
+    "foreground": "#1b5e20",
+    "background": "#e8f5e9",
+    "ratio": 6.995869585769611,
+    "required": 4.5
+  }
+]

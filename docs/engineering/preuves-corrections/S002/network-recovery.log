@@ -1,0 +1,51 @@
+[WebServer] (node:52238) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 1 test using 1 worker
+
+(node:52243) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried
+  1) [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').filter({ hasText: /Failed to analyze deck/ })
+    Expected: visible
+    Timeout: 35000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert').filter({ hasText: /Failed to analyze deck/ }) with timeout 35000ms
+      - waiting for getByRole('alert').filter({ hasText: /Failed to analyze deck/ })
+
+
+      115 |   await page.getByPlaceholder(/paste your decklist/i).fill('24 Mountain\n36 Lightning Bolt')
+      116 |   await page.getByRole('button', { name: /analyze manabase/i }).click()
+    > 117 |   await expect(page.getByRole('alert').filter({ hasText: /Failed to analyze deck/ })).toBeVisible({ timeout: 35000 })
+          |                                                                                       ^
+      118 |   await expect(page.getByTestId('analysis-results')).toHaveCount(0)
+      119 |   await page.unroute('https://api.scryfall.com/**', outage)
+      120 |   await page.getByRole('button', { name: /analyze manabase/i }).click()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/final-audit.spec.js:117:87
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/network-recovery/core-flows-final-audit-NR--1900e-he-same-deck-can-be-retried-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/network-recovery/core-flows-final-audit-NR--1900e-he-same-deck-can-be-retried-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/network-recovery/core-flows-final-audit-NR--1900e-he-same-deck-can-be-retried-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/preuves-corrections/S002/network-recovery/core-flows-final-audit-NR--1900e-he-same-deck-can-be-retried-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried 

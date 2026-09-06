@@ -1,0 +1,29 @@
+src/pages/HomePage.tsx:473:               Your deck casts 87% of spells on curve — solid; keep almost any 2–4-land opener.
+src/pages/HomePage.tsx:699:               54 articles · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
+src/pages/HomePage.tsx:1322:           { value: '6', sub: 'Analysis tabs' },
+src/pages/GuidePage.tsx:70:         'Exact probability of casting each spell on curve, turn by turn. This is the first tab you see after analysis.',
+src/pages/GuidePage.tsx:276:                   text: 'The Castability tab shows exact probabilities (P1 Play First, P2 Draw First, Realistic with ramp) turn by turn for every spell in the deck. Anything below 90% on curve is a weak spot.',
+src/pages/GuidePage.tsx:906:                   'Command zone: detected via *CMDR*, a Commander section, or the first non-land on a 99–100 list. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
+src/pages/AnalyzerPage.tsx:390:         description="Free MTG deck analyzer. Paste your decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell — including mana rocks and dorks. No signup, results in 3 seconds."
+src/pages/AnalyzerPage.tsx:403:             'Interactive MTG deck analyzer. Paste any decklist (MTGO, MTGA, Moxfield) and get exact hypergeometric castability probabilities per spell, turn by turn, including mana rocks and dorks.',
+src/pages/AnalyzerPage.tsx:471:               for other spells when detected (*CMDR*, Commander section, or first non-land).
+src/components/analyzer/MulliganTab.tsx:379:     if (score >= 90) return '#4caf50'
+src/components/analyzer/MulliganTab.tsx:380:     if (score >= 75) return '#8bc34a'
+src/components/analyzer/MulliganTab.tsx:381:     if (score >= 60) return '#ff9800'
+src/components/analyzer/MulliganTab.tsx:382:     if (score >= 40) return '#f44336'
+src/components/analyzer/MulliganTab.tsx:1167:                       spells), you can shuffle it back and draw a new hand with 1 fewer card. This
+src/components/analyzer/QuickVerdict.tsx:75:     if (consistencyPct >= 80) tier = 'excellent'
+src/components/analyzer/QuickVerdict.tsx:76:     else if (consistencyPct >= 70) tier = 'solid'
+src/components/analyzer/QuickVerdict.tsx:77:     else if (consistencyPct >= 60) tier = 'shaky'
+src/components/analyzer/QuickVerdict.tsx:80:     if (consistencyPct >= 90) tier = 'excellent'
+src/components/analyzer/QuickVerdict.tsx:81:     else if (consistencyPct >= 80) tier = 'solid'
+src/components/analyzer/QuickVerdict.tsx:82:     else if (consistencyPct >= 70) tier = 'shaky'
+src/components/analyzer/QuickVerdict.tsx:141:     consistencyPct >= 85
+src/components/analyzer/QuickVerdict.tsx:143:       : consistencyPct >= 70
+src/components/analyzer/QuickVerdict.tsx:145:         : consistencyPct >= 55
+src/components/export/ManaBlueprint.tsx:55:   if (score >= 95)
+src/components/export/ManaBlueprint.tsx:61:   if (score >= 85)
+src/components/export/ManaBlueprint.tsx:67:   if (score >= 75) return { label: 'Stable', color: '#4FC3F7', description: 'Good reliability' }
+src/components/export/ManaBlueprint.tsx:68:   if (score >= 60)
+src/pages/MyAnalysesPage.tsx:86:     percent >= 85 ? 'success' : percent >= 70 ? 'primary' : percent >= 55 ? 'warning' : 'error'
+src/pages/MyAnalysesPage.tsx:88:     percent >= 85 ? 'Excellent' : percent >= 70 ? 'Good' : percent >= 55 ? 'Average' : 'Needs Work'

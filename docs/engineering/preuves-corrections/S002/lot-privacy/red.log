@@ -1,0 +1,94 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+xx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/component/PrivacyDisclosure.test.tsx > privacy information matches actual data flows > identifies third parties, transmitted information and storage deletion limits
+AssertionError: expected 'Privacy PolicyYour Privacy MattersMan…' to contain 'api.scryfall.com'
+
+Expected: "api.scryfall.com"
+Received: "Privacy PolicyYour Privacy MattersManaTuner is designed with privacy as a core principle. We don't collect, store, or transmit any of your personal data or deck information.100% Local: All your analyses are stored in your browser's local storage. Your decklists never leave your device.No Tracking: We don't use analytics, cookies, or any form of user tracking."
+
+ ❯ tests/component/PrivacyDisclosure.test.tsx:15:20
+     13|     const text = document.body.textContent || ''
+     14|     for (const disclosure of ['api.scryfall.com', 'cards.scryfall.io',…
+     15|       expect(text).toContain(disclosure)
+       |                    ^
+     16|     }
+     17|     expect(text).not.toMatch(/never leave your device|don't collect, s…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/component/PrivacyDisclosure.test.tsx > privacy information matches actual data flows > discloses enabled monitoring when a production DSN exists
+TestingLibraryElementError: Unable to find an element with the text: /Error monitoring is enabled in this build/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiContainer-root MuiContainer-maxWidthLg css-1sqq6so-MuiContainer-root"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-3b2wtl"[39m
+      [36m>[39m
+        [36m<h1[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-h3 MuiTypography-gutterBottom css-yfhx9a-MuiTypography-root"[39m
+        [36m>[39m
+          [0mPrivacy Policy[0m
+        [36m</h1>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-jx950e-MuiPaper-root"[39m
+      [36m>[39m
+        [36m<h6[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-sskem8-MuiTypography-root"[39m
+        [36m>[39m
+          [0mYour Privacy Matters[0m
+        [36m</h6>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-z2eky3-MuiTypography-root"[39m
+        [36m>[39m
+          [0mManaTuner is designed with privacy as a core principle. We don't collect, store, or transmit any of your personal data or deck information.[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-body1 MuiTypography-paragraph css-z2eky3-MuiTypography-root"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0m100% Local:[0m
+          [36m</strong>[39m
+          [0m All your analyses are stored in your browser's local storage. Your decklists never leave your device.[0m
+        [36m</p>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"[39m
+        [36m>[39m
+          [36m<strong>[39m
+            [0mNo Tracking:[0m
+          [36m</strong>[39m
+          [0m We don't use analytics, cookies, or any form of user tracking.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/component/PrivacyDisclosure.test.tsx:24:19
+     22|     vi.stubEnv('VITE_SENTRY_DSN', 'https://public@example.invalid/1')
+     23|     render(<PrivacyPage />)
+     24|     expect(screen.getByText(/Error monitoring is enabled in this build…
+       |                   ^
+     25|     expect(document.body.textContent).toContain('Before enabling Sentr…
+     26|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  12:39:34
+   Duration  852ms (transform 52ms, setup 24ms, import 603ms, tests 20ms, environment 135ms)
+

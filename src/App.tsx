@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import React, { Suspense } from 'react'
-import { HelmetProvider } from 'react-helmet-async'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
 import { BetaBanner } from './components'
 import { ErrorBoundary } from './components/common/ErrorBoundary'
@@ -105,10 +105,15 @@ const PrivacyPage = React.lazy(() =>
 
 const NotFoundPage = () => (
   <Container maxWidth="sm" sx={{ py: 8, textAlign: 'center' }}>
+    <Helmet>
+      <title>Page not found — ManaTuner</title>
+      <meta name="robots" content="noindex,follow" />
+      <meta name="description" content="This ManaTuner page does not exist." />
+    </Helmet>
     <Typography variant="h2" fontWeight="bold" color="text.secondary" gutterBottom>
       404
     </Typography>
-    <Typography variant="h5" gutterBottom>
+    <Typography variant="h5" component="h1" gutterBottom>
       Page not found
     </Typography>
     <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>

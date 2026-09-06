@@ -1,0 +1,59 @@
+ M .env.example
+ M .github/workflows/ci.yml
+ M .github/workflows/nightly-quality.yml
+ M .github/workflows/pr-validation.yml
+ M docs/engineering/SUIVI-CORRECTIONS-MANATUNER-2026-09-06.md
+ M index.html
+ M package-lock.json
+ M package.json
+ M playwright-report/index.html
+ M public/llms-full.txt
+ M public/llms.txt
+ M scripts/check-bundle-budget.mjs
+ M scripts/prerender.mjs
+ M src/App.tsx
+ M src/components/PrivacySettings.tsx
+ M src/components/analyzer/ManabaseFullTab.tsx
+ M src/components/analyzer/MulliganTab.tsx
+ M src/components/analyzer/QuickVerdict.tsx
+ M src/components/export/ManaBlueprint.tsx
+ M src/components/layout/StaticPages.tsx
+ M src/main.tsx
+ M src/pages/AnalyzerPage.tsx
+ M src/pages/ArticleDetailPage.tsx
+ M src/pages/GuidePage.tsx
+ M src/pages/HomePage.tsx
+ M src/pages/MathematicsPage.tsx
+ M src/pages/MyAnalysesPage.tsx
+ M src/services/scryfallPersistentCache.ts
+ M src/utils/__tests__/prerenderLib.test.ts
+ M src/utils/prerenderLib.ts
+ M test-results.json
+ M test-results/.last-run.json
+ M tests/e2e/accessibility/a11y.spec.js
+ M tests/math-audit/canonical.test.ts
+ M tests/math-audit/independent.test.ts
+ M tests/math-audit/known-limitations.test.ts
+ M tests/math-audit/pathways.test.ts
+ M vercel.json
+?? .claude/worktrees/
+?? .mcp.json.bak.20260801-140417
+?? .playwright-mcp/
+?? docs/engineering/DELIVERY-CONTRACT.md
+?? docs/engineering/preuves-corrections/S002/
+?? docs/handoff/PROMPT-REPRISE-MANATUNER.txt
+?? docs/privacy/
+?? playwright.audit.config.js
+?? playwright.delivery.config.js
+?? scripts/check-html-contract.mjs
+?? scripts/delivery-gate.mjs
+?? scripts/delivery-gate.test.mjs
+?? scripts/serve-candidate.mjs
+?? src/data/analyzerTabs.ts
+?? src/utils/__tests__/editorialContract.test.js
+?? src/utils/healthScore.ts
+?? tests/component/PrivacyDisclosure.test.tsx
+?? tests/e2e/core-flows/final-audit.spec.js
+?? tests/e2e/core-flows/privacy-audit.spec.js
+?? tests/e2e/delivery/
+?? tests/fixtures/scryfall-sample-audit.json

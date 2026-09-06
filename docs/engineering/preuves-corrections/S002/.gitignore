@@ -1,0 +1,5 @@
+# Redundant intermediate PDFs remain local; final Chromium/WebKit PDFs and red evidence are retained.
+exports-green/**/blueprint.pdf
+exports-layout-green/**/blueprint.pdf
+navigation-green/**/blueprint.pdf
+verified-browser/**/blueprint.pdf

@@ -1,22 +1,6 @@
-/**
- * Prerender script for ManaTuner
- *
- * Generates static HTML for each route at build time using Playwright.
- * Crawlers get full HTML; users get the SPA (React hydrates on top).
- *
- * Usage: node scripts/prerender.mjs
- * Requires: vite build first (dist/ must exist)
- *
- * Env:
- *   PRERENDER_CONCURRENCY — parallel pages (default 4)
- *   PRERENDER_TIMEOUT_MS  — per-route timeout (default 20000)
- *   PRERENDER_SKIP_LIBRARY — if "1", only STATIC_ROUTES
- *   PRERENDER_FULL        — if "1" on Vercel, also prerender library routes
- *   PRERENDER_SOFT        — if "1", never fail the parent build (SPA still ships)
- *
- * On Vercel (VERCEL=1): soft-fail by default + install Chromium if missing +
- * skip library routes unless PRERENDER_FULL=1. Vite dist is already built;
- * a prerender miss must not block production deploys.
+/** Build every public route from the app; fail on missing content or metadata.
+ * PRERENDER_DIST, PORT, TIMEOUT_MS and CONCURRENCY support isolated local validation.
+ * Library skipping and soft failures are deliberately unsupported.
  */
 
 import { execSync } from 'child_process'
@@ -24,34 +8,22 @@ import { chromium } from '@playwright/test'
 import { preview } from 'vite'
 import { build } from 'esbuild'
 import { writeFileSync, mkdirSync, existsSync } from 'fs'
+import { checkHtmlContract } from './check-html-contract.mjs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const DIST = join(ROOT, 'dist')
+const DIST = process.env.PRERENDER_DIST || join(ROOT, 'dist')
 const SEED_ENTRY = join(ROOT, 'src/data/articlesReferenceSeed.ts')
 const LIB_ENTRY = join(ROOT, 'src/utils/prerenderLib.ts')
 
 const ON_VERCEL = process.env.VERCEL === '1' || process.env.VERCEL === 'true'
-const SOFT_FAIL = ON_VERCEL || process.env.PRERENDER_SOFT === '1'
 const PORT = Number(process.env.PRERENDER_PORT || 4174)
 const PAGE_TIMEOUT = Number(process.env.PRERENDER_TIMEOUT_MS || 20000)
 const CONCURRENCY = Math.max(1, Number(process.env.PRERENDER_CONCURRENCY || 4))
-// Vercel: static marketing routes only (fast). Full library locally / PRERENDER_FULL=1.
-const SKIP_LIBRARY =
-  process.env.PRERENDER_SKIP_LIBRARY === '1' ||
-  (ON_VERCEL && process.env.PRERENDER_FULL !== '1')
-
-function softOrHardExit(code, message) {
-  if (message) console[code === 0 ? 'log' : 'error'](message)
-  if (code !== 0 && SOFT_FAIL) {
-    console.warn(
-      '\n[prerender] Soft-fail: continuing deploy with SPA-only HTML (no prerendered routes).\n' +
-        'Users still get the full app via client JS. Fix browsers with: npx playwright install chromium\n'
-    )
-    process.exit(0)
-  }
+function failBuild(code, message) {
+  if (message) console.error(message)
   process.exit(code)
 }
 
@@ -108,11 +80,10 @@ async function mapPool(items, limit, worker) {
 
 async function prerender() {
   console.log('\n--- Prerendering ManaTuner ---\n')
-  if (ON_VERCEL) console.log('Environment: Vercel (soft-fail + static routes by default)')
-  if (SOFT_FAIL) console.log('Mode: soft-fail (deploy continues if prerender cannot run)')
+  if (ON_VERCEL) console.log('Environment: Vercel (full, mandatory prerender)')
 
   if (!existsSync(DIST)) {
-    softOrHardExit(1, 'Error: dist/ not found. Run "vite build" first.')
+    failBuild(1, 'Error: dist/ not found. Run "vite build" first.')
   }
 
   const lib = await loadTsModule(LIB_ENTRY)
@@ -124,33 +95,19 @@ async function prerender() {
     routeToOutFile,
   } = lib
 
-  let ROUTES
-  let meta
-  if (SKIP_LIBRARY) {
-    ROUTES = [...STATIC_ROUTES]
-    meta = {
-      staticCount: STATIC_ROUTES.length,
-      articleCount: 0,
-      authorCount: 0,
-      total: STATIC_ROUTES.length,
-    }
-    console.log(
-      `Routes: ${STATIC_ROUTES.length} static only (PRERENDER_SKIP_LIBRARY / Vercel default)`
-    )
-  } else {
-    const articles = await loadSeed()
-    meta = buildPrerenderRoutes(articles)
-    ROUTES = meta.routes
-    console.log(
-      `Routes: ${meta.staticCount} static + ${meta.articleCount} articles + ${meta.authorCount} authors = ${meta.total} total`
-    )
-  }
+  const articles = await loadSeed()
+  const meta = buildPrerenderRoutes(articles)
+  const ROUTES = meta.routes
+  console.log(
+    `Routes: ${meta.staticCount} static + ${meta.articleCount} articles + ${meta.authorCount} authors = ${meta.total} total`
+  )
   console.log(`Concurrency: ${CONCURRENCY} · timeout: ${PAGE_TIMEOUT}ms`)
 
   console.log('Starting preview server...')
   const server = await preview({
     root: ROOT,
-    preview: { port: PORT, host: true, strictPort: true },
+    build: { outDir: DIST },
+    preview: { port: PORT, host: '127.0.0.1', strictPort: true },
   })
   const baseUrl = `http://127.0.0.1:${PORT}`
   console.log(`Preview server running at ${baseUrl}`)
@@ -160,13 +117,20 @@ async function prerender() {
     browser = await launchChromium()
   } catch (err) {
     await new Promise((resolve) => server.httpServer.close(() => resolve()))
-    softOrHardExit(1, `Prerender aborted (no browser): ${err.message}`)
+    failBuild(1, `Prerender aborted (no browser): ${err.message}`)
     return
   }
 
   const context = await browser.newContext({
     userAgent: 'ManaTuner-Prerenderer/1.0',
+    serviceWorkers: 'block',
   })
+
+  // Prerender is deterministic and sends no requests to external services.
+  await context.route('**/*', (route) =>
+    new URL(route.request().url()).origin === baseUrl ? route.continue() : route.abort()
+  )
+  await context.addInitScript(() => localStorage.setItem('manatuner-onboarding-completed', 'true'))
 
   let success = 0
   let failed = 0
@@ -180,13 +144,23 @@ async function prerender() {
 
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: PAGE_TIMEOUT })
       try {
-        await page.waitForSelector('h1, main, [data-testid="analysis-results"], #root h1', {
+        await page.waitForSelector('#root h1', {
           timeout: Math.min(PAGE_TIMEOUT, 12000),
         })
       } catch {
-        // Fall through — still capture HTML
+        throw new Error('Required route has no rendered h1')
       }
-      await page.waitForTimeout(800)
+      await page.waitForFunction(
+        (expected) =>
+          document.querySelector('link[rel="canonical"]')?.getAttribute('href') === expected,
+        `https://www.manatuner.app${route}`,
+        { timeout: PAGE_TIMEOUT }
+      )
+      // Snapshots must not accept edits/clicks that would be discarded on React mount.
+      // Native controls become enabled when React replaces the snapshot with the live app.
+      await page
+        .locator('button,input,textarea,select')
+        .evaluateAll((elements) => elements.forEach((el) => el.setAttribute('disabled', '')))
 
       const html = await page.content()
       const markedHtml = injectPrerenderMarker(html)
@@ -199,7 +173,7 @@ async function prerender() {
 
       const ok = looksPrerendered(markedHtml)
       if (!ok) {
-        console.log(` WEAK (saved, low content signal) -> ${outFile.replace(ROOT + '/', '')}`)
+        throw new Error('Rendered HTML violates content contract')
       } else {
         console.log(` -> ${outFile.replace(ROOT + '/', '')}`)
       }
@@ -212,6 +186,11 @@ async function prerender() {
       await page.close()
     }
   })
+
+  writeFileSync(
+    join(DIST, '404.html'),
+    '<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Page not found — ManaTuner</title><meta name="description" content="This ManaTuner page does not exist."><meta name="robots" content="noindex,follow"></head><body><main><h1>Page not found</h1><p>This page does not exist.</p><a href="/">Back to Home</a><a href="/analyzer">Open Analyzer</a></main></body></html>'
+  )
 
   await browser.close()
   await new Promise((resolve) => {
@@ -226,11 +205,12 @@ async function prerender() {
 
   const staticFailed = failedRoutes.filter((r) => STATIC_ROUTES.includes(r))
   if (staticFailed.length > 0) {
-    softOrHardExit(1, `Critical: static route prerender failed: ${staticFailed.join(', ')}`)
+    failBuild(1, `Critical: static route prerender failed: ${staticFailed.join(', ')}`)
   }
   if (failed > 0) {
-    softOrHardExit(1, `Some routes failed: ${failedRoutes.join(', ')}`)
+    failBuild(1, `Some routes failed: ${failedRoutes.join(', ')}`)
   }
+  await checkHtmlContract(DIST)
 }
 
 async function loadSeed() {
@@ -243,5 +223,5 @@ async function loadSeed() {
 
 prerender().catch((err) => {
   console.error('Prerender failed:', err)
-  softOrHardExit(1, err?.message || String(err))
+  failBuild(1, err?.message || String(err))
 })

@@ -1,0 +1,302 @@
+
+> manatuner@2.7.9 build:vercel
+> node scripts/delivery-gate.mjs
+
+[delivery gate] npm run lint
+
+> manatuner@2.7.9 lint
+> eslint src --ext .ts,.tsx --max-warnings=0
+
+[delivery gate] npm run type-check
+
+> manatuner@2.7.9 type-check
+> tsc --noEmit
+
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+
+ Test Files  78 passed (78)
+      Tests  795 passed (795)
+   Start at  12:49:44
+   Duration  8.56s (transform 3.13s, setup 4.79s, import 18.15s, tests 13.43s, environment 25.45s)
+
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] All candidate checks passed; build may finish.
+✔ every failing check prevents later build/publish readiness (2.000875ms)
+✔ a killed check also blocks readiness (0.375ms)
+✔ successful checks run exactly once and in order (0.413584ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45.409167
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/preuves-corrections/S002/dist
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2514 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+docs/engineering/preuves-corrections/S002/dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+docs/engineering/preuves-corrections/S002/dist/index.html                                    12.74 kB │ gzip:   3.96 kB
+docs/engineering/preuves-corrections/S002/dist/assets/mulliganArchetype.worker-BPK14lCK.js   13.93 kB
+docs/engineering/preuves-corrections/S002/dist/assets/index-qsdYYaTe.css                     16.39 kB │ gzip:   4.16 kB
+docs/engineering/preuves-corrections/S002/dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+docs/engineering/preuves-corrections/S002/dist/assets/FloatingManaSymbols-CGGG-Ofw.js         1.20 kB │ gzip:   0.65 kB
+docs/engineering/preuves-corrections/S002/dist/assets/CardImageTooltip-LYlx5Dl-.js            1.35 kB │ gzip:   0.70 kB
+docs/engineering/preuves-corrections/S002/dist/assets/AuthorPage-CDrxsApo.js                  3.90 kB │ gzip:   1.77 kB
+docs/engineering/preuves-corrections/S002/dist/assets/PrivacySettings-CyM8jmlJ.js             6.08 kB │ gzip:   2.51 kB
+docs/engineering/preuves-corrections/S002/dist/assets/privacy-BEvIw_bJ.js                     7.62 kB │ gzip:   2.90 kB
+docs/engineering/preuves-corrections/S002/dist/assets/ArticleDetailPage-BXJT3Iku.js           7.75 kB │ gzip:   2.93 kB
+docs/engineering/preuves-corrections/S002/dist/assets/EnhancedCharts-DjuTl-F5.js              8.44 kB │ gzip:   2.51 kB
+docs/engineering/preuves-corrections/S002/dist/assets/AnalysisTab-CdWp4gg-.js                 9.30 kB │ gzip:   3.05 kB
+docs/engineering/preuves-corrections/S002/dist/assets/StaticPages-CCnYrOXq.js                12.32 kB │ gzip:   4.40 kB
+docs/engineering/preuves-corrections/S002/dist/assets/EnhancedSpellAnalysis-CS72jKNI.js      12.90 kB │ gzip:   3.83 kB
+docs/engineering/preuves-corrections/S002/dist/assets/useLibraryProgress-CvnXJ5N_.js         13.35 kB │ gzip:   5.27 kB
+docs/engineering/preuves-corrections/S002/dist/assets/LandGlossaryPage-BrNPVwZp.js           13.66 kB │ gzip:   5.06 kB
+docs/engineering/preuves-corrections/S002/dist/assets/ManabaseFullTab-CKX7rtga.js            13.77 kB │ gzip:   4.84 kB
+docs/engineering/preuves-corrections/S002/dist/assets/ManaBlueprint-BmCBVnfZ.js              16.26 kB │ gzip:   5.18 kB
+docs/engineering/preuves-corrections/S002/dist/assets/MyAnalysesPage-DmjUno86.js             19.22 kB │ gzip:   5.80 kB
+docs/engineering/preuves-corrections/S002/dist/assets/MulliganTab-DRNOxwPv.js                25.50 kB │ gzip:   8.53 kB
+docs/engineering/preuves-corrections/S002/dist/assets/MathematicsPage-CplLCVQW.js            26.38 kB │ gzip:   7.53 kB
+docs/engineering/preuves-corrections/S002/dist/assets/GuidePage-XdbY2HWV.js                  26.63 kB │ gzip:   8.41 kB
+docs/engineering/preuves-corrections/S002/dist/assets/ReferenceArticlesPage-CXpp8MeA.js      28.17 kB │ gzip:   8.37 kB
+docs/engineering/preuves-corrections/S002/dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+docs/engineering/preuves-corrections/S002/dist/assets/vendor-mui-icons-CXd-WJEu.js           37.33 kB │ gzip:  11.34 kB
+docs/engineering/preuves-corrections/S002/dist/assets/PaymentPolicyPanel-CQ8ve-G3.js         44.15 kB │ gzip:   6.35 kB
+docs/engineering/preuves-corrections/S002/dist/assets/vendor-redux-Bc1t3V2X.js               46.95 kB │ gzip:  15.76 kB
+docs/engineering/preuves-corrections/S002/dist/assets/CastabilityTab-NLHK7EaM.js             70.37 kB │ gzip:  18.73 kB
+docs/engineering/preuves-corrections/S002/dist/assets/Onboarding-BYzdDrPn.js                101.80 kB │ gzip:  31.58 kB
+docs/engineering/preuves-corrections/S002/dist/assets/AnalyzerPage-Dzf_89oS.js              134.11 kB │ gzip:  37.18 kB
+docs/engineering/preuves-corrections/S002/dist/assets/index.es-DmCRpKFg.js                  157.96 kB │ gzip:  52.59 kB
+docs/engineering/preuves-corrections/S002/dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+docs/engineering/preuves-corrections/S002/dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+docs/engineering/preuves-corrections/S002/dist/assets/index-CJwtl9pP.js                     205.74 kB │ gzip:  58.57 kB
+docs/engineering/preuves-corrections/S002/dist/assets/vendor-mui-CPNqbaNh.js                370.11 kB │ gzip: 111.38 kB
+docs/engineering/preuves-corrections/S002/dist/assets/jspdf.es.min-yZ0BRC5e.js              385.89 kB │ gzip: 124.85 kB
+docs/engineering/preuves-corrections/S002/dist/assets/vendor-charts-DRj6zYwE.js             419.29 kB │ gzip: 112.37 kB
+✓ built in 2.80s
+[delivery gate] node scripts/check-bundle-budget.mjs
+Bundle budget check (QW3)
+     409.5 KB  vendor-charts-DRj6zYwE.js
+     376.8 KB  jspdf.es.min-yZ0BRC5e.js
+     361.4 KB  vendor-mui-CPNqbaNh.js
+     200.9 KB  index-CJwtl9pP.js
+     195.8 KB  html2canvas.esm-DmLBsbfV.js
+     187.5 KB  vendor-react-YPwVjS-F.js
+     154.3 KB  index.es-DmCRpKFg.js
+     131.0 KB  AnalyzerPage-Dzf_89oS.js
+      99.4 KB  Onboarding-BYzdDrPn.js
+      68.7 KB  CastabilityTab-NLHK7EaM.js
+      45.9 KB  vendor-redux-Bc1t3V2X.js
+      43.1 KB  PaymentPolicyPanel-CQ8ve-G3.js
+      36.5 KB  vendor-mui-icons-CXd-WJEu.js
+      28.0 KB  purify.es-Ktofpjop.js
+      27.5 KB  ReferenceArticlesPage-CXpp8MeA.js
+
+OK — all budgets within limits
+[delivery gate] npm audit --audit-level=high
+found 0 vulnerabilities
+[delivery gate] node scripts/prerender.mjs
+
+--- Prerendering ManaTuner ---
+
+Routes: 9 static + 65 articles + 27 authors = 101 total
+Concurrency: 4 · timeout: 20000ms
+Starting preview server...
+Preview server running at http://127.0.0.1:4174
+  Rendering / ...  Rendering /guide ...  Rendering /mathematics ...  Rendering /analyzer ... -> docs/engineering/preuves-corrections/S002/dist/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/mathematics/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/guide/index.html
+  Rendering /privacy ...  Rendering /land-glossary ...  Rendering /about ... -> docs/engineering/preuves-corrections/S002/dist/analyzer/index.html
+  Rendering /library ... -> docs/engineering/preuves-corrections/S002/dist/privacy/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/land-glossary/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/about/index.html
+  Rendering /my-analyses ...  Rendering /library/reid-duke-level-one-building-a-deck ...  Rendering /library/karsten-how-many-lands-2022 ... -> docs/engineering/preuves-corrections/S002/dist/my-analyses/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-building-a-deck/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/karsten-how-many-lands-2022/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/index.html
+  Rendering /library/kuisma-beat-bad-luck ...  Rendering /library/chapin-art-of-mulligan ...  Rendering /library/saito-part-2-having-fun ...  Rendering /library/reid-duke-level-one-mulligans ... -> docs/engineering/preuves-corrections/S002/dist/library/kuisma-beat-bad-luck/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/chapin-art-of-mulligan/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-2-having-fun/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-mulligans/index.html
+  Rendering /library/reid-duke-level-one-sequencing ...  Rendering /library/pvddr-6-heuristics ...  Rendering /library/manfield-prepare-tournament ...  Rendering /library/reid-duke-level-one-sideboarding ... -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-6-heuristics/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-sequencing/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/manfield-prepare-tournament/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-sideboarding/index.html
+  Rendering /library/reid-duke-level-one-sideboard-plans ...  Rendering /library/reid-duke-mulligans-part-iii-constructed ...  Rendering /library/pvddr-one-mistake-archive ...  Rendering /library/fortier-ladder-series ... -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-sideboard-plans/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-mulligans-part-iii-constructed/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-one-mistake-archive/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/fortier-ladder-series/index.html
+  Rendering /library/pvddr-when-to-mulligan ...  Rendering /library/zvi-using-time-wisely ...  Rendering /library/saito-part-1-concentration ...  Rendering /library/fortier-dash-method ... -> docs/engineering/preuves-corrections/S002/dist/library/zvi-using-time-wisely/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-when-to-mulligan/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-1-concentration/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/fortier-dash-method/index.html
+  Rendering /library/dagen-puzzling-improvements ...  Rendering /library/moudou-game-theory-series ...  Rendering /library/chapin-61-cards-russian-roulette ...  Rendering /library/yahi-maths-inventory ... -> docs/engineering/preuves-corrections/S002/dist/library/moudou-game-theory-series/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/dagen-puzzling-improvements/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/chapin-61-cards-russian-roulette/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/yahi-maths-inventory/index.html
+  Rendering /library/pvddr-best-vs-known ...  Rendering /library/chapin-information-cascades ...  Rendering /library/zvi-elephant-method ...  Rendering /library/saito-part-3-environment ... -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-best-vs-known/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/chapin-information-cascades/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/zvi-elephant-method/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-3-environment/index.html
+  Rendering /library/saito-part-4-metagame ...  Rendering /library/saito-part-7-other-lessons ...  Rendering /library/saito-part-5-connections ...  Rendering /library/pvddr-pv-rule ... -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-4-metagame/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-7-other-lessons/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/saito-part-5-connections/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-pv-rule/index.html
+  Rendering /library/karsten-colored-sources-2022 ...  Rendering /library/karsten-hypergeometric-intro ...  Rendering /library/karsten-colored-sources-2018-archive ...  Rendering /library/karsten-commander-manabase ... -> docs/engineering/preuves-corrections/S002/dist/library/karsten-colored-sources-2022/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/karsten-hypergeometric-intro/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/karsten-colored-sources-2018-archive/index.html
+  Rendering /library/wizards-commander-brackets-2024 ...  Rendering /library/command-zone-podcast ... -> docs/engineering/preuves-corrections/S002/dist/library/karsten-commander-manabase/index.html
+  Rendering /library/game-knights-command-zone-studios ...  Rendering /library/edhrec-articles-hub ... -> docs/engineering/preuves-corrections/S002/dist/library/wizards-commander-brackets-2024/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/game-knights-command-zone-studios/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/command-zone-podcast/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/edhrec-articles-hub/index.html
+  Rendering /library/seventeen-lands-blog ...  Rendering /library/limited-resources-podcast ...  Rendering /library/lsv-draft-signals-classic ...  Rendering /library/reid-duke-signals-booster-draft ... -> docs/engineering/preuves-corrections/S002/dist/library/seventeen-lands-blog/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/limited-resources-podcast/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/lsv-draft-signals-classic/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-signals-booster-draft/index.html
+  Rendering /library/reid-duke-sideboarding-limited ...  Rendering /library/reid-duke-mulligans-part-ii-limited ...  Rendering /library/chapin-next-level-deckbuilding ...  Rendering /library/reid-duke-level-one-role-assignment ... -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-sideboarding-limited/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-mulligans-part-ii-limited/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/chapin-next-level-deckbuilding/index.html
+  Rendering /library/reid-duke-level-one-play-or-draw ... -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-role-assignment/index.html
+  Rendering /library/chapin-next-level-magic-tempo ...  Rendering /library/reid-duke-level-one-full-course ...  Rendering /library/zvi-whos-the-beatdown-2-multitasking ... -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-play-or-draw/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/chapin-next-level-magic-tempo/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/reid-duke-level-one-full-course/index.html
+  Rendering /library/pvddr-ten-commandments ... -> docs/engineering/preuves-corrections/S002/dist/library/zvi-whos-the-beatdown-2-multitasking/index.html
+  Rendering /library/flores-whos-the-beatdown ...  Rendering /library/karsten-london-mulligan ...  Rendering /library/lsv-mulligans ... -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-ten-commandments/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/flores-whos-the-beatdown/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/karsten-london-mulligan/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/lsv-mulligans/index.html
+  Rendering /library/pvddr-how-to-sideboard ...  Rendering /library/wizards-banned-restricted ...  Rendering /library/boa-mtgo-getting-started ...  Rendering /library/depraz-mtgo-stops ... -> docs/engineering/preuves-corrections/S002/dist/library/pvddr-how-to-sideboard/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/wizards-banned-restricted/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/boa-mtgo-getting-started/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/depraz-mtgo-stops/index.html
+  Rendering /library/battle-chads-mtg-study-win-rates ...  Rendering /library/pcm-15-avoir-un-plan ...  Rendering /library/pcm-67-coherence-depraz ...  Rendering /library/pcm-92-tourner-cartes ... -> docs/engineering/preuves-corrections/S002/dist/library/battle-chads-mtg-study-win-rates/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pcm-15-avoir-un-plan/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pcm-67-coherence-depraz/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pcm-92-tourner-cartes/index.html
+  Rendering /library/pcm-125-heuristiques ...  Rendering /library/pcm-164-erwan-control ...  Rendering /library/lsv-looter-problem-lost ...  Rendering /library/author/reid-duke ... -> docs/engineering/preuves-corrections/S002/dist/library/pcm-164-erwan-control/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/pcm-125-heuristiques/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/lsv-looter-problem-lost/index.html
+  Rendering /library/author/frank-karsten ...  Rendering /library/author/matti-kuisma ...  Rendering /library/author/patrick-chapin ... -> docs/engineering/preuves-corrections/S002/dist/library/author/reid-duke/index.html
+  Rendering /library/author/tomoharu-saito ... -> docs/engineering/preuves-corrections/S002/dist/library/author/matti-kuisma/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/frank-karsten/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/patrick-chapin/index.html
+  Rendering /library/author/paulo-vitor-damo-da-rosa ...  Rendering /library/author/seth-manfield ...  Rendering /library/author/remi-fortier ... -> docs/engineering/preuves-corrections/S002/dist/library/author/tomoharu-saito/index.html
+  Rendering /library/author/zvi-mowshowitz ... -> docs/engineering/preuves-corrections/S002/dist/library/author/paulo-vitor-damo-da-rosa/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/seth-manfield/index.html
+  Rendering /library/author/pierre-dagen ... -> docs/engineering/preuves-corrections/S002/dist/library/author/remi-fortier/index.html
+  Rendering /library/author/moudou ... -> docs/engineering/preuves-corrections/S002/dist/library/author/zvi-mowshowitz/index.html
+  Rendering /library/author/anael-yahi ...  Rendering /library/author/gavin-verhey-wizards-of-the-coast ... -> docs/engineering/preuves-corrections/S002/dist/library/author/pierre-dagen/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/moudou/index.html
+  Rendering /library/author/jimmy-wong-josh-lee-kwai ... -> docs/engineering/preuves-corrections/S002/dist/library/author/anael-yahi/index.html
+  Rendering /library/author/josh-lee-kwai-jimmy-wong ...  Rendering /library/author/edhrec-staff-contributors ... -> docs/engineering/preuves-corrections/S002/dist/library/author/gavin-verhey-wizards-of-the-coast/index.html
+  Rendering /library/author/marshall-sutcliffe-luis-scott-vargas ... -> docs/engineering/preuves-corrections/S002/dist/library/author/jimmy-wong-josh-lee-kwai/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/josh-lee-kwai-jimmy-wong/index.html
+  Rendering /library/author/17lands-team ... -> docs/engineering/preuves-corrections/S002/dist/library/author/edhrec-staff-contributors/index.html
+  Rendering /library/author/luis-scott-vargas ...  Rendering /library/author/mike-flores ... -> docs/engineering/preuves-corrections/S002/dist/library/author/marshall-sutcliffe-luis-scott-vargas/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/17lands-team/index.html
+  Rendering /library/author/wizards-of-the-coast ...  Rendering /library/author/el-gran-boa ... -> docs/engineering/preuves-corrections/S002/dist/library/author/luis-scott-vargas/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/mike-flores/index.html
+  Rendering /library/author/jean-emmanuel-depraz ... -> docs/engineering/preuves-corrections/S002/dist/library/author/wizards-of-the-coast/index.html
+  Rendering /library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi ...  Rendering /library/author/charles-wickham-theau-mery ... -> docs/engineering/preuves-corrections/S002/dist/library/author/el-gran-boa/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/jean-emmanuel-depraz/index.html
+  Rendering /library/author/charles-wickham-theau-mery-jean-emmanuel-depraz ... -> docs/engineering/preuves-corrections/S002/dist/library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi/index.html
+  Rendering /library/author/theau-mery-erwan-maisonneuve ... -> docs/engineering/preuves-corrections/S002/dist/library/author/charles-wickham-theau-mery/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/charles-wickham-theau-mery-jean-emmanuel-depraz/index.html
+ -> docs/engineering/preuves-corrections/S002/dist/library/author/theau-mery-erwan-maisonneuve/index.html
+
+Prerender complete: 101 succeeded, 0 failed
+---
+
+HTML contract passed: 101 public routes, unique metadata, local assets and noindex 404. Vercel serves unmatched static paths with 404.html; local preview is not evidence of deployed routing.
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[WebServer] (node:49118) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 16 tests using 1 worker
+
+(node:49119) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:28:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear
+[2/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:38:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear
+[3/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:51:7 › Accessibility smoke (EN) › Analyzer with fixed card metadata — no critical/serious axe
+[4/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:71:7 › Accessibility smoke (EN) › Analyzer navigation is unique in the active desktop or mobile menu
+[5/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:87:7 › Accessibility smoke (EN) › Keyboard: tab reaches primary actions on home
+[6/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:98:7 › Accessibility smoke (EN) › Footer contrast text is readable (grey.800 / grey.300)
+[7/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:111:7 › Accessibility smoke (EN) › Home hero shows product preview (P2-2)
+[8/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:117:7 › Accessibility smoke (EN) › Analyzer primary buttons use text + icons (no emoji-only)
+[9/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:127:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11)
+[10/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[11/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[12/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[13/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[14/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:4:5 › initial HTTP content, 404, asset and direct analyzer reload
+[15/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:40:5 › direct analyzer query and reload mount the candidate chunks
+[16/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:50:5 › contrast checker detects a real footer regression
+  16 passed (18.9s)
+[delivery gate] All candidate checks passed; build may finish.

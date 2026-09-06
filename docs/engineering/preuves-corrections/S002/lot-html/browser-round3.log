@@ -1,0 +1,27 @@
+[WebServer] (node:48163) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 16 tests using 1 worker
+
+(node:48167) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:23:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear
+[2/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:33:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear
+[3/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:44:7 › Accessibility smoke (EN) › Analyzer with fixed card metadata — no critical/serious axe
+[4/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:57:7 › Accessibility smoke (EN) › Analyzer navigation is unique in the active desktop or mobile menu
+[5/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:71:7 › Accessibility smoke (EN) › Keyboard: tab reaches primary actions on home
+[6/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:82:7 › Accessibility smoke (EN) › Footer contrast text is readable (grey.800 / grey.300)
+[7/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:92:7 › Accessibility smoke (EN) › Home hero shows product preview (P2-2)
+[8/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:98:7 › Accessibility smoke (EN) › Analyzer primary buttons use text + icons (no emoji-only)
+[9/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:108:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11)
+[10/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[11/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[12/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[13/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[14/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:4:5 › initial HTTP content, 404, asset and direct analyzer reload
+[15/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:30:5 › direct analyzer query and reload mount the candidate chunks
+[16/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:40:5 › contrast checker detects a real footer regression
+  16 passed (18.7s)

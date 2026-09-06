@@ -1,0 +1,10 @@
+
+Running 2 tests using 1 worker
+
+(node:45422) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/2] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+[2/2] [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+  2 passed (4.3s)

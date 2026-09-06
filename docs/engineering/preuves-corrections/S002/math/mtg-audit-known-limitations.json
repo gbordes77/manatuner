@@ -1,0 +1,58 @@
+[
+  {
+    "id": "M01",
+    "actual": 0.9555555555555555,
+    "expected": 0.9555555555555556,
+    "delta": -1.1102230246251565e-16,
+    "status": "PASS"
+  },
+  {
+    "id": "M02",
+    "actual": 0,
+    "expected": 0,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "id": "M03",
+    "actual": 0.978385472740882,
+    "expected": 0.9783854727408821,
+    "delta": -1.1102230246251565e-16,
+    "status": "PASS"
+  },
+  {
+    "id": "M04",
+    "actual": 0.4666666666666666,
+    "expected": 0.4666666666666667,
+    "delta": -5.551115123125783e-17,
+    "status": "PASS"
+  },
+  {
+    "id": "M05",
+    "actual": 0.4666666666666667,
+    "expected": 0.4666666666666667,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "id": "M06",
+    "actual": 0.4083333333333333,
+    "expected": 0.4083333333333333,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "id": "M07",
+    "actual": 0,
+    "expected": 0,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "id": "M08",
+    "actual": 0.9783854727408823,
+    "expected": 0.9783854727408821,
+    "delta": 2.220446049250313e-16,
+    "status": "PASS"
+  }
+]

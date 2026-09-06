@@ -1,0 +1,39 @@
+
+Running 2 tests using 1 worker
+
+(node:45042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/2] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+[2/2] [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+  1) [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 5
+    Received: 1
+
+      54 |   expect(expectedPages).toBeGreaterThan(1)
+      55 |   const pageCount = [...downloads.pdf.toString('latin1').matchAll(/\/Type \/Page\b/g)].length
+    > 56 |   expect(pageCount).toBe(expectedPages)
+         |                     ^
+      57 |   await page.screenshot({ path: testInfo.outputPath('blueprint-display.png'), fullPage: true })
+      58 | })
+      59 |
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/final-audit.spec.js:56:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/exports-red/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/exports-red/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/exports-red/core-flows-final-audit-V05-617f2-in-the-whole-tall-blueprint-chromium/error-context.md
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint 
+  1 passed (4.7s)

@@ -1,0 +1,6 @@
+Static semantic regression probe on HEAD c8bdb8f; corrected working tree is read separately.
+Expected: no known false promises in public source.
+pages/HomePage.tsx: HEAD FAIL (audited false promise present); current PASS
+pages/AnalyzerPage.tsx: HEAD FAIL (audited false promise present); current PASS
+pages/GuidePage.tsx: HEAD FAIL (audited false promise present); current PASS
+components/analyzer/MulliganTab.tsx: HEAD FAIL (audited false promise present); current PASS

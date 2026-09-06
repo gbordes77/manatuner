@@ -1,0 +1,28 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+·····stdout | tests/math-audit/pathways.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | tests/math-audit/independent.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | tests/math-audit/known-limitations.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+········stdout | tests/math-audit/independent.test.ts > Independent exact and exhaustive validation > enumerates all subsets for every population N=0..10
+EXHAUSTIVE {"checked":2431,"maxError":1.7763568394002505e-15}
+
+·······················stdout | tests/math-audit/independent.test.ts > Independent exact and exhaustive validation > compares one million production shuffles to exact hypergeometric, with an independent sampler
+MONTE_CARLO {"count":1000000,"seed":20260905,"expected":0.3333333333333333,"production":0.333285,"independent":0.333345,"se":0.0004714045207910317,"margin95":0.0009239528607504221}
+
+·············
+
+ Test Files  4 passed (4)
+      Tests  49 passed (49)
+   Start at  12:47:15
+   Duration  752ms (transform 362ms, setup 117ms, import 488ms, tests 360ms, environment 746ms)
+

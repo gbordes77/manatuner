@@ -30,7 +30,7 @@ function compare(id: string, actual: number, expected: number) {
   expect(actual).toBeCloseTo(expected, 10)
 }
 afterAll(() =>
-  writeFileSync('/tmp/mtg-audit-known-limitations.json', JSON.stringify(rows, null, 2))
+  writeFileSync(`${process.env.MANATUNER_MATH_EVIDENCE_DIR || '/tmp'}/mtg-audit-known-limitations.json`, JSON.stringify(rows, null, 2))
 )
 finding('M01: min of marginal color probabilities overstates joint WU', () => {
   const cards = [['W'], ['W'], ['U'], ['U'], [], [], [], [], [], []]

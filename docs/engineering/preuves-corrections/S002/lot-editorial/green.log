@@ -1,0 +1,21 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 54 consistently 1ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 55 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 69 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 70 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 84 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 85 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > labels the shared boundary 100 consistently 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > keeps public AI references aligned with model and privacy contracts 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > uses one score definition for verdict, history and export 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > does not teach the audited false on-curve, exact-ramp or commander promises 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > explains seven-card redraw and bottoming, separately from deck Health Score 0ms
+ ✓ src/utils/__tests__/editorialContract.test.js > F10 editorial contracts > derives reference counts and keeps the advertised tab count equal to accessible tabs 1ms
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  12:55:18
+   Duration  278ms (transform 42ms, setup 23ms, import 43ms, tests 3ms, environment 140ms)
+

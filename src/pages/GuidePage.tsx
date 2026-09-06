@@ -23,6 +23,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
+import { HEALTH_SCORE_BANDS } from '../utils/healthScore'
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SEO } from '../components/common/SEO'
@@ -67,7 +68,7 @@ export const GuidePage: React.FC = () => {
       icon: <ShowChartIcon sx={{ fontSize: 32 }} />,
       title: 'Castability',
       description:
-        'Exact probability of casting each spell on curve, turn by turn. This is the first tab you see after analysis.',
+        'Model-based castability by turn. The default is an estimate; exact modes state their supported scope. This is the first tab you see after analysis.',
       color: '#2196f3',
       badge: 'Core Feature',
     },
@@ -103,13 +104,13 @@ export const GuidePage: React.FC = () => {
 
   const mathFoundations = [
     {
-      title: 'Exact Math',
+      title: 'Draw Math',
       formula: 'P(X≥k)',
-      desc: 'Your real chance of casting each spell on curve',
+      desc: 'Chance of drawing the required number of sources under the draw model',
       color: '#e3f2fd',
       borderColor: '#1976d2',
       details:
-        'Hypergeometric distribution — the exact odds of drawing the right mana from your deck',
+        'Hypergeometric distribution — exact draws under sampling without replacement; casting adds model assumptions',
     },
     {
       title: 'Karsten Standards',
@@ -138,10 +139,10 @@ export const GuidePage: React.FC = () => {
     {
       title: 'Health Score',
       formula: '0-100',
-      desc: 'One number that tells you if your manabase is tournament-ready',
+      desc: 'Heuristic average of turn-two access to each required color or hybrid group',
       color: '#e0f7fa',
       borderColor: '#00bcd4',
-      details: '85%+ excellent | 70-84% good | 55-69% needs work | below 55% rebuild',
+      details: HEALTH_SCORE_BANDS,
     },
     {
       title: 'Archetype Weights',
@@ -170,7 +171,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What makes ManaTuner different?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: "The only tool combining Frank Karsten's exact hypergeometric calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.",
+                    text: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.",
                   },
                 },
                 {
@@ -202,7 +203,7 @@ export const GuidePage: React.FC = () => {
                   name: 'Is my deck data saved anywhere?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: "No. ManaTuner is 100% local. Your decks are saved in your browser's localStorage only. We never see your decklists.",
+                    text: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
                   },
                 },
                 {
@@ -210,7 +211,7 @@ export const GuidePage: React.FC = () => {
                   name: 'How many lands should I run in an aggro MTG deck?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Aggro decks typically run 18-22 lands. The exact number depends on your curve peak and how many sub-2-mana plays you have. Paste your list into ManaTuner — the Health Score will tell you if you are land-light.',
+                    text: 'Aggro decks typically run 18-22 lands. The exact number depends on your curve peak and how many sub-2-mana plays you have. Paste your list into ManaTuner — inspect the land ratio and land-drop probabilities alongside the heuristic Health Score.',
                   },
                 },
                 {
@@ -218,7 +219,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What is the hypergeometric distribution and why does it apply to MTG?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'The hypergeometric distribution calculates the probability of drawing k successes from a finite deck without replacement. In MTG terms: given a 60-card deck with K colored sources, what is the probability of having ≥1 in your opening 7 plus draws? This is the exact math ManaTuner uses for every castability figure.',
+                    text: 'The hypergeometric distribution calculates the probability of drawing k successes from a finite deck without replacement. In MTG terms: given a 60-card deck with K colored sources, what is the probability of having ≥1 in your opening 7 plus draws? This draw distribution is exact. Default castability is an aggregate estimate; exact modes apply only to their stated supported resource and sequencing model.',
                   },
                 },
                 {
@@ -226,7 +227,7 @@ export const GuidePage: React.FC = () => {
                   name: 'How many sources do I need for a turn-2 double-colored spell like Counterspell?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Per Frank Karsten 2022, you need approximately 20 sources of that color in a 60-card deck to cast a UU spell on turn 2 with 90% reliability (including mulligans). ManaTuner recalculates this exactly for your specific decklist.',
+                    text: 'Per Frank Karsten 2022, you need approximately 20 sources of that color in a 60-card deck to cast a UU spell on turn 2 with 90% reliability (including mulligans). ManaTuner compares your sources with scaled reference targets; its default castability estimate answers a different, no-mulligan question.',
                   },
                 },
                 {
@@ -267,19 +268,19 @@ export const GuidePage: React.FC = () => {
                   '@type': 'HowToStep',
                   position: 2,
                   name: 'Read your Health Score',
-                  text: 'After Analyze, the Health Score (0–100%) sits above the result tabs with a plain-English verdict. Above 85% = strong. Between 70 and 85% = solid with room to improve. Below 70% = rebuild manabase priorities.',
+                  text: 'After Analyze, the Health Score (0–100%) sits above the result tabs with a plain-English verdict. Bands in every format: 85+ Excellent, 70–84 Good, 55–69 Average, below 55 Needs work. It is a heuristic color-access score, not the proportion of spells cast on curve.',
                 },
                 {
                   '@type': 'HowToStep',
                   position: 3,
                   name: 'Check Castability per spell',
-                  text: 'The Castability tab shows exact probabilities (P1 Play First, P2 Draw First, Realistic with ramp) turn by turn for every spell in the deck. Anything below 90% on curve is a weak spot.',
+                  text: 'The Castability tab opens in Estimate mode. P1 and P2 distinguish play and draw. Exact modes enumerate only their represented model; unsupported cases are flagged. Ramp estimates and gameplay outcomes are not generally exact.',
                 },
                 {
                   '@type': 'HowToStep',
                   position: 4,
                   name: 'Run the Monte Carlo mulligan',
-                  text: 'The Mulligan tab simulates 10,000 opening hands with the Bellman equation to tell you the exact keep/mulligan threshold for your deck and archetype.',
+                  text: 'The Mulligan tab simulates 10,000 opening hands with the Bellman equation to tell you a sampled-model keep/mulligan threshold for your deck and archetype.',
                 },
                 {
                   '@type': 'HowToStep',
@@ -562,7 +563,7 @@ export const GuidePage: React.FC = () => {
                 },
                 {
                   text: 'Calculate probabilities using hypergeometric formulas',
-                  sub: 'Exact results, not approximations',
+                  sub: 'Default estimates; exact modes show their limits',
                 },
               ].map((item, i) => (
                 <ListItem key={i}>
@@ -903,11 +904,11 @@ export const GuidePage: React.FC = () => {
               </Typography>
               <List dense sx={{ pl: 0 }}>
                 {[
-                  'Command zone: detected via *CMDR*, a Commander section, or the first non-land on a 99–100 list. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
+                  'Command zone: identified only via *CMDR* or an explicit Commander section. Unmarked lists have no inferred commander. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
                   'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
                   'Castability priority horizon is T4–T8 in Commander mode (CMC 4–8 listed after the commander). Early rocks/dorks still appear below.',
                   'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
-                  'Partners, Backgrounds, and "one of two commanders" decks should be entered as a single commander line (or two lines under Commander:).',
+                  'Partners or Backgrounds must be entered on separate lines under Commander:. Their payment results are separate; multiplayer rules and commander tax are outside the model.',
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
                     <ListItemIcon sx={{ minWidth: 30 }}>
@@ -1032,7 +1033,7 @@ export const GuidePage: React.FC = () => {
         {[
           {
             q: 'What makes ManaTuner different?',
-            a: "The only tool combining Frank Karsten's exact hypergeometric calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.",
+            a: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.",
           },
           {
             q: 'What do Best Case and Realistic mean in Castability?',
@@ -1048,7 +1049,7 @@ export const GuidePage: React.FC = () => {
           },
           {
             q: 'Is my deck data saved anywhere?',
-            a: "No. ManaTuner is 100% local. Your decks are saved in your browser's localStorage only. We never see your decklists.",
+            a: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
           },
         ].map((faq, index) => (
           <Accordion

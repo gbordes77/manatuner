@@ -1,78 +1,35 @@
 # ManaTuner
 
-> Free, open-source MTG mana base calculator. The only tool that includes mana rocks and dorks in probability calculations — not just lands.
+> Free, open-source MTG mana-base calculator with model-based castability estimates, mana acceleration support, and a curated competitive library.
 
-ManaTuner helps Magic: The Gathering players optimize their deck's mana base using rigorous mathematics: hypergeometric distribution, Monte Carlo simulation (10,000 hands), and Bellman equation for optimal mulligan decisions.
+## Product contracts
 
-## Key Features
+- **Health Score**: heuristic average of turn-two access to each required fixed color or hybrid alternative group. It is not the percentage of spells cast on curve, a win probability, or a tournament-readiness certification. Shared bands: 85+ Excellent, 70–84 Good, 55–69 Average, below 55 Needs work.
+- **Castability**: the default is an estimate. Exact modes enumerate only their stated supported resource and sequencing model; unsupported cases or exhausted work budgets do not produce an exact probability. Ramp estimates are not generally exact.
+- **Mulligan**: defaults to 10,000 samples per kept-hand size, configurable to 50,000. London redraws seven, then bottoms cards after keeping. The model stops at four cards, uses heuristic bottoming and hand quality, and offers a free first mulligan in multiplayer mode. Bellman recursion optimizes the sampled reward model, not win rate.
+- **Deck input**: supports explicit Deck, Sideboard and Commander sections, inline SB prefixes and supported export syntax. Blank-line separation is a legacy heuristic with warnings. Maybeboard and Companion are excluded from analysis. Commander identification requires an explicit marker or section.
+- **Results**: Castability, Analysis, Mulligan, Manabase and Blueprint. Export PNG, PDF or JSON; compare saved analyses and explore post-board swaps.
+- **Library**: curated articles, podcasts, videos and references. The live count is derived from the library data; lost and archived resources are labeled.
 
-- **Castability Analysis**: Exact per-spell cast probability including mana rocks and dorks, turn by turn
-- **Post-Board Analysis**: Sideboard auto-detected from any format (blank line, MTGA, explicit markers); swap cards in/out to see post-board castability
-- **Creature-Aware Sources**: Lands like Cavern of Souls correctly count as colored sources only for creature spells
-- **Mana Acceleration**: Detects 13 ramp types (dorks, rocks, rituals, land auras, land ramp, doublers, landfall, enhancers, and more)
-- **Monte Carlo Mulligan**: 10,000-hand simulation with optimal keep/mulligan thresholds (Bellman equation)
-- **Analysis Dashboard**: Visual breakdown of spells by category, curve insights, performance diagnostics
-- **Land Breakdown**: Complete breakdown of your lands (basics, duals, fetches, utility)
-- **Export Blueprint**: Download analysis as PNG, PDF, or JSON
+## Privacy and storage
 
-## What Makes It Different
+Calculations and saved analyses stay in this browser. No account is required. Card lookups send names or identifiers to Scryfall; images, fonts and hosting use external services that receive connection metadata. A collection of looked-up names can reveal much of a deck. This is not a promise of zero transmission.
 
-Unlike other MTG calculators (manabase.app, mtgoncurve), ManaTuner:
-- Factors in **mana rocks and mana dorks** as acceleration sources (K=3 engine), not just lands
-- Distinguishes **creature-only mana lands** (Cavern of Souls) from universal sources
-- Auto-detects **sideboard** from any paste format for post-board castability analysis
-- Uses **Bellman equation** for mathematically optimal mulligan thresholds
-- Runs **Monte Carlo simulation** with 10,000 hands (configurable up to 50,000)
-- Is **100% local**: no account, no tracking, no data sent to servers
-- Is **free and open source** under MIT License
+Sentry initializes only in a production build with a configured DSN. The privacy page shows the build's monitoring condition; this static document does not certify deployed settings. Legal requirements, redaction and actual payloads must be reviewed before activation.
 
-## Mathematics
-
-Based on Frank Karsten's research ("How Many Sources Do You Need to Consistently Cast Your Spells?"), extended with:
-- Hypergeometric distribution for exact draw probabilities
-- Monte Carlo simulation for mulligan strategy validation
-- Bellman equation (optimal stopping theory) for keep/mulligan decision thresholds
-- Fisher-Yates shuffle for unbiased hand generation
+Reset requests local deletion; IndexedDB cleanup is asynchronous and best effort. Reload to release memory caches. Shared links, exported files, browser history and third-party logs are not revoked or erased by Reset. See the privacy policy for details.
 
 ## Pages
 
-- [Home](https://www.manatuner.app/): Landing page with feature overview
-- [Deck Analyzer](https://www.manatuner.app/analyzer): Paste your decklist and analyze
-- [Library](https://www.manatuner.app/library): 54 curated competitive MTG resources — articles, podcasts, videos, and references (Karsten, PVDDR, Reid Duke, Saito, Chapin, Zvi Mowshowitz)
-- [User Guide](https://www.manatuner.app/guide): How to use ManaTuner step by step
-- [Mathematics](https://www.manatuner.app/mathematics): The math behind the calculations
-- [Land Glossary](https://www.manatuner.app/land-glossary): Every MTG dual land type ranked
-- [About](https://www.manatuner.app/about): Mission, credits, and attributions
+- [Home](https://www.manatuner.app/)
+- [Analyzer](https://www.manatuner.app/analyzer)
+- [Library](https://www.manatuner.app/library)
+- [Guide](https://www.manatuner.app/guide)
+- [Mathematics and model limits](https://www.manatuner.app/mathematics)
+- [Privacy and data flows](https://www.manatuner.app/privacy)
+- [Complete reference](https://www.manatuner.app/llms-full.txt)
 
-## Unique Capabilities
+## Project
 
-- **Only MTG mana calculator that factors in mana rocks and mana dorks** as acceleration sources. Competitors (manabase.app, mtgoncurve) only count lands.
-- **K=3 engine**: evaluates up to 3 simultaneous mana producers online (dork + rock + enhancer). No other public tool does this.
-- **Bellman equation mulligan thresholds**: backward-induction optimal keep/mulligan by hand size (7, 6, 5, 4). Published MTG theory applied to software.
-- **Creature-aware colored sources**: Cavern of Souls correctly counts only for creature spells, not for non-creature spells.
-- **Smart sideboard detection**: auto-splits mainboard/sideboard from MTGA blank-line format, explicit markers, or inline `SB:` prefixes.
-- **100% client-side**: zero backend, zero tracker, zero account. Decklists never leave the browser.
-
-## Common Questions
-
-**How many lands should I run in my MTG deck?**
-It depends on your mana curve and color requirements. Aggro decks typically need 18-22 lands, midrange 22-26, and control 26-28. ManaTuner calculates the exact number based on your specific decklist using hypergeometric probability.
-
-**Does ManaTuner work for Commander/EDH?**
-ManaTuner analyzes any deck format. For Commander (99-card singleton), the probability calculations adapt automatically to the larger deck size.
-
-**How does ManaTuner handle Cavern of Souls?**
-Cavern of Souls produces colored mana only for creature spells. ManaTuner detects this: Cavern counts as a colored source for creatures (Doomsday Excruciator) but not for non-creatures (Bitter Triumph, Duress).
-
-**Can I paste a decklist with sideboard?**
-Yes. ManaTuner auto-detects the sideboard from any format: explicit "Sideboard" marker, blank line separation (MTGA export), or "SB:" prefix. Just paste the full 75 cards.
-
-**When should I mulligan?**
-ManaTuner's Monte Carlo simulator runs 10,000 sample hands and uses the Bellman equation to calculate optimal keep/mulligan thresholds for your specific deck. It tells you the exact hand quality score below which you should mulligan.
-
-## Technical Details
-
-- **Stack**: React 18, TypeScript, Vite, Material UI
-- **Source**: https://github.com/gbordes77/manatuner
-- **License**: MIT
-- **Author**: Guillaume Bordes
+React, TypeScript, Vite and Material UI. MIT license. Author: Guillaume Bordes.
+Source: https://github.com/gbordes77/manatuner

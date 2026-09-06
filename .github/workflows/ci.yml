@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   test:
@@ -26,23 +26,10 @@ jobs:
 
       - run: npm ci
 
-      - name: Lint
-        run: npm run lint
+      - run: npx playwright install --with-deps chromium
 
-      - name: Type check
-        run: npm run type-check
-
-      - name: Unit tests
-        run: npm run test:unit
-
-      - name: Build
-        run: npm run build
-
-      - name: Bundle budget gate (QW3)
-        run: node scripts/check-bundle-budget.mjs
-
-      - name: Security audit (all dependencies, high severity blocking)
-        run: npm audit --audit-level=high
+      - name: Build candidate with mandatory HTML contract
+        run: npm run build:vercel
 
       - uses: actions/upload-artifact@v4
         with:

@@ -83,6 +83,5 @@ export function looksPrerendered(html: string): boolean {
   if (typeof html !== 'string' || html.length < 200) return false
   const hasMarker = html.includes('<!-- prerendered -->')
   const hasH1 = /<h1[\s>]/i.test(html)
-  const hasOg = /property=["']og:title["']/i.test(html)
-  return hasMarker && (hasH1 || hasOg)
+  return hasMarker && hasH1
 }

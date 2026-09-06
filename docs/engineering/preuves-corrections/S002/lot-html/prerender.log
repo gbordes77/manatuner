@@ -1,0 +1,118 @@
+
+--- Prerendering ManaTuner ---
+
+Routes: 9 static + 65 articles + 27 authors = 101 total
+Concurrency: 4 · timeout: 20000ms
+Starting preview server...
+Preview server running at http://127.0.0.1:4174
+  Rendering /analyzer ...  Rendering / ...  Rendering /mathematics ...  Rendering /guide ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/mathematics/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/analyzer/index.html
+  Rendering /land-glossary ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/guide/index.html
+  Rendering /privacy ...  Rendering /about ...  Rendering /library ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/land-glossary/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/privacy/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/about/index.html
+  Rendering /my-analyses ...  Rendering /library/reid-duke-level-one-building-a-deck ...  Rendering /library/karsten-how-many-lands-2022 ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/index.html
+  Rendering /library/kuisma-beat-bad-luck ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/my-analyses/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-building-a-deck/index.html
+  Rendering /library/chapin-art-of-mulligan ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-how-many-lands-2022/index.html
+  Rendering /library/saito-part-2-having-fun ...  Rendering /library/reid-duke-level-one-mulligans ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/kuisma-beat-bad-luck/index.html
+  Rendering /library/reid-duke-level-one-sequencing ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/chapin-art-of-mulligan/index.html
+  Rendering /library/pvddr-6-heuristics ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-2-having-fun/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-mulligans/index.html
+  Rendering /library/manfield-prepare-tournament ...  Rendering /library/reid-duke-level-one-sideboarding ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-sequencing/index.html
+  Rendering /library/reid-duke-level-one-sideboard-plans ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-6-heuristics/index.html
+  Rendering /library/reid-duke-mulligans-part-iii-constructed ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/manfield-prepare-tournament/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-sideboarding/index.html
+  Rendering /library/pvddr-one-mistake-archive ...  Rendering /library/fortier-ladder-series ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-sideboard-plans/index.html
+  Rendering /library/zvi-using-time-wisely ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-mulligans-part-iii-constructed/index.html
+  Rendering /library/pvddr-when-to-mulligan ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-one-mistake-archive/index.html
+  Rendering /library/saito-part-1-concentration ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/fortier-ladder-series/index.html
+  Rendering /library/fortier-dash-method ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/zvi-using-time-wisely/index.html
+  Rendering /library/dagen-puzzling-improvements ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-when-to-mulligan/index.html
+  Rendering /library/moudou-game-theory-series ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-1-concentration/index.html
+  Rendering /library/chapin-61-cards-russian-roulette ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/fortier-dash-method/index.html
+  Rendering /library/yahi-maths-inventory ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/dagen-puzzling-improvements/index.html
+  Rendering /library/pvddr-best-vs-known ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/moudou-game-theory-series/index.html
+  Rendering /library/chapin-information-cascades ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/chapin-61-cards-russian-roulette/index.html
+  Rendering /library/zvi-elephant-method ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/yahi-maths-inventory/index.html
+  Rendering /library/saito-part-3-environment ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-best-vs-known/index.html
+  Rendering /library/saito-part-4-metagame ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/chapin-information-cascades/index.html
+  Rendering /library/saito-part-5-connections ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/zvi-elephant-method/index.html
+  Rendering /library/saito-part-7-other-lessons ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-3-environment/index.html
+  Rendering /library/pvddr-pv-rule ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-4-metagame/index.html
+  Rendering /library/karsten-colored-sources-2022 ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-5-connections/index.html
+  Rendering /library/karsten-hypergeometric-intro ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/saito-part-7-other-lessons/index.html
+  Rendering /library/karsten-colored-sources-2018-archive ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-pv-rule/index.html
+  Rendering /library/karsten-commander-manabase ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-colored-sources-2022/index.html
+  Rendering /library/wizards-commander-brackets-2024 ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-hypergeometric-intro/index.html
+  Rendering /library/command-zone-podcast ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-colored-sources-2018-archive/index.html
+  Rendering /library/game-knights-command-zone-studios ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-commander-manabase/index.html
+  Rendering /library/edhrec-articles-hub ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/wizards-commander-brackets-2024/index.html
+  Rendering /library/limited-resources-podcast ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/command-zone-podcast/index.html
+  Rendering /library/seventeen-lands-blog ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/game-knights-command-zone-studios/index.html
+  Rendering /library/lsv-draft-signals-classic ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/edhrec-articles-hub/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/limited-resources-podcast/index.html
+  Rendering /library/reid-duke-signals-booster-draft ...  Rendering /library/reid-duke-sideboarding-limited ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/seventeen-lands-blog/index.html
+  Rendering /library/reid-duke-mulligans-part-ii-limited ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/lsv-draft-signals-classic/index.html
+  Rendering /library/chapin-next-level-deckbuilding ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-signals-booster-draft/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-sideboarding-limited/index.html
+  Rendering /library/reid-duke-level-one-role-assignment ...  Rendering /library/reid-duke-level-one-play-or-draw ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-mulligans-part-ii-limited/index.html
+  Rendering /library/chapin-next-level-magic-tempo ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/chapin-next-level-deckbuilding/index.html
+  Rendering /library/reid-duke-level-one-full-course ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-role-assignment/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-play-or-draw/index.html
+  Rendering /library/zvi-whos-the-beatdown-2-multitasking ...  Rendering /library/pvddr-ten-commandments ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/chapin-next-level-magic-tempo/index.html
+  Rendering /library/flores-whos-the-beatdown ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/reid-duke-level-one-full-course/index.html
+  Rendering /library/karsten-london-mulligan ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/zvi-whos-the-beatdown-2-multitasking/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-ten-commandments/index.html
+  Rendering /library/lsv-mulligans ...  Rendering /library/pvddr-how-to-sideboard ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/flores-whos-the-beatdown/index.html
+  Rendering /library/wizards-banned-restricted ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/karsten-london-mulligan/index.html
+  Rendering /library/boa-mtgo-getting-started ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/lsv-mulligans/index.html
+  Rendering /library/depraz-mtgo-stops ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pvddr-how-to-sideboard/index.html
+  Rendering /library/battle-chads-mtg-study-win-rates ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/wizards-banned-restricted/index.html
+  Rendering /library/pcm-15-avoir-un-plan ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/boa-mtgo-getting-started/index.html
+  Rendering /library/pcm-67-coherence-depraz ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/depraz-mtgo-stops/index.html
+  Rendering /library/pcm-92-tourner-cartes ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/battle-chads-mtg-study-win-rates/index.html
+  Rendering /library/pcm-125-heuristiques ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pcm-15-avoir-un-plan/index.html
+  Rendering /library/pcm-164-erwan-control ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pcm-67-coherence-depraz/index.html
+  Rendering /library/lsv-looter-problem-lost ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pcm-92-tourner-cartes/index.html
+  Rendering /library/author/reid-duke ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pcm-125-heuristiques/index.html
+  Rendering /library/author/frank-karsten ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/pcm-164-erwan-control/index.html
+  Rendering /library/author/matti-kuisma ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/lsv-looter-problem-lost/index.html
+  Rendering /library/author/patrick-chapin ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/reid-duke/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/frank-karsten/index.html
+  Rendering /library/author/tomoharu-saito ...  Rendering /library/author/paulo-vitor-damo-da-rosa ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/matti-kuisma/index.html
+  Rendering /library/author/seth-manfield ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/patrick-chapin/index.html
+  Rendering /library/author/remi-fortier ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/tomoharu-saito/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/paulo-vitor-damo-da-rosa/index.html
+  Rendering /library/author/zvi-mowshowitz ...  Rendering /library/author/pierre-dagen ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/seth-manfield/index.html
+  Rendering /library/author/moudou ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/remi-fortier/index.html
+  Rendering /library/author/anael-yahi ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/zvi-mowshowitz/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/pierre-dagen/index.html
+  Rendering /library/author/gavin-verhey-wizards-of-the-coast ...  Rendering /library/author/jimmy-wong-josh-lee-kwai ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/moudou/index.html
+  Rendering /library/author/josh-lee-kwai-jimmy-wong ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/anael-yahi/index.html
+  Rendering /library/author/edhrec-staff-contributors ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/gavin-verhey-wizards-of-the-coast/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/jimmy-wong-josh-lee-kwai/index.html
+  Rendering /library/author/marshall-sutcliffe-luis-scott-vargas ...  Rendering /library/author/17lands-team ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/josh-lee-kwai-jimmy-wong/index.html
+  Rendering /library/author/luis-scott-vargas ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/edhrec-staff-contributors/index.html
+  Rendering /library/author/mike-flores ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/marshall-sutcliffe-luis-scott-vargas/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/17lands-team/index.html
+  Rendering /library/author/wizards-of-the-coast ...  Rendering /library/author/el-gran-boa ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/luis-scott-vargas/index.html
+  Rendering /library/author/jean-emmanuel-depraz ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/mike-flores/index.html
+  Rendering /library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/wizards-of-the-coast/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/el-gran-boa/index.html
+  Rendering /library/author/charles-wickham-theau-mery ...  Rendering /library/author/charles-wickham-theau-mery-jean-emmanuel-depraz ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/jean-emmanuel-depraz/index.html
+  Rendering /library/author/theau-mery-erwan-maisonneuve ... -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/charles-wickham-theau-mery/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/charles-wickham-theau-mery-jean-emmanuel-depraz/index.html
+ -> docs/engineering/preuves-corrections/S002/lot-html/dist/library/author/theau-mery-erwan-maisonneuve/index.html
+
+Prerender complete: 101 succeeded, 0 failed
+---
+
+Prerender failed: Error: HTML contract /library/saito-part-1-concentration: empty or duplicate route title
+    at fail (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/scripts/check-html-contract.mjs:22:37)
+    at checkHtmlContract (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/scripts/check-html-contract.mjs:28:38)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async prerender (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/scripts/prerender.mjs:225:3)
+HTML contract /library/saito-part-1-concentration: empty or duplicate route title

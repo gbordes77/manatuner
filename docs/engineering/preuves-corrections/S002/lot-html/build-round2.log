@@ -1,0 +1,45 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2514 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/index.html                                    12.74 kB │ gzip:   3.96 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/mulliganArchetype.worker-BPK14lCK.js   13.93 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/index-qsdYYaTe.css                     16.39 kB │ gzip:   4.16 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/FloatingManaSymbols-CGGG-Ofw.js         1.20 kB │ gzip:   0.65 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/CardImageTooltip-J2XejBkT.js            1.35 kB │ gzip:   0.70 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/AuthorPage-C9OnyOX0.js                  3.90 kB │ gzip:   1.78 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/PrivacySettings-CHIa6uN5.js             6.08 kB │ gzip:   2.51 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/privacy-3gOohyGH.js                     7.62 kB │ gzip:   2.90 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/ArticleDetailPage-WATfPHdT.js           7.75 kB │ gzip:   2.93 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/EnhancedCharts-DjuTl-F5.js              8.44 kB │ gzip:   2.51 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/AnalysisTab-CK4HR5Vc.js                 9.30 kB │ gzip:   3.05 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/StaticPages-lKYmx-Yk.js                12.24 kB │ gzip:   4.37 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/EnhancedSpellAnalysis-R3g0xicf.js      12.90 kB │ gzip:   3.83 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/useLibraryProgress-BNZVk6PY.js         13.35 kB │ gzip:   5.27 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/LandGlossaryPage-BMDaOpC9.js           13.66 kB │ gzip:   5.06 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/ManabaseFullTab-DQeWN2Pw.js            13.77 kB │ gzip:   4.84 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/ManaBlueprint-BftSEgC4.js              16.26 kB │ gzip:   5.18 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/MyAnalysesPage-iEH6Cc--.js             19.22 kB │ gzip:   5.80 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/MulliganTab-DRNOxwPv.js                25.50 kB │ gzip:   8.53 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/MathematicsPage-CxbtwViS.js            26.28 kB │ gzip:   7.52 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/GuidePage-B7oS0N-N.js                  26.63 kB │ gzip:   8.40 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/ReferenceArticlesPage-RLBvjSyv.js      28.17 kB │ gzip:   8.37 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/vendor-mui-icons-CXd-WJEu.js           37.33 kB │ gzip:  11.34 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/PaymentPolicyPanel-CQ8ve-G3.js         44.15 kB │ gzip:   6.35 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/vendor-redux-Bc1t3V2X.js               46.95 kB │ gzip:  15.76 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/CastabilityTab-cxu-KzJH.js             70.37 kB │ gzip:  18.73 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/Onboarding-BYzdDrPn.js                101.80 kB │ gzip:  31.58 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/AnalyzerPage-6ZI_d7l8.js              134.11 kB │ gzip:  37.18 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/index.es-DmCRpKFg.js                  157.96 kB │ gzip:  52.59 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/index-Dkgsnlz0.js                     205.75 kB │ gzip:  58.57 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/vendor-mui-CPNqbaNh.js                370.11 kB │ gzip: 111.38 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/jspdf.es.min-C41MXWGM.js              385.89 kB │ gzip: 124.85 kB
+docs/engineering/preuves-corrections/S002/lot-html/dist/assets/vendor-charts-DRj6zYwE.js             419.29 kB │ gzip: 112.37 kB
+✓ built in 2.96s

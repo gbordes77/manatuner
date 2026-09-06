@@ -1,3 +1,4 @@
+import { ANALYZER_TABS } from '../data/analyzerTabs'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import AutoStoriesIcon from '@mui/icons-material/AutoStories'
@@ -19,6 +20,8 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { articlesReferenceSeed } from '../data/articlesReferenceSeed'
+import { healthScoreBand } from '../utils/healthScore'
 import { AnimatedContainer } from '../components/common/AnimatedContainer'
 import { SEO } from '../components/common/SEO'
 import { Term } from '../components/common/Term'
@@ -111,8 +114,8 @@ export const HomePage: React.FC = () => {
       title: 'Castability',
       description: (
         <>
-          Exact <Term id="castability">cast probability</Term> including mana rocks and dorks — not
-          just lands.
+          Model-based <Term id="castability">cast probability</Term>. The default estimate includes
+          mana rocks and dorks; exact modes cover only their stated supported model.
         </>
       ),
       color: theme.palette.mana.blue,
@@ -151,8 +154,8 @@ export const HomePage: React.FC = () => {
   // Les fondations mathématiques avec mana colors
   const mathFoundations = [
     {
-      title: 'Exact Probabilities',
-      desc: 'Real cast odds for every spell, every turn',
+      title: 'Castability Models',
+      desc: 'Default estimates and explicit exact-model limits',
       formula: 'Per spell',
       techTerm: 'Hypergeometric distribution',
       manaColor: 'u' as const,
@@ -467,10 +470,11 @@ export const HomePage: React.FC = () => {
               variant="caption"
               sx={{ fontWeight: 700, letterSpacing: 0.4, opacity: 0.85, display: 'block', mb: 0.5 }}
             >
-              Sample result · Health Score 87% · Good
+              Sample result · Health Score 87% · {healthScoreBand(87).label}
             </Typography>
             <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.45, mb: 1 }}>
-              Your deck casts 87% of spells on curve — solid; keep almost any 2–4-land opener.
+              Illustrative color access score: average turn-two access to required colors. This is
+              not the percentage of spells cast on curve or a keep recommendation.
             </Typography>
             <Box sx={{ display: 'flex', gap: 0.75, flexWrap: 'wrap' }}>
               <Chip size="small" label="Lightning Bolt 94%" color="success" variant="outlined" />
@@ -504,9 +508,9 @@ export const HomePage: React.FC = () => {
           >
             Free. No signup.{' '}
             <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
-              Decklists stay on your device
+              Calculations and saved analyses stay in this browser.
             </Box>{' '}
-            — only card names ping Scryfall to fetch oracle text.
+            Card lookups and images use Scryfall; fonts use external providers. <a href="/privacy">See our privacy policy.</a>
           </Typography>
 
           {/* Format coverage caption — replaces the 3 sample-deck shortcuts
@@ -655,7 +659,7 @@ export const HomePage: React.FC = () => {
               <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
                 Saito&apos;s
               </Box>{' '}
-              tournament mindset — 54 must-read articles organized by skill level. Dead links
+              tournament mindset — {articlesReferenceSeed.length} curated references organized by skill level. Dead links
               restored via archive.org.
             </Typography>
 
@@ -696,7 +700,7 @@ export const HomePage: React.FC = () => {
                 letterSpacing: '0.03em',
               }}
             >
-              54 articles · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
+              {articlesReferenceSeed.length} references · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
             </Typography>
           </Box>
         </Box>
@@ -1282,7 +1286,7 @@ export const HomePage: React.FC = () => {
         {[
           {
             icon: <i className="ms ms-w ms-cost" aria-hidden="true" style={{ fontSize: 16 }} />,
-            text: '100% Local',
+            text: 'Local calculations',
           },
           {
             icon: <i className="ms ms-u ms-cost" aria-hidden="true" style={{ fontSize: 16 }} />,
@@ -1318,9 +1322,9 @@ export const HomePage: React.FC = () => {
       >
         {[
           { value: 'Free & Open Source', sub: 'MIT License' },
-          { value: '10,000', sub: 'Hands simulated per analysis' },
-          { value: '6', sub: 'Analysis tabs' },
-          { value: '0', sub: 'Data sent to servers' },
+          { value: '10,000', sub: 'Samples per kept-hand size' },
+          { value: String(ANALYZER_TABS.length), sub: 'Analysis tabs' },
+          { value: 'No account', sub: 'Required to analyze' },
         ].map((stat, index) => (
           <Box key={index} sx={{ textAlign: 'center', minWidth: 100 }}>
             <Typography variant="h6" fontWeight={700} color="primary" sx={{ lineHeight: 1.2 }}>

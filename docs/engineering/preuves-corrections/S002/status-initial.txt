@@ -1,0 +1,8 @@
+ M playwright-report/index.html
+ M test-results.json
+ M test-results/.last-run.json
+?? .claude/worktrees/
+?? .mcp.json.bak.20260801-140417
+?? .playwright-mcp/
+?? docs/engineering/preuves-corrections/S002/
+?? docs/handoff/PROMPT-REPRISE-MANATUNER.txt

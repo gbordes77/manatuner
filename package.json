@@ -9,8 +9,8 @@
     "prebuild": "node scripts/generate-library-feeds.mjs && node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "build:prerender": "vite build && node scripts/prerender.mjs",
-    "build:prerender:static": "vite build && PRERENDER_SKIP_LIBRARY=1 node scripts/prerender.mjs",
-    "build:vercel": "vite build && node scripts/prerender.mjs",
+    "build:prerender:static": "npm run build:prerender",
+    "build:vercel": "node scripts/delivery-gate.mjs",
     "prerender": "node scripts/prerender.mjs",
     "library:feeds": "node scripts/generate-library-feeds.mjs && node scripts/generate-sitemap.mjs",
     "preview": "vite preview",
@@ -48,7 +48,8 @@
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
     "playwright:install": "npx playwright install --with-deps",
-    "prepare": "husky"
+    "prepare": "husky",
+    "check:html": "node scripts/check-html-contract.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -128,8 +129,8 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=22.12.0",
+    "npm": ">=10.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

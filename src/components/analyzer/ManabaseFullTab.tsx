@@ -43,7 +43,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
         <Box
           sx={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: isMobile ? 'stretch' : 'center',
+            flexDirection: isMobile ? 'column' : 'row',
             justifyContent: 'space-between',
             gap: 1,
             mb: 3,
@@ -57,6 +58,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
             variant={isMobile ? 'fullWidth' : 'standard'}
             sx={{
               flex: 1,
+              minWidth: 0,
+              width: isMobile ? '100%' : undefined,
               '& .MuiTab-root': {
                 textTransform: 'none',
                 fontWeight: 'medium',
@@ -73,7 +76,8 @@ export const ManabaseFullTab: React.FC<ManabaseFullTabProps> = memo(
             startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
             onClick={handleCopyLink}
             sx={{
-              ml: 1,
+              ml: isMobile ? 0 : 1,
+              alignSelf: isMobile ? 'flex-end' : undefined,
               mb: 1,
               textTransform: 'none',
               fontWeight: 600,

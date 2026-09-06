@@ -1,0 +1,44 @@
+
+Running 1 test using 1 worker
+
+(node:44345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+  1) [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('36 Lightning Bolt').first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('36 Lightning Bolt').first() with timeout 5000ms
+      - waiting for getByText('36 Lightning Bolt').first()
+
+
+      25 |   await tab.click()
+      26 |   await expect(tab).toHaveAttribute('aria-selected', 'true')
+    > 27 |   await expect(page.getByText('36 Lightning Bolt', { exact: false }).first()).toBeVisible()
+         |                                                                               ^
+      28 |   await page.screenshot({ path: testInfo.outputPath('manabase-mobile.png') })
+      29 | })
+      30 |
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/final-audit.spec.js:27:79
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/mobile-green/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S002/mobile-green/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S002/mobile-green/core-flows-final-audit-E02-a1860-te-labels-and-open-the-deck-chromium/error-context.md
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck 
