@@ -55,6 +55,9 @@ async function analyzeLimited(page, sideboard = false) {
     })
   })
   await page.goto('/analyzer?sample=limited')
+  await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue(
+    /1 Llanowar Elves[\s\S]*7 Forest/
+  )
   if (sideboard) {
     const editor = page.getByPlaceholder(/paste your decklist/i)
     await editor.fill((await editor.inputValue()) + '\n\nSideboard\n1 Plains')
