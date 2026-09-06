@@ -186,6 +186,7 @@ export const SideboardSwapEditor: React.FC<SideboardSwapEditorProps> = memo(
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <IconButton
                         size="small"
+                        aria-label={`Decrease sideboard ${card.name}`}
                         onClick={() => adjustSbIn(card.name, -1)}
                         disabled={!sbIn[card.name]}
                       >
@@ -200,6 +201,7 @@ export const SideboardSwapEditor: React.FC<SideboardSwapEditorProps> = memo(
                       </Typography>
                       <IconButton
                         size="small"
+                        aria-label={`Increase sideboard ${card.name}`}
                         onClick={() => adjustSbIn(card.name, 1)}
                         disabled={(sbIn[card.name] || 0) >= (card.quantity || 1)}
                       >
@@ -240,6 +242,7 @@ export const SideboardSwapEditor: React.FC<SideboardSwapEditorProps> = memo(
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <IconButton
                         size="small"
+                        aria-label={`Decrease maindeck ${card.name}`}
                         onClick={() => adjustMainOut(card.name, -1)}
                         disabled={!mainOut[card.name]}
                       >
@@ -254,6 +257,7 @@ export const SideboardSwapEditor: React.FC<SideboardSwapEditorProps> = memo(
                       </Typography>
                       <IconButton
                         size="small"
+                        aria-label={`Increase maindeck ${card.name}`}
                         onClick={() => adjustMainOut(card.name, 1)}
                         disabled={(mainOut[card.name] || 0) >= (card.quantity || 1)}
                       >

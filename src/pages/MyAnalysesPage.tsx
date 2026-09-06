@@ -538,6 +538,7 @@ const MyAnalysesPage: React.FC = () => {
   }
 
   const handleLoad = (analysis: AnalysisRecord) => {
+    dispatch(clearAnalyzer())
     dispatch(setDeckName(analysis.deckName || ''))
     dispatch(setDeckList(analysis.deckList || ''))
     navigate('/analyzer')

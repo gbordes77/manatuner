@@ -230,11 +230,13 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
           Saved legacy estimates. Run the analysis again to obtain physical castability results.
         </Alert>
       )}
-      <Alert severity="info" sx={{ mb: 2 }}>
-        Current model: potential castability, lands only, on the play, without mulligans. The spell
-        is an external mana demand; its draw probability is not included. A legal sequence may
-        depend on future draws. X is set to 2. Summaries cover calculated spells only.
-      </Alert>
+      {model === 'physical-v1' && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          Current model: potential castability, lands only, on the play, without mulligans. The
+          spell is an external mana demand; its draw probability is not included. A legal sequence
+          may depend on future draws. X is set to 2. Summaries cover calculated spells only.
+        </Alert>
+      )}
       {Object.keys(unsupportedSpellAnalysis).length > 0 && (
         <Alert severity="warning" sx={{ mb: 2 }}>
           Calculation unavailable for {Object.keys(unsupportedSpellAnalysis).length} distinct

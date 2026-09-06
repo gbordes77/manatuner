@@ -203,3 +203,18 @@ describe('analyzeOracleForMana — taxonomy detection', () => {
     })
   })
 })
+
+describe('land search ownership', () => {
+  it('does not count Path to Exile as unconditional mana ramp', () => {
+    const oracle =
+      'Exile target creature. Its controller may search their library for a basic land card, put that card onto the battlefield tapped, then shuffle.'
+    expect(analyzeOracleForMana(oracle).type).toBeNull()
+  })
+  it('does not count an opponent land search as our ramp', () => {
+    expect(
+      analyzeOracleForMana(
+        'Each opponent searches their library for a basic land card and puts it onto the battlefield tapped.'
+      ).type
+    ).toBeNull()
+  })
+})

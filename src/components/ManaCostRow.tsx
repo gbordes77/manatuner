@@ -1,4 +1,3 @@
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import {
   Box,
   CircularProgress,
@@ -10,7 +9,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material'
-import type { Theme } from '@mui/material/styles'
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import { parsePhysicalCost } from '../services/castability/parsePhysicalCost'
 import { physicalManaProbability } from '../services/castability/physicalManaEngine'
@@ -25,7 +23,6 @@ import {
   useAcceleratedCastability,
   useProbabilityCalculation,
 } from './manaCostHooks'
-import { SegmentedProbabilityBar } from './SegmentedProbabilityBar'
 
 /** v1.1: Unconditional multi-mana land group */
 // Keyrune mana symbol component
@@ -191,13 +188,6 @@ KeyruneManaCost.displayName = 'KeyruneManaCost'
 
 // Helper to get mana cost from card data, handling DFCs (double-faced cards)
 // Get color based on probability
-const getProbabilityColor = (prob: number, theme: Theme) => {
-  if (prob >= 80) return theme.palette.success.main
-  if (prob >= 65) return theme.palette.info.main
-  if (prob >= 45) return theme.palette.warning.main
-  return theme.palette.error.main
-}
-
 // Hook for accelerated castability calculation
 // v1.1: Uses unconditionalMultiMana for probabilistic multi-mana land handling
 // NOTE (2026-04-12): `baseProbability` was previously in the signature but was
@@ -207,6 +197,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
   ({
     cardName,
     quantity,
+    probabilityModel = 'exact',
     deckSources,
     totalLands,
     totalCards,
@@ -267,6 +258,7 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
     )
 
     const physicalResult = useMemo(() => {
+      if (probabilityModel === 'estimate') return null
       if (physicalLands == null)
         return { status: 'unsupported' as const, reason: 'Physical land metadata is incomplete' }
       if (
@@ -292,7 +284,15 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
         accelContext?.playDraw ?? 'PLAY',
         50_000
       )
-    }, [physicalLands, cardData, totalCards, producers, showAcceleration, accelContext])
+    }, [
+      probabilityModel,
+      physicalLands,
+      cardData,
+      totalCards,
+      producers,
+      showAcceleration,
+      accelContext,
+    ])
 
     useEffect(() => {
       // Skip fetch if card data was provided via props
@@ -564,151 +564,50 @@ const ManaCostRow: React.FC<ManaCostRowProps> = memo(
                     </Typography>
                   </Box>
                 )
-              ) : acceleratedResult ? (
-                <Box>
-                  <Typography variant="caption">
-                    Legacy heuristic estimate — not exact payment potential.
-                  </Typography>
-                  {showAcceleration &&
-                  producers &&
-                  producers.length > 0 &&
-                  acceleratedResult.accelerationImpact > 0.001 ? (
-                    <SegmentedProbabilityBar
-                      baseProbability={Math.round(acceleratedResult.base.p2 * 100)}
-                      totalProbability={Math.round(acceleratedResult.withAcceleration.p2 * 100)}
-                      height={8}
-                      showLabels={true}
-                      label="Realistic:"
-                      tooltipContent={
-                        <Box sx={{ p: 0.5 }}>
-                          <Typography variant="body2" fontWeight="bold" gutterBottom>
-                            On-curve cast chance (with ramp)
-                          </Typography>
-                          <Typography variant="caption" component="div">
-                            • Lands only: {Math.round(acceleratedResult.base.p2 * 100)}%
-                          </Typography>
-                          <Typography variant="caption" component="div">
-                            • With ramp: {Math.round(acceleratedResult.withAcceleration.p2 * 100)}%
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            component="div"
-                            sx={{ color: 'success.light' }}
-                          >
-                            • Ramp bonus: +{Math.round(acceleratedResult.accelerationImpact * 100)}%
-                          </Typography>
-                        </Box>
-                      }
-                    />
-                  ) : (
-                    <Box>
-                      <Box display="flex" alignItems="center" gap={0.5} mb={0.5}>
-                        <Typography variant="caption" color="text.secondary">
-                          Realistic:
-                        </Typography>
-                        <Box
-                          sx={{
-                            bgcolor: getProbabilityColor(
-                              Math.round(acceleratedResult.base.p2 * 100),
-                              theme
-                            ),
-                            color: '#fff',
-                            px: 1,
-                            py: 0.25,
-                            borderRadius: 1,
-                            fontSize: '0.75rem',
-                            fontWeight: 'bold',
-                            ml: 'auto',
-                          }}
-                        >
-                          {Math.round(acceleratedResult.base.p2 * 100)}%
-                        </Box>
-                      </Box>
-                      <LinearProgress
-                        variant="determinate"
-                        value={Math.round(acceleratedResult.base.p2 * 100)}
-                        sx={{
-                          height: 8,
-                          borderRadius: 4,
-                          bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                          '& .MuiLinearProgress-bar': {
-                            borderRadius: 4,
-                            bgcolor: getProbabilityColor(
-                              Math.round(acceleratedResult.base.p2 * 100),
-                              theme
-                            ),
-                          },
-                        }}
-                      />
-                    </Box>
-                  )}
-                  <Tooltip
-                    title="Perfect drops (lands only, SSOT engine): cast if you always have enough lands. Always ≥ lands-only Realistic."
-                    arrow
-                  >
-                    <Typography
-                      variant="caption"
-                      color="text.disabled"
-                      sx={{ mt: 0.5, display: 'block', fontSize: '0.65rem' }}
-                    >
-                      Perfect drops: {Math.round(acceleratedResult.base.p1 * 100)}%
-                    </Typography>
-                  </Tooltip>
-                </Box>
-              ) : (
-                <Box>
-                  <Box display="flex" alignItems="center" gap={0.5} mb={0.5}>
-                    <Typography variant="caption" color="text.secondary">
-                      Realistic:
-                    </Typography>
-                    <Tooltip
-                      title="On-curve cast chance: right colors AND enough lands by that turn (mana screw included). Primary number to optimize."
-                      arrow
-                    >
-                      <HelpOutlineIcon
-                        sx={{ fontSize: 14, color: 'text.disabled', cursor: 'help' }}
-                      />
-                    </Tooltip>
-                    <Box
-                      sx={{
-                        bgcolor: getProbabilityColor(probabilities.p2, theme),
-                        color: '#fff',
-                        px: 1,
-                        py: 0.25,
-                        borderRadius: 1,
-                        fontSize: '0.75rem',
-                        fontWeight: 'bold',
-                        ml: 'auto',
-                      }}
-                    >
-                      {probabilities.p2}%
-                    </Box>
-                  </Box>
+              ) : acceleratedResult && physicalLands != null ? (
+                <Box data-testid="mana-estimate">
                   <LinearProgress
                     variant="determinate"
-                    value={probabilities.p2}
-                    sx={{
-                      height: 8,
-                      borderRadius: 4,
-                      bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                      '& .MuiLinearProgress-bar': {
-                        borderRadius: 4,
-                        bgcolor: getProbabilityColor(probabilities.p2, theme),
-                      },
-                    }}
+                    aria-label="Estimated mana availability"
+                    value={
+                      (showAcceleration
+                        ? acceleratedResult.withAcceleration.p2
+                        : acceleratedResult.base.p2) * 100
+                    }
+                    sx={{ height: 8, borderRadius: 1, mb: 0.5 }}
                   />
-                  <Tooltip
-                    title="Perfect drops: chance of the right colors if you always hit your land drops on curve. Isolates color fixing from land count. Always ≥ Realistic (same model)."
-                    arrow
-                  >
-                    <Typography
-                      variant="caption"
-                      color="text.disabled"
-                      sx={{ mt: 0.5, display: 'block', fontSize: '0.65rem' }}
-                    >
-                      Perfect drops: {probabilities.p1}%
-                    </Typography>
-                  </Tooltip>
+                  <Typography variant="body2">
+                    Mana availability estimate:{' '}
+                    {Math.round(
+                      (showAcceleration
+                        ? acceleratedResult.withAcceleration.p2
+                        : acceleratedResult.base.p2) * 100
+                    )}
+                    %
+                  </Typography>
+                  <Typography variant="caption" display="block">
+                    Lands only: {Math.round(acceleratedResult.base.p2 * 100)}% · Perfect land drops:{' '}
+                    {Math.round(acceleratedResult.base.p1 * 100)}%
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" display="block">
+                    Source-count heuristic.{' '}
+                    {showAcceleration
+                      ? `Ramp included; creature removal ${Math.round((accelContext?.removalRate ?? 0) * 100)}%. `
+                      : 'Lands only. '}
+                    No mulligan or chance of drawing this spell. Source overlap and sequencing are
+                    approximated.
+                    {getManaCostFromCard(cardData)?.includes('/') &&
+                      ' Hybrid pips use a fixed choice of the most represented color.'}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box role="status">
+                  <Typography variant="body2">Calculation unavailable</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {physicalLands == null
+                      ? 'Physical land metadata is incomplete'
+                      : 'Missing metadata or cost outside the source-count model. Special costs can be explored in the policy model.'}
+                  </Typography>
                 </Box>
               )}
             </Grid>

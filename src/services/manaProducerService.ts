@@ -30,7 +30,7 @@ import { fetchWithTimeout } from './http'
 // =============================================================================
 
 const CACHE_KEY = 'manatuner_producer_cache'
-const CACHE_VERSION = '2.0' // Bumped: v2.0 uses Scryfall produced_mana + improved oracle analysis
+const CACHE_VERSION = '3.0' // Discard searches by another player misclassified as our ramp.
 const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000 // 7 days
 
 // =============================================================================
@@ -119,9 +119,11 @@ class ProducerCacheService {
   ): void {
     try {
       const stored = localStorage.getItem(CACHE_KEY)
-      const cache: ProducerCacheStorage = stored
-        ? JSON.parse(stored)
-        : { version: CACHE_VERSION, lastCleanup: new Date().toISOString(), producers: {} }
+      const previous = stored ? JSON.parse(stored) : null
+      const cache: ProducerCacheStorage =
+        previous?.version === CACHE_VERSION
+          ? previous
+          : { version: CACHE_VERSION, lastCleanup: new Date().toISOString(), producers: {} }
 
       const entry: CachedProducerEntry = {
         def,
@@ -236,8 +238,12 @@ export function analyzeOracleForMana(oracleText: string): {
   // 0b. Also detect cross-sentence land ramp — "search...land card...onto the battlefield"
   // Covers: Archdruid's Charm ("Search...creature or land card...Put it onto the battlefield")
   if (
-    /search\b[^.]*\bbasic\s+land[^.]*\bonto\s+the\s+battlefield\b/i.test(oracleText) ||
-    /search\b[\s\S]{0,150}\bland\s+card[\s\S]{0,100}\bonto\s+the\s+battlefield\b/i.test(oracleText)
+    /search\s+your\s+library\b[^.]*\bbasic\s+land[^.]*\bonto\s+the\s+battlefield\b/i.test(
+      oracleText
+    ) ||
+    /search\s+your\s+library\b[\s\S]{0,150}\bland\s+card[\s\S]{0,100}\bonto\s+the\s+battlefield\b/i.test(
+      oracleText
+    )
   ) {
     result.type = 'LAND_RAMP'
     result.amount = 1

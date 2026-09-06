@@ -17,7 +17,7 @@ import React, { lazy, memo, Suspense, useEffect, useMemo, useState } from 'react
 import { useAcceleration } from '../../contexts/accelerationState'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { manaProducerService, producerCacheService } from '../../services/manaProducerService'
-import type { Card } from '../../types'
+import type { Card, ManaColor } from '../../types'
 import type { ProducerInDeck, UnconditionalMultiManaGroup } from '../../types/manaProducers'
 import {
   castabilityHorizon,
@@ -45,6 +45,7 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
 
   // P1-8: board scope — main only vs post-board (swaps)
   const [showPolicy, setShowPolicy] = useState(false)
+  const [probabilityModel, setProbabilityModel] = useState<'estimate' | 'exact'>('estimate')
   const [boardScope, setBoardScope] = useState<BoardScope>('main')
   const [activeSwaps, setActiveSwaps] = useState<SideboardSwap[]>([])
 
@@ -99,6 +100,22 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
   )
   const effectiveLands = useMemo(
     () => effectiveCards.filter((c) => c.isLand).reduce((s, c) => s + (c.quantity || 1), 0),
+    [effectiveCards]
+  )
+
+  const effectiveSources = useMemo(
+    () =>
+      Object.fromEntries(
+        ['W', 'U', 'B', 'R', 'G', 'C'].map((color) => [
+          color,
+          effectiveCards
+            .filter(
+              (card) =>
+                card.isLand && !card.isCommander && card.producedMana?.includes(color as ManaColor)
+            )
+            .reduce((sum, card) => sum + (card.quantity ?? 1), 0),
+        ])
+      ),
     [effectiveCards]
   )
 
@@ -478,11 +495,22 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
         </Paper>
       )}
 
+      <ToggleButtonGroup
+        exclusive
+        value={probabilityModel}
+        aria-label="Probability model"
+        onChange={(_, value: 'estimate' | 'exact' | null) => {
+          if (value) setProbabilityModel(value)
+        }}
+        sx={{ mb: 2 }}
+      >
+        <ToggleButton value="estimate">Mana estimates</ToggleButton>
+        <ToggleButton value="exact">Exact goldfish potential</ToggleButton>
+      </ToggleButtonGroup>
       <Alert severity="warning" sx={{ mb: 2 }}>
-        Potential castability measures whether the drawn cards admit a legal mana sequence. Results
-        are exact within the supported goldfish model, without mulligans or the probability of
-        drawing the target spell. Choices may depend on the complete drawn history: this is an upper
-        bound for actual play without foresight. Unsupported mechanics show no percentage.
+        {probabilityModel === 'estimate'
+          ? 'Source-count estimates approximate mana availability with the selected ramp and removal settings. They do not model every legal payment sequence or source overlap exactly. Perfect land drops conditions on having enough lands. Neither number includes mulligans or drawing the target spell.'
+          : 'Exact potential within the supported goldfish model: at least one legal mana sequence. Choices may use the complete drawn history, so this is an upper bound for play without foresight. No mulligans or chance of drawing the target spell. Ramp requires removal rate 0; unsupported cases show no percentage.'}
       </Alert>
       {/* Ramp detection banner */}
       {producersInDeck.length > 0 && (
@@ -543,8 +571,9 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                 gap: { xs: 0.5, sm: 1 },
               }}
             >
-              Potential castability: one legal sequence must pay every cost using distinct physical
-              sources.
+              {probabilityModel === 'estimate'
+                ? 'Mana availability: source-count estimates, not exact payment probabilities.'
+                : 'Potential castability: one legal sequence must pay every cost using distinct physical sources.'}
             </Typography>
           </Box>
 
@@ -578,7 +607,11 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
                   Probabilities
                 </Typography>
                 <Tooltip
-                  title="Exact potential castability in the supported goldfish model; not a mulligan-adjusted win probability."
+                  title={
+                    probabilityModel === 'estimate'
+                      ? 'Heuristic source-count estimates; no mulligan or drawing the target spell.'
+                      : 'Exact potential castability in the supported goldfish model; not a mulligan-adjusted win probability.'
+                  }
                   arrow
                   placement="top"
                 >
@@ -598,11 +631,12 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
           {nonLandCards.map((card, index) => (
             <ManaCostRow
               key={`${card.name}-${index}`}
+              probabilityModel={probabilityModel}
               cardName={card.name}
               quantity={card.quantity || 1}
               physicalLands={physicalLands}
-              deckSources={analysisResult?.colorDistribution}
-              totalLands={effectiveLands || mainLands || analysisResult?.totalLands || 0}
+              deckSources={effectiveSources}
+              totalLands={physicalLands?.length ?? effectiveLands}
               // Commander sits in the command zone: library size excludes commander copies
               // for all castability rows (including the commander row — mana-only odds).
               // listSize is main (or post-board), never main+side.
@@ -659,8 +693,9 @@ export const CastabilityTab: React.FC<CastabilityTabProps> = memo(({ analysisRes
       {/* Footer echo kept short — primary legend is sticky at top (P1-1) */}
       <Box sx={{ mt: 2, px: 0.5 }}>
         <Typography variant="caption" color="text.secondary">
-          Unsupported cards or rules are explicitly reported; no estimated fallback is displayed in
-          these rows.
+          {probabilityModel === 'estimate'
+            ? 'Source-count estimates use the selected board. Missing metadata and costs outside this model remain unavailable.'
+            : 'Unsupported cards or rules are explicitly reported; no estimated fallback is displayed in these rows.'}
         </Typography>
       </Box>
     </>

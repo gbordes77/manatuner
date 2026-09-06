@@ -33,3 +33,9 @@ it('zero cost is payable without mana in the UI engine', () => {
   const { result } = renderHook(() => useAccel(card, card.name, {}, 0, 60, [], ctx, false))
   expect(result.current?.base.p2).toBe(1)
 })
+it('missing cost metadata never receives a simulated generic cost', () => {
+  const { result } = renderHook(() =>
+    useAccel(null, 'Unresolved spell', { G: 24 }, 24, 60, [], ctx, false)
+  )
+  expect(result.current).toBeNull()
+})

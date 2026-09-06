@@ -16,6 +16,7 @@ export interface UnconditionalMultiManaGroup {
 }
 
 export interface ManaCostRowProps {
+  probabilityModel?: 'exact' | 'estimate'
   /** Null means physical source metadata is incomplete: show no percentage. */
   physicalLands?: LandMetadata[] | null
   cardName: string
@@ -376,7 +377,7 @@ export const getSimulatedManaCost = (cardName: string): string => {
 
 export const useAcceleratedCastability = (
   cardData: MTGCard | null,
-  cardName: string,
+  _cardName: string,
   deckSources?: Record<string, number>,
   totalLands?: number,
   totalCards?: number,
@@ -390,8 +391,20 @@ export const useAcceleratedCastability = (
     // Ramp path only differs when producers exist and showAcceleration is on.
     if (!accelContext) return null
 
-    const manaCost = getManaCostFromCard(cardData) || getSimulatedManaCost(cardName)
-    if (!manaCost) return null
+    const manaCost = getManaCostFromCard(cardData)
+    // Closed aggregate-cost domain. Never guess missing metadata or drop special symbols.
+    if (!manaCost || !/^(\{(?:\d+|[WUBRGCX]|[WUBRG]\/[WUBRG])\})+$/.test(manaCost)) return null
+    if (
+      !deckSources ||
+      !Number.isInteger(totalCards) ||
+      !Number.isInteger(totalLands) ||
+      totalCards! < 1 ||
+      totalLands! < 0 ||
+      totalLands! > totalCards!
+    )
+      return null
+    if (Object.values(deckSources).some((n) => !Number.isFinite(n) || n < 0 || n > totalLands!))
+      return null
 
     try {
       const colorCounts: Record<string, number> = { W: 0, U: 0, B: 0, R: 0, G: 0, C: 0 }
@@ -466,7 +479,6 @@ export const useAcceleratedCastability = (
     }
   }, [
     cardData,
-    cardName,
     deckSources,
     totalLands,
     totalCards,
