@@ -114,7 +114,13 @@ test('Review: result tabs, JSON export, local history and loading another saved 
     )
   })
   // SPA navigation deliberately retains the current Redux result: loading must invalidate it.
-  await page.getByRole('link', { name: 'My Analyses', exact: true }).first().click()
+  const mobileMenu = page.getByRole('button', { name: 'Open navigation menu', exact: true })
+  if (await mobileMenu.isVisible()) {
+    await mobileMenu.click()
+    await page.getByRole('button', { name: 'My Analyses', exact: true }).click()
+  } else {
+    await page.getByRole('link', { name: 'My Analyses', exact: true }).first().click()
+  }
   const saved = page
     .locator('.MuiCard-root')
     .filter({ has: page.getByText('Review other deck', { exact: true }) })
