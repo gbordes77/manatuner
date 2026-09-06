@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test'
-import cards from '../../fixtures/probability-recovery/limited.json' with { type: 'json' }
+import limitedCards from '../../fixtures/probability-recovery/limited.json' with { type: 'json' }
+import wedding from '../../fixtures/probability-recovery/wedding-announcement.json' with { type: 'json' }
+const cards = [...limitedCards, wedding]
 
 test('Selesnya Limited: numeric estimates, play/draw, ramp and explicit exact-mode refusal', async ({
   page,
@@ -35,19 +37,27 @@ test('Selesnya Limited: numeric estimates, play/draw, ramp and explicit exact-mo
   await expect(estimates).toHaveCount(17)
 })
 
-async function analyzeLimited(page, sideboard = false) {
+async function analyzeLimited(page, sideboard = false, deckList = null) {
   await page.addInitScript(() => localStorage.setItem('manatuner-onboarding-completed', 'true'))
   await page.route('https://api.scryfall.com/cards/**', async (route) => {
     const request = route.request()
     if (request.url().includes('/collection')) {
       const names = request.postDataJSON().identifiers.map((x) => x.name)
       return route.fulfill({
-        json: { object: 'list', data: cards.filter((c) => names.includes(c.name)), not_found: [] },
+        json: {
+          object: 'list',
+          data: cards.filter(
+            (c) => names.includes(c.name) || names.includes(c.card_faces?.[0]?.name)
+          ),
+          not_found: [],
+        },
       })
     }
     const url = new URL(request.url())
-    const card = cards.find(
-      (c) => c.name === (url.searchParams.get('exact') || url.searchParams.get('fuzzy'))
+    const card = cards.find((c) =>
+      [c.name, c.card_faces?.[0]?.name].includes(
+        url.searchParams.get('exact') || url.searchParams.get('fuzzy')
+      )
     )
     return route.fulfill({
       status: card ? 200 : 404,
@@ -62,6 +72,7 @@ async function analyzeLimited(page, sideboard = false) {
     const editor = page.getByPlaceholder(/paste your decklist/i)
     await editor.fill((await editor.inputValue()) + '\n\nSideboard\n1 Plains')
   }
+  if (deckList) await page.getByPlaceholder(/paste your decklist/i).fill(deckList)
   await page.getByRole('button', { name: 'Analyze Manabase' }).click()
   await expect(page.getByTestId('analysis-results')).toBeVisible()
 }
@@ -145,4 +156,18 @@ test('Post-board estimates use the incoming land and restore main-deck sources',
   await expect(pathRow.getByText('Mana availability estimate: 92%', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Main only', exact: true }).click()
   await expect(pathRow.getByText('Mana availability estimate: 89%', { exact: true })).toBeVisible()
+})
+
+test('Transform spell front-face cost reaches the table and saved analysis', async ({ page }) => {
+  await analyzeLimited(page, false, '17 Plains\n23 Wedding Announcement')
+  await expect(page.getByTestId('mana-estimate')).toHaveCount(1)
+  await expect(page.getByText('Cost: {2}{W}', { exact: true })).toBeVisible()
+  await expect(page.getByText('Mana availability estimate: 84%', { exact: true })).toBeVisible()
+  const spell = await page.evaluate(() =>
+    JSON.parse(localStorage.getItem('manatuner_analyses'))[0].analysis.cards.find(
+      (c) => c.name === 'Wedding Announcement'
+    )
+  )
+  expect(spell.manaCost).toBe('{2}{W}')
+  expect(spell.cmc).toBe(3)
 })

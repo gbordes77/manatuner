@@ -631,19 +631,22 @@ export class DeckAnalyzer {
           if (scryfallData) {
             resolved = true
             resolution = 'ok'
-            if (scryfallData.mana_cost) {
-              manaCost = scryfallData.mana_cost
+            const frontFace = scryfallData.card_faces?.[0]
+            const resolvedCost = scryfallData.mana_cost || frontFace?.mana_cost
+            const spellType = frontFace?.type_line ?? scryfallData.type_line
+            if (resolvedCost) {
+              manaCost = resolvedCost
               const parsed = this.parseManaCost(manaCost)
               colors = parsed.colors
-              cmc = scryfallData.cmc || parsed.cmc
+              cmc = scryfallData.cmc ?? parsed.cmc
               // Detect creature type from Scryfall type_line
-              isCreature = scryfallData.type_line?.toLowerCase().includes('creature') ?? false
+              isCreature = spellType?.toLowerCase().includes('creature') ?? false
             } else {
               // Resolved but no mana_cost (e.g. some special cards) — keep empty cost
               manaCost = ''
               colors = []
               cmc = scryfallData.cmc || 0
-              isCreature = scryfallData.type_line?.toLowerCase().includes('creature') ?? false
+              isCreature = spellType?.toLowerCase().includes('creature') ?? false
             }
           } else {
             // Simulated fallback — track why for garbage hard-fail

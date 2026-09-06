@@ -1,0 +1,64 @@
+{
+  "object": "card",
+  "id": "4e6f365d-c5c4-4fd6-94cb-833b89239d73",
+  "name": "Wedding Announcement // Wedding Festivity",
+  "type_line": "Enchantment // Enchantment",
+  "cmc": 3.0,
+  "color_identity": ["W"],
+  "set": "inr",
+  "rarity": "rare",
+  "layout": "transform",
+  "scryfall_uri": "https://scryfall.com/card/inr/51/wedding-announcement-wedding-festivity?utm_source=api",
+  "card_faces": [
+    {
+      "object": "card_face",
+      "name": "Wedding Announcement",
+      "mana_cost": "{2}{W}",
+      "type_line": "Enchantment",
+      "oracle_text": "At the beginning of your end step, put an invitation counter on this enchantment. If you attacked with two or more creatures this turn, draw a card. Otherwise, create a 1/1 white Human creature token. Then if this enchantment has three or more invitation counters on it, transform it.",
+      "colors": ["W"],
+      "artist": "Caroline Gariba",
+      "artist_id": "61a4c572-3d1b-4b71-aeb0-1a5a6b82c524",
+      "illustration_id": "2589402a-cc0d-45f4-9724-9887ff9aeaf6",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "normal": "https://cards.scryfall.io/normal/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "large": "https://cards.scryfall.io/large/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "png": "https://cards.scryfall.io/png/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.png?1783908174",
+        "art_crop": "https://cards.scryfall.io/art_crop/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "border_crop": "https://cards.scryfall.io/border_crop/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "thumb": "https://cards.scryfall.io/thumb/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "grid": "https://cards.scryfall.io/grid/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "display": "https://cards.scryfall.io/display/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "art": "https://cards.scryfall.io/art/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "crop": "https://cards.scryfall.io/crop/front/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174"
+      }
+    },
+    {
+      "object": "card_face",
+      "name": "Wedding Festivity",
+      "mana_cost": "",
+      "type_line": "Enchantment",
+      "oracle_text": "Creatures you control get +1/+1.",
+      "colors": ["W"],
+      "color_indicator": ["W"],
+      "flavor_text": "Vampires from every bloodline mingled together, all swelling with pride to be seen at the event of the century.",
+      "artist": "Caroline Gariba",
+      "artist_id": "61a4c572-3d1b-4b71-aeb0-1a5a6b82c524",
+      "illustration_id": "8d57ae03-b0c4-406e-9722-b4b47e8c4bbc",
+      "image_uris": {
+        "small": "https://cards.scryfall.io/small/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "normal": "https://cards.scryfall.io/normal/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "large": "https://cards.scryfall.io/large/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "png": "https://cards.scryfall.io/png/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.png?1783908174",
+        "art_crop": "https://cards.scryfall.io/art_crop/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "border_crop": "https://cards.scryfall.io/border_crop/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.jpg?1783908174",
+        "thumb": "https://cards.scryfall.io/thumb/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "grid": "https://cards.scryfall.io/grid/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "display": "https://cards.scryfall.io/display/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "art": "https://cards.scryfall.io/art/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174",
+        "crop": "https://cards.scryfall.io/crop/back/4/e/4e6f365d-c5c4-4fd6-94cb-833b89239d73.webp?1783908174"
+      }
+    }
+  ]
+}
