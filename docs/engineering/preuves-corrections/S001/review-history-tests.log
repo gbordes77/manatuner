@@ -1,0 +1,26 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/lib/__tests__/privacy.history.test.ts (20 tests | 1 failed) 10ms
+   × recovers an old top-level score without hiding its deck and rejects it on new import 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > recovers an old top-level score without hiding its deck and rejects it on new import
+TypeError: Cannot read properties of undefined (reading 'deckName')
+ ❯ src/lib/__tests__/privacy.history.test.ts:149:21
+    147|   memory.set(key, before)
+    148|   const records = PrivacyStorage.getMyAnalyses()
+    149|   expect(records[0].deckName).toBe('old')
+       |                     ^
+    150|   expect(records[0].deckList).toBe('24 Forest')
+    151|   expect(records[0].analysis).toBeNull()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 22 passed (23)
+   Start at  12:03:48
+   Duration  368ms (transform 71ms, setup 77ms, import 69ms, tests 66ms, environment 319ms)
+

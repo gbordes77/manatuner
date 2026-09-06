@@ -47,7 +47,9 @@ const cards = (): DeckCard[] =>
   ] as DeckCard[]
 it('global analysis excludes sideboard and command zone from the library but retains the imported cards', async () => {
   vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(cards())
-  const result = await DeckAnalyzer.analyzeDeck('fixture')
+  const result = await DeckAnalyzer.analyzeDeck(
+    '24 Forest\n36 Spell\nSideboard\n15 Sideboard spell\nCommander\n1 Commander'
+  )
   expect(result.totalCards).toBe(60)
   expect(result.totalLands).toBe(24)
   expect(result.cards).toHaveLength(4)
@@ -68,7 +70,9 @@ it('colorless identity does not hide an explicit C requirement', async () => {
   const input = cards().slice(0, 2)
   input[1] = { ...input[1], name: 'Colorless demand', colors: [], manaCost: '{C}' }
   vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(input)
-  const result = await DeckAnalyzer.analyzeDeck('fixture')
+  const result = await DeckAnalyzer.analyzeDeck(
+    input.map((c) => `${c.quantity} ${c.name}`).join('\n')
+  )
   expect(result.consistency).toBe(0)
 })
 
@@ -77,7 +81,9 @@ it('recommendations use computed land ratio and curve, including zero consistenc
     .slice(1, 2)
     .map((c) => ({ ...c, cmc: 5, manaCost: '{4}{G}' }))
   vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(input)
-  const result = await DeckAnalyzer.analyzeDeck('fixture')
+  const result = await DeckAnalyzer.analyzeDeck(
+    input.map((c) => `${c.quantity} ${c.name}`).join('\n')
+  )
   expect(result.recommendations.join(' ')).toContain('current: 0%')
   expect(result.recommendations.join(' ')).toContain('High mana curve (5.0)')
   expect(result.recommendations.join(' ')).toContain('Low mana consistency (0%)')

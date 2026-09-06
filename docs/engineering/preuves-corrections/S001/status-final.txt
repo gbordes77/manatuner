@@ -1,0 +1,61 @@
+ M playwright-report/index.html
+ M src/components/EnhancedCharts.tsx
+ M src/components/EnhancedRecommendations.tsx
+ M src/components/PrivacySettings.tsx
+ M src/components/analyzer/AnalysisTab.tsx
+ M src/components/analyzer/DeckInputSection.tsx
+ M src/components/analyzer/KarstenTargetDelta.tsx
+ M src/components/analyzer/ManabaseStats.tsx
+ M src/components/analyzer/ManabaseTab.tsx
+ M src/components/analyzer/MulliganTab.tsx
+ M src/components/analyzer/QuickVerdict.tsx
+ M src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx
+ M src/components/analyzer/karstenDeltas.ts
+ M src/components/export/ManaBlueprint.tsx
+ M src/hooks/useCardImage.ts
+ M src/lib/privacy.ts
+ M src/pages/AnalyzerPage.tsx
+ M src/pages/MyAnalysesPage.tsx
+ M src/services/__tests__/assertCardResolution.test.ts
+ M src/services/__tests__/parseDecklist.t10.test.ts
+ M src/services/cardResolver.ts
+ M src/services/deckAnalyzer.ts
+ M src/services/deckParser.ts
+ M src/services/http.ts
+ M src/services/landService.ts
+ M src/services/manaProducerService.ts
+ M src/services/scryfall.ts
+ M src/utils/manaCostParser.ts
+ M src/workers/mulliganArchetype.worker.ts
+ M test-results.json
+ M test-results/.last-run.json
+ M tests/math-audit/mulligan-worker-ui.test.tsx
+ M tests/math-audit/populations.test.ts
+ M tests/math-audit/regressions.test.ts
+ M tests/math-audit/spell-summary.test.ts
+?? .claude/worktrees/
+?? .mcp.json.bak.20260801-140417
+?? .playwright-mcp/
+?? docs/engineering/AUDIT-POST-CORRECTIFS-MANATUNER-2026-09-06.docx
+?? docs/engineering/AUDIT-POST-CORRECTIFS-MANATUNER-2026-09-06.md
+?? docs/engineering/SUIVI-CORRECTIONS-MANATUNER-2026-09-06.md
+?? docs/engineering/preuves-corrections/
+?? docs/handoff/PROMPT-CORRECTIONS-AUDIT-MANATUNER-2026-09-06.txt
+?? docs/handoff/PROMPT-REPRISE-MANATUNER.txt
+?? src/components/analyzer/__tests__/DeckInputSection.keyboard.test.tsx
+?? src/components/export/manaStability.ts
+?? src/hooks/__tests__/
+?? src/lib/__tests__/privacy.history.test.ts
+?? src/services/__tests__/http.deadline.test.ts
+?? src/services/__tests__/inputContract.f01-f02.test.ts
+?? src/services/__tests__/networkCancellation.test.ts
+?? tests/component/AnalyzerPage.cancellation.test.jsx
+?? tests/e2e/accessibility/edit-deck-keyboard.spec.js
+?? tests/e2e/core-flows/cancellation-audit.spec.js
+?? tests/e2e/core-flows/history-audit.spec.js
+?? tests/e2e/core-flows/input-contract-audit.spec.js
+?? tests/e2e/core-flows/mulligan-worker-recovery.spec.js
+?? tests/e2e/core-flows/synthesis-audit.spec.js
+?? tests/math-audit/mulligan-worker-failures.test.tsx
+?? tests/math-audit/synthesis-ui.f03.test.tsx
+?? tests/math-audit/synthesis.f03-f04.test.ts

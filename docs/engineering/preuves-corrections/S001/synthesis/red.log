@@ -1,0 +1,158 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stdout | tests/math-audit/synthesis.f03-f04.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ tests/math-audit/synthesis.f03-f04.test.ts (5 tests | 4 failed) 10ms
+   × F03 hybrid green support has no mandatory red target or score penalty 7ms
+   × F03 hybrid union counts distinct physical land copies, including shared duals once 1ms
+   × F03 phyrexian payment never creates mandatory color targets 1ms
+   × F04 principal targets invariant under blue sideboard and explicit command zone 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/synthesis.f03-f04.test.ts > F03 hybrid green support has no mandatory red target or score penalty
+AssertionError: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "actual": 0,
++     "color": "R",
++     "delta": -13,
++     "maxPips": 1,
++     "pivotTurn": 2,
++     "required": 13,
++     "requiredUnscaled": 13,
++     "verdict": "short",
++     "wasClamped": false,
++     "wasScaled": false,
++   },
++   {
++     "actual": 24,
++     "color": "G",
++     "delta": 11,
++     "maxPips": 1,
++     "pivotTurn": 2,
++     "required": 13,
++     "requiredUnscaled": 13,
++     "verdict": "ok",
++     "wasClamped": false,
++     "wasScaled": false,
++   },
++ ]
+
+ ❯ tests/math-audit/synthesis.f03-f04.test.ts:15:38
+     13| it('F03 hybrid green support has no mandatory red target or score pena…
+     14|   const result = await analyze([land('Forest',24),spell('{1}{R/G}')])
+     15|   expect(computeColorDeltas(result)).toEqual([])
+       |                                      ^
+     16|   expect(result.manaRequirements.R).toBe(0)
+     17|   expect(result.consistency).toBeCloseTo(exactTail(60,24,8,1),12)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/math-audit/synthesis.f03-f04.test.ts > F03 hybrid union counts distinct physical land copies, including shared duals once
+AssertionError: expected 0.920345889701397 to be close to 0.9881731831978411, received difference is 0.06782729349644412, but expected 5e-13
+ ❯ tests/math-audit/synthesis.f03-f04.test.ts:27:30
+     25|   const dual = {...land('Forest',12), name:'Dual', producedMana:['R','…
+     26|   const result = await analyze([dual,land('Mountain',12),spell('{1}{R/…
+     27|   expect(result.consistency).toBeCloseTo(exactTail(60,24,8,1),12)
+       |                              ^
+     28| })
+     29| it('F03 phyrexian payment never creates mandatory color targets', asyn…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/math-audit/synthesis.f03-f04.test.ts > F03 phyrexian payment never creates mandatory color targets
+AssertionError: expected [ { color: 'G', maxPips: 1, …(8) } ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   {
++     "actual": 24,
++     "color": "G",
++     "delta": 11,
++     "maxPips": 1,
++     "pivotTurn": 2,
++     "required": 13,
++     "requiredUnscaled": 13,
++     "verdict": "ok",
++     "wasClamped": false,
++     "wasScaled": false,
++   },
++ ]
+
+ ❯ tests/math-audit/synthesis.f03-f04.test.ts:31:38
+     29| it('F03 phyrexian payment never creates mandatory color targets', asyn…
+     30|   const result = await analyze([land('Forest',24),spell('{G/P}')])
+     31|   expect(computeColorDeltas(result)).toEqual([])
+       |                                      ^
+     32| })
+     33| it('F04 principal targets invariant under blue sideboard and explicit …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/math-audit/synthesis.f03-f04.test.ts > F04 principal targets invariant under blue sideboard and explicit command zone
+AssertionError: expected [ …(3) ] to deeply equal [ { color: 'R', maxPips: 1, …(8) } ]
+
+- Expected
++ Received
+
+@@ -1,7 +1,31 @@
+  [
+    {
++     "actual": 0,
++     "color": "U",
++     "delta": -21,
++     "maxPips": 2,
++     "pivotTurn": 2,
++     "required": 21,
++     "requiredUnscaled": 21,
++     "verdict": "short",
++     "wasClamped": false,
++     "wasScaled": false,
++   },
++   {
++     "actual": 0,
++     "color": "B",
++     "delta": -13,
++     "maxPips": 1,
++     "pivotTurn": 2,
++     "required": 13,
++     "requiredUnscaled": 13,
++     "verdict": "short",
++     "wasClamped": false,
++     "wasScaled": false,
++   },
++   {
+      "actual": 24,
+      "color": "R",
+      "delta": 11,
+      "maxPips": 1,
+      "pivotTurn": 2,
+
+ ❯ tests/math-audit/synthesis.f03-f04.test.ts:36:41
+     34|   const base = { totalCards:60,colorDistribution:{R:24},cards:[land('M…
+     35|   const withZones = {...base,cards:[...base.cards,{...spell('{U}{U}'),…
+     36|   expect(computeColorDeltas(withZones)).toEqual(computeColorDeltas(bas…
+       |                                         ^
+     37| })
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  11:53:55
+   Duration  624ms (transform 101ms, setup 69ms, import 112ms, tests 10ms, environment 355ms)
+

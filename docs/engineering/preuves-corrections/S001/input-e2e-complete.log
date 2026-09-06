@@ -1,0 +1,24 @@
+
+Running 16 tests using 1 worker
+
+(node:32915) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[2/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[3/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[4/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[5/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[6/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[7/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:40:5 › F01 reports the offending line and retains valid experimental decks
+[8/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 excluded sections: saved populations match input
+[9/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 local SB prefix and transitions: saved populations match input
+[10/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 categories and blank lines: saved populations match input
+[11/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:81:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[12/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:81:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[13/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:81:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[14/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:81:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[15/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:100:5 › F02 preserves post-board swaps and returning to the main population
+[16/16] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:123:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+  16 passed (12.1s)

@@ -24,7 +24,9 @@ export const ManabaseTab: React.FC<ManabaseTabProps> = ({
     const types: Record<string, string[]> = {}
 
     // Filter lands from analysisResult.cards (verified via Scryfall API)
-    const lands = analysisResult.cards.filter((card) => card.isLand)
+    const lands = analysisResult.cards.filter(
+      (card) => card.isLand && !card.isSideboard && !card.isCommander
+    )
 
     lands.forEach((card) => {
       // Use landMetadata if available for accurate categorization

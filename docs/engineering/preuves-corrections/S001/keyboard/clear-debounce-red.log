@@ -1,0 +1,38 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx (4 tests | 1 failed) 141ms
+     × does not restore a pending draft after Clear and persists subsequent typing 32ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx > external clear invalidates pending draft persistence > does not restore a pending draft after Clear and persists subsequent typing
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      "36 Lightning Bolt",
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx:109:29
+    107|     expect(input.value).toBe('')
+    108|     act(() => vi.advanceTimersByTime(DECKLIST_PERSIST_DEBOUNCE_MS))
+    109|     expect(setDeckList).not.toHaveBeenCalled()
+       |                             ^
+    110|     expect(input.value).toBe('')
+    111|     fireEvent.change(input, { target: { value: '24 Forest' } })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  11:49:02
+   Duration  705ms (transform 31ms, setup 28ms, import 324ms, tests 141ms, environment 141ms)
+

@@ -1,0 +1,12 @@
+
+Running 4 tests using 1 worker
+
+(node:31873) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[2/4] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[3/4] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[4/4] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+  4 passed (5.7s)

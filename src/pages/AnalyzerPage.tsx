@@ -10,6 +10,7 @@ import TerrainIcon from '@mui/icons-material/Terrain'
 import {
   Alert,
   Box,
+  Button,
   Chip,
   Container,
   Grid,
@@ -88,6 +89,7 @@ const AnalyzerPage: React.FC = () => {
   // (the CTA from the Library's Commander Pod track). Drives a persistent
   // info banner so Thibault sees the preset is actually active, and auto-
   // loads the Atraxa EDH sample if no deck is in state yet.
+  const [focusDeckEditor, setFocusDeckEditor] = useState(false)
   const [commanderPreset, setCommanderPreset] = useState(false)
   const { suggestFromDeckSize, unlockFormatAuto } = useAcceleration()
 
@@ -229,8 +231,19 @@ const AnalyzerPage: React.FC = () => {
     return summarizeColorDeltas(deltas)
   }, [analysisResult])
 
-  // AbortController for superseding in-flight analyzes (T06).
+  // Controller identity owns every effect, even when a service ignores abort.
   const analyzeAbortRef = useRef<AbortController | null>(null)
+
+  const cancelAnalysis = useCallback(() => {
+    const controller = analyzeAbortRef.current
+    // Invalidate ownership before notifying the transport.
+    analyzeAbortRef.current = null
+    controller?.abort()
+    dispatch(setIsAnalyzing(false))
+  }, [dispatch])
+
+  // Leaving the route cancels pending work; the persisted draft is retained.
+  useEffect(() => () => cancelAnalysis(), [cancelAnalysis])
 
   // Memoized analyze handler. Optional `listOverride` is the flushed local
   // draft from DeckInputSection (T01 debounce) so we never analyze a stale
@@ -249,11 +262,14 @@ const AnalyzerPage: React.FC = () => {
       analyzeAbortRef.current?.abort()
       const abortController = new AbortController()
       analyzeAbortRef.current = abortController
+      const ownsAnalysis = () =>
+        analyzeAbortRef.current === abortController && !abortController.signal.aborted
 
       dispatch(setIsAnalyzing(true))
 
       try {
         const result = await DeckAnalyzer.analyzeDeck(list, { signal: abortController.signal })
+        if (!ownsAnalysis()) return
         // P1-9: auto Format from main deck size (exclude sideboard so 60+15 ≠ 75)
         const mainSize =
           result?.cards?.filter((c) => !c.isSideboard).reduce((s, c) => s + (c.quantity || 1), 0) ||
@@ -273,6 +289,7 @@ const AnalyzerPage: React.FC = () => {
 
         // P2-11: move focus to verdict for keyboard / SR users after analysis
         requestAnimationFrame(() => {
+          if (!ownsAnalysis()) return
           const el = document.getElementById('quick-verdict')
           if (!el) return
           if (typeof el.focus === 'function') {
@@ -314,12 +331,14 @@ const AnalyzerPage: React.FC = () => {
           const msg =
             saveErr instanceof Error && saveErr.name === 'QuotaExceededError'
               ? 'Browser storage full. Analysis shown but not saved to history. Clear old analyses in Privacy Settings.'
-              : 'Could not save analysis to local history.'
+              : saveErr instanceof Error
+                ? saveErr.message
+                : 'Could not save analysis to local history.'
           dispatch(showSnackbar({ message: msg, severity: 'warning' }))
         }
       } catch (error) {
         // Superseded by a newer Analyze click — leave UI as-is (T06)
-        if (error instanceof AnalysisCancelledError || abortController.signal.aborted) {
+        if (!ownsAnalysis() || error instanceof AnalysisCancelledError) {
           return
         }
         dispatch(setAnalysisResult(null))
@@ -336,7 +355,7 @@ const AnalyzerPage: React.FC = () => {
         )
       } finally {
         // Only clear analyzing if this controller is still the active one
-        if (analyzeAbortRef.current === abortController) {
+        if (ownsAnalysis()) {
           dispatch(setIsAnalyzing(false))
         }
       }
@@ -344,6 +363,7 @@ const AnalyzerPage: React.FC = () => {
     [deckList, deckName, dispatch, suggestFromDeckSize, markCommanderPreset, isMobile]
   )
   const handleClear = useCallback(() => {
+    cancelAnalysis()
     setCommanderPreset(false)
     clearCommanderPresetFlag()
     dispatch(clearAnalyzer())
@@ -353,7 +373,7 @@ const AnalyzerPage: React.FC = () => {
         severity: 'info',
       })
     )
-  }, [dispatch, clearCommanderPresetFlag])
+  }, [dispatch, clearCommanderPresetFlag, cancelAnalysis])
 
   const handleLoadSample = useCallback(() => {
     // Midrange 60-card sample — leave Commander mode if it was active
@@ -554,7 +574,6 @@ const AnalyzerPage: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              cursor: 'pointer',
               transition: 'all 0.3s ease',
               borderRadius: 3,
               border: '2px dashed',
@@ -567,7 +586,6 @@ const AnalyzerPage: React.FC = () => {
                 transform: 'translateY(-2px)',
               },
             }}
-            onClick={() => dispatch(setIsDeckMinimized(false))}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Box
@@ -596,20 +614,30 @@ const AnalyzerPage: React.FC = () => {
             {/* Center instruction text */}
             <Box sx={{ display: { xs: 'none', md: 'block' }, textAlign: 'center', flex: 1 }}>
               <Typography variant="body1" color="primary.main" fontWeight={500}>
-                Click to edit your deck or start a new analysis
+                Edit your deck or start a new analysis
               </Typography>
             </Box>
 
-            <Chip
-              label="✏️ Edit Deck"
+            <Button
+              type="button"
+              variant="contained"
+              aria-expanded={false}
+              aria-controls="deck-editor"
+              onClick={() => {
+                setFocusDeckEditor(true)
+                dispatch(setIsDeckMinimized(false))
+              }}
               size="small"
               sx={{
                 bgcolor: '#1976d2',
                 color: 'white',
                 fontWeight: 600,
                 '&:hover': { bgcolor: '#1565c0' },
+                '&:focus-visible': { outline: '3px solid #1565c0', outlineOffset: '3px' },
               }}
-            />
+            >
+              Edit Deck
+            </Button>
           </Paper>
         )}
 
@@ -631,9 +659,17 @@ const AnalyzerPage: React.FC = () => {
           }}
         >
           {/* Input Section - Hidden when minimized */}
-          {!(analysisResult && isDeckMinimized) && (
-            <Grid item xs={12} lg={isMobile ? 12 : 6}>
+          <Grid
+            item
+            xs={12}
+            lg={isMobile ? 12 : 6}
+            id="deck-editor"
+            hidden={Boolean(analysisResult && isDeckMinimized)}
+            sx={{ display: analysisResult && isDeckMinimized ? 'none' : undefined }}
+          >
+            {!(analysisResult && isDeckMinimized) && (
               <DeckInputSection
+                autoFocusDeckList={focusDeckEditor}
                 deckList={deckList}
                 deckName={deckName}
                 setDeckList={(value: string) => dispatch(setDeckList(value))}
@@ -648,8 +684,8 @@ const AnalyzerPage: React.FC = () => {
                 isMobile={isMobile}
                 isSmallMobile={isSmallMobile}
               />
-            </Grid>
-          )}
+            )}
+          </Grid>
 
           {/* Results Section - Full width when minimized */}
           <Grid item xs={12} lg={analysisResult && isDeckMinimized ? 12 : isMobile ? 12 : 6}>
@@ -663,6 +699,15 @@ const AnalyzerPage: React.FC = () => {
                 borderColor: 'divider',
               }}
             >
+              {!isAnalyzing && Boolean(analysisResult?.inputWarnings?.length) && (
+                <Alert severity="warning" sx={{ mb: 2 }}>
+                  <Box component="ul" sx={{ m: 0, pl: 2 }}>
+                    {analysisResult?.inputWarnings?.map((warning: string, index: number) => (
+                      <li key={index}>{warning}</li>
+                    ))}
+                  </Box>
+                </Alert>
+              )}
               {isAnalyzing ? (
                 <AnalyzerSkeleton variant="results" />
               ) : !analysisResult ? (

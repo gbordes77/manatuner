@@ -1,9 +1,9 @@
-import { Box, Paper, Tooltip, Typography } from '@mui/material'
+import { Alert, Box, Paper, Tooltip, Typography } from '@mui/material'
 import React, { useMemo } from 'react'
 import { MANA_COLOR_STYLES } from '../../constants/manaColors'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 import { detectDeckFormatFamily, KARSTEN_REFERENCE_DECK_SIZE } from '../../utils/deckFormat'
-import { computeColorDeltas } from './karstenDeltas'
+import { computeColorDeltas, colorTargetLimitations } from './karstenDeltas'
 
 interface KarstenTargetDeltaProps {
   analysisResult: AnalysisResult
@@ -21,34 +21,47 @@ export const KarstenTargetDelta: React.FC<KarstenTargetDeltaProps> = ({
   isMobile,
 }) => {
   const deltas = useMemo(() => computeColorDeltas(analysisResult), [analysisResult])
+  const limitations = useMemo(() => colorTargetLimitations(analysisResult), [analysisResult])
   const deckSize = analysisResult.totalCards || KARSTEN_REFERENCE_DECK_SIZE
   const family = detectDeckFormatFamily(deckSize)
   const anyScaled = deltas.some((d) => d.wasScaled)
 
-  if (deltas.length === 0) return null
+  if (deltas.length === 0 && limitations.length === 0) return null
 
   return (
     <Paper sx={{ p: isMobile ? 2 : 3 }}>
       <Typography variant={isMobile ? 'body1' : 'h6'} gutterBottom sx={{ fontWeight: 'bold' }}>
-        Color Sources Check — Can You Cast Your Spells?
+        Fixed Color Sources — Main Deck
       </Typography>
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ display: 'block', mb: 2, lineHeight: 1.5 }}
-      >
-        For each color, we compare how many lands producing that color you have against Frank
-        Karsten&apos;s published source guidelines for the strongest requirement in your spells.
-        These assume sufficient lands after mulligans and a target of 89 + mana value percent
-        {anyScaled
-          ? ` — scaled from 60-card tables to your ${deckSize}-card ${
-              family === 'edh' ? 'Commander' : family === 'limited' ? 'Limited' : ''
-            } list (×${deckSize}/${KARSTEN_REFERENCE_DECK_SIZE}).`
-          : '.'}{' '}
-        Green: you&apos;re fine. Orange: a few sources short. Red: well short — you&apos;ll miss a
-        lot of casts.
-      </Typography>
+      {deltas.length > 0 && (
+        <Typography
+          variant="caption"
+          color="text.secondary"
+          sx={{ display: 'block', mb: 2, lineHeight: 1.5 }}
+        >
+          For each fixed color requirement in main-deck spells, we compare how many lands producing
+          that color you have against Frank Karsten&apos;s published source guidelines for the
+          strongest requirement in your spells. These assume sufficient lands after mulligans and a
+          target of 89 + mana value percent
+          {anyScaled
+            ? ` — scaled from 60-card tables to your ${deckSize}-card ${
+                family === 'edh' ? 'Commander' : family === 'limited' ? 'Limited' : ''
+              } list (×${deckSize}/${KARSTEN_REFERENCE_DECK_SIZE}).`
+            : '.'}{' '}
+          Green: you&apos;re fine. Orange: a few sources short. Red: well short — you&apos;ll miss a
+          lot of casts.
+        </Typography>
+      )}
 
+      {limitations.length > 0 && (
+        <Alert severity="info" sx={{ mb: 2 }}>
+          {limitations.map((note) => (
+            <Typography key={note} variant="body2">
+              {note}
+            </Typography>
+          ))}
+        </Alert>
+      )}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
         {deltas.map((d) => {
           const manaStyle = MANA_COLOR_STYLES[d.color]

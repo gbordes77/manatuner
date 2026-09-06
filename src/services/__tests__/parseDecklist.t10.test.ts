@@ -20,20 +20,23 @@ describe('T10 parseDecklistText bounds', () => {
     expect(cards.find((c) => c.name === 'Sol Ring')?.quantity).toBe(1)
   })
 
-  it('skips qty outside 1–99', () => {
-    const cards = parseDecklistText(`0 Lightning Bolt\n100 Forest\n99 Swamp\n1 Island`)
-    expect(cards.map((c) => c.name).sort()).toEqual(['Island', 'Swamp'])
-    expect(cards.find((c) => c.name === 'Swamp')?.quantity).toBe(99)
+  it('rejects invalid quantities without silently dropping lines', () => {
+    expect(() => parseDecklistText('0 Lightning Bolt\n100 Forest')).toThrow(/Line 1/)
+    expect(parseDecklistText('100 Forest')).toEqual([{ name: 'Forest', quantity: 100 }])
+    expect(() => parseDecklistText('251 Forest')).toThrow(/quantity/)
   })
 
-  it('skips overlong names', () => {
+  it('rejects overlong names', () => {
     const long = 'A'.repeat(DECKLIST_NAME_MAX + 1)
-    const cards = parseDecklistText(`1 ${long}\n1 Valid Card`)
-    expect(cards).toEqual([{ name: 'Valid Card', quantity: 1 }])
+    expect(() => parseDecklistText(`1 ${long}\n1 Valid Card`)).toThrow(/Line 1/)
   })
 
-  it('exports DECKLIST_QTY_MAX 99', () => {
-    expect(DECKLIST_QTY_MAX).toBe(99)
+  it('uses the documented product total limit and main-library sections', () => {
+    expect(DECKLIST_QTY_MAX).toBe(250)
+    expect(() => parseDecklistText('250 Forest\n1 Island')).toThrow(/total/)
+    expect(parseDecklistText('60 Forest\nMaybeboard\n4 Island')).toEqual([
+      { name: 'Forest', quantity: 60 },
+    ])
   })
 })
 

@@ -45,7 +45,7 @@ it('unsupported costs never acquire a numerical summary probability', async () =
       resolved: true,
     },
   ])
-  const result = await DeckAnalyzer.analyzeDeck('fixture')
+  const result = await DeckAnalyzer.analyzeDeck('24 Forest\n36 Snow demand')
   expect(result.spellAnalysis['Snow demand']).toBeUndefined()
   expect(result.unsupportedSpellAnalysis?.['Snow demand']).toBeTruthy()
   expect(result.tempoSpellAnalysis?.['Snow demand']).toBeUndefined()

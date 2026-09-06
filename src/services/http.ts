@@ -1,8 +1,4 @@
-/**
- * Shared HTTP helpers for Scryfall (and other) network calls.
- * Provides a single AbortController + timeout + retry policy.
- */
-
+/** Shared deadlines for Scryfall requests, including retries and response bodies. */
 export class HttpTimeoutError extends Error {
   readonly name = 'HttpTimeoutError'
   constructor(message = 'Request timed out') {
@@ -13,138 +9,150 @@ export class HttpTimeoutError extends Error {
 
 export class HttpError extends Error {
   readonly name = 'HttpError'
-  readonly status: number
-
-  constructor(status: number, message?: string) {
-    super(message ?? `HTTP ${status}`)
-    this.status = status
+  constructor(
+    readonly status: number,
+    message = `HTTP ${status}`
+  ) {
+    super(message)
     Object.setPrototypeOf(this, HttpError.prototype)
   }
 }
 
 export interface FetchWithTimeoutOptions {
-  /** Abort after this many ms (default 8000) */
+  /** Total budget across attempts, backoff and (for JSON requests) body; default 8000 ms. */
   timeoutMs?: number
-  /**
-   * Number of *retries* after the first attempt (default 1 → up to 2 attempts).
-   * Retries only on HTTP 429 and 5xx.
-   */
+  /** Retries after first attempt; only 429 and 5xx. Default one retry. */
   retries?: number
-  /** Optional external AbortSignal (user cancelled an analysis, etc.) */
   signal?: AbortSignal
 }
 
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms)
+export function throwIfAborted(signal?: AbortSignal | null): void {
+  if (signal?.aborted) {
+    // Our global deadline must remain distinguishable from a user cancellation.
+    if (signal.reason instanceof HttpTimeoutError) throw signal.reason
+    throw new DOMException('The operation was aborted.', 'AbortError')
+  }
+}
+
+export function isCancellation(error: unknown): boolean {
+  return (
+    (error instanceof Error || error instanceof DOMException) &&
+    (error.name === 'AbortError' || error instanceof HttpTimeoutError)
+  )
+}
+
+/** Reject even when an underlying implementation ignores AbortSignal; detach on settlement. */
+export function abortable<T>(operation: Promise<T>, signal: AbortSignal): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => {
+      try {
+        throwIfAborted(signal)
+      } catch (error) {
+        reject(error)
+      }
+    }
+    signal.addEventListener('abort', onAbort, { once: true })
+    operation.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort))
+    if (signal.aborted) onAbort()
   })
+}
+
+export async function abortableDelay(ms: number, signal?: AbortSignal): Promise<void> {
+  throwIfAborted(signal)
+  let timer: ReturnType<typeof setTimeout> | undefined
+  try {
+    const delay = new Promise<void>((resolve) => {
+      timer = setTimeout(resolve, Math.min(ms, 2_147_483_647))
+    })
+    await (signal ? abortable(delay, signal) : delay)
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+/** One deadline and cancellation lineage across every nested operation. */
+export async function withTimeout<T>(
+  operation: (signal: AbortSignal) => Promise<T>,
+  timeoutMs: number,
+  externalSignal?: AbortSignal | null
+): Promise<T> {
+  throwIfAborted(externalSignal)
+  const controller = new AbortController()
+  const onAbort = () => controller.abort(externalSignal?.reason)
+  externalSignal?.addEventListener('abort', onAbort, { once: true })
+  const timer = setTimeout(
+    () => controller.abort(new HttpTimeoutError(`Request timed out after ${timeoutMs}ms`)),
+    timeoutMs
+  )
+  try {
+    return await abortable(operation(controller.signal), controller.signal)
+  } finally {
+    clearTimeout(timer)
+    externalSignal?.removeEventListener('abort', onAbort)
+  }
+}
 
 function parseRetryAfterMs(header: string | null, attempt: number): number {
   const fallback = 500 * (attempt + 1)
   if (!header) return fallback
-
-  const asSeconds = Number(header)
-  if (Number.isFinite(asSeconds) && asSeconds >= 0) {
-    return asSeconds * 1000
-  }
-
-  const asDate = Date.parse(header)
-  if (Number.isFinite(asDate)) {
-    return Math.max(0, asDate - Date.now())
-  }
-
-  return fallback
+  const seconds = Number(header)
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000
+  const date = Date.parse(header)
+  return Number.isFinite(date) ? Math.max(0, date - Date.now()) : fallback
 }
 
-function isAbortError(error: unknown): boolean {
-  return (
-    (error instanceof DOMException && error.name === 'AbortError') ||
-    (error instanceof Error && error.name === 'AbortError')
+async function request<T>(
+  url: string,
+  init: RequestInit,
+  options: FetchWithTimeoutOptions,
+  consume: (response: Response, signal: AbortSignal) => Promise<T>
+): Promise<T> {
+  const { timeoutMs = 8000, retries = 1 } = options
+  return withTimeout(
+    async (signal) => {
+      for (let attempt = 0; ; attempt++) {
+        throwIfAborted(signal)
+        const response = await abortable(fetch(url, { ...init, signal }), signal)
+        throwIfAborted(signal)
+        if (
+          (response.status === 429 || (response.status >= 500 && response.status <= 599)) &&
+          attempt < retries
+        ) {
+          // Release the discarded body before retrying; respect long Retry-After until deadline.
+          void response.body?.cancel().catch(() => {})
+          await abortableDelay(
+            parseRetryAfterMs(response.headers.get('Retry-After'), attempt),
+            signal
+          )
+          continue
+        }
+        return consume(response, signal)
+      }
+    },
+    timeoutMs,
+    options.signal ?? init.signal
   )
 }
 
-/**
- * fetch() with AbortController timeout, optional retries on 429/5xx,
- * Retry-After respect, and typed errors.
- *
- * On success (including HTTP 4xx that are not retried), returns the Response
- * so callers keep their existing `response.ok` / status checks.
- * On timeout: rejects with HttpTimeoutError.
- * On external abort: rejects with AbortError.
- * On network failure: rejects with the underlying error (no retry — only 429/5xx).
- */
-export async function fetchWithTimeout(
+/** Header-only compatibility API; JSON consumers should use fetchJsonWithTimeout. */
+export function fetchWithTimeout(
   url: string,
   init: RequestInit = {},
   options: FetchWithTimeoutOptions = {}
 ): Promise<Response> {
-  const { timeoutMs = 8000, retries = 1, signal: externalSignal } = options
+  return request(url, init, options, async (response) => response)
+}
 
-  if (externalSignal?.aborted) {
-    throw new DOMException('The operation was aborted.', 'AbortError')
-  }
-
-  let lastError: unknown
-
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    const controller = new AbortController()
-    let timedOut = false
-
-    const timeoutId = setTimeout(() => {
-      timedOut = true
-      controller.abort()
-    }, timeoutMs)
-
-    const onExternalAbort = () => {
-      controller.abort()
-    }
-    if (externalSignal) {
-      externalSignal.addEventListener('abort', onExternalAbort)
-    }
-
-    // Compose signals: prefer our controller (covers timeout + external)
-    const requestInit: RequestInit = {
-      ...init,
-      signal: controller.signal,
-    }
-
-    try {
-      const response = await fetch(url, requestInit)
-      clearTimeout(timeoutId)
-      if (externalSignal) {
-        externalSignal.removeEventListener('abort', onExternalAbort)
-      }
-
-      const retriable = response.status === 429 || response.status >= 500
-      if (retriable && attempt < retries) {
-        const delayMs = parseRetryAfterMs(response.headers.get('Retry-After'), attempt)
-        await sleep(delayMs)
-        continue
-      }
-
-      return response
-    } catch (error) {
-      clearTimeout(timeoutId)
-      if (externalSignal) {
-        externalSignal.removeEventListener('abort', onExternalAbort)
-      }
-
-      if (isAbortError(error)) {
-        if (externalSignal?.aborted) {
-          throw error
-        }
-        if (timedOut) {
-          throw new HttpTimeoutError(`Request timed out after ${timeoutMs}ms: ${url}`)
-        }
-        // Abort from init.signal or other — rethrow
-        throw error
-      }
-
-      // Network / TypeError etc. — do not retry (policy: 429/5xx only)
-      lastError = error
-      throw error
-    }
-  }
-
-  throw lastError ?? new Error(`fetchWithTimeout failed for ${url}`)
+/** Consume successful JSON under the same deadline as fetch and Retry-After. */
+export function fetchJsonWithTimeout<T = unknown>(
+  url: string,
+  init: RequestInit = {},
+  options: FetchWithTimeoutOptions = {}
+): Promise<{ response: Response; data: T | undefined }> {
+  return request(url, init, options, async (response, signal) => {
+    const data = response.ok ? await abortable(response.json() as Promise<T>, signal) : undefined
+    if (!response.ok) void response.body?.cancel().catch(() => {})
+    throwIfAborted(signal)
+    return { response, data }
+  })
 }

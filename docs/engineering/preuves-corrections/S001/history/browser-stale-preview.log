@@ -1,0 +1,197 @@
+
+Running 4 tests using 1 worker
+
+(node:35191) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] [chromium] › tests/e2e/core-flows/history-audit.spec.js:20:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+  1) [chromium] › tests/e2e/core-flows/history-audit.spec.js:20:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Valid deck', { exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Valid deck', { exact: true }) with timeout 5000ms
+      - waiting for getByText('Valid deck', { exact: true })
+
+
+      30 |   page.on('pageerror', (error) => errors.push(error.message))
+      31 |   await page.goto('/my-analyses')
+    > 32 |   await expect(page.getByText('Valid deck', { exact: true })).toBeVisible()
+         |                                                               ^
+      33 |   await expect(page.getByText('Old deck', { exact: true })).toBeVisible()
+      34 |   await expect(page.getByText(/History entry 1 is invalid and hidden/)).toBeVisible()
+      35 |   await expect(page.getByText(/Saved result unavailable. Load the original deck/)).toBeVisible()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:32:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-0b89a-ck-without-rewriting-source-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-0b89a-ck-without-rewriting-source-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-0b89a-ck-without-rewriting-source-chromium/error-context.md
+
+
+(node:35221) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/4] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 invalid import preserves existing history and reports outcome
+  2) [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 invalid import preserves existing history and reports outcome 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for event "filechooser"
+    ============================================================
+
+       7 | const stored = (page) => page.evaluate((key) => localStorage.getItem(key), key)
+       8 | async function importFile(page, value) {
+    >  9 |   const chooser = page.waitForEvent('filechooser')
+         |                        ^
+      10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+      11 |   await (
+      12 |     await chooser
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:9:24)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Import (merge)', exact: true })
+
+
+       8 | async function importFile(page, value) {
+       9 |   const chooser = page.waitForEvent('filechooser')
+    > 10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+         |                                                                           ^
+      11 |   await (
+      12 |     await chooser
+      13 |   ).setFiles({
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:10:75)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-11fb5-history-and-reports-outcome-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-11fb5-history-and-reports-outcome-chromium/error-context.md
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-11fb5-history-and-reports-outcome-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:35408) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/4] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 quota import preserves existing history and reports outcome
+  3) [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 quota import preserves existing history and reports outcome 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for event "filechooser"
+    ============================================================
+
+       7 | const stored = (page) => page.evaluate((key) => localStorage.getItem(key), key)
+       8 | async function importFile(page, value) {
+    >  9 |   const chooser = page.waitForEvent('filechooser')
+         |                        ^
+      10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+      11 |   await (
+      12 |     await chooser
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:9:24)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Import (merge)', exact: true })
+
+
+       8 | async function importFile(page, value) {
+       9 |   const chooser = page.waitForEvent('filechooser')
+    > 10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+         |                                                                           ^
+      11 |   await (
+      12 |     await chooser
+      13 |   ).setFiles({
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:10:75)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-78279-history-and-reports-outcome-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-78279-history-and-reports-outcome-chromium/error-context.md
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-78279-history-and-reports-outcome-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:35671) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[4/4] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 merge import preserves existing history and reports outcome
+  4) [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 merge import preserves existing history and reports outcome 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for event "filechooser"
+    ============================================================
+
+       7 | const stored = (page) => page.evaluate((key) => localStorage.getItem(key), key)
+       8 | async function importFile(page, value) {
+    >  9 |   const chooser = page.waitForEvent('filechooser')
+         |                        ^
+      10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+      11 |   await (
+      12 |     await chooser
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:9:24)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Import (merge)', exact: true })
+
+
+       8 | async function importFile(page, value) {
+       9 |   const chooser = page.waitForEvent('filechooser')
+    > 10 |   await page.getByRole('button', { name: 'Import (merge)', exact: true }).click()
+         |                                                                           ^
+      11 |   await (
+      12 |     await chooser
+      13 |   ).setFiles({
+        at importFile (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:10:75)
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/history-audit.spec.js:56:11
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-6f084-history-and-reports-outcome-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-6f084-history-and-reports-outcome-chromium/error-context.md
+
+    attachment #3: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/history/browser/core-flows-history-audit-F-6f084-history-and-reports-outcome-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  4 failed
+    [chromium] › tests/e2e/core-flows/history-audit.spec.js:20:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source 
+    [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 invalid import preserves existing history and reports outcome 
+    [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 quota import preserves existing history and reports outcome 
+    [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 merge import preserves existing history and reports outcome 

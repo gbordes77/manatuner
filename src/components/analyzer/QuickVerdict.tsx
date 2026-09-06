@@ -4,7 +4,7 @@ import React from 'react'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 
 const HEALTH_SCORE_HELP =
-  'Health Score is a heuristic average of access to each required color at turn two. It is not a probability of casting spells on curve. Land sequencing, simultaneous pips and ramp are not measured by this score.'
+  'Health Score is a heuristic average of turn-two access to each fixed color or hybrid alternative group. It is not a probability of casting spells on curve. Land sequencing, simultaneous pips and ramp are not measured by this score.'
 
 interface QuickVerdictProps {
   analysisResult: AnalysisResult
@@ -150,7 +150,7 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
     <Alert
       id="quick-verdict"
       tabIndex={-1}
-      severity={severity}
+      severity={analysisResult.consistencyUnavailable ? 'info' : severity}
       variant="outlined"
       sx={{
         mb: 2,
@@ -179,7 +179,9 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           opacity: 0.9,
         }}
       >
-        Health Score {consistencyPct}% · {healthBand}
+        {analysisResult.consistencyUnavailable
+          ? 'Health Score unavailable'
+          : `Health Score ${consistencyPct}% · ${healthBand}`}
         <Tooltip title={HEALTH_SCORE_HELP}>
           <HelpOutlineIcon
             fontSize="inherit"
@@ -190,8 +192,15 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
         </Tooltip>
       </Typography>
       <Typography variant="body2" sx={{ fontWeight: 500, lineHeight: 1.5 }}>
-        {phrase}
+        {analysisResult.consistencyUnavailable
+          ? 'Unrepresented payment symbols prevent a meaningful color access score. Review individual spell limitations.'
+          : phrase}
       </Typography>
+      {analysisResult.colorAccessNotes?.map((note) => (
+        <Typography key={note} variant="caption" sx={{ display: 'block', mt: 1 }}>
+          {note}
+        </Typography>
+      ))}
       {Array.isArray(analysisResult.recommendations) &&
         analysisResult.recommendations.length > 0 && (
           <Box sx={{ mt: 1.25 }} data-testid="top-recommendations">
@@ -222,7 +231,8 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           sx={{ display: 'block', mt: 0.5, opacity: 0.85, fontStyle: 'italic' }}
         >
           EDH: priority horizon T4–T8 · Karsten color targets scaled to {analysisResult.totalCards}{' '}
-          cards · command zone detected when marked / first non-land.{' '}
+          cards · command zone only when explicitly marked; commander payment is shown separately in
+          Castability.{' '}
           <a href="/guide#commander" style={{ color: 'inherit' }}>
             Guide
           </a>

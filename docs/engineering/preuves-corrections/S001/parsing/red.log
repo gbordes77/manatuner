@@ -1,0 +1,311 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts (20 tests | 14 failed) 13ms
+     × rejects  before resolution 5ms
+     × rejects nonsense without quantities before resolution 1ms
+     × rejects 0 Forest before resolution 1ms
+     × rejects -1 Forest before resolution 0ms
+     × rejects 1.5 Forest before resolution 0ms
+     × rejects 1000000 Forest before resolution 1ms
+     × rejects 9007199254740993 Forest before resolution 0ms
+     × rejects 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 Forest before resolution 0ms
+     × rejects 125 Forest
+126 Island before resolution 0ms
+     × rejects 1 Forest
+invalid line before resolution 0ms
+     × identifies a rejected line 0ms
+     × excludes Maybeboard and Companion from resolved analysis cards 1ms
+     × keeps inline SB local and resets explicit section transitions 1ms
+     × preserves categorized noncanonical main with blank lines 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects  before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects nonsense without quantities before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 0 Forest before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects -1 Forest before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 1.5 Forest before resolution
+AssertionError: promise resolved "{ totalCards: +0, …(19) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "averageCMC": 0,
++   "cards": [],
++   "colorDistribution": {
++     "B": 0,
++     "C": 0,
++     "G": 0,
++     "R": 0,
++     "U": 0,
++     "W": 0,
++   },
++   "consistency": 0,
++   "landMetadata": undefined,
++   "landRatio": 0,
++   "manaCurve": {
++     "0": 0,
++     "1": 0,
++     "2": 0,
++     "3": 0,
++     "4": 0,
++     "5": 0,
++     "6": 0,
++     "7+": 0,
++   },
++   "manaRequirements": {
++     "B": 0,
++     "C": 0,
++     "G": 0,
++     "R": 0,
++     "U": 0,
++     "W": 0,
++   },
++   "mulliganAnalysis": {
++     "averageHand": 0,
++     "goodHand": 0,
++     "perfectHand": 0,
++     "poorHand": 0,
++     "terribleHand": 0,
++   },
++   "probabilities": {
++     "turn1": {
++       "anyColor": 0,
++       "specificColors": {
++         "B": 1,
++         "C": 1,
++         "G": 1,
++         "R": 1,
++         "U": 1,
++         "W": 1,
++       },
++     },
++     "turn2": {
++       "anyColor": 0,
++       "specificColors": {
++         "B": 1,
++         "C": 1,
++         "G": 1,
++         "R": 1,
++         "U": 1,
++         "W": 1,
++       },
++     },
++     "turn3": {
++       "anyColor": 0,
++       "specificColors": {
++         "B": 1,
++         "C": 1,
++         "G": 1,
++         "R": 1,
++         "U": 1,
++         "W": 1,
++       },
++     },
++     "turn4": {
++       "anyColor": 0,
++       "specificColors": {
++         "B": 1,
++         "C": 1,
++         "G": 1,
++         "R": 1,
++         "U": 1,
++         "W": 1,
++       },
++     },
++   },
++   "rating": "poor",
++   "recommendations": [],
++   "spellAnalysis": {},
++   "spellAnalysisModel": "physical-v1",
++   "tempoImpactByColor": undefined,
++   "tempoSpellAnalysis": undefined,
++   "totalCards": 0,
++   "totalLands": 0,
++   "totalNonLands": 0,
++   "unsupportedSpellAnalysis": {},
+  }
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:19:48
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 1000000 Forest before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 9007199254740993 Forest before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999 Forest before resolution
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 1 Forest
+invalid line before resolution
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Array [
+        "Forest",
+      ],
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:20:40
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > rejects 125 Forest
+126 Island before resolution
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Array [
+        "Forest",
+        "Island",
+      ],
+    ]
+
+
+Number of calls: 1
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:20:40
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F01 product input boundary before network > identifies a rejected line
+AssertionError: promise resolved "[ { name: 'Forest', …(13) } ]" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+[
+  {
+    "cmc": 2,
+    "colors": [],
+    "etbTapped": undefined,
+    "isCommander": undefined,
+    "isCreature": undefined,
+    "isLand": false,
+    "isSideboard": false,
+    "landMetadata": undefined,
+    "manaCost": "{2}",
+    "name": "Forest",
+    "producedMana": undefined,
+    "quantity": 24,
+    "resolution": "not_found",
+    "resolved": false,
+  },
+]
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:23:50
+     21|   })
+     22|   it('identifies a rejected line', async () => {
+     23|     await expect(parse('24 Forest\ninvalid line')).rejects.toThrow(/li…
+       |                                                  ^
+     24|   })
+     25|   it.each([1, 40, 60, 99, 100, 250])('accepts experimental and canonic…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F02 product section populations > excludes Maybeboard and Companion from resolved analysis cards
+AssertionError: expected [ Array(4) ] to deeply equal [ 'Forest', 'Island' ]
+
+- Expected
++ Received
+
+  [
+    "Forest",
+    "Island",
++   "Mountain",
++   "Plains",
+  ]
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:32:36
+     30|   it('excludes Maybeboard and Companion from resolved analysis cards',…
+     31|     const cards = await parse('24 Forest\n36 Island\nMaybeboard\n4 Mou…
+     32|     expect(cards.map(c => c.name)).toEqual(['Forest', 'Island'])
+       |                                    ^
+     33|     expect(batchFetchFromScryfall).toHaveBeenCalledWith(['Forest', 'Is…
+     34|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F02 product section populations > keeps inline SB local and resets explicit section transitions
+AssertionError: expected [ [ 'Mountain', true, false ], …(5) ] to deeply equal [ [ 'Mountain', true, false ], …(5) ]
+
+- Expected
++ Received
+
+@@ -14,19 +14,19 @@
+      true,
+      false,
+    ],
+    [
+      "Island",
++     true,
+      false,
+-     false,
+    ],
+    [
+      "Plains",
+-     false,
++     true,
+      true,
+    ],
+    [
+      "Wastes",
+-     false,
++     true,
+      false,
+    ],
+  ]
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:37:72
+     35|   it('keeps inline SB local and resets explicit section transitions', …
+     36|     const cards = await parse('SB: 1 Mountain\n24 Forest\nSideboard\n2…
+     37|     expect(cards.map(c => [c.name, !!c.isSideboard, !!c.isCommander]))…
+       |                                                                        ^
+     38|       ['Mountain', true, false], ['Forest', false, false], ['Swamp', t…
+     39|     ])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > F02 product section populations > preserves categorized noncanonical main with blank lines
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:43:46
+     41|   it('preserves categorized noncanonical main with blank lines', async…
+     42|     const cards = await parse('Lands (50)\n50 Forest\n\nCreatures (5)\…
+     43|     expect(cards.every(c => !c.isSideboard)).toBe(true)
+       |                                              ^
+     44|   })
+     45| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  14 failed | 6 passed (20)
+   Start at  11:42:50
+   Duration  343ms (transform 66ms, setup 31ms, import 68ms, tests 13ms, environment 151ms)
+

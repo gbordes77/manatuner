@@ -878,82 +878,108 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
     // we only accept the response matching the id of the most recent request,
     // which fixes the race when archetype/iterations change while a previous
     // run is still in flight (the old code had two overlapping useEffects).
-    const workerRef = useRef<Worker | null>(null)
     const requestIdRef = useRef(0)
+    const cleanupWorkerRef = useRef<(() => void) | null>(null)
 
-    useEffect(() => {
-      const worker = new MulliganArchetypeWorker()
-      workerRef.current = worker
-      return () => {
-        workerRef.current?.terminate()
-        workerRef.current = null
-      }
+    const stopWorker = useCallback(() => {
+      ++requestIdRef.current
+      cleanupWorkerRef.current?.()
+      cleanupWorkerRef.current = null
     }, [])
 
+    useEffect(() => () => stopWorker(), [stopWorker])
+
+    const cancelAnalysis = useCallback(() => {
+      stopWorker()
+      setIsAnalyzing(false)
+      setResult(null)
+      setError('Analysis cancelled. You can run it again.')
+    }, [stopWorker])
+
     const runAnalysis = useCallback(() => {
+      stopWorker()
+      setResult(null)
+      setError(null)
+      setIsAnalyzing(false)
       if (totalCards < 40) {
         setError('You need at least 40 cards for mulligan analysis')
         return
       }
-      const previousWorker = workerRef.current
-      if (!previousWorker) {
-        setError('Worker is not ready yet — try again in a moment.')
+      const id = requestIdRef.current
+      let worker: Worker
+      try {
+        worker = new MulliganArchetypeWorker()
+      } catch {
+        setError('Failed to start mulligan analysis. The worker could not load; try again.')
         return
       }
-
-      previousWorker.terminate()
-      const worker = new MulliganArchetypeWorker()
-      workerRef.current = worker
-      const id = ++requestIdRef.current
       setIsAnalyzing(true)
-      setError(null)
-
+      let finished = false
+      const ownsRequest = () => !finished && id === requestIdRef.current
+      const cleanup = () => {
+        finished = true
+        clearTimeout(startupTimer)
+        worker.removeEventListener('message', handler)
+        worker.removeEventListener('error', onError)
+        worker.removeEventListener('messageerror', onMessageError)
+        worker.terminate()
+        if (cleanupWorkerRef.current === cleanup) cleanupWorkerRef.current = null
+      }
+      const fail = (message: string) => {
+        if (!ownsRequest()) return
+        cleanup()
+        setError(message)
+        setIsAnalyzing(false)
+      }
+      const onError = (event: ErrorEvent) => {
+        event.preventDefault()
+        fail('The mulligan worker stopped unexpectedly. Try running the analysis again.')
+      }
+      const onMessageError = () => {
+        fail('The mulligan worker returned an unreadable message. Try again.')
+      }
       const handler = (event: MessageEvent<MulliganWorkerResponse>) => {
-        if (id !== requestIdRef.current) {
-          worker.removeEventListener('message', handler)
+        if (!ownsRequest() || event.data?.id !== id) return
+        if ('type' in event.data && event.data.type === 'started') {
+          // Only worker startup is bounded. Precise simulations on slow devices
+          // keep running until completion or explicit user cancellation.
+          clearTimeout(startupTimer)
           return
         }
-        if (event.data.id !== id) return
-        worker.removeEventListener('message', handler)
-        if (event.data.ok) {
-          setResult(event.data.result)
-        } else {
-          setError(event.data.error)
-        }
+        if (!('ok' in event.data)) return
+        cleanup()
+        if (event.data.ok) setResult(event.data.result)
+        else setError(event.data.error)
         setIsAnalyzing(false)
       }
+      cleanupWorkerRef.current = cleanup
       worker.addEventListener('message', handler)
+      worker.addEventListener('error', onError)
+      worker.addEventListener('messageerror', onMessageError)
+      const startupTimer = setTimeout(() => {
+        fail('The mulligan worker did not respond when starting. Try again.')
+      }, 15000)
 
-      // P0-1: never post raw DeckCard[] — keep payload structured-clone safe
-      // which throws DataCloneError ("()=>!0 could not be cloned").
-      const request: MulliganWorkerRequest = {
-        id,
-        cards: toCloneableDeckCards(cards),
-        archetype,
-        iterations,
-        multiplayer,
-      }
       try {
+        const request: MulliganWorkerRequest = {
+          id,
+          cards: toCloneableDeckCards(cards),
+          archetype,
+          iterations,
+          multiplayer,
+        }
         worker.postMessage(request)
-      } catch (err) {
-        worker.removeEventListener('message', handler)
-        setIsAnalyzing(false)
-        setError(
-          err instanceof Error
-            ? `Failed to start mulligan analysis: ${err.message}`
-            : 'Failed to start mulligan analysis (worker message not cloneable)'
-        )
+      } catch {
+        fail('Failed to start mulligan analysis. The worker message could not be sent; try again.')
       }
-    }, [cards, archetype, iterations, totalCards, multiplayer])
+    }, [cards, archetype, iterations, totalCards, multiplayer, stopWorker])
 
     // Single auto-run effect (was previously two overlapping effects → M3 fix).
     // Triggers on initial mount, on cards change, on archetype change, and on
     // iterations change. The worker request-id pattern guarantees only the
     // latest run's result reaches React state.
     useEffect(() => {
-      if (totalCards >= 40) {
-        runAnalysis()
-      }
+      runAnalysis()
       // runAnalysis is intentionally listed so dependency churn re-fires it.
     }, [runAnalysis, totalCards])
 
@@ -976,11 +1002,10 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
           <Button
             variant="outlined"
             startIcon={isAnalyzing ? <CircularProgress size={16} /> : <RefreshIcon />}
-            onClick={runAnalysis}
-            disabled={isAnalyzing}
+            onClick={isAnalyzing ? cancelAnalysis : runAnalysis}
             size="small"
           >
-            {isAnalyzing ? 'Analyzing...' : 'Re-run Analysis'}
+            {isAnalyzing ? 'Cancel analysis' : 'Re-run Analysis'}
           </Button>
         </Box>
 

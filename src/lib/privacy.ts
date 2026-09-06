@@ -19,20 +19,85 @@ export interface AnalysisRecord {
   shareId?: string
   date?: string
   consistency?: number
+  schemaVersion?: 1
+  recoveryOnly?: boolean
 }
 
-const analysisRecordSchema = z.object({
-  id: z.string(),
-  deckName: z.string(),
-  deckList: z.string(),
-  analysis: z.unknown(),
-  timestamp: z.number(),
-  shareId: z.string().optional(),
-  date: z.string().optional(),
-  consistency: z.number().optional(),
-})
+const finite = z.number().finite()
+// Validate the fields consumed by history cards and comparison. Preserve other
+// result fields for backups; restoring always re-analyzes the original deck text.
+const savedResultSchema = z
+  .object({
+    consistencyUnavailable: z.boolean().optional(),
+    colorAccessNotes: z.array(z.string()).optional(),
+    colorAccessByTurn: z
+      .object({ turn2: finite.min(0).max(1), turn4: finite.min(0).max(1) })
+      .optional(),
+    averageCMC: finite.nonnegative().optional(),
+    totalCards: finite.nonnegative().optional(),
+    totalLands: finite.nonnegative().optional(),
+    consistency: finite.min(0).max(1).optional(),
+    landRatio: finite.min(0).max(1).optional(),
+    colorDistribution: z.record(finite.nonnegative()).optional(),
+    cards: z
+      .array(
+        z
+          .object({
+            name: z.string(),
+            cmc: finite.optional(),
+            manaCost: z.string().optional(),
+            isLand: z.boolean().optional(),
+          })
+          .passthrough()
+      )
+      .max(250)
+      .optional(),
+    probabilities: z.record(z.object({ anyColor: finite.optional() }).passthrough()).optional(),
+    spellAnalysisModel: z.string().optional(),
+    spellAnalysis: z
+      .record(
+        z
+          .object({
+            castable: finite.optional(),
+            total: finite.optional(),
+            percentage: finite.optional(),
+          })
+          .passthrough()
+      )
+      .optional(),
+  })
+  .passthrough()
+// These summary fields are the minimum needed to compare without fabricating
+// missing values. Other legacy metadata is preserved, but requests re-analysis.
+const hasRecognizedResult = (value: object): boolean =>
+  ['averageCMC', 'totalCards', 'totalLands', 'consistency', 'landRatio'].every((key) =>
+    Object.prototype.hasOwnProperty.call(value, key)
+  )
 
-const importSchema = z.array(analysisRecordSchema)
+const analysisRecordSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    deckName: z.string().max(1000),
+    // Historic drafts may exceed today's analyzer limit; keep them recoverable.
+    deckList: z.string().max(1_000_000),
+    analysis: z.unknown().optional(),
+    timestamp: finite,
+    shareId: z.string().optional(),
+    date: z.string().optional(),
+    consistency: z.unknown().optional(),
+    schemaVersion: z.literal(1).optional(),
+  })
+  .passthrough()
+
+export interface HistoryReadResult {
+  records: AnalysisRecord[]
+  warnings: string[]
+}
+export interface HistoryImportResult {
+  imported: number
+  duplicates: number
+  recovered: number
+}
 
 /**
  * Simple Storage Management
@@ -40,101 +105,134 @@ const importSchema = z.array(analysisRecordSchema)
  * Stores analyses directly in localStorage.
  *
  * NOTE (2026-04-12): the legacy hyphen-separated key `manatuner-analyses`
- * (used by an old hook) is migrated into the canonical `manatuner_analyses`
- * key on read, so users with split history don't lose data.
+ * (used by an old hook) is merged in the read view without rewriting sources.
+ * An explicit successful write preserves the merged data in the canonical key.
  */
 export class PrivacyStorage {
   private static readonly ANALYSES_KEY = 'manatuner_analyses'
   private static readonly LEGACY_KEY = 'manatuner-analyses'
   private static readonly MAX_RECORDS = 50
 
-  /**
-   * Persists an analyses array with a quota-exceeded fallback: if
-   * localStorage is full, drop the oldest records and retry once.
-   */
-  private static persist(records: AnalysisRecord[]): void {
-    const serialize = (items: AnalysisRecord[]) =>
-      localStorage.setItem(this.ANALYSES_KEY, JSON.stringify(items))
+  /** Atomic storage write: quota never causes silent history eviction. */
+  private static persist(records: unknown[]): void {
     try {
-      serialize(records)
-    } catch (err) {
-      if (err instanceof DOMException && err.name === 'QuotaExceededError') {
-        // Aggressively trim until it fits, keep at least the newest 10.
-        let attempt = records.slice(0, Math.max(10, Math.floor(records.length / 2)))
-        while (attempt.length > 0) {
-          try {
-            serialize(attempt)
-            return
-          } catch {
-            attempt = attempt.slice(0, Math.floor(attempt.length / 2))
-          }
-        }
+      localStorage.setItem(this.ANALYSES_KEY, JSON.stringify(records))
+    } catch (error) {
+      if (
+        (error instanceof Error || error instanceof DOMException) &&
+        error.name === 'QuotaExceededError'
+      ) {
+        throw new Error(
+          'Browser storage full. No history was changed. Export a backup and delete selected analyses before retrying.'
+        )
       }
-      throw err
+      throw new Error('Browser storage unavailable. No history was changed.')
     }
   }
 
-  /**
-   * Saves an analysis
-   */
+  private static readSources(): { raw: unknown[]; warnings: string[]; blocked: boolean } {
+    const warnings: string[] = []
+    let blocked = false
+    const read = (key: string): unknown[] => {
+      try {
+        const text = localStorage.getItem(key)
+        if (!text) return []
+        const value: unknown = JSON.parse(text)
+        if (!Array.isArray(value)) throw new Error('Expected array')
+        return value
+      } catch {
+        blocked = true
+        warnings.push(
+          `History source ${key} could not be read. Its original data has not been changed.`
+        )
+        return []
+      }
+    }
+    const current = read(this.ANALYSES_KEY)
+    const legacy = read(this.LEGACY_KEY)
+    const ids = new Set(
+      current
+        .map((value) => analysisRecordSchema.safeParse(value))
+        .filter((result) => result.success)
+        .map((result) => (result.success ? result.data.id : ''))
+    )
+    const raw = [...current]
+    for (const value of legacy) {
+      const parsed = analysisRecordSchema.safeParse(value)
+      if (!parsed.success || !ids.has(parsed.data.id)) {
+        raw.push(value)
+        if (parsed.success) ids.add(parsed.data.id)
+      }
+    }
+    return { raw, warnings, blocked }
+  }
+
+  static readHistory(): HistoryReadResult {
+    if (typeof window === 'undefined') return { records: [], warnings: [] }
+    const { raw, warnings } = this.readSources()
+    const records: AnalysisRecord[] = []
+    for (const [index, value] of raw.entries()) {
+      const envelope = analysisRecordSchema.safeParse(value)
+      if (!envelope.success) {
+        warnings.push(
+          `History entry ${index + 1} is invalid and hidden. Its original data is retained in storage and JSON export.`
+        )
+        continue
+      }
+      const result = savedResultSchema.safeParse(envelope.data.analysis)
+      const summaryValid =
+        envelope.data.consistency === undefined ||
+        finite.min(0).max(1).safeParse(envelope.data.consistency).success
+      const knownResult = result.success && hasRecognizedResult(result.data)
+      const recoveryOnly = !summaryValid || !knownResult
+      if (recoveryOnly)
+        warnings.push(
+          `“${envelope.data.deckName || 'Unnamed Deck'}”: saved result unavailable. The original deck can be loaded and analyzed again.`
+        )
+      records.push({
+        ...envelope.data,
+        // Preserve unknown historic metadata for compatibility, while recoveryOnly
+        // prevents comparison and display of invented numeric defaults.
+        analysis:
+          summaryValid && result.success && Object.keys(result.data).length > 0
+            ? result.data
+            : null,
+        recoveryOnly,
+        ...(recoveryOnly ? { consistency: undefined } : {}),
+      } as AnalysisRecord)
+    }
+    return { records, warnings }
+  }
+
   static saveAnalysis(analysis: Omit<AnalysisRecord, 'id' | 'timestamp'>): string {
-    const analyses = this.getMyAnalyses()
+    const { raw, blocked } = this.readSources()
+    if (blocked)
+      throw new Error(
+        'History could not be read. Existing data was preserved; the new analysis was not saved.'
+      )
+    if (raw.length >= this.MAX_RECORDS)
+      throw new Error(
+        'History limit of 50 reached. Export a backup and delete selected analyses before saving another.'
+      )
     const record: AnalysisRecord = {
       ...analysis,
+      schemaVersion: 1,
       id: nanoid(),
       timestamp: Date.now(),
       date: new Date().toISOString(),
     }
-
-    analyses.unshift(record) // Add to beginning
-    const trimmed = analyses.slice(0, this.MAX_RECORDS)
-    this.persist(trimmed)
+    this.persist([record, ...raw])
+    try {
+      localStorage.removeItem(this.LEGACY_KEY)
+    } catch {
+      /* Canonical data is already durable. */
+    }
     return record.id
   }
 
-  /**
-   * Retrieves all analyses, merging legacy `manatuner-analyses` (hyphen) data
-   * on first read and then removing the legacy key. This prevents the data
-   * duplication the 2026-04-12 audit flagged.
-   */
+  /** Reads are non-destructive, including legacy sources and damaged entries. */
   static getMyAnalyses(): AnalysisRecord[] {
-    if (typeof window === 'undefined') return []
-
-    const readKey = (key: string): AnalysisRecord[] => {
-      const raw = localStorage.getItem(key)
-      if (!raw) return []
-      try {
-        const parsed = JSON.parse(raw)
-        return Array.isArray(parsed) ? (parsed as AnalysisRecord[]) : []
-      } catch {
-        return []
-      }
-    }
-
-    const current = readKey(this.ANALYSES_KEY)
-    const legacy = readKey(this.LEGACY_KEY)
-
-    if (legacy.length === 0) return current
-
-    // One-time migration: merge legacy into canonical store (deduplicate by id)
-    const seen = new Set<string>(current.map((r) => r.id))
-    const merged = [...current]
-    for (const record of legacy) {
-      if (record?.id && !seen.has(record.id)) {
-        merged.push(record)
-        seen.add(record.id)
-      }
-    }
-    merged.sort((a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0))
-    const trimmed = merged.slice(0, this.MAX_RECORDS)
-
-    try {
-      this.persist(trimmed)
-      localStorage.removeItem(this.LEGACY_KEY)
-    } catch {
-      // If persist fails (quota), still return merged view in-memory
-    }
-    return trimmed
+    return this.readHistory().records
   }
 
   /**
@@ -162,9 +260,22 @@ export class PrivacyStorage {
   static deleteAnalysis(id: string): void {
     if (typeof window === 'undefined') return
 
-    const analyses = this.getMyAnalyses()
-    const filtered = analyses.filter((a) => a.id !== id)
+    const { raw, blocked } = this.readSources()
+    if (blocked) throw new Error('History could not be read. No analyses were deleted.')
+    const filtered = raw.filter((value) => {
+      const parsed = analysisRecordSchema.safeParse(value)
+      return !parsed.success || parsed.data.id !== id
+    })
     this.persist(filtered)
+    // Canonical now contains the full preserved source view minus this selected id.
+    // Removing legacy only after successful persistence prevents resurrection.
+    try {
+      localStorage.removeItem(this.LEGACY_KEY)
+    } catch {
+      throw new Error(
+        'The canonical history was updated, but the legacy source could not be removed. A legacy copy may still appear; its data is preserved.'
+      )
+    }
   }
 
   /**
@@ -253,8 +364,12 @@ export class PrivacyStorage {
    * Exports analyses
    */
   static exportAnalyses(): string {
-    const analyses = this.getMyAnalyses()
-    return JSON.stringify(analyses, null, 2)
+    const { raw, blocked } = this.readSources()
+    if (blocked)
+      throw new Error(
+        'History source could not be read. Export cannot include that source; original storage is unchanged.'
+      )
+    return JSON.stringify(raw, null, 2)
   }
 
   /**
@@ -267,26 +382,74 @@ export class PrivacyStorage {
   /**
    * Imports analyses
    */
-  static importAnalyses(data: string): void {
-    if (typeof window === 'undefined') return
-
+  static importAnalyses(data: string): HistoryImportResult {
+    if (data.length > 10_000_000) throw new Error('Import exceeds 10 MB. No history was changed.')
     let parsed: unknown
     try {
       parsed = JSON.parse(data)
     } catch {
-      throw new Error('Invalid JSON data')
+      throw new Error('Invalid JSON data. No history was changed.')
     }
-
-    const result = importSchema.safeParse(parsed)
-    if (!result.success) {
-      throw new Error('Invalid analysis data format')
+    if (!Array.isArray(parsed) || parsed.length > this.MAX_RECORDS) {
+      throw new Error(
+        'Import must contain an array of at most 50 analyses. No history was changed.'
+      )
     }
-
-    // Audit fix M2 (2026-04-13): route through persist() for quota fallback.
-    // Cast is safe — Zod has just validated the shape; `analysis: z.unknown()`
-    // narrows to `unknown | undefined` in TS inference, but the runtime data
-    // matches `AnalysisRecord` by construction.
-    this.persist(result.data as AnalysisRecord[])
+    const records = parsed.map((value, index) => {
+      const envelope = analysisRecordSchema.safeParse(value)
+      if (!envelope.success)
+        throw new Error(`Invalid history entry ${index + 1}. No history was changed.`)
+      if (
+        envelope.data.consistency !== undefined &&
+        !finite.min(0).max(1).safeParse(envelope.data.consistency).success
+      ) {
+        throw new Error(`Invalid score in history entry ${index + 1}. No history was changed.`)
+      }
+      const analysis = envelope.data.analysis
+      if (
+        analysis !== undefined &&
+        analysis !== null &&
+        !savedResultSchema.safeParse(analysis).success
+      ) {
+        throw new Error(`Invalid result in history entry ${index + 1}. No history was changed.`)
+      }
+      return envelope.data
+    })
+    const { raw, blocked } = this.readSources()
+    if (blocked)
+      throw new Error(
+        'Existing history could not be read. Import cancelled; original data is unchanged.'
+      )
+    const ids = new Set(
+      raw
+        .map((value) => analysisRecordSchema.safeParse(value))
+        .filter((result) => result.success)
+        .map((result) => (result.success ? result.data.id : ''))
+    )
+    let duplicates = 0
+    const added = records.filter((record) => {
+      if (ids.has(record.id)) {
+        duplicates++
+        return false
+      }
+      ids.add(record.id)
+      return true
+    })
+    if (raw.length + added.length > this.MAX_RECORDS) {
+      throw new Error(
+        'Merged history would exceed 50 entries. Export a backup and delete selected analyses before importing. No history was changed.'
+      )
+    }
+    this.persist([...raw, ...added])
+    try {
+      localStorage.removeItem(this.LEGACY_KEY)
+    } catch {
+      /* Canonical data is already durable. */
+    }
+    const recovered = added.filter(
+      (record) => record.analysis == null || !hasRecognizedResult(record.analysis as object)
+    ).length
+    return { imported: added.length, duplicates, recovered }
   }
 
   /**

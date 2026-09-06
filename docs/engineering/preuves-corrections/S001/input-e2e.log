@@ -1,0 +1,58 @@
+
+Running 10 tests using 1 worker
+
+(node:29625) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[2/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[3/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[4/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[5/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[6/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:10:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[7/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:40:5 › F01 reports the offending line and retains valid experimental decks
+[8/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 excluded sections: saved populations match input
+  1) [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 excluded sections: saved populations match input 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').filter({ hasText: /Maybeboard/i })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert').filter({ hasText: /Maybeboard/i }) with timeout 5000ms
+      - waiting for getByRole('alert').filter({ hasText: /Maybeboard/i })
+
+
+      72 |     if (label === 'excluded sections') {
+      73 |       expect(result.cards.some(card => card.name === 'Mountain' || card.name === 'Counterspell')).toBe(false)
+    > 74 |       await expect(page.getByRole('alert').filter({ hasText: /Maybeboard/i })).toBeVisible()
+         |                                                                                ^
+      75 |     }
+      76 |     expect(errors).toEqual([])
+      77 |   })
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/input-contract-audit.spec.js:74:80
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/input-playwright/core-flows-input-contract--4d3dc-ved-populations-match-input-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/input-playwright/core-flows-input-contract--4d3dc-ved-populations-match-input-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/input-playwright/core-flows-input-contract--4d3dc-ved-populations-match-input-chromium/error-context.md
+
+
+(node:29764) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[9/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 local SB prefix and transitions: saved populations match input
+[10/10] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 categories and blank lines: saved populations match input
+  1 failed
+    [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:7 › F02 excluded sections: saved populations match input 
+  9 passed (12.0s)

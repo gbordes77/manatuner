@@ -1,0 +1,4 @@
+src/components/analyzer/MulliganTab.tsx 83ms (unchanged)
+src/workers/mulliganArchetype.worker.ts 6ms
+tests/math-audit/mulligan-worker-failures.test.tsx 13ms
+tests/e2e/core-flows/input-contract-audit.spec.js 21ms

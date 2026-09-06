@@ -1,0 +1,64 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts (27 tests | 3 failed) 10ms
+     × preserves // Sideboard (15) and counted Deck transition 3ms
+     × preserves # Sideboard (15) and counted Deck transition 0ms
+     × preserves Sideboard (15) and counted Deck transition 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > counted export section headers > preserves // Sideboard (15) and counted Deck transition
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > counted export section headers > preserves # Sideboard (15) and counted Deck transition
+AssertionError: expected [ [ 'Forest', false ], …(2) ] to deeply equal [ [ 'Forest', false ], …(2) ]
+
+- Expected
++ Received
+
+@@ -3,11 +3,11 @@
+      "Forest",
+      false,
+    ],
+    [
+      "Island",
+-     true,
++     false,
+    ],
+    [
+      "Plains",
+      false,
+    ],
+
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:114:55
+    112|   it.each(['// Sideboard (15)', '# Sideboard (15)', 'Sideboard (15)'])…
+    113|     const cards = await parse(`60 Forest\n${header}\n15 Island\n// Dec…
+    114|     expect(cards.map(c => [c.name, !!c.isSideboard])).toEqual([
+       |                                                       ^
+    115|       ['Forest', false], ['Island', true], ['Plains', false],
+    116|     ])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/services/__tests__/inputContract.f01-f02.test.ts > counted export section headers > preserves Sideboard (15) and counted Deck transition
+Error: Line 2: expected a quantity and card name (for example, 4 Forest). No analysis was started.
+ ❯ fail src/services/deckParser.ts:234:13
+    232|     const parsed = parseDecklistLine(line.replace(/^sb:\s*/i, ''))
+    233|     const fail = (reason: string): never => {
+    234|       throw new Error(`Line ${index + 1}: ${reason}`)
+       |             ^
+    235|     }
+    236|     if (!parsed)
+ ❯ src/services/deckParser.ts:237:14
+ ❯ parseDecklist src/services/deckParser.ts:213:9
+ ❯ DeckAnalyzer.parseDeckList src/services/deckAnalyzer.ts:486:20
+ ❯ parse src/services/__tests__/inputContract.f01-f02.test.ts:18:61
+ ❯ src/services/__tests__/inputContract.f01-f02.test.ts:113:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 24 passed (27)
+   Start at  11:49:00
+   Duration  314ms (transform 63ms, setup 27ms, import 66ms, tests 10ms, environment 140ms)
+

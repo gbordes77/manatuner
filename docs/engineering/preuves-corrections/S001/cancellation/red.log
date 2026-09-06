@@ -1,0 +1,128 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx (6 tests | 5 failed) 355ms
+     × Clear keeps editor, result, loading, format, notifications and history cleared after late success 158ms
+     × B finishing before A retains B and saves only B 51ms
+     × obsolete resolve cannot stop B loading or overwrite notifications 44ms
+     × unmount aborts pending work and remount with same store has no ghost result 27ms
+     × a queued verdict focus cannot run after Clear 29ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/component/AnalyzerPage.cancellation.test.jsx > F05 analysis generation ownership > Clear keeps editor, result, loading, format, notifications and history cleared after late success
+AssertionError: expected { totalCards: 100, …(6) } to be null
+
+- Expected:
+null
+
++ Received:
+{
+  "cards": [],
+  "colorDistribution": {},
+  "consistency": 0.85,
+  "recommendations": [],
+  "totalCards": 100,
+  "totalLands": 24,
+  "totalNonLands": 76,
+}
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx:59:34
+     57|     const state = store.getState().analyzer
+     58|     expect(state.deckList).toBe('')
+     59|     expect(state.analysisResult).toBeNull()
+       |                                  ^
+     60|     expect(state.isAnalyzing).toBe(false)
+     61|     expect(state.snackbar.message).toMatch(/^Interface cleared/)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  tests/component/AnalyzerPage.cancellation.test.jsx > F05 analysis generation ownership > B finishing before A retains B and saves only B
+AssertionError: expected 100 to be 40 // Object.is equality
+
+- Expected
++ Received
+
+- 40
++ 100
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx:77:65
+     75|     await act(async () => b.resolve(result(40)))
+     76|     await act(async () => a.resolve(result(100)))
+     77|     expect(store.getState().analyzer.analysisResult.totalCards).toBe(4…
+       |                                                                 ^
+     78|     expect(harness.save).toHaveBeenCalledTimes(1)
+     79|     expect(harness.save.mock.calls[0][0].deckList).toBe('40 Forest')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  tests/component/AnalyzerPage.cancellation.test.jsx > F05 analysis generation ownership > obsolete resolve cannot stop B loading or overwrite notifications
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx:92:51
+     90|     const snackbar = store.getState().analyzer.snackbar
+     91|     await act(async () => a[settle](settle === 'resolve' ? result(100)…
+     92|     expect(store.getState().analyzer.isAnalyzing).toBe(true)
+       |                                                   ^
+     93|     expect(store.getState().analyzer.snackbar).toEqual(snackbar)
+     94|     expect(harness.save).not.toHaveBeenCalled()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  tests/component/AnalyzerPage.cancellation.test.jsx > F05 analysis generation ownership > unmount aborts pending work and remount with same store has no ghost result
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx:107:61
+    105|     renderWithProviders(<AnalyzerPage />, { store: view.store })
+    106|     await act(async () => a.resolve(result(100)))
+    107|     expect(harness.analyze.mock.calls[0][1].signal.aborted).toBe(true)
+       |                                                             ^
+    108|     expect(view.store.getState().analyzer.analysisResult).toBeNull()
+    109|     expect(view.store.getState().analyzer.isAnalyzing).toBe(false)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  tests/component/AnalyzerPage.cancellation.test.jsx > F05 analysis generation ownership > a queued verdict focus cannot run after Clear
+AssertionError: expected "vi.fn()" to not be called at all, but actually been called 1 times
+
+Received:
+
+  1st vi.fn() call:
+
+    Array [
+      Object {
+        "preventScroll": false,
+      },
+    ]
+
+
+Number of calls: 1
+
+ ❯ tests/component/AnalyzerPage.cancellation.test.jsx:130:30
+    128|     document.body.append(target)
+    129|     frames.forEach((callback) => callback())
+    130|     expect(target.focus).not.toHaveBeenCalled()
+       |                              ^
+    131|     expect(target.scrollIntoView).not.toHaveBeenCalled()
+    132|     target.remove()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 1 passed (6)
+   Start at  11:44:34
+   Duration  1.73s (transform 162ms, setup 34ms, import 891ms, tests 355ms, environment 283ms)
+

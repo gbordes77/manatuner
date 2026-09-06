@@ -1,0 +1,219 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+······························································································································stdout | src/services/__tests__/sideboardDetection.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | tests/math-audit/physical-engine.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/services/manaCalculator.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+············································································stdout | tests/math-audit/policy-contracts.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+························stdout | src/services/__tests__/landBatch.t07.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·············stdout | src/services/__tests__/networkCancellation.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·······stdout | tests/math-audit/regressions.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+···································stdout | src/components/analyzer/__tests__/landUtils.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/components/analyzer/__tests__/landUtils.test.ts > landUtils - Performance > isLandCardComplete est rapide (<500ms pour 10000 appels)
+✅ Performance: 10000 isLandCardComplete en 21.22ms
+
+stdout | src/components/analyzer/__tests__/landUtils.test.ts > landUtils - Performance > categorizeLandComplete est rapide (<100ms pour 6000 appels)
+✅ Performance: 6000 categorizeLandComplete en 4.19ms
+
+····································stderr | src/services/__tests__/landBatch.t07.test.ts > T07 fetchLandDataBatch > batch failure falls back to sequential named
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 500
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:513:15)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/src/services/__tests__/landBatch.t07.test.ts:152:17
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+·······················stdout | tests/component/AnalyzerPage.test.jsx
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+···························stdout | tests/math-audit/synthesis.f03-f04.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/services/__tests__/cleanCardName.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/services/__tests__/landCacheService.test.ts > LandCacheService batched writes (T04) > batch flush: N set() during preload → single setItem
+[LandCacheService] Preloaded 50 lands from seed
+
+stderr | src/services/__tests__/landCacheService.test.ts > LandCacheService batched writes (T04) > recovers from corrupted localStorage JSON
+[LandCacheService] Corrupted cache JSON, resetting
+
+stdout | src/services/__tests__/landCacheService.test.ts > LandCacheService batched writes (T04) > on QuotaExceededError: evicts oldest then retries once
+[LandCacheService] Saved after quota eviction (21 entries)
+
+stdout | src/services/__tests__/landCacheService.test.ts > LandCacheService batched writes (T04) > persists across instances after flush (session reload simulation)
+[LandCacheService] Preloaded 2 lands from seed
+
+·················································································································stdout | src/services/__tests__/tempoYield.t06.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+········stdout | src/services/__tests__/critical.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/services/__tests__/critical.test.ts > ManaTuner - Tests Critiques > 🎯 CRITÈRE #1: P1 vs P2 - Lightning Bolt
+✅ Lightning Bolt: T1=74.1% vs T2=89.8%
+
+stdout | src/services/__tests__/critical.test.ts > ManaTuner - Tests Critiques > 🎯 CRITÈRE #2: Seuil 90% Frank Karsten
+✅ Karsten 90%: 86.1% (sources: 14)
+
+stdout | src/services/__tests__/critical.test.ts > ManaTuner - Tests Critiques > 🎯 CRITIÈRE #3: Analyse de carte complète
+✅ Lightning Bolt Analysis: 80.9%
+
+stdout | src/services/__tests__/critical.test.ts > ManaTuner - Tests Critiques > 🎯 CRITÈRE #4: Performance < 1ms
+✅ Performance: 100 calculs en 0.28ms
+
+stdout | src/services/__tests__/critical.test.ts > ManaTuner - Tests Critiques > 🎯 CRITÈRE #5: Deck complet fonctionne
+✅ Deck Analysis: 32 cards, health: Excellente - Manabase très stable
+
+·····stdout | tests/math-audit/conditional-lands.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+··························stdout | src/services/__tests__/assertCardResolution.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+················stdout | tests/math-audit/populations.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+······································stdout | tests/component/PaymentPolicyPanel.test.tsx
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stderr | tests/math-audit/synthesis-ui.f03.test.tsx > F03 consumed score limitations > charts never substitutes a hardcoded good score for zero or unavailable
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stdout | tests/math-audit/legacy-contract.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stderr | src/utils/__tests__/urlCodec.test.ts > urlCodec > buildShareUrl returns empty string when encode fails
+[vitest] The TextEncoder mock did not use 'function' or 'class' in its implementation, see https://vitest.dev/api/vi#vi-spyon for examples.
+
+···········stdout | src/services/__tests__/hypergeomSsot.t09.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·····················stdout | tests/math-audit/synthesis-ui.f03.test.tsx > F04 main manabase omits sideboard land and spell identity
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | tests/math-audit/policy-fetch-oracle.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+··············stdout | tests/math-audit/spell-summary.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+············stdout | tests/math-audit/goldfish-taplands.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stdout | src/services/__tests__/countActiveWubrgColors.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+··················stdout | src/services/__tests__/deckSplit.t08.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·················stdout | src/services/__tests__/landDetection.ssot.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·····stdout | tests/math-audit/front-face-metadata.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·····stderr | tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Wedding Announcement
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 400
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:513:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at LandService.prefetchUnknownLands (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/landService.ts:320:19)
+    at DeckAnalyzer.parseDeckList (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/deckAnalyzer.ts:499:5)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/front-face-metadata.test.ts:27:20
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+···stderr | tests/math-audit/front-face-metadata.test.ts > the analyzer keeps the actual front-face cost of Delver of Secrets
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 400
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:513:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at LandService.prefetchUnknownLands (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/landService.ts:320:19)
+    at DeckAnalyzer.parseDeckList (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/deckAnalyzer.ts:499:5)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/front-face-metadata.test.ts:27:20
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+·stdout | tests/math-audit/estimate-recovery.test.tsx
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+····stdout | tests/math-audit/physical-ui.test.tsx
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+·············stderr | tests/math-audit/front-face-metadata.test.ts > a genuinely absent mana cost remains absent instead of becoming zero cost
+[Scryfall] Batch land data fetch failed (chunk): Error: Scryfall collection API error: 400
+    at fetchLandDataBatch (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/scryfall.ts:513:15)
+    at processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at LandService.prefetchUnknownLands (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/landService.ts:320:19)
+    at DeckAnalyzer.parseDeckList (/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/deckAnalyzer.ts:499:5)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/front-face-metadata.test.ts:47:18
+    at file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:20
+
+··································stderr | tests/math-audit/legacy-summary-label.test.tsx > old saved estimates are never introduced as the current physical model
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(85%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+·
+
+ Test Files  72 passed (72)
+      Tests  732 passed (732)
+   Start at  12:09:37
+   Duration  11.55s (transform 3.77s, setup 5.56s, import 25.78s, tests 17.92s, environment 37.94s)
+

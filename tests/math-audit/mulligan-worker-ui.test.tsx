@@ -10,8 +10,8 @@ vi.mock('../../src/workers/mulliganArchetype.worker?worker', () => ({
     constructor() {
       workers.push(this)
     }
-    addEventListener(_type: string, handler: any) {
-      this.handler = handler
+    addEventListener(type: string, handler: any) {
+      if (type === 'message') this.handler = handler
     }
     removeEventListener() {}
     postMessage(request: any) {

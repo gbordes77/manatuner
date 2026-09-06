@@ -1,0 +1,58 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stderr | tests/math-audit/synthesis-ui.f03.test.tsx > F03 consumed score limitations > renders unavailable in verdict and an explicit unsupported target
+Warning: useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See https://reactjs.org/link/uselayouteffect-ssr for common fixes.
+    at Tooltip (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Tooltip/Tooltip.js:229:59)
+    at span
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Typography (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Typography/Typography.js:92:64)
+    at div
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at div
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Paper (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Paper/Paper.js:70:59)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Alert (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Alert/Alert.js:156:59)
+    at QuickVerdict (/Volumes/DataDisk/_Projects/Project Mana base V2/src/components/analyzer/QuickVerdict.tsx:16:25)
+Warning: useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format. This will lead to a mismatch between the initial, non-hydrated UI and the intended UI. To avoid this, useLayoutEffect should only be used in components that render exclusively on the client. See https://reactjs.org/link/uselayouteffect-ssr for common fixes.
+    at Tooltip (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Tooltip/Tooltip.js:229:59)
+    at span
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Typography (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Typography/Typography.js:92:64)
+    at div
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at div
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Paper (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Paper/Paper.js:70:59)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@emotion/react/dist/emotion-element-e8f4cc37.development.cjs.js:60:23
+    at Alert (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/@mui/material/node/Alert/Alert.js:156:59)
+    at QuickVerdict (/Volumes/DataDisk/_Projects/Project Mana base V2/src/components/analyzer/QuickVerdict.tsx:16:25)
+
+ ❯ tests/math-audit/synthesis-ui.f03.test.tsx (3 tests | 1 failed) 25ms
+     × renders unavailable in verdict and an explicit unsupported target 12ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/synthesis-ui.f03.test.tsx > F03 consumed score limitations > renders unavailable in verdict and an explicit unsupported target
+AssertionError: expected '<div class="MuiPaper-root MuiPaper-el…' not to contain 'sources short'
+
+Expected: "sources short"
+Received: "<div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-tynsvj-MuiPaper-root"><h6 class="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom css-sskem8-MuiTypography-root">Fixed Color Sources — Main Deck</h6><span class="MuiTypography-root MuiTypography-caption css-1x2zbni-MuiTypography-root">For each fixed color requirement in main-deck spells, we compare how many lands producing that color you have against Frank Karsten&#x27;s published source guidelines for the strongest requirement in your spells. These assume sufficient lands after mulligans and a target of 89 + mana value percent. Green: you&#x27;re fine. Orange: a few sources short. Red: well short — you&#x27;ll miss a lot of casts.</span><div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-12owzax-MuiPaper-root-MuiAlert-root" role="alert"><div class="MuiAlert-icon css-1ytlwq5-MuiAlert-icon"><svg class="MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="InfoOutlinedIcon"><path d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20, 12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10, 10 0 0,0 12,2M11,17H13V11H11V17Z"></path></svg></div><div class="MuiAlert-message css-1pxa9xg-MuiAlert-message"><p class="MuiTypography-root MuiTypography-body2 css-e784if-MuiTypography-root">Phyrexian demand: per-color target unavailable for this payment (including phyrexian, snow or other unsupported symbols).</p></div></div><div class="MuiBox-root css-w4ns3s"></div></div>"
+
+ ❯ tests/math-audit/synthesis-ui.f03.test.tsx:31:24
+     29|     )
+     30|     expect(target).toContain('per-color target unavailable')
+     31|     expect(target).not.toContain('sources short')
+       |                        ^
+     32|   })
+     33|   it('keeps unsupported recommendations and blueprint index unavailabl…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 66 passed (67)
+   Start at  11:58:35
+   Duration  1.32s (transform 688ms, setup 387ms, import 1.52s, tests 84ms, environment 2.18s)
+

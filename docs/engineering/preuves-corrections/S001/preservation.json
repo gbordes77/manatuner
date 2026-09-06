@@ -1,0 +1,8 @@
+{
+  "reportDiffPreserved": true,
+  "files": {
+    "playwright-report/index.html": "41736cddcba2f6d85aeffb7cc43240f0a467baded79c9b896146a351b51cbb44",
+    "test-results.json": "b0474ad701edee38d8e22c4fb4be5e3d39c5336f4e48aed9787ac88f8c23c81e",
+    "test-results/.last-run.json": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+  }
+}

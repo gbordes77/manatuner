@@ -5,7 +5,7 @@
  */
 
 import type { ScryfallCard } from '../types/scryfall'
-import { fetchWithTimeout } from './http'
+import { abortableDelay, fetchJsonWithTimeout, isCancellation, throwIfAborted } from './http'
 import { BoundedMap } from './scryfall'
 
 // Audit fix H4 (2026-04-13): BoundedMap (LRU, cap 500) instead of unbounded Map.
@@ -21,7 +21,11 @@ export type CardResolveResult = {
  * Batch fetch up to 75 cards at once via Scryfall /cards/collection.
  * Populates the shared in-memory cache used by fetchCardFromScryfallWithMeta.
  */
-export async function batchFetchFromScryfall(cardNames: string[]): Promise<void> {
+export async function batchFetchFromScryfall(
+  cardNames: string[],
+  signal?: AbortSignal
+): Promise<void> {
+  throwIfAborted(signal)
   const uncached = cardNames.filter((name) => !scryfallCache.has(name))
   if (uncached.length === 0) return
 
@@ -31,29 +35,30 @@ export async function batchFetchFromScryfall(cardNames: string[]): Promise<void>
     const identifiers = batch.map((name) => ({ name }))
 
     try {
-      const response = await fetchWithTimeout(
+      const { response, data } = await fetchJsonWithTimeout<{ data?: ScryfallCard[] }>(
         'https://api.scryfall.com/cards/collection',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ identifiers }),
         },
-        { timeoutMs: 8000, retries: 1 }
+        { timeoutMs: 8000, retries: 1, signal }
       )
 
       if (response.ok) {
-        const data = await response.json()
-        for (const card of data.data || []) {
+        throwIfAborted(signal)
+        for (const card of data?.data || []) {
           scryfallCache.set(card.name, card)
         }
       }
     } catch (error) {
+      if (isCancellation(error)) throw error
       console.warn('Scryfall batch fetch failed, falling back to individual calls', error)
     }
 
     // Respect Scryfall rate limit (100ms between requests)
     if (i + BATCH_SIZE < uncached.length) {
-      await new Promise((r) => setTimeout(r, 100))
+      await abortableDelay(100, signal)
     }
   }
 }
@@ -66,7 +71,11 @@ export async function batchFetchFromScryfall(cardNames: string[]): Promise<void>
  *
  * Distinguishes definitive not-found (404) from transient network failures.
  */
-export async function fetchCardFromScryfallWithMeta(cardName: string): Promise<CardResolveResult> {
+export async function fetchCardFromScryfallWithMeta(
+  cardName: string,
+  signal?: AbortSignal
+): Promise<CardResolveResult> {
+  throwIfAborted(signal)
   if (scryfallCache.has(cardName)) {
     return { data: scryfallCache.get(cardName)!, notFound: false }
   }
@@ -79,10 +88,15 @@ export async function fetchCardFromScryfallWithMeta(cardName: string): Promise<C
 
   const tryFetch = async (url: string): Promise<Attempt> => {
     try {
-      const response = await fetchWithTimeout(url, {}, { timeoutMs: 8000, retries: 1 })
+      const { response, data } = await fetchJsonWithTimeout<ScryfallCard>(
+        url,
+        {},
+        { timeoutMs: 8000, retries: 1, signal }
+      )
 
       if (response.ok) {
-        return { kind: 'ok', data: (await response.json()) as ScryfallCard }
+        throwIfAborted(signal)
+        return { kind: 'ok', data: data! }
       }
 
       if (response.status === 404) {
@@ -91,15 +105,18 @@ export async function fetchCardFromScryfallWithMeta(cardName: string): Promise<C
 
       return { kind: 'error' }
     } catch (error) {
+      if (isCancellation(error)) throw error
       console.warn(`Scryfall fetch failed for "${cardName}":`, error)
       return { kind: 'error' }
     }
   }
 
   let result = await tryFetch(exactUrl)
+  throwIfAborted(signal)
 
   if (result.kind !== 'ok') {
     const fuzzy = await tryFetch(fuzzyUrl)
+    throwIfAborted(signal)
     if (fuzzy.kind === 'ok') {
       result = fuzzy
     } else if (result.kind === 'error' || fuzzy.kind === 'error') {
@@ -109,6 +126,7 @@ export async function fetchCardFromScryfallWithMeta(cardName: string): Promise<C
     }
   }
 
+  throwIfAborted(signal)
   if (result.kind === 'ok') {
     scryfallCache.set(cardName, result.data)
     return { data: result.data, notFound: false }
@@ -117,8 +135,11 @@ export async function fetchCardFromScryfallWithMeta(cardName: string): Promise<C
   return { data: null, notFound: result.kind === 'not_found' }
 }
 
-export async function fetchCardFromScryfall(cardName: string): Promise<ScryfallCard | null> {
-  const { data } = await fetchCardFromScryfallWithMeta(cardName)
+export async function fetchCardFromScryfall(
+  cardName: string,
+  signal?: AbortSignal
+): Promise<ScryfallCard | null> {
+  const { data } = await fetchCardFromScryfallWithMeta(cardName, signal)
   return data
 }
 

@@ -1,0 +1,38 @@
+
+Running 30 tests using 1 worker
+
+(node:40192) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[2/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[3/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[4/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[5/30] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution aborts the pending request and remains empty after reload
+[6/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:27:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+[7/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 invalid import preserves existing history and reports outcome
+[8/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 quota import preserves existing history and reports outcome
+[9/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 merge import preserves existing history and reports outcome
+[10/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:84:5 › F06 comparison handles validated results and F03 unavailable score
+[11/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[12/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[13/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[14/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[15/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[16/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[17/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:5 › F01 reports the offending line and retains valid experimental decks
+[18/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 excluded sections: saved populations match input
+[19/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 local SB prefix and transitions: saved populations match input
+[20/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 categories and blank lines: saved populations match input
+[21/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[22/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[23/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[24/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[25/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:134:5 › F02 preserves post-board swaps and returning to the main population
+[26/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+[27/30] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+[28/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:33:5 › F03 hybrid can be supported by green, with honest target limitation and exact detail
+[29/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:46:5 › F03 strict RG still reports missing red and phyrexian score is unavailable
+[30/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:59:5 › F04 adding a blue sideboard does not change the red main-deck verdict
+  30 passed (23.1s)

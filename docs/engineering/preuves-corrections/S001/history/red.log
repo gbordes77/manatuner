@@ -1,0 +1,134 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/lib/__tests__/privacy.history.test.ts (10 tests | 10 failed) 8ms
+     × rejects malformed consumed result {"averageCMC":"oops"} without touching prior history 3ms
+     × rejects malformed consumed result {"cards":[null]} without touching prior history 0ms
+     × rejects malformed consumed result {"cards":"bad"} without touching prior history 0ms
+     × rejects malformed consumed result {"spellAnalysis":{"x":{"percentage":{}}}} without touching prior history 0ms
+     × isolates null entries and recovers malformed old results as raw decks without modifying storage 0ms
+     × accepts legacy records without results as restorable raw decks 1ms
+     × merges imports without replacing existing same-id records 1ms
+     × does not evict any existing records to fit quota 0ms
+     × rejects excessive imports without changing existing records 0ms
+     × reading blocked storage returns an empty safe view 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > rejects malformed consumed result {"averageCMC":"oops"} without touching prior history
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > rejects malformed consumed result {"cards":[null]} without touching prior history
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > rejects malformed consumed result {"cards":"bad"} without touching prior history
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > rejects malformed consumed result {"spellAnalysis":{"x":{"percentage":{}}}} without touching prior history
+AssertionError: expected [Function] to throw an error
+ ❯ src/lib/__tests__/privacy.history.test.ts:14:92
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > isolates null entries and recovers malformed old results as raw decks without modifying storage
+TypeError: Cannot read properties of null (reading 'id')
+ ❯ src/lib/__tests__/privacy.history.test.ts:20:31
+     18|     const before = JSON.stringify([null, record(), record('old', { ave…
+     19|     const records = PrivacyStorage.getMyAnalyses()
+     20|     expect(records.map(r => r.id)).toEqual(['good','old'])
+       |                               ^
+     21|     expect(records[1].analysis).toBeNull()
+     22|     expect(records[1].deckList).toBe('24 Forest')
+ ❯ src/lib/__tests__/privacy.history.test.ts:20:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > accepts legacy records without results as restorable raw decks
+AssertionError: expected undefined to be null
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:29:56
+     27|     PrivacyStorage.importAnalyses(JSON.stringify([old]))
+     28|     expect(PrivacyStorage.getMyAnalyses()[0].deckList).toBe('99 Forest…
+     29|     expect(PrivacyStorage.getMyAnalyses()[0].analysis).toBeNull()
+       |                                                        ^
+     30|   })
+     31|   it('merges imports without replacing existing same-id records', () =…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > merges imports without replacing existing same-id records
+AssertionError: expected 9 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 9
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:36:69
+     34|     const records = PrivacyStorage.getMyAnalyses()
+     35|     expect(records).toHaveLength(2)
+     36|     expect(records.find(r => r.id === 'good')?.analysis.averageCMC).to…
+       |                                                                     ^
+     37|   })
+     38|   it('does not evict any existing records to fit quota', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > does not evict any existing records to fit quota
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:41:82
+     39|     const before = JSON.stringify(Array.from({length:20},(_,i)=>record…
+     40|     vi.mocked(localStorage.setItem).mockImplementation((k,v) => { if (…
+     41|     expect(() => PrivacyStorage.importAnalyses(JSON.stringify([record(…
+       |                                                                                  ^
+     42|     expect(memory.get(key)).toBe(before)
+     43|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > rejects excessive imports without changing existing records
+AssertionError: expected [Function] to throw an error
+ ❯ src/lib/__tests__/privacy.history.test.ts:46:115
+     44|   it('rejects excessive imports without changing existing records', ()…
+     45|     const before=JSON.stringify([record()]); memory.set(key,before)
+     46|     expect(() => PrivacyStorage.importAnalyses(JSON.stringify(Array.fr…
+       |                                                                                                                   ^
+     47|     expect(memory.get(key)).toBe(before)
+     48|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > F06 safe history boundaries > reading blocked storage returns an empty safe view
+AssertionError: expected [Function] to not throw an error but DOMException{ stack: 'SecurityError:…', …(1) } was thrown
+
+- Expected:
+undefined
+
++ Received:
+DOMException {}
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:51:54
+     49|   it('reading blocked storage returns an empty safe view', () => {
+     50|     vi.mocked(localStorage.getItem).mockImplementation(() => { throw n…
+     51|     expect(() => PrivacyStorage.getMyAnalyses()).not.toThrow()
+       |                                                      ^
+     52|     expect(PrivacyStorage.getMyAnalyses()).toEqual([])
+     53|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed (10)
+   Start at  11:54:14
+   Duration  291ms (transform 44ms, setup 26ms, import 47ms, tests 8ms, environment 139ms)
+

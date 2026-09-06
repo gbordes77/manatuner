@@ -19,6 +19,7 @@ import type {
 } from '@/types/lands'
 
 import { LAND_CATEGORY_NAMES } from '@/types/lands'
+import { throwIfAborted } from './http'
 import { LAND_SEED } from '../data/landSeed'
 import { landCacheService } from './landCacheService'
 import { fetchLandData, fetchLandDataBatch, type ScryfallLandData } from './scryfall'
@@ -268,7 +269,8 @@ class LandService implements ILandService {
    * @param cardName - The exact card name
    * @returns Land metadata or null if not a land
    */
-  async detectLand(cardName: string): Promise<LandMetadata | null> {
+  async detectLand(cardName: string, signal?: AbortSignal): Promise<LandMetadata | null> {
+    throwIfAborted(signal)
     // 1. Sync path (cache + seed) — no network
     const syncHit = this.getLandSync(cardName)
     if (syncHit) {
@@ -276,7 +278,8 @@ class LandService implements ILandService {
     }
 
     // 2. Fetch from Scryfall
-    const scryfallData = await fetchLandData(cardName)
+    const scryfallData = await fetchLandData(cardName, signal)
+    throwIfAborted(signal)
     if (!scryfallData) {
       return null
     }
@@ -297,7 +300,8 @@ class LandService implements ILandService {
    *
    * @returns number of names actually batched (after seed/cache filter + dedupe)
    */
-  async prefetchUnknownLands(cardNames: string[]): Promise<number> {
+  async prefetchUnknownLands(cardNames: string[], signal?: AbortSignal): Promise<number> {
+    throwIfAborted(signal)
     const unknown: string[] = []
     const seen = new Set<string>()
 
@@ -313,7 +317,8 @@ class LandService implements ILandService {
 
     if (unknown.length === 0) return 0
 
-    const batch = await fetchLandDataBatch(unknown)
+    const batch = await fetchLandDataBatch(unknown, signal)
+    throwIfAborted(signal)
     for (const [name, landData] of batch) {
       if (!landData) continue
       // Skip if another path already filled landCache (race-safe)

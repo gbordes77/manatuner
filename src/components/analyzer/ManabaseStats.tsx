@@ -2,7 +2,6 @@ import { Box, Grid, Paper, Typography } from '@mui/material'
 import React from 'react'
 import {
   AnalysisResult,
-  countActiveWubrgColors,
   countActiveWubrgFromSpells,
 } from '../../services/deckAnalyzer'
 
@@ -75,9 +74,10 @@ export const ManabaseStats: React.FC<ManabaseStatsProps> = ({ analysisResult, is
               sx={{ fontSize: isMobile ? '1.2rem' : undefined }}
             >
               {
-                // Spell identity first (Atraxa 4c); fallback land map WUBRG only (P0-EDH-1)
-                countActiveWubrgFromSpells(analysisResult.cards) ||
-                  countActiveWubrgColors(analysisResult.colorDistribution)
+                // Main spell identity is distinct from mandatory payment colors.
+                countActiveWubrgFromSpells(
+                  analysisResult.cards.filter((card) => !card.isSideboard && !card.isCommander)
+                )
               }
             </Typography>
             <Typography
@@ -85,7 +85,7 @@ export const ManabaseStats: React.FC<ManabaseStatsProps> = ({ analysisResult, is
               color="text.secondary"
               sx={{ fontSize: isMobile ? '0.7rem' : undefined }}
             >
-              Colors Used
+              Spell Colors (Identity)
             </Typography>
           </Box>
         </Grid>

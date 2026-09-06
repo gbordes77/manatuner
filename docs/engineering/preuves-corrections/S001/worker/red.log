@@ -1,0 +1,911 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+Error: Uncaught [Error: load failed]
+    at reportException (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/helpers/runtime-script-errors.js:66:24)
+    at innerInvokeEventListeners (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:353:9)
+    at invokeEventListeners (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:286:3)
+    at HTMLUnknownElementImpl._dispatch (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:233:9)
+    at HTMLUnknownElementImpl.dispatchEvent (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/events/EventTarget-impl.js:104:17)
+    at HTMLUnknownElement.dispatchEvent (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/jsdom/lib/jsdom/living/generated/EventTarget.js:241:34)
+    at Object.invokeGuardedCallbackDev (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:4213:16)
+    at invokeGuardedCallback (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:4277:31)
+    at reportUncaughtErrorInDEV (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:22877:5)
+    at captureCommitPhaseError (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:27165:5) Error: load failed
+    at new default (/Volumes/DataDisk/_Projects/Project Mana base V2/tests/math-audit/mulligan-worker-failures.test.tsx:10:56)
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/src/components/analyzer/MulliganTab.tsx:885:22
+    at commitHookEffectListMount (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:24905:3)
+    at flushPassiveEffectsImpl (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:27078:3)
+    at flushPassiveEffects (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:27023:14)
+    at performSyncWorkOnRoot (/Volumes/DataDisk/_Projects/Project Mana base V2/node_modules/react-dom/cjs/react-dom.development.js:26115:3)
+stderr | tests/math-audit/mulligan-worker-failures.test.tsx > recovers from constructor failure and can retry
+The above error occurred in one of your React components:
+
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/src/components/analyzer/MulliganTab.tsx:1146:6
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+xxxxxx
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > recovers from constructor failure and can retry
+AssertionError: expected [Function] to not throw an error but 'Error: load failed' was thrown
+
+- Expected:
+undefined
+
++ Received:
+"Error: load failed"
+
+ ❯ tests/math-audit/mulligan-worker-failures.test.tsx:28:59
+     26| it('recovers from constructor failure and can retry', () => {
+     27|   state.constructionError = true
+     28|   expect(() => render(<MulliganTab cards={cards} />)).not.toThrow()
+       |                                                           ^
+     29|   expect(screen.getByRole('alert').textContent).toMatch(/Failed to sta…
+     30|   state.constructionError = false
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > cleans error, frees loading, retries and ignores old listeners
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > cleans messageerror, frees loading, retries and ignores old listeners
+AssertionError: expected 'Hand scores and keep thresholds optim…' to match /worker|message/i
+
+- Expected:
+/worker|message/i
+
++ Received:
+"Hand scores and keep thresholds optimize a heuristic opening-hand score, not win probability. The policy stops at four cards and uses heuristic bottoming. Plans allow one land per turn and no ramp. In multiplayer mode the first mulligan is free and turn one includes a draw; the seven-card threshold applies before the free mulligan."
+
+ ❯ tests/math-audit/mulligan-worker-failures.test.tsx:40:51
+     38|     const stale = [...old.listeners.get('message')][0] as (event: any)…
+     39|     act(() => old.emit(kind, { preventDefault: vi.fn() }))
+     40|     expect(screen.getByRole('alert').textContent).toMatch(/worker|mess…
+       |                                                   ^
+     41|     expect(screen.getByRole('button', { name: 'Re-run Analysis' })).to…
+     42|     expect(old.terminate).toHaveBeenCalled()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > reports no worker acknowledgement and cleans listeners
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Re-run Analysis"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Mulligan Strategy Analysis":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 css-1vt02qk-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Deck archetype (mulligan lens)":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "⚡":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Aggro":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "⚖️":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Midrange":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "🛡️":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Control":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "🔮":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Combo":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Simulation precision:":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-hav9kw-MuiTypography-root"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Analyzing...":
+  [36m<button[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-1k23hlb-MuiButtonBase-root-MuiButton-root"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtabindex[39m=[32m"-1"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "⚡ Aggro Low curve, kill fast — keep hands with early action":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-19tf40w-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-aggro"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "⚖️ Midrange Threats + interaction — balanced 2–4 land openers":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 css-1jkt2ou-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-midrange"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "🛡️ Control Go long — more lands, interaction, late payoffs":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-19tf40w-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-control"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "🔮 Combo Decks looking to assemble specific pieces":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-19tf40w-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-combo"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Quick (3k)":
+  [36m<div[39m
+    [33maria-disabled[39m=[32m"true"[39m
+    [33mclass[39m=[32m"MuiButtonBase-root Mui-disabled MuiChip-root MuiChip-outlined Mui-disabled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-outlinedDefault css-1l0e3lt-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "Standard (10k)":
+  [36m<div[39m
+    [33maria-disabled[39m=[32m"true"[39m
+    [33mclass[39m=[32m"MuiButtonBase-root Mui-disabled MuiChip-root MuiChip-filled Mui-disabled MuiChip-sizeSmall MuiChip-colorPrimary MuiChip-clickable MuiChip-clickableColorPrimary MuiChip-filledPrimary css-1xw8v5m-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "Precise (50k)":
+  [36m<div[39m
+    [33maria-disabled[39m=[32m"true"[39m
+    [33mclass[39m=[32m"MuiButtonBase-root Mui-disabled MuiChip-root MuiChip-outlined Mui-disabled MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-outlinedDefault css-1l0e3lt-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<button[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-u99uru-MuiButtonBase-root-MuiIconButton-root"[39m
+    [33mdata-mui-internal-clone-element[39m=[32m"true"[39m
+    [33mtabindex[39m=[32m"0"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  progressbar:
+
+  Name "":
+  [36m<span[39m
+    [33mclass[39m=[32m"MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"[39m
+    [33mrole[39m=[32m"progressbar"[39m
+    [33mstyle[39m=[32m"width: 16px; height: 16px;"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<span[39m
+    [33mclass[39m=[32m"MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"[39m
+    [33mrole[39m=[32m"progressbar"[39m
+    [33mstyle[39m=[32m"width: 40px; height: 40px;"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-12owzax-MuiPaper-root-MuiAlert-root"[39m
+    [33mrole[39m=[32m"alert"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Multiplayer: free first mulligan and turn-one draw":
+  [36m<input[39m
+    [33mclass[39m=[32m"PrivateSwitchBase-input MuiSwitch-input css-1p3z7et-MuiSwitchBase-root"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-body2 css-7005vn-MuiTypography-root"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiBox-root css-0"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-v08z5u"[39m
+      [36m>[39m
+        [36m<h6[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 css-1vt02qk-MuiTypography-root"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"[39m
+            [33mdata-testid[39m=[32m"CasinoIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18m0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [0m Mulligan Strategy Analysis[0m
+        [36m</h6>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-1k23hlb-MuiButtonBase-root-MuiButton-root"[39m
+          [33mdisabled[39m=[32m""[39m
+          [33mtabindex[39m=[32m"-1"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"MuiButton-icon MuiButton-startIcon MuiButton-iconSizeSmall css-y6rp3m-MuiButton-startIcon"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"MuiCircularProgress-root MuiCircularProgress-indeterminate MuiCircularProgress-colorPrimary css-18lrjg1-MuiCircularProgress-root"[39m
+              [33mrole[39m=[32m"progressbar"[39m
+              [33mstyle[39m=[32m"width: 16px; height: 16px;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33mclass[39m=[32m"MuiCircularProgress-svg css-1idz92c-MuiCircularProgress-svg"[39m
+                [33mviewBox[39m=[32m"22 22 44 44"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mclass[39m=[32m"MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate css-176wh8e-MuiCircularProgress-circle"[39m
+                  [33mcx[39m=[32m"44"[39m
+                  [33mcy[39m=[32m"44"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mr[39m=[32m"20.2"[39m
+                  [33mstroke-width[39m=[32m"3.6"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+          [36m</span>[39m
+          [0mAnalyzing...[0m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-i3pbo"[39m
+        [33mdata-testid[39m=[32m"archetype-selector"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiBox-root css-r6ef99"[39m
+        [36m>[39m
+          [36m<h6[39m
+            [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+          [36m>[39m
+            [0mDeck archetype (mulligan lens)[0m
+          [36m</h6>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1i3i3hc-MuiSvgIcon-root"[39m
+            [33mdata-mui-internal-clone-element[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"HelpIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1ojuzkd-MuiTypography-root"[39m
+        [36m>[39m
+          [0mScores keep/mull decisions for how your deck wins. Change anytime — Aggro is stricter on early action; Control wants more lands.[0m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-a5rdam-MuiGrid-root"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"false"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-19tf40w-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-aggro"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+              [36m>[39m
+                [0m⚡[0m
+              [36m</h5>[39m
+              [36m<h6[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+              [36m>[39m
+                [0mAggro[0m
+              [36m</h6>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1hi7cw3-MuiTypography-root"[39m
+              [36m>[39m
+                [0mLow curve, kill fast — keep hands with early action[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"true"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 css-1jkt2ou-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-midrange"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+          ...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/math-audit/mulligan-worker-failures.test.tsx:58:17
+     56|   const worker = current()
+     57|   act(() => vi.advanceTimersByTime(15000))
+     58|   expect(screen.getByRole('button', { name: 'Re-run Analysis' })).toBe…
+       |                 ^
+     59|   expect(screen.getByRole('alert').textContent).toMatch(/start|respond…
+     60|   expect(worker.count()).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > does not time out an acknowledged precise calculation and offers cancel/retry
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Cancel analysis"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Mulligan Strategy Analysis":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 css-1vt02qk-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Deck archetype (mulligan lens)":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "⚡":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Aggro":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "⚖️":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Midrange":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "🛡️":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Control":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "🔮":
+  [36m<h5[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Combo":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+  [36m/>[39m
+
+  Name "Simulation precision:":
+  [36m<h6[39m
+    [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-hav9kw-MuiTypography-root"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Re-run Analysis":
+  [36m<button[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-1k23hlb-MuiButtonBase-root-MuiButton-root"[39m
+    [33mtabindex[39m=[32m"0"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "⚡ Aggro Low curve, kill fast — keep hands with early action":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-11t2vda-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-aggro"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "⚖️ Midrange Threats + interaction — balanced 2–4 land openers":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"true"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 css-20dl0q-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-midrange"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "🛡️ Control Go long — more lands, interaction, late payoffs":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-11t2vda-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-control"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "🔮 Combo Decks looking to assemble specific pieces":
+  [36m<div[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-11t2vda-MuiPaper-root"[39m
+    [33mdata-testid[39m=[32m"archetype-combo"[39m
+    [33mrole[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Quick (3k)":
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiChip-root MuiChip-outlined MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-outlinedDefault css-1l0e3lt-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "Standard (10k)":
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiChip-root MuiChip-outlined MuiChip-sizeSmall MuiChip-colorDefault MuiChip-clickable MuiChip-clickableColorDefault MuiChip-outlinedDefault css-1l0e3lt-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "Precise (50k)":
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiChip-root MuiChip-filled MuiChip-sizeSmall MuiChip-colorPrimary MuiChip-clickable MuiChip-clickableColorPrimary MuiChip-filledPrimary css-1xw8v5m-MuiButtonBase-root-MuiChip-root"[39m
+    [33mrole[39m=[32m"button"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<button[39m
+    [33mclass[39m=[32m"MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-u99uru-MuiButtonBase-root-MuiIconButton-root"[39m
+    [33mdata-mui-internal-clone-element[39m=[32m"true"[39m
+    [33mtabindex[39m=[32m"0"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  alert:
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-12owzax-MuiPaper-root-MuiAlert-root"[39m
+    [33mrole[39m=[32m"alert"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Multiplayer: free first mulligan and turn-one draw":
+  [36m<input[39m
+    [33mclass[39m=[32m"PrivateSwitchBase-input MuiSwitch-input css-1p3z7et-MuiSwitchBase-root"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiBox-root css-0"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-v08z5u"[39m
+      [36m>[39m
+        [36m<h6[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 css-1vt02qk-MuiTypography-root"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"[39m
+            [33mdata-testid[39m=[32m"CasinoIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18m0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [0m Mulligan Strategy Analysis[0m
+        [36m</h6>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-1k23hlb-MuiButtonBase-root-MuiButton-root"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"MuiButton-icon MuiButton-startIcon MuiButton-iconSizeSmall css-y6rp3m-MuiButton-startIcon"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"[39m
+              [33mdata-testid[39m=[32m"RefreshIcon"[39m
+              [33mfocusable[39m=[32m"false"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mRe-run Analysis[0m
+          [36m<span[39m
+            [33mclass[39m=[32m"MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"[39m
+          [36m/>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-i3pbo"[39m
+        [33mdata-testid[39m=[32m"archetype-selector"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiBox-root css-r6ef99"[39m
+        [36m>[39m
+          [36m<h6[39m
+            [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+          [36m>[39m
+            [0mDeck archetype (mulligan lens)[0m
+          [36m</h6>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1i3i3hc-MuiSvgIcon-root"[39m
+            [33mdata-mui-internal-clone-element[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"HelpIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1ojuzkd-MuiTypography-root"[39m
+        [36m>[39m
+          [0mScores keep/mull decisions for how your deck wins. Change anytime — Aggro is stricter on early action; Control wants more lands.[0m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-a5rdam-MuiGrid-root"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"false"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-11t2vda-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-aggro"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+              [36m>[39m
+                [0m⚡[0m
+              [36m</h5>[39m
+              [36m<h6[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+              [36m>[39m
+                [0mAggro[0m
+              [36m</h6>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1hi7cw3-MuiTypography-root"[39m
+              [36m>[39m
+                [0mLow curve, kill fast — keep hands with early action[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"true"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 css-20dl0q-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-midrange"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+              [36m>[39m
+                [0m⚖️[0m
+              [36m</h5>[39m
+              [36m<h6[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/math-audit/mulligan-worker-failures.test.tsx:74:26
+     72|   act(() => vi.advanceTimersByTime(3600000))
+     73|   expect(worker.terminate).not.toHaveBeenCalled()
+     74|   fireEvent.click(screen.getByRole('button', { name: 'Cancel analysis'…
+       |                          ^
+     75|   expect(worker.terminate).toHaveBeenCalled()
+     76|   expect(worker.count()).toBe(0)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  tests/math-audit/mulligan-worker-failures.test.tsx > recovers from postMessage failure and cleans on unmount
+TestingLibraryElementError: Found multiple elements with the role "alert"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<div[39m
+  [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorInfo MuiAlert-standardInfo MuiAlert-standard css-12owzax-MuiPaper-root-MuiAlert-root"[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiAlert-icon css-1ytlwq5-MuiAlert-icon"[39m
+  [36m>[39m
+    [36m<svg[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"[39m
+      [33mdata-testid[39m=[32m"InfoOutlinedIcon"[39m
+      [33mfocusable[39m=[32m"false"[39m
+      [33mviewBox[39m=[32m"0 0 24 24"[39m
+    [36m>[39m
+      [36m<path[39m
+        [33md[39m=[32m"M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20, 12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10, 10 0 0,0 12,2M11,17H13V11H11V17Z"[39m
+      [36m/>[39m
+    [36m</svg>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiAlert-message css-1pxa9xg-MuiAlert-message"[39m
+  [36m>[39m
+    [0mHand scores and keep thresholds optimize a heuristic opening-hand score, not win probability. The policy stops at four cards and uses heuristic bottoming. Plans allow one land per turn and no ramp. In multiplayer mode the first mulligan is free and turn one includes a draw; the seven-card threshold applies before the free mulligan.[0m
+  [36m</div>[39m
+[36m</div>[39m
+
+Ignored nodes: comments, script, style
+[36m<div[39m
+  [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorError MuiAlert-standardError MuiAlert-standard css-1i3m5il-MuiPaper-root-MuiAlert-root"[39m
+  [33mrole[39m=[32m"alert"[39m
+[36m>[39m
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiAlert-icon css-1ytlwq5-MuiAlert-icon"[39m
+  [36m>[39m
+    [36m<svg[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeInherit css-1vooibu-MuiSvgIcon-root"[39m
+      [33mdata-testid[39m=[32m"ErrorOutlineIcon"[39m
+      [33mfocusable[39m=[32m"false"[39m
+      [33mviewBox[39m=[32m"0 0 24 24"[39m
+    [36m>[39m
+      [36m<path[39m
+        [33md[39m=[32m"M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"[39m
+      [36m/>[39m
+    [36m</svg>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33mclass[39m=[32m"MuiAlert-message css-1pxa9xg-MuiAlert-message"[39m
+  [36m>[39m
+    [0mFailed to start mulligan analysis: clone failed[0m
+  [36m</div>[39m
+[36m</div>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"MuiBox-root css-0"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-v08z5u"[39m
+      [36m>[39m
+        [36m<h6[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-h6 css-1vt02qk-MuiTypography-root"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"[39m
+            [33mdata-testid[39m=[32m"CasinoIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M7.5 18c-.83 0-1.5-.67-1.5-1.5S6.67 15 7.5 15s1.5.67 1.5 1.5S8.33 18 7.5 18m0-9C6.67 9 6 8.33 6 7.5S6.67 6 7.5 6 9 6.67 9 7.5 8.33 9 7.5 9m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m4.5 4.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5m0-9c-.83 0-1.5-.67-1.5-1.5S15.67 6 16.5 6s1.5.67 1.5 1.5S17.33 9 16.5 9"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [0m Mulligan Strategy Analysis[0m
+        [36m</h6>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeSmall MuiButton-outlinedSizeSmall MuiButton-colorPrimary css-1k23hlb-MuiButtonBase-root-MuiButton-root"[39m
+          [33mtabindex[39m=[32m"0"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"MuiButton-icon MuiButton-startIcon MuiButton-iconSizeSmall css-y6rp3m-MuiButton-startIcon"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"[39m
+              [33mdata-testid[39m=[32m"RefreshIcon"[39m
+              [33mfocusable[39m=[32m"false"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+          [36m</span>[39m
+          [0mRe-run Analysis[0m
+          [36m<span[39m
+            [33mclass[39m=[32m"MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"[39m
+          [36m/>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"MuiBox-root css-i3pbo"[39m
+        [33mdata-testid[39m=[32m"archetype-selector"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiBox-root css-r6ef99"[39m
+        [36m>[39m
+          [36m<h6[39m
+            [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+          [36m>[39m
+            [0mDeck archetype (mulligan lens)[0m
+          [36m</h6>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1i3i3hc-MuiSvgIcon-root"[39m
+            [33mdata-mui-internal-clone-element[39m=[32m"true"[39m
+            [33mdata-testid[39m=[32m"HelpIcon"[39m
+            [33mfocusable[39m=[32m"false"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+        [36m</div>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1ojuzkd-MuiTypography-root"[39m
+        [36m>[39m
+          [0mScores keep/mull decisions for how your deck wins. Change anytime — Aggro is stricter on early action; Control wants more lands.[0m
+        [36m</span>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1 css-a5rdam-MuiGrid-root"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"false"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-11t2vda-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-aggro"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+              [36m>[39m
+                [0m⚡[0m
+              [36m</h5>[39m
+              [36m<h6[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy50j-MuiTypography-root"[39m
+              [36m>[39m
+                [0mAggro[0m
+              [36m</h6>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-caption css-1hi7cw3-MuiTypography-root"[39m
+              [36m>[39m
+                [0mLow curve, kill fast — keep hands with early action[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 MuiGrid-grid-sm-3 css-1blu1sr-MuiGrid-root"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33maria-pressed[39m=[32m"true"[39m
+              [33mclass[39m=[32m"MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation4 css-20dl0q-MuiPaper-root"[39m
+              [33mdata-testid[39m=[32m"archetype-midrange"[39m
+              [33mrole[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<h5[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-h5 css-1eme6d-MuiTypography-root"[39m
+              [36m>[39m
+                [0m⚖️[0m
+              [36m</h5>[39m
+              [36m<h6[39m
+                [33mclass[39m=[32m"MuiTypography-root MuiTypography-subtitle2 css-zdy...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getElementError node_modules/@testing-library/dom/dist/query-helpers.js:20:35
+ ❯ getMultipleElementsFoundError node_modules/@testing-library/dom/dist/query-helpers.js:23:10
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ tests/math-audit/mulligan-worker-failures.test.tsx:83:17
+     81|   state.postError = true
+     82|   const view = render(<MulliganTab cards={cards} />)
+     83|   expect(screen.getByRole('alert').textContent).toMatch(/Failed to sta…
+       |                 ^
+     84|   expect(current().count()).toBe(0)
+     85|   state.postError = false
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  11:56:08
+   Duration  1.47s (transform 84ms, setup 48ms, import 827ms, tests 242ms, environment 273ms)
+

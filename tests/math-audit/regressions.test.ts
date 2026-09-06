@@ -177,7 +177,7 @@ describe('Audit regressions — first-principle counterexamples', () => {
     })
     cards[0].landMetadata = landService.getLandSync('Forest')!
     vi.spyOn(DeckAnalyzer as any, 'parseDeckList').mockResolvedValue(cards)
-    const result = await DeckAnalyzer.analyzeDeck('synthetic fixture')
+    const result = await DeckAnalyzer.analyzeDeck('24 Forest\n36 Lightning Bolt')
     expect(result.consistency).toBe(0)
     expect(result.probabilities.turn1.anyColor).toBeCloseTo(exactTail(60, 24, 7, 1), 12)
     expect(result.spellAnalysis['Lightning Bolt'].percentage).toBe(0)

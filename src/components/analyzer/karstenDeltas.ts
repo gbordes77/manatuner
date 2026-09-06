@@ -5,7 +5,7 @@ import {
   KARSTEN_REFERENCE_DECK_SIZE,
   scaleKarstenSources,
 } from '../../utils/deckFormat'
-import { countPipsInCost, type KarstenColor } from '../../utils/manaCostParser'
+import { parseManaPayment, type KarstenColor } from '../../utils/manaCostParser'
 
 const COLORS: readonly KarstenColor[] = ['W', 'U', 'B', 'R', 'G']
 
@@ -46,7 +46,7 @@ export interface ColorDelta {
  */
 export function computeColorDeltas(analysisResult: AnalysisResult): ColorDelta[] {
   const result: ColorDelta[] = []
-  const spells = analysisResult.cards.filter((c) => !c.isLand)
+  const spells = analysisResult.cards.filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
   const deckSize = analysisResult.totalCards || KARSTEN_REFERENCE_DECK_SIZE
 
   for (const color of COLORS) {
@@ -57,7 +57,10 @@ export function computeColorDeltas(analysisResult: AnalysisResult): ColorDelta[]
     let required = 0
     let wasScaled = false
     for (const card of spells) {
-      const pips = countPipsInCost(card.manaCost, color)
+      const payment = parseManaPayment(card.manaCost)
+      // Published per-color tables do not represent alternatives. Never turn OR into AND.
+      if (payment.unsupportedSymbols || payment.hybrid?.length) continue
+      const pips = payment.pips[color] ?? 0
       if (pips === 0) continue
       const turn = Math.max(1, card.cmc)
       const tablePips = Math.min(pips, 4)
@@ -117,4 +120,22 @@ export function summarizeColorDeltas(deltas: ColorDelta[]): {
   }
   const verdict: 'ok' | 'warn' | 'short' = shortCount > 0 ? 'short' : warnCount > 0 ? 'warn' : 'ok'
   return { verdict, shortCount, warnCount }
+}
+
+/** Explain omissions rather than presenting absence of a target as a passed check. */
+export function colorTargetLimitations(analysis: AnalysisResult): string[] {
+  return analysis.cards
+    .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
+    .flatMap((card) => {
+      const cost = parseManaPayment(card.manaCost)
+      if (cost.unsupportedSymbols)
+        return [
+          `${card.name}: per-color target unavailable for this payment (including phyrexian, snow or other unsupported symbols).`,
+        ]
+      if (cost.hybrid?.length)
+        return [
+          `${card.name}: hybrid alternatives have no independent per-color Karsten target; see castability for physical payment.`,
+        ]
+      return []
+    })
 }

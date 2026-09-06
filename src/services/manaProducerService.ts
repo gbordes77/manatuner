@@ -23,7 +23,8 @@ import type {
 } from '../types/manaProducers'
 import { FORMAT_REMOVAL_RATES, colorMaskFromLetters } from '../types/manaProducers'
 import { computeAcceleratedCastability, computeCastabilityByTurn } from './castability'
-import { fetchWithTimeout } from './http'
+import type { ScryfallCard } from '../types/scryfall'
+import { fetchJsonWithTimeout } from './http'
 
 // =============================================================================
 // CONSTANTS
@@ -426,15 +427,13 @@ export function analyzeOracleForMana(oracleText: string): {
  */
 async function detectProducerFromScryfall(cardName: string): Promise<ManaProducerDef | null> {
   try {
-    const response = await fetchWithTimeout(
+    const { response, data } = await fetchJsonWithTimeout<ScryfallCard>(
       `https://api.scryfall.com/cards/named?fuzzy=${encodeURIComponent(cardName)}`,
       {},
       { timeoutMs: 8000, retries: 1 }
     )
 
-    if (!response.ok) return null
-
-    const data = await response.json()
+    if (!response.ok || !data) return null
     // For DFCs, use front face oracle text (the castable side)
     let oracleText = data.oracle_text || ''
     if (data.card_faces) {

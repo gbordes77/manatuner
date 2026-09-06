@@ -39,7 +39,14 @@ export const PrivacySettings: React.FC = () => {
   const [showSnackbar, setShowSnackbar] = useState(false)
 
   const exportData = () => {
-    const data = PrivacyStorage.exportAnalyses()
+    let data: string
+    try {
+      data = PrivacyStorage.exportAnalyses()
+    } catch (error) {
+      setSnackbarMessage(error instanceof Error ? error.message : 'Export failed.')
+      setShowSnackbar(true)
+      return
+    }
     const blob = new Blob([data], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -64,13 +71,26 @@ export const PrivacySettings: React.FC = () => {
         reader.onload = (e) => {
           const data = e.target?.result as string
           try {
-            PrivacyStorage.importAnalyses(data)
-            setSnackbarMessage('Data imported successfully!')
+            const result = PrivacyStorage.importAnalyses(data)
+            setSnackbarMessage(
+              `Imported ${result.imported} analyses; ${result.duplicates} duplicate IDs kept unchanged; ${result.recovered} legacy decks require re-analysis. Import merges with existing history.`
+            )
             setShowSnackbar(true)
-          } catch {
-            setSnackbarMessage('Error during import')
+          } catch (error) {
+            setSnackbarMessage(
+              error instanceof Error ? error.message : 'Import failed. No history was changed.'
+            )
             setShowSnackbar(true)
           }
+        }
+        reader.onerror = () => {
+          setSnackbarMessage('Could not read file. No history was changed.')
+          setShowSnackbar(true)
+        }
+        if (file.size > 10_000_000) {
+          setSnackbarMessage('Import exceeds 10 MB. No history was changed.')
+          setShowSnackbar(true)
+          return
         }
         reader.readAsText(file)
       }
@@ -142,7 +162,7 @@ export const PrivacySettings: React.FC = () => {
                 '&:hover': { borderColor: 'white' },
               }}
             >
-              Import
+              Import (merge)
             </Button>
 
             <Button

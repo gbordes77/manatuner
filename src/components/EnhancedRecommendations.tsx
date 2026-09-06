@@ -26,6 +26,7 @@ interface EnhancedRecommendationsProps {
   recommendations: string[]
   analysis: {
     consistency: number
+    consistencyUnavailable?: boolean
     /** Fraction of spells below 80% castability on curve (0-1) */
     atRiskSpells: number | null
     landRatio: number
@@ -53,13 +54,13 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
         lowerRec.includes('critical') ||
         lowerRec.includes('urgent') ||
         lowerRec.includes('must') ||
-        analysis.consistency < 0.6
+        (!analysis.consistencyUnavailable && analysis.consistency < 0.6)
       ) {
         categories.critical.push(rec)
       } else if (
         lowerRec.includes('important') ||
         lowerRec.includes('should') ||
-        analysis.consistency < 0.75
+        (!analysis.consistencyUnavailable && analysis.consistency < 0.75)
       ) {
         categories.high.push(rec)
       } else if (lowerRec.includes('consider') || lowerRec.includes('might')) {
@@ -109,8 +110,8 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
     let score = 100
 
     // Consistency penalty
-    if (analysis.consistency < 0.6) score -= 30
-    else if (analysis.consistency < 0.75) score -= 15
+    if (!analysis.consistencyUnavailable && analysis.consistency < 0.6) score -= 30
+    else if (!analysis.consistencyUnavailable && analysis.consistency < 0.75) score -= 15
     else if (analysis.consistency < 0.85) score -= 5
 
     // At-risk spells penalty (fraction of spells below 80% castability)
@@ -123,7 +124,7 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
     return Math.max(score, 0)
   }
 
-  const healthScore = getHealthScore()
+  const healthScore = analysis.consistencyUnavailable ? null : getHealthScore()
 
   const getScoreColor = (score: number) => {
     if (score >= 85) return 'var(--mtg-green)'
@@ -170,7 +171,9 @@ const EnhancedRecommendations: React.FC<EnhancedRecommendationsProps> = ({
                 <Box textAlign="center">
                   <SecurityIcon sx={{ fontSize: 32, color: 'var(--mtg-blue)', mb: 1 }} />
                   <Typography variant="h6" fontWeight="600">
-                    {Math.round(analysis.consistency * 100)}%
+                    {analysis.consistencyUnavailable
+                      ? 'Unavailable'
+                      : `${Math.round(analysis.consistency * 100)}%`}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
                     Consistency

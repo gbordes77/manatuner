@@ -27,3 +27,6 @@ export function countPipsInCost(cost: string, color: KarstenColor): number {
 }
 
 export type { KarstenColor }
+
+/** Fixed requirements and alternatives share the physical engine's represented syntax. */
+export { parsePhysicalCost as parseManaPayment } from '../services/castability/parsePhysicalCost'

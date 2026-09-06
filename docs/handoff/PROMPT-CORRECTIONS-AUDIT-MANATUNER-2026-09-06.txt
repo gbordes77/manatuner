@@ -1,0 +1,99 @@
+PROMPT RÉUTILISABLE DE CORRECTION ET DE NON RÉGRESSION DE MANATUNER
+
+Tu reprends le projet ManaTuner pour corriger les défauts de l’audit du 6 septembre 2026, traiter les améliorations définies et compléter les validations ouvertes. Cette mission s’étale sur plusieurs sessions et conversations. Ce même prompt sera recollé à chaque reprise : il n’exige aucune mémoire de la conversation précédente. Exécute le travail dans le dépôt ; ne te limite pas à refaire un audit ou à proposer un plan.
+
+L’audit est la référence historique ; le fichier de suivi est la mémoire opérationnelle entre sessions ; le code et les preuves datées permettent de vérifier son exactitude. Ne recrée pas le suivi, ne remets pas ses cases à zéro et ne recommence pas les corrections déjà vérifiées. En cas de contradiction entre le suivi et le dépôt, documente l’écart puis réévalue seulement les éléments concernés.
+
+DOCUMENTS OBLIGATOIRES
+
+Racine connue : /Volumes/DataDisk/_Projects/Project Mana base V2
+Audit historique : docs/engineering/AUDIT-POST-CORRECTIFS-MANATUNER-2026-09-06.md
+Suivi à mettre à jour : docs/engineering/SUIVI-CORRECTIONS-MANATUNER-2026-09-06.md
+Version Word de consultation : docs/engineering/AUDIT-POST-CORRECTIFS-MANATUNER-2026-09-06.docx
+
+Lis l’audit et le suivi en entier avant de définir les lots. Si le dépôt a été déplacé, retrouve ces chemins relatifs. Lis les AGENTS.md applicables. Le commit historique audité est 148d5f85ee26e60cdb10c6351031c89c03fd7ed0 ; il faut relever le HEAD actuel et ne pas supposer que les lignes ou les défauts sont restés identiques.
+
+AUTORISATION ET PÉRIMÈTRE
+
+Ce prompt autorise les corrections locales nécessaires, les modifications ciblées de code, tests et documentation, les builds et les vérifications de non-régression. Il remplace la contrainte de lecture seule de l’audit initial pour cette mission de correction. Avance sans demander une confirmation pour chaque correction réversible ou test local nécessaire.
+
+Préserve les changements déjà présents. Ne supprime ni ne réinitialise les données ou travaux de l’utilisateur. Utilise un stockage isolé pour les imports invalides, quotas et migrations ; des fixtures publiques pour les tests réseau ; un environnement local ou de test pour les pannes injectées. Ne surcharge pas Scryfall et n’exécute pas les entrées excessives comme calcul massif en production.
+
+Ne lance aucun push, publication, déploiement, migration de données réelles ou activation de télémétrie externe sur la seule base de ce prompt. Ces opérations nécessitent une demande explicite distincte. Leur absence ne bloque pas les corrections et validations locales indépendantes. Ne fais pas de commit sans demande explicite ; consigne HEAD et le diff testé si nécessaire. Ne déclenche pas un workflow de publication pour tester une politique d’échec.
+
+ÉQUIPE ET COMPÉTENCES NÉCESSAIRES
+
+Organise une équipe virtuelle senior. Tu peux explicitement déléguer à des sous-agents les lots indépendants et la revue, si les outils sont disponibles. Attribue des responsabilités et des fichiers clairs ; coordonne les changements transversaux pour éviter les éditions concurrentes contradictoires. Si les sous-agents ne sont pas disponibles, couvre ces compétences successivement sans prétendre à une revue indépendante non réalisée.
+
+1. Lead technique et architecte : contrats de données, dépendances entre lots, architecture existante, intégration, compatibilité et revue des diffs.
+2. Expert frontend React/TypeScript : React Router, Redux Toolkit et Redux Persist, Material UI/Emotion, composants accessibles, états, effets, démontage, concurrence et résultats obsolètes.
+3. Expert métier Magic et probabilités : formats 40/60/99/100, principal/sideboard/command zone/Companion/Maybeboard, coûts hybrides et phyrexians, MDFC/DFC/split/aventures, sources physiques, hypergéométrique, exact goldfish, modèles conditionnels, heuristiques et mulligan London. Vérifier les règles officielles si doute ; ne pas inventer un support de mécanique.
+4. Expert parsing et données : formats d’export, représentation canonique, validation d’entrées et de réponses JSON, nombres sûrs, schémas Zod, versions, migrations, import/export, quota et récupération des sauvegardes.
+5. Expert asynchronisme et réseau : AbortController de bout en bout, générations d’opérations, fetch, retries 429/5xx et Retry-After, durée totale, corps JSON lent, cache, fallback et API Scryfall.
+6. Expert workers et performance : cycle de vie des workers, error/messageerror, annulation et relance, budgets de calcul, mesures LCP/INP/CLS, chargement différé, performance mobile et absence de régression mathématique.
+7. Ingénieur QA senior : Vitest, Testing Library, Playwright, tests unitaires/intégration/E2E, fixtures déterministes, horloges et promesses contrôlées, oracles indépendants, tests négatifs, régression et traçabilité avant/après.
+8. Expert accessibilité et UX : WCAG 2.2, clavier, focus, noms/rôles, lecteur d’écran, contrastes, zoom, responsive et clarté des résultats ; une analyse axe seule ne vaut pas audit AA complet.
+9. Expert SEO et livraison : HTML initial versus DOM, métadonnées/canonical, statuts HTTP, soft 404, prérendu Vite, routage Vercel, artefacts, GitHub Actions et conditions de publication.
+10. Expert sécurité et confidentialité : robustesse frontend, XSS et sérialisation, dépendances, CSP et en-têtes, minimisation des données, stockages, flux tiers, Sentry et confidentialité des traces.
+11. Responsable produit et rédaction technique : cohérence des promesses, définitions de scores, périmètre des modèles, documentation utilisateur et suivi des décisions. Les conclusions juridiques RGPD et contrats tiers exigent une validation compétente ; ne pas simuler une certification juridique.
+
+ÉTAT INITIAL À CONTRÔLER
+
+Relève git status, HEAD, branche, versions et configuration des tests. Le dépôt était déjà modifié dans playwright-report/index.html, test-results.json et test-results/.last-run.json, avec plusieurs éléments non suivis, dont .claude/worktrees/, .playwright-mcp/, .mcp.json.bak.20260801-140417 et docs/handoff/PROMPT-REPRISE-MANATUNER.txt. Cette liste est historique : réinspecte sans nettoyer ces fichiers. Les documents d’audit et de suivi peuvent eux aussi être non suivis.
+
+Établis une baseline actuelle des vérifications pertinentes. Les 625 tests passants de l’audit constituent une preuve historique partielle, pas la validation de ton état de travail. Consulte package.json, les workflows et les configurations réelles avant de choisir les commandes. Évite les alias globaux qui exécutent tous les navigateurs ou publient. Les builds et tests peuvent produire des fichiers : dirige leurs sorties vers un espace de travail dédié quand possible et inspecte le diff après exécution.
+
+PROTOCOLE DE REPRISE À CHAQUE SESSION
+
+1. Lis le point de reprise le plus récent et le journal du suivi, puis les fiches ouvertes, corrigées non vérifiées, bloquées ou en régression. Relève la date et l’identifiant de la nouvelle session.
+2. Compare branche, HEAD, diff non commité et fichiers présents avec le dernier point de reprise. Une session précédente peut avoir travaillé sans commit : son diff fait partie du travail à préserver. N’utilise pas stash/reset/clean pour obtenir artificiellement un dépôt propre.
+3. Contrôle l’existence des preuves citées. Les preuves durables doivent être dans le projet ou une destination conservée et explicitement référencée, jamais uniquement dans un dossier temporaire ou la mémoire d’un sous-agent. Une preuve manquante n’efface pas la correction ; elle laisse sa vérification à refaire.
+4. Si la version et les contrats validés sont inchangés, conserve leurs cases. Rejoue seulement les contrôles justifiés par le changement de version, une dépendance modifiée, une preuve absente, un risque d’intégration ou la campagne finale. Ne relance pas l’audit complet à chaque reprise.
+5. Termine en priorité le lot laissé en cours, les régressions nouvelles et les corrections en attente de validation. Choisis ensuite le prochain lot ouvert selon les priorités et dépendances. Si un lot est bloqué par un accès, prends un lot indépendant et conserve le blocage.
+6. Annonce brièvement ce qui est déjà acquis, le lot de cette session et la preuve attendue pour le clôturer. Respecte une limite de temps, un nombre de lots ou une demande d’arrêt donnés par l’utilisateur ; sinon avance sur des lots cohérents aussi longtemps que la session le permet.
+
+PLAN ET ORDRE
+
+Traite tous les F01 à F13. Priorité P1 : F01 à F07. Priorité P2 : F08 à F13. Coordonne F01/F02 avant les synthèses F03/F04 ; F05/F08 pour l’annulation ; F06 pour la récupération ; F07/F11 pour le clavier ; F09/F11 pour HTML et livraison ; F10/F12 après les décisions de modèle et flux ; F13 pour les pannes worker. Les lots indépendants peuvent avancer en parallèle.
+
+Traite ensuite E01 à E06 selon un périmètre concret et justifié, et complète V01 à V12 dès que les preuves sont accessibles. Un manque d’accès à Vercel, Search Console, une réception Sentry ou du matériel ne doit pas devenir un faux succès : enregistre le blocage et poursuis tout travail indépendant. N’invente ni identifiants privés ni résultats de mesure. Ne transforme pas les suggestions de refactorisation en réécriture générale.
+
+PROTOCOLE OBLIGATOIRE POUR CHAQUE CORRECTION
+
+1. Relis le chemin réellement utilisé par le produit et le constat F correspondant. Vérifie si le défaut existe encore. S’il est déjà corrigé, prouve-le et ne réimplémente pas inutilement.
+2. Définis le contrat attendu, les consommateurs impactés et un cas de reproduction minimal. Ajoute ou adapte un test utile qui échoue avant correction et réussit après. Pour un défaut éditorial, HTTP ou statique, utilise une preuve adaptée et une protection ciblée ; n’écris pas un test tautologique.
+3. Implémente une correction limitée mais complète. Préserve les sauvegardes, les contrats publics et les mécaniques déjà supportées. Documente les changements intentionnels de score ou de parsing.
+4. Vérifie chacun des Fxx-ACn applicables, avec la version, la commande ou le parcours, l’attendu, l’obtenu et une preuve conservée. Aucun critère ne peut être coché sur la seule présence de code ou sur l’affirmation d’un sous-agent.
+5. Exécute les tests de non-régression spécifiques de la fiche de suivi ET ceux des consommateurs et parcours voisins. Utilise des oracles indépendants pour les probabilités et des populations explicitement contrôlées. Conserve le test du point d’entrée réel, pas seulement celui d’un helper parallèle.
+6. Exécute les contrôles pertinents de lint et TypeScript ; construis et vérifie l’artefact lorsque la correction affecte build, worker, routage, SEO, import dynamique ou livraison. Vérifie dans le navigateur les parcours utilisateurs modifiés, avec console et réseau. Pour parsing/calcul, complète les unitaires par l’intégration au chemin produit.
+7. Fais relire le diff et les risques, idéalement par un autre membre. Après intégration des lots, rejoue les validations concernées sur l’état intégré : une validation isolée de branche ou de sous-agent ne suffit pas.
+8. Corrige toute régression introduite avant de clôturer. Si un contrôle ne peut pas être exécuté, laisse la validation ouverte et explique pourquoi ; ne diminue pas une assertion, ne masque pas un échec et ne renouvelle pas un snapshot sans inspection.
+9. Mets à jour la fiche et les cases du suivi immédiatement. Distingue corrigé, vérifié et livré. Garde les preuves avant/après ; ne réécris pas l’audit historique pour faire disparaître ses constats.
+
+NON RÉGRESSION TRANSVERSALE
+
+Après chaque lot touchant plusieurs contrats, puis sur l’état final, contrôle : saisie et exemple ; deck invalide et bornes ; sections et quantités ; principal/sideboard/Commander ; hybrides versus multicolore strict ; mode estimation et exact et leurs limites ; cas indépendant 24 Plains/36 Savannah Lions avec demande blanche T1 externe au modèle ; mulligan nominal et pannes ; Clear et concurrence A/B ; sauvegarde/restauration/rechargement ; import/export et anciennes versions ; comparaison/post-board ; lien partagé/navigation directe/retour arrière ; clavier ; responsive ; erreurs réseau ; HTML et statuts quand concernés.
+
+Utilise les 28 scénarios NR-M01 à NR-M28 et les contrôles finaux du suivi. Le cas synthétique Savannah Lions n’est pas un deck légal de tournoi et ne valide pas toutes les mécaniques. Les cas de réseau simulé ne doivent pas être présentés comme des captures Scryfall réelles.
+
+Privilégie un noyau E2E Chromium déterministe, puis ajoute les navigateurs et appareils motivés par le risque, notamment stockage, clipboard, export, worker, clavier virtuel et Safari. N’exécute pas mécaniquement six profils identiques à chaque changement. En revanche, ne prétends pas avoir testé un navigateur réel ou une conformité complète sans preuve.
+
+POINT DE REPRISE OBLIGATOIRE EN FIN DE SESSION
+
+Actualise le suivi après chaque correction et avant toute fin de session ou arrêt demandé, sans attendre la fin de tout l’audit. Utilise le modèle « Point de reprise de session » du suivi. Si tu dois t’arrêter au milieu d’un lot, laisse ses cases non acquises décochées et indique précisément l’état intermédiaire.
+
+Consigne : identifiant/date de session ; objectif ; branche/HEAD ; fichiers modifiés non commités ; version ou diff testé ; F et AC acquis pendant la session ; tests exécutés et liens durables vers les preuves ; tests non exécutés ; état des processus locaux utiles et commandes de redémarrage sans secrets ; décisions ; blocages ; prochaines actions ordonnées, avec le premier fichier ou test à reprendre. N’enregistre jamais des tokens, valeurs .env privées ou decks personnels.
+
+La prochaine session doit pouvoir poursuivre sans poser de question sur ce qui a déjà été fait. Ne remplace pas le journal historique : ajoute une entrée et mets à jour le pointeur « Dernier point de reprise ». Si une interruption brutale empêche le bilan, la session suivante reconstruit l’état depuis le dernier journal, le diff et les preuves avant de poursuivre.
+
+LIVRABLES ET CRITÈRES DE FIN
+
+Livre le code corrigé, les tests utiles, le suivi mis à jour, les preuves datées et un bilan final des changements, validations, non-régressions et limites. Indique les fichiers, la version intégrée et les commandes réellement exécutées. Le bilan doit donner les nombres de F vérifiés sur 13 et de critères vérifiés sur 62 sans les confondre avec les jalons ou les améliorations.
+
+Pour chaque session, livre un bilan bref distinguant terminé et vérifié, en cours, bloqué et prochaine étape, avec le point de reprise à jour. La fin d’une session ne signifie pas la clôture de la mission. Une demande d’arrêt de l’utilisateur impose de transmettre l’état et de s’arrêter ; elle ne justifie pas de cocher des validations non exécutées.
+
+Pour la mission complète, continue de session en session jusqu’au traitement du périmètre accessible. Si un blocage externe subsiste, fournis sa cause précise, les éléments à obtenir et l’état du reste du travail. Ne déclare « tout corrigé et vérifié » que si tous les F ont leurs preuves et qu’aucune régression nouvelle n’est ouverte. Indique séparément les E et V restants ; ne déclare ni publication ni certification non réalisées.
+
+COMMENCE MAINTENANT
+
+Lis les deux documents, retrouve le dernier point de reprise, inspecte le dépôt actuel, établis les vérifications nécessaires à cette reprise, attribue les responsabilités, puis reprends le premier lot inachevé pertinent avec ses tests et son suivi. Si aucune session de correction n’a commencé, initialise S001. Communique brièvement les progrès et les décisions importantes pendant le travail.

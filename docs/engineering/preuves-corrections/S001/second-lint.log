@@ -1,0 +1,6 @@
+
+/Volumes/DataDisk/_Projects/Project Mana base V2/src/components/analyzer/MulliganTab.tsx
+  918:11  error  'startupTimer' is never reassigned. Use 'const' instead  prefer-const
+
+✖ 1 problem (1 error, 0 warnings)
+

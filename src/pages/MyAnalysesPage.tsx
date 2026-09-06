@@ -13,6 +13,7 @@ import SortIcon from '@mui/icons-material/Sort'
 import StorageIcon from '@mui/icons-material/Storage'
 import { SEO } from '../components/common/SEO'
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -42,13 +43,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { AnimatedContainer } from '../components/common/AnimatedContainer'
 import { FloatingManaSymbols } from '../components/common/FloatingManaSymbols'
-import {
-  AnalysisRecord,
-  clearAllLocalData,
-  exportAnalyses,
-  getMyAnalyses,
-  PrivacyStorage,
-} from '../lib/privacy'
+import { AnalysisRecord, clearAllLocalData, exportAnalyses, PrivacyStorage } from '../lib/privacy'
 import { AppDispatch, persistor } from '../store'
 import { clearAnalyzer, setDeckList, setDeckName } from '../store/slices/analyzerSlice'
 
@@ -80,10 +75,12 @@ const DeltaChip: React.FC<{ value: number; suffix?: string }> = ({ value, suffix
 
 // ─── Health Badge ───────────────────────────────────────────────────────────
 
-const HealthBadge: React.FC<{ consistency: number; size?: 'small' | 'large' }> = ({
-  consistency,
-  size = 'large',
-}) => {
+const HealthBadge: React.FC<{
+  consistency: number
+  unavailable?: boolean
+  size?: 'small' | 'large'
+}> = ({ consistency, unavailable, size = 'large' }) => {
+  if (unavailable) return <Typography color="text.secondary">Health Score unavailable</Typography>
   const percent = Math.round(consistency * 100)
   const color =
     percent >= 85 ? 'success' : percent >= 70 ? 'primary' : percent >= 55 ? 'warning' : 'error'
@@ -117,6 +114,7 @@ const CompareView: React.FC<{
 }> = ({ a, b }) => {
   const getStats = (record: AnalysisRecord) => ({
     name: record.deckName || 'Unnamed Deck',
+    unavailable: Boolean(record.analysis?.consistencyUnavailable),
     consistency: record.consistency ?? record.analysis?.consistency ?? 0,
     totalCards: record.analysis?.totalCards || 0,
     totalLands: record.analysis?.totalLands || 0,
@@ -222,11 +220,13 @@ const CompareView: React.FC<{
           Health Score
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
-          <HealthBadge consistency={sa.consistency} />
+          <HealthBadge consistency={sa.consistency} unavailable={sa.unavailable} />
           <Box>
-            <DeltaChip value={consistencyDelta} suffix="%" />
+            {!sa.unavailable && !sb.unavailable && (
+              <DeltaChip value={consistencyDelta} suffix="%" />
+            )}
           </Box>
-          <HealthBadge consistency={sb.consistency} />
+          <HealthBadge consistency={sb.consistency} unavailable={sb.unavailable} />
         </Box>
       </Paper>
 
@@ -273,9 +273,9 @@ const CompareView: React.FC<{
         />
         <StatRow
           label="Consistency"
-          va={`${(sa.consistency * 100).toFixed(1)}%`}
-          vb={`${(sb.consistency * 100).toFixed(1)}%`}
-          delta={consistencyDelta}
+          va={sa.unavailable ? 'Unavailable' : `${(sa.consistency * 100).toFixed(1)}%`}
+          vb={sb.unavailable ? 'Unavailable' : `${(sb.consistency * 100).toFixed(1)}%`}
+          delta={sa.unavailable || sb.unavailable ? undefined : consistencyDelta}
           suffix="%"
         />
       </Paper>
@@ -379,7 +379,7 @@ const AnalysisCard: React.FC<{
 
   return (
     <Card
-      onClick={compareMode ? onToggleSelect : undefined}
+      onClick={compareMode && !analysis.recoveryOnly ? onToggleSelect : undefined}
       sx={{
         height: '100%',
         transition: 'all 0.2s',
@@ -394,6 +394,7 @@ const AnalysisCard: React.FC<{
         {compareMode && (
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: -1, mt: -1, mr: -1 }}>
             <Checkbox
+              disabled={analysis.recoveryOnly}
               checked={selected}
               icon={<UncheckedIcon />}
               checkedIcon={<CheckIcon />}
@@ -436,13 +437,29 @@ const AnalysisCard: React.FC<{
         </Box>
 
         {/* Health Score */}
-        {consistency > 0 && <HealthBadge consistency={consistency} size="small" />}
+        {analysis.recoveryOnly ? (
+          <Alert severity="info">
+            Saved result unavailable. Load the original deck to analyze it again.
+          </Alert>
+        ) : (
+          <HealthBadge
+            consistency={consistency}
+            unavailable={analysis.analysis?.consistencyUnavailable}
+            size="small"
+          />
+        )}
+        {analysis.analysis?.consistencyUnavailable &&
+          analysis.analysis?.colorAccessNotes?.map((note: string) => (
+            <Typography key={note} variant="caption">
+              {note}
+            </Typography>
+          ))}
 
         {/* Stats */}
         <Box sx={{ display: 'flex', justifyContent: 'space-around', my: 2 }}>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="body2" fontWeight="bold">
-              {totalCards}
+              {analysis.recoveryOnly ? '—' : totalCards}
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Cards
@@ -450,7 +467,7 @@ const AnalysisCard: React.FC<{
           </Box>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="body2" fontWeight="bold">
-              {totalLands}
+              {analysis.recoveryOnly ? '—' : totalLands}
             </Typography>
             <Typography variant="caption" color="text.secondary">
               Lands
@@ -510,6 +527,7 @@ const MyAnalysesPage: React.FC = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
   const [analyses, setAnalyses] = useState<AnalysisRecord[]>([])
+  const [historyWarnings, setHistoryWarnings] = useState<string[]>([])
   const [deleteDialog, setDeleteDialog] = useState<{ open: boolean; id?: string; all?: boolean }>({
     open: false,
   })
@@ -521,11 +539,19 @@ const MyAnalysesPage: React.FC = () => {
   const [compareDialog, setCompareDialog] = useState(false)
 
   useEffect(() => {
-    setAnalyses(getMyAnalyses())
+    const result = PrivacyStorage.readHistory()
+    setAnalyses(result.records)
+    setHistoryWarnings(result.warnings)
   }, [])
 
   const handleExport = () => {
-    const data = exportAnalyses()
+    let data: string
+    try {
+      data = exportAnalyses()
+    } catch (error) {
+      setHistoryWarnings([error instanceof Error ? error.message : 'Export failed.'])
+      return
+    }
     const blob = new Blob([data], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -545,9 +571,17 @@ const MyAnalysesPage: React.FC = () => {
   }
 
   const handleDelete = (id: string) => {
-    PrivacyStorage.deleteAnalysis(id)
-    setAnalyses(getMyAnalyses())
-    setDeleteDialog({ open: false })
+    try {
+      PrivacyStorage.deleteAnalysis(id)
+      const result = PrivacyStorage.readHistory()
+      setAnalyses(result.records)
+      setHistoryWarnings(result.warnings)
+      setDeleteDialog({ open: false })
+    } catch (error) {
+      setHistoryWarnings([
+        error instanceof Error ? error.message : 'Delete failed. No history was changed.',
+      ])
+    }
   }
 
   const handleClearAll = () => {
@@ -597,8 +631,14 @@ const MyAnalysesPage: React.FC = () => {
     })
     .sort((a, b) => {
       if (sortBy === 'score') {
-        const scoreA = a.consistency ?? a.analysis?.consistency ?? 0
-        const scoreB = b.consistency ?? b.analysis?.consistency ?? 0
+        const scoreA =
+          a.recoveryOnly || a.analysis?.consistencyUnavailable
+            ? -1
+            : (a.consistency ?? a.analysis?.consistency ?? 0)
+        const scoreB =
+          b.recoveryOnly || b.analysis?.consistencyUnavailable
+            ? -1
+            : (b.consistency ?? b.analysis?.consistency ?? 0)
         return scoreB - scoreA
       }
       if (sortBy === 'name') {
@@ -625,6 +665,11 @@ const MyAnalysesPage: React.FC = () => {
         noindex
       />
       <FloatingManaSymbols />
+      {historyWarnings.map((message, index) => (
+        <Alert severity="warning" key={index} sx={{ mb: 1 }}>
+          {message}
+        </Alert>
+      ))}
 
       {/* Header */}
       <AnimatedContainer animation="fadeInUp">

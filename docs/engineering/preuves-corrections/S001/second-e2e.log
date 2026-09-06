@@ -1,0 +1,84 @@
+
+Running 30 tests using 1 worker
+
+(node:37552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[2/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[3/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[4/30] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[5/30] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution aborts the pending request and remains empty after reload
+[6/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:20:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+[7/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 invalid import preserves existing history and reports outcome
+[8/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 quota import preserves existing history and reports outcome
+[9/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:44:7 › F06 merge import preserves existing history and reports outcome
+[10/30] [chromium] › tests/e2e/core-flows/history-audit.spec.js:77:5 › F06 comparison handles validated results and F03 unavailable score
+[11/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[12/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[13/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[14/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[15/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[16/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[17/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:5 › F01 reports the offending line and retains valid experimental decks
+[18/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 excluded sections: saved populations match input
+[19/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 local SB prefix and transitions: saved populations match input
+[20/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 categories and blank lines: saved populations match input
+[21/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[22/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[23/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[24/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[25/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:134:5 › F02 preserves post-board swaps and returning to the main population
+[26/30] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:157:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+[27/30] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+[28/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:33:5 › F03 hybrid can be supported by green, with honest target limitation and exact detail
+[29/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:43:5 › F03 strict RG still reports missing red and phyrexian score is unavailable
+[30/30] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:56:5 › F04 adding a blue sideboard does not change the red main-deck verdict
+  1) [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:56:5 › F04 adding a blue sideboard does not change the red main-deck verdict 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByTestId('quick-verdict')
+    Timeout: 5000ms
+    - Expected  - 6
+    + Received  + 1
+
+    - Health Score 99% · Excellent
+    -
+    - Your deck has a color access score of 99/100 — excellent; keep almost any 2–4-land opener.
+    -
+    - Top recommendations
+    - 1. 🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources.
+    + Health Score 99% · ExcellentYour deck has a color access score of 99/100 — excellent; keep almost any 2–4-land opener.Top recommendations1. 🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources.
+
+    Call log:
+      - Expect "toHaveText" getByTestId('quick-verdict') with timeout 5000ms
+      - waiting for getByTestId('quick-verdict')
+        13 × locator resolved to <div role="status" tabindex="-1" id="quick-verdict" aria-live="polite" aria-atomic="true" data-testid="quick-verdict" class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorSuccess MuiAlert-outlinedSuccess MuiAlert-outlined css-ql3018">…</div>
+           - unexpected value "Health Score 99% · ExcellentYour deck has a color access score of 99/100 — excellent; keep almost any 2–4-land opener.Top recommendations1. 🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources."
+
+
+      60 |   await page.getByPlaceholder(/paste your decklist/i).fill('24 Mountain\n36 Lightning Bolt\nSideboard\n1 Counterspell')
+      61 |   await page.getByRole('button', { name: /analyze manabase/i }).click()
+    > 62 |   await expect(page.getByTestId('quick-verdict')).toHaveText(initial)
+         |                                                   ^
+      63 |   await page.getByTestId('tab-manabase').click()
+      64 |   await expect(page.getByText(/\d+ sources? short/, { exact: true })).toHaveCount(0)
+      65 | })
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/synthesis-audit.spec.js:62:51
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/second-browser/core-flows-synthesis-audit-f4bc4-e-the-red-main-deck-verdict-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/second-browser/core-flows-synthesis-audit-f4bc4-e-the-red-main-deck-verdict-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/second-browser/core-flows-synthesis-audit-f4bc4-e-the-red-main-deck-verdict-chromium/error-context.md
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:56:5 › F04 adding a blue sideboard does not change the red main-deck verdict 
+  29 passed (28.0s)

@@ -156,8 +156,8 @@ export function parseDecklistLine(line: string): { quantity: number; name: strin
 }
 
 /**
- * If no card was marked commander but the list is 99–100 cards, treat the
- * first maindeck non-land as the commander (common export style).
+ * Compatibility delegate: preserve explicit command zones; never infer one
+ * from the card count or the order of a list.
  */
 export function applyCommanderFallback<
   T extends { isCommander?: boolean; isLand?: boolean; isSideboard?: boolean; quantity?: number },
@@ -165,4 +165,110 @@ export function applyCommanderFallback<
   // A card count or ordering does not identify a command zone.
   // Preserve only explicit Commander headers / markers supplied by the user.
   return cards
+}
+
+/** Product resource limits, not tournament legality rules. All imported zones count. */
+export const DECKLIST_MAX_CARDS = 250
+export const DECKLIST_MAX_CHARACTERS = 20_000
+export const DECKLIST_NAME_MAX = 200
+export type DeckSection = 'main' | 'sideboard' | 'commander' | 'maybeboard' | 'companion'
+export interface ParsedDeckEntry {
+  name: string
+  quantity: number
+  section: DeckSection
+  line: number
+}
+
+function sectionHeader(line: string): DeckSection | undefined {
+  const header = line
+    .replace(/^(?:\/\/|#)\s*/, '')
+    .replace(/:$/, '')
+    .replace(/\s*\(\d+\)$/, '')
+    .trim()
+    .toLowerCase()
+  if (/^(deck|mainboard|main\s*board|main)$/.test(header)) return 'main'
+  if (/^(sideboard|sb)$/.test(header)) return 'sideboard'
+  if (/^commanders?$/.test(header)) return 'commander'
+  if (header === 'maybeboard' || header === 'companion') return header
+  return undefined
+}
+const CATEGORY_HEADER =
+  /^(?:(?:\/\/|#)\s*)?(?:creatures?|lands?|spells?|instants?|sorceries|artifacts?|enchantments?|planeswalkers?|battles?)(?:\s*\(\d+\))?:?$/i
+
+/** Canonical input boundary. Never resolve or allocate copies before this returns. */
+export function parseDecklist(text: string): { entries: ParsedDeckEntry[]; warnings: string[] } {
+  if (text.length > DECKLIST_MAX_CHARACTERS) {
+    throw new Error(`Decklist exceeds ${DECKLIST_MAX_CHARACTERS} characters.`)
+  }
+  const lines = text.split(/\r?\n/)
+  // Explicit exports define their own populations. Inline prefixes never change state.
+  const explicit = lines.some(
+    (line) =>
+      sectionHeader(line.trim()) || CATEGORY_HEADER.test(line.trim()) || /^sb:/i.test(line.trim())
+  )
+  const split = explicit ? -1 : detectSideboardStartLine(lines)
+  const entries: ParsedDeckEntry[] = []
+  const warnings: string[] = []
+  let section: DeckSection = 'main'
+  let total = 0
+  lines.forEach((raw, index) => {
+    const line = raw.trim()
+    if (!line) {
+      if (index === split) {
+        section = 'sideboard'
+        warnings.push(
+          `Line ${index + 1}: blank separator interpreted as Sideboard; use explicit Deck/Sideboard headers to remove ambiguity.`
+        )
+      }
+      return
+    }
+    const header = sectionHeader(line)
+    if (header) {
+      section = header
+      return
+    }
+    if (CATEGORY_HEADER.test(line)) return
+    if (/^(?:\/\/|#)/.test(line)) return
+    const inline = /^sb:\s*/i.test(line)
+    const parsed = parseDecklistLine(line.replace(/^sb:\s*/i, ''))
+    const fail = (reason: string): never => {
+      throw new Error(`Line ${index + 1}: ${reason}`)
+    }
+    if (!parsed)
+      return fail(
+        'expected a quantity and card name (for example, 4 Forest). No analysis was started.'
+      )
+    if (
+      !Number.isSafeInteger(parsed.quantity) ||
+      parsed.quantity < 1 ||
+      parsed.quantity > DECKLIST_MAX_CARDS
+    ) {
+      return fail(`quantity must be a safe whole number from 1 to ${DECKLIST_MAX_CARDS}.`)
+    }
+    const name = cleanCardName(parsed.name)
+    if (!name || name.length > DECKLIST_NAME_MAX)
+      return fail(`card name must contain 1–${DECKLIST_NAME_MAX} characters.`)
+    total += parsed.quantity
+    if (total > DECKLIST_MAX_CARDS)
+      return fail(`import exceeds ${DECKLIST_MAX_CARDS} total cards across all sections.`)
+    const entrySection = inline
+      ? 'sideboard'
+      : /\*(?:CMP|COMPANION)\*/i.test(parsed.name)
+        ? 'companion'
+        : /\*CMDR\*/i.test(parsed.name)
+          ? 'commander'
+          : section
+    entries.push({ name, quantity: parsed.quantity, section: entrySection, line: index + 1 })
+    if (entrySection === 'maybeboard' || entrySection === 'companion') {
+      warnings.push(
+        `Line ${index + 1}: ${entrySection} excluded from analysis (${parsed.quantity} ${name}).`
+      )
+    }
+  })
+  if (!entries.some((entry) => entry.section === 'main')) {
+    throw new Error(
+      'No main-deck cards found. Enter a quantity and card name, and use Deck to start the main section.'
+    )
+  }
+  return { entries, warnings }
 }

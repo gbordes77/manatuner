@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-06T09:53:41.111476+00:00",
+  "head": "148d5f85ee26e60cdb10c6351031c89c03fd7ed0",
+  "files": {
+    "src/components/analyzer/DeckInputSection.tsx": "1168a2bc6348ff599edfd4e240fd1fbaadd8a7e8fedf803ff62adb5f56fd1aed",
+    "src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx": "85b4a5c37b5b300071b2bcf1285f850c466276b9a24c4c5cb33bf5399c0d1408",
+    "src/components/analyzer/__tests__/DeckInputSection.keyboard.test.tsx": "d7eaa85f8bc1b863f2011c86608442038f4c01d4b48602cad656e8959891931e",
+    "src/pages/AnalyzerPage.tsx": "0c24ed42425fde0bd264e3994971ffdec0a7a5da04a86b9745b3fb976bac8a01",
+    "src/services/__tests__/assertCardResolution.test.ts": "4a04a7e9a207ed9a30a48fd831a563a3cd0d5bf751f24ef2efeed2e22137ac48",
+    "src/services/__tests__/inputContract.f01-f02.test.ts": "2784a80e9e8c4a26bf51ea8cbe5a2c11895b703e4f9393e4a2faf7d0fb38779a",
+    "src/services/__tests__/parseDecklist.t10.test.ts": "5968ba0b3893f45e40b76c0ec179686f95dfacee93f1284e96ecab403d55036f",
+    "src/services/deckAnalyzer.ts": "2ff156a89ba27df9285e2d592a2a3ec048457024eeb02694cb51f8db972f85e3",
+    "src/services/deckParser.ts": "c77c4cc6e5174c303c7836af2b43b3cd0305635a2df71b3321383b5642745beb",
+    "src/services/scryfall.ts": "60c7b9e8b6abd7c987c76d9a63f10913df903bf0a72c4b7fe574a9614c1343aa",
+    "tests/component/AnalyzerPage.cancellation.test.jsx": "bdf101297589b2e7bb1092a51ff393d1218db8927f22d5494b449d013d60d2ba",
+    "tests/e2e/accessibility/edit-deck-keyboard.spec.js": "b999ad3fdd1199d0907ad01050de321204a45caa9caf11132bb94a5fa868c891",
+    "tests/e2e/core-flows/cancellation-audit.spec.js": "58b8e93b0c688eb4796ea5c745d2729dd43a200c4e070f66f1af17b2402cd6ee",
+    "tests/e2e/core-flows/input-contract-audit.spec.js": "87f44f7d26b10c0376172101ad1e39f100f192a3080678747aa8739b4a40833a",
+    "tests/math-audit/populations.test.ts": "52f9d68b197ff80b1d6c47eeca5fbb7edfcf73be21809a946b5b60e098acfa70",
+    "tests/math-audit/regressions.test.ts": "63d931f24e79684a024b951b01a3874a0779499b41b30adaa01ccfa3eea12b7e",
+    "tests/math-audit/spell-summary.test.ts": "96ce039236ea3153c9eed0558010aaad1ed3424a6950f9a804a8e715ec16ac7e"
+  }
+}

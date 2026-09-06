@@ -86,6 +86,7 @@ export const AnalysisTab: React.FC<AnalysisTabProps> = memo(
           <Suspense fallback={<ChartLoader />}>
             <EnhancedCharts
               cards={cards}
+              consistencyUnavailable={analysisResult.consistencyUnavailable}
               analysis={{
                 id: 'current-analysis',
                 deckId: 'current-deck',
@@ -139,6 +140,7 @@ export const AnalysisTab: React.FC<AnalysisTabProps> = memo(
             recommendations={analysisResult.recommendations}
             analysis={{
               consistency: analysisResult.consistency,
+              consistencyUnavailable: analysisResult.consistencyUnavailable,
               atRiskSpells,
               landRatio: analysisResult.landRatio,
               avgCMC: analysisResult.averageCMC,

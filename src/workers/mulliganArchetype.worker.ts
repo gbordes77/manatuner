@@ -40,7 +40,15 @@ export interface MulliganWorkerFailure {
   error: string
 }
 
-export type MulliganWorkerResponse = MulliganWorkerSuccess | MulliganWorkerFailure
+export interface MulliganWorkerStarted {
+  id: number
+  type: 'started'
+}
+
+export type MulliganWorkerResponse =
+  | MulliganWorkerSuccess
+  | MulliganWorkerFailure
+  | MulliganWorkerStarted
 
 /** T15: hard bounds on Monte Carlo iterations (worker isolation). */
 export const MULLIGAN_ITERATIONS_MIN = 1000
@@ -77,6 +85,7 @@ const ctx = self as unknown as DedicatedWorkerGlobalScope
 ctx.addEventListener('message', (event: MessageEvent<MulliganWorkerRequest>) => {
   const { id, cards, archetype, iterations: rawIterations } = event.data
   try {
+    ctx.postMessage({ id, type: 'started' } satisfies MulliganWorkerStarted)
     const { iterations, warning } = clampMulliganIterations(rawIterations)
     const result = analyzeWithArchetype(cards, archetype, iterations, {
       multiplayer: event.data.multiplayer,

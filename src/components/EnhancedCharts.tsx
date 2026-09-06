@@ -23,11 +23,6 @@ import {
   Legend,
   Pie,
   PieChart,
-  PolarAngleAxis,
-  PolarGrid,
-  PolarRadiusAxis,
-  Radar,
-  RadarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -38,10 +33,11 @@ import { DeckAnalysis } from '../types'
 
 interface EnhancedChartsProps {
   analysis: DeckAnalysis
+  consistencyUnavailable?: boolean
   cards?: DeckCard[]
 }
 
-const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
+const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis, consistencyUnavailable }) => {
   // Theme available via CSS variables, no need for useTheme here
 
   // MTG Color Palette
@@ -90,11 +86,14 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
 
   const prepareConsistencyData = () => {
     return [
-      { metric: 'Color Fixing', value: 85, max: 100 },
-      { metric: 'Curve Smoothness', value: 72, max: 100 },
-      { metric: 'Land Ratio', value: 68, max: 100 },
-      { metric: 'Mana Efficiency', value: 78, max: 100 },
-      { metric: 'Consistency', value: 75, max: 100 },
+      ...(!consistencyUnavailable
+        ? [{ metric: 'Color Access', value: analysis.consistency ?? 0, max: 100 }]
+        : []),
+      {
+        metric: 'Land Ratio',
+        value: analysis.totalCards > 0 ? (analysis.totalLands / analysis.totalCards) * 100 : 0,
+        max: 100,
+      },
     ]
   }
 
@@ -316,28 +315,16 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
               sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
             >
               <TrackChangesIcon fontSize="small" aria-hidden />
-              Deck Consistency
+              Access and Land Ratio
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
-              <RadarChart data={prepareConsistencyData()}>
-                <PolarGrid stroke="#e2e8f0" />
-                <PolarAngleAxis dataKey="metric" tick={{ fontSize: 10, fill: '#64748b' }} />
-                <PolarRadiusAxis
-                  angle={90}
-                  domain={[0, 100]}
-                  tick={{ fontSize: 10, fill: '#64748b' }}
-                />
-                <Radar
-                  name="Score"
-                  dataKey="value"
-                  stroke="var(--mtg-blue)"
-                  fill="var(--mtg-blue)"
-                  fillOpacity={0.3}
-                  strokeWidth={2}
-                  dot={{ fill: 'var(--mtg-blue)', strokeWidth: 2, r: 4 }}
-                />
+              <BarChart data={prepareConsistencyData()}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="metric" />
+                <YAxis domain={[0, 100]} />
+                <Bar name="Percent" dataKey="value" fill="var(--mtg-blue)" />
                 <Tooltip content={<CustomTooltip />} />
-              </RadarChart>
+              </BarChart>
             </ResponsiveContainer>
           </Paper>
         </Grid>
@@ -348,18 +335,17 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
             <Grid item xs={12} sm={6} md={3}>
               <Paper className="mtg-card" sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" fontWeight="700" color="var(--mtg-green)">
-                  {analysis.overallScore || 75}%
+                  {consistencyUnavailable ? 'Unavailable' : `${analysis.overallScore ?? 0}%`}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Overall Score
                 </Typography>
-                <Chip label="Good" size="small" className="mtg-chip good" sx={{ mt: 1 }} />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
               <Paper className="mtg-card" sx={{ p: 2, textAlign: 'center' }}>
                 <Typography variant="h4" fontWeight="700" color="var(--mtg-blue)">
-                  {analysis.consistency ?? 0}%
+                  {consistencyUnavailable ? 'Unavailable' : `${analysis.consistency ?? 0}%`}
                 </Typography>
                 <Typography
                   variant="body2"
@@ -376,7 +362,6 @@ const EnhancedCharts: React.FC<EnhancedChartsProps> = ({ analysis }) => {
                     </IconButton>
                   </MuiTooltip>
                 </Typography>
-                <Chip label="Average" size="small" className="mtg-chip average" sx={{ mt: 1 }} />
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>

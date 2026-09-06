@@ -1,0 +1,83 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+(node:34191) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 2)
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/services/__tests__/networkCancellation.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ src/services/__tests__/networkCancellation.test.ts (2 tests | 2 failed) 10ms
+     × rejects abort during Retry-After without sending a second fetch 6ms
+     × analysis passes cancellation into the first collection and starts no fallback 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 network cancellation > rejects abort during Retry-After without sending a second fetch
+AssertionError: promise resolved "Response { status: 200, statusText: '', headers: Headers { 'content-type': 'text/plain;charset=UTF-8' }, body: ReadableStream { locked: false, state: 'readable', supportsBYOB: true }, bodyUsed: false, ok: true, redirected: false, type: 'default', url: '' }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
+- }
++ Response {}
+
+ ❯ src/services/__tests__/networkCancellation.test.ts:25:37
+     23|     vi.stubGlobal('fetch', fetchMock)
+     24|     const promise = fetchWithTimeout('https://example.test/cards', {},…
+     25|     const assertion = expect(promise).rejects.toMatchObject({ name: 'A…
+       |                                     ^
+     26|     await vi.advanceTimersByTimeAsync(5)
+     27|     controller.abort()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 network cancellation > analysis passes cancellation into the first collection and starts no fallback
+AssertionError: expected "vi.fn()" to be called 1 times, but got 4 times
+ ❯ src/services/__tests__/networkCancellation.test.ts:45:23
+     43|     await vi.runAllTimersAsync()
+     44|     await assertion
+     45|     expect(fetchMock).toHaveBeenCalledTimes(1)
+       |                       ^
+     46|     expect(signals[0]?.aborted).toBe(true)
+     47|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AssertionError: promise resolved "Response { status: 200, statusText: '', headers: Headers { 'content-type': 'text/plain;charset=UTF-8' }, body: ReadableStream { locked: false, state: 'readable', supportsBYOB: true }, bodyUsed: false, ok: true, redirected: false, type: 'default', url: '' }" instead of rejecting
+ ❯ _Assertion.__VITEST_REJECTS__ ../Project%20Mana%20base%20V2/node_modules/@vitest/expect/dist/index.js:1747:17
+ ❯ _Assertion.propertyGetter ../Project%20Mana%20base%20V2/node_modules/chai/index.js:1570:27
+ ❯ Object.proxyGetter [as get] ../Project%20Mana%20base%20V2/node_modules/chai/index.js:1659:22
+ ❯ src/services/__tests__/networkCancellation.test.ts:25:37
+     23|     vi.stubGlobal('fetch', fetchMock)
+     24|     const promise = fetchWithTimeout('https://example.test/cards', {},…
+     25|     const assertion = expect(promise).rejects.toMatchObject({ name: 'A…
+       |                                     ^
+     26|     await vi.advanceTimersByTimeAsync(5)
+     27|     controller.abort()
+ ❯ ../Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+ ❯ ../Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:1903:26
+ ❯ ../Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:2326:20
+ ❯ runWithCancel ../Project%20Mana%20base%20V2/node_modules/@vitest/runner/dist/chunk-artifact.js:2323:10
+
+This error originated in "src/services/__tests__/networkCancellation.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "rejects abort during Retry-After without sending a second fetch". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+     Errors  1 error
+   Start at  11:54:19
+   Duration  348ms (transform 95ms, setup 27ms, import 105ms, tests 10ms, environment 137ms)
+

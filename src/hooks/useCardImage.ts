@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { fetchJsonWithTimeout } from '../services/http'
+import type { ScryfallCard } from '../types/scryfall'
 import { BoundedMap } from '../services/scryfall'
 
 interface CardImageData {
@@ -32,6 +34,8 @@ export const useCardImage = (cardName: string) => {
 
   // Reset display when card name changes
   useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    abortControllerRef.current?.abort()
     setData({
       imageUrl: imageCache.get(cardName) || null,
       loading: false,
@@ -54,19 +58,23 @@ export const useCardImage = (cardName: string) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
-    abortControllerRef.current = new AbortController()
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+    const isCurrent = () =>
+      mountedRef.current && abortControllerRef.current === controller && !controller.signal.aborted
 
     try {
-      const response = await fetch(
+      const { response, data: card } = await fetchJsonWithTimeout<ScryfallCard>(
         `https://api.scryfall.com/cards/named?exact=${encodeURIComponent(cardName)}`,
-        { signal: abortControllerRef.current.signal }
+        {},
+        { signal: controller.signal }
       )
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const card = await response.json()
+      if (!isCurrent() || !card) return
       const imageUrl =
         card.image_uris?.normal ||
         card.card_faces?.[0]?.image_uris?.normal ||
@@ -82,7 +90,7 @@ export const useCardImage = (cardName: string) => {
         throw new Error('No image found')
       }
     } catch (error: unknown) {
-      if (error instanceof Error && error.name !== 'AbortError' && mountedRef.current) {
+      if (error instanceof Error && error.name !== 'AbortError' && isCurrent()) {
         setData({ imageUrl: null, loading: false, error: true })
       }
     }
@@ -98,6 +106,7 @@ export const useCardImage = (cardName: string) => {
   const cancelFetch = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     if (abortControllerRef.current) abortControllerRef.current.abort()
+    if (mountedRef.current) setData((previous) => ({ ...previous, loading: false }))
   }, [])
 
   return {

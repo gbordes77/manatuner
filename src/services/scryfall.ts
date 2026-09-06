@@ -1,7 +1,14 @@
 import type { Card } from '@/types'
 import type { ScryfallCard } from '../types/scryfall'
-import { sanitizeString } from '@/lib/validations'
-import { fetchWithTimeout } from './http'
+import { DECKLIST_MAX_CARDS, parseDecklist } from './deckParser'
+import {
+  abortable,
+  abortableDelay,
+  fetchJsonWithTimeout,
+  HttpError,
+  isCancellation,
+  throwIfAborted,
+} from './http'
 import {
   getCachedCard,
   setCachedCard,
@@ -57,18 +64,13 @@ const collectionCache = new BoundedMap<string, Card[]>(100)
 // Rate limiting
 let lastRequestTime = 0
 
-const delay = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-const ensureRateLimit = async (): Promise<void> => {
-  const now = Date.now()
-  const timeSinceLastRequest = now - lastRequestTime
-
+const ensureRateLimit = async (signal?: AbortSignal): Promise<void> => {
+  throwIfAborted(signal)
+  const timeSinceLastRequest = Date.now() - lastRequestTime
   if (timeSinceLastRequest < RATE_LIMIT_DELAY) {
-    await delay(RATE_LIMIT_DELAY - timeSinceLastRequest)
+    await abortableDelay(RATE_LIMIT_DELAY - timeSinceLastRequest, signal)
   }
-
+  throwIfAborted(signal)
   lastRequestTime = Date.now()
 }
 
@@ -106,20 +108,23 @@ const convertScryfallCard = (scryfallCard: ScryfallCard): Card => {
  * Effectue une requête à l'API Scryfall
  */
 const scryfallRequest = async <T>(endpoint: string, signal?: AbortSignal): Promise<T> => {
-  await ensureRateLimit()
+  await ensureRateLimit(signal)
 
   try {
-    const response = await fetchWithTimeout(
+    const { response, data } = await fetchJsonWithTimeout<T>(
       `${SCRYFALL_API_BASE}${endpoint}`,
       {},
       { timeoutMs: 8000, retries: 1, signal }
     )
 
     if (!response.ok) {
-      throw new Error(`Scryfall API error: ${response.status} ${response.statusText}`)
+      throw new HttpError(
+        response.status,
+        `Scryfall API error: ${response.status} ${response.statusText}`
+      )
     }
 
-    return await response.json()
+    return data!
   } catch (error) {
     console.error('Scryfall request failed:', error)
     throw error
@@ -129,7 +134,11 @@ const scryfallRequest = async <T>(endpoint: string, signal?: AbortSignal): Promi
 /**
  * Recherche une carte by name avec fallbacks intelligents
  */
-export const searchCardByName = async (name: string): Promise<Card | null> => {
+export const searchCardByName = async (
+  name: string,
+  signal?: AbortSignal
+): Promise<Card | null> => {
+  throwIfAborted(signal)
   const cacheKey = name.toLowerCase().trim()
 
   // L1: in-memory hot cache
@@ -138,7 +147,10 @@ export const searchCardByName = async (name: string): Promise<Card | null> => {
   }
 
   // L2: IndexedDB persistent warm cache (survives reloads, 30-day TTL)
-  const persisted = await getCachedCard(cacheKey)
+  const persisted = await (signal
+    ? abortable(getCachedCard(cacheKey), signal)
+    : getCachedCard(cacheKey))
+  throwIfAborted(signal)
   if (persisted) {
     cardCache.set(cacheKey, persisted) // promote to hot
     return persisted
@@ -157,14 +169,19 @@ export const searchCardByName = async (name: string): Promise<Card | null> => {
   for (const variant of nameVariants) {
     try {
       const encodedName = encodeURIComponent(variant)
-      const response = await scryfallRequest<ScryfallCard>(`/cards/named?fuzzy=${encodedName}`)
+      const response = await scryfallRequest<ScryfallCard>(
+        `/cards/named?fuzzy=${encodedName}`,
+        signal
+      )
 
+      throwIfAborted(signal)
       const card = convertScryfallCard(response)
       cardCache.set(cacheKey, card)
       setCachedCard(cacheKey, card).catch(() => {}) // fire-and-forget IDB write
 
       return card
-    } catch {
+    } catch (error) {
+      if (isCancellation(error)) throw error
       continue
     }
   }
@@ -176,8 +193,12 @@ export const searchCardByName = async (name: string): Promise<Card | null> => {
 /**
  * Recherche multiple cartes by collection
  */
-export const searchCardsByCollection = async (cardNames: string[]): Promise<Card[]> => {
-  const cacheKey = cardNames.sort().join('|')
+export const searchCardsByCollection = async (
+  cardNames: string[],
+  signal?: AbortSignal
+): Promise<Card[]> => {
+  throwIfAborted(signal)
+  const cacheKey = [...cardNames].sort().join('|')
 
   if (collectionCache.has(cacheKey)) {
     return collectionCache.get(cacheKey)!
@@ -186,7 +207,7 @@ export const searchCardsByCollection = async (cardNames: string[]): Promise<Card
   try {
     const identifiers = cardNames.map((name) => ({ name: name.trim() }))
 
-    const response = await fetchWithTimeout(
+    const { response, data } = await fetchJsonWithTimeout<ScryfallResponse<ScryfallCard>>(
       `${SCRYFALL_API_BASE}/cards/collection`,
       {
         method: 'POST',
@@ -195,25 +216,26 @@ export const searchCardsByCollection = async (cardNames: string[]): Promise<Card
         },
         body: JSON.stringify({ identifiers }),
       },
-      { timeoutMs: 8000, retries: 1 }
+      { timeoutMs: 8000, retries: 1, signal }
     )
 
     if (!response.ok) {
       throw new Error(`Scryfall collection API error: ${response.status}`)
     }
 
-    const data: ScryfallResponse<ScryfallCard> = await response.json()
-    const cards = data.data?.map(convertScryfallCard) || []
+    throwIfAborted(signal)
+    const cards = data?.data?.map(convertScryfallCard) || []
 
     collectionCache.set(cacheKey, cards)
     return cards
   } catch (error) {
+    if (isCancellation(error)) throw error
     console.error('Collection search failed:', error)
 
     // Fallback: recherche une par une
     const results: Card[] = []
     for (const name of cardNames) {
-      const card = await searchCardByName(name)
+      const card = await searchCardByName(name, signal)
       if (card) {
         results.push(card)
       }
@@ -223,68 +245,24 @@ export const searchCardsByCollection = async (cardNames: string[]): Promise<Card
   }
 }
 
-/** T10: qty bounds — EDH bulk safe (not constructed max(4)). */
+/** Compatibility exports: the same resource limits apply at every parsing entry. */
 export const DECKLIST_QTY_MIN = 1
-export const DECKLIST_QTY_MAX = 99
-/** T10: card name length after sanitize. */
+export const DECKLIST_QTY_MAX = DECKLIST_MAX_CARDS
 export const DECKLIST_NAME_MIN = 1
-export const DECKLIST_NAME_MAX = 200
+export { DECKLIST_NAME_MAX } from './deckParser'
 
-/**
- * Parse une decklist au format standard (Arena / Moxfield-ish lines).
- * T10: qty 1–99, name 1–200 after sanitize; invalid lines skipped.
- */
-export const parseDecklistText = (text: string): { name: string; quantity: number }[] => {
-  const lines = text
-    .split('\n')
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
-  const cards: { name: string; quantity: number }[] = []
-
-  for (const line of lines) {
-    // Skip les commentaires et sections
-    if (
-      line.startsWith('//') ||
-      line.startsWith('#') ||
-      line.toLowerCase().includes('sideboard') ||
-      line.toLowerCase().includes('maybeboard')
-    ) {
-      continue
-    }
-
-    // Format: "4 Lightning Bolt" ou "4x Lightning Bolt"
-    const match = line.match(/^(\d+)x?\s+(.+)$/i)
-
-    if (match) {
-      const quantity = parseInt(match[1], 10)
-      const name = sanitizeString(match[2])
-      if (
-        Number.isFinite(quantity) &&
-        quantity >= DECKLIST_QTY_MIN &&
-        quantity <= DECKLIST_QTY_MAX &&
-        name.length >= DECKLIST_NAME_MIN &&
-        name.length <= DECKLIST_NAME_MAX
-      ) {
-        cards.push({ name, quantity })
-      }
-      // else: skip invalid qty/name (T10)
-    } else {
-      // Assume quantité 1 si pas de nombre
-      const name = sanitizeString(line)
-      if (name.length >= DECKLIST_NAME_MIN && name.length <= DECKLIST_NAME_MAX) {
-        cards.push({ name, quantity: 1 })
-      }
-    }
-  }
-
-  return cards
-}
+/** Canonical validation and main-library population, with explicit quantities required. */
+export const parseDecklistText = (text: string): { name: string; quantity: number }[] =>
+  parseDecklist(text)
+    .entries.filter((entry) => entry.section === 'main')
+    .map(({ name, quantity }) => ({ name, quantity }))
 
 /**
  * Analyse une decklist complète avec l'API Scryfall
  */
 export const analyzeDecklistText = async (
-  text: string
+  text: string,
+  signal?: AbortSignal
 ): Promise<{
   cards: Card[]
   notFound: string[]
@@ -293,7 +271,7 @@ export const analyzeDecklistText = async (
   const parsedCards = parseDecklistText(text)
   const uniqueNames = [...new Set(parsedCards.map((c) => c.name))]
 
-  const foundCards = await searchCardsByCollection(uniqueNames)
+  const foundCards = await searchCardsByCollection(uniqueNames, signal)
   const foundNames = new Set(foundCards.map((c) => c.name.toLowerCase()))
 
   const notFound = uniqueNames.filter((name) => !foundNames.has(name.toLowerCase()))
@@ -412,46 +390,35 @@ const landDataCache = new BoundedMap<string, ScryfallLandData | null>(300)
  * @param cardName - The exact card name to look up
  * @returns Land data or null if not found or not a land
  */
-export const fetchLandData = async (cardName: string): Promise<ScryfallLandData | null> => {
+export const fetchLandData = async (
+  cardName: string,
+  signal?: AbortSignal
+): Promise<ScryfallLandData | null> => {
+  throwIfAborted(signal)
   const cacheKey = cardName.toLowerCase().trim()
-
-  // Check cache first
-  if (landDataCache.has(cacheKey)) {
-    return landDataCache.get(cacheKey) ?? null
-  }
-
+  if (landDataCache.has(cacheKey)) return landDataCache.get(cacheKey) ?? null
   try {
-    await ensureRateLimit()
-
     const encodedName = encodeURIComponent(cardName.trim())
-    const response = await fetchWithTimeout(
-      `${SCRYFALL_API_BASE}/cards/named?exact=${encodedName}`,
-      {},
-      { timeoutMs: 8000, retries: 1 }
-    )
-
-    if (!response.ok) {
-      // Try fuzzy search as fallback
-      const fuzzyResponse = await fetchWithTimeout(
-        `${SCRYFALL_API_BASE}/cards/named?fuzzy=${encodedName}`,
+    let definitiveNotFound = true
+    for (const match of ['exact', 'fuzzy']) {
+      await ensureRateLimit(signal)
+      const { response, data } = await fetchJsonWithTimeout<ScryfallCard>(
+        `${SCRYFALL_API_BASE}/cards/named?${match}=${encodedName}`,
         {},
-        { timeoutMs: 8000, retries: 1 }
+        { timeoutMs: 8000, retries: 1, signal }
       )
-
-      if (!fuzzyResponse.ok) {
-        landDataCache.set(cacheKey, null)
-        return null
+      if (response.ok) {
+        throwIfAborted(signal)
+        return processLandData(data!, cacheKey)
       }
-
-      const data = await fuzzyResponse.json()
-      return processLandData(data, cacheKey)
+      if (response.status !== 404) definitiveNotFound = false
     }
-
-    const data = await response.json()
-    return processLandData(data, cacheKey)
+    // Only definitive absence may become a negative cache entry.
+    if (definitiveNotFound) landDataCache.set(cacheKey, null)
+    return null
   } catch (error) {
+    if (isCancellation(error)) throw error
     console.warn(`[Scryfall] Failed to fetch land data for "${cardName}":`, error)
-    landDataCache.set(cacheKey, null)
     return null
   }
 }
@@ -503,8 +470,10 @@ export const SCRYFALL_COLLECTION_CHUNK_SIZE = 75
  * @returns Map of card names to their land data (or null if not a land)
  */
 export const fetchLandDataBatch = async (
-  cardNames: string[]
+  cardNames: string[],
+  signal?: AbortSignal
 ): Promise<Map<string, ScryfallLandData | null>> => {
+  throwIfAborted(signal)
   const results = new Map<string, ScryfallLandData | null>()
   const toFetch: string[] = []
 
@@ -526,35 +495,35 @@ export const fetchLandDataBatch = async (
   for (let i = 0; i < toFetch.length; i += SCRYFALL_COLLECTION_CHUNK_SIZE) {
     const chunk = toFetch.slice(i, i + SCRYFALL_COLLECTION_CHUNK_SIZE)
     try {
-      await ensureRateLimit()
+      await ensureRateLimit(signal)
 
       const identifiers = chunk.map((name) => ({ name: name.trim() }))
 
-      const response = await fetchWithTimeout(
+      const { response, data } = await fetchJsonWithTimeout<ScryfallResponse<ScryfallCard>>(
         `${SCRYFALL_API_BASE}/cards/collection`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ identifiers }),
         },
-        { timeoutMs: 8000, retries: 1 }
+        { timeoutMs: 8000, retries: 1, signal }
       )
 
       if (!response.ok) {
         throw new Error(`Scryfall collection API error: ${response.status}`)
       }
 
-      const data: ScryfallResponse<ScryfallCard> = await response.json()
+      throwIfAborted(signal)
 
       // Index returned cards by lowercased name for matching request keys
       const byLower = new Map<string, ScryfallCard>()
-      for (const card of data.data || []) {
+      for (const card of data?.data || []) {
         byLower.set(card.name.toLowerCase().trim(), card)
       }
 
       // not_found from API (explicit) — fall back to /cards/named (exact→fuzzy)
       const notFoundFromApi = new Set(
-        (data.not_found || [])
+        (data?.not_found || [])
           .map((nf: { name?: string }) => (nf?.name || '').toLowerCase().trim())
           .filter(Boolean)
       )
@@ -585,17 +554,18 @@ export const fetchLandDataBatch = async (
 
         // not_found or unmatched → individual named lookup (T07)
         if (notFoundFromApi.has(lower) || !byLower.has(lower)) {
-          const landData = await fetchLandData(name)
+          const landData = await fetchLandData(name, signal)
           results.set(name, landData)
         }
       }
     } catch (error) {
+      if (isCancellation(error)) throw error
       console.error('[Scryfall] Batch land data fetch failed (chunk):', error)
 
       // Fallback: sequential named fetch for this chunk
       for (const name of chunk) {
         if (!results.has(name)) {
-          const landData = await fetchLandData(name)
+          const landData = await fetchLandData(name, signal)
           results.set(name, landData)
         }
       }

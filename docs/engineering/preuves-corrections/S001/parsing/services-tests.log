@@ -1,0 +1,37 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stdout | src/services/__tests__/assertCardResolution.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ src/services/__tests__/assertCardResolution.test.ts (8 tests | 1 failed) 5ms
+     × allows empty card list (no throw) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/assertCardResolution.test.ts > DeckAnalyzer.assertCardResolution (EDGE-GARBAGE) > allows empty card list (no throw)
+AssertionError: expected [Function] to not throw an error but 'Error: No main-deck cards found.' was thrown
+
+- Expected:
+undefined
+
++ Received:
+"Error: No main-deck cards found."
+
+ ❯ src/services/__tests__/assertCardResolution.test.ts:20:61
+     18| describe('DeckAnalyzer.assertCardResolution (EDGE-GARBAGE)', () => {
+     19|   it('allows empty card list (no throw)', () => {
+     20|     expect(() => DeckAnalyzer.assertCardResolution([])).not.toThrow()
+       |                                                             ^
+     21|   })
+     22|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 18 passed (19)
+      Tests  1 failed | 202 passed (203)
+   Start at  11:44:33
+   Duration  2.15s (transform 1.40s, setup 1.33s, import 2.18s, tests 1.54s, environment 9.28s)
+

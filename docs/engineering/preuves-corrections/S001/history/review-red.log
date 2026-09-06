@@ -1,0 +1,53 @@
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/lib/__tests__/privacy.history.test.ts (22 tests | 2 failed) 11ms
+   × labels unknown-only legacy results as raw recovery and never invents a comparable score 2ms
+   × identifies a DOM quota error explicitly instead of reporting general unavailability 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > labels unknown-only legacy results as raw recovery and never invents a comparable score
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:161:45
+    159|   memory.set(key,JSON.stringify([record('old',{foo:'bar'})]))
+    160|   const recovered=PrivacyStorage.readHistory()
+    161|   expect(recovered.records[0].recoveryOnly).toBe(true)
+       |                                             ^
+    162|   expect(recovered.records[0].consistency).toBeUndefined()
+    163|   expect(recovered.warnings.join(' ')).toMatch(/saved result unavailab…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/lib/__tests__/privacy.history.test.ts > identifies a DOM quota error explicitly instead of reporting general unavailability
+AssertionError: expected [Function] to throw error matching /Browser storage full/ but got 'Browser storage unavailable. No histo…'
+
+- Expected:
+/Browser storage full/
+
++ Received:
+"Browser storage unavailable. No history was changed."
+
+ ❯ src/lib/__tests__/privacy.history.test.ts:168:78
+    166|   const before=JSON.stringify([record()]);memory.set(key,before)
+    167|   vi.mocked(localStorage.setItem).mockImplementation(()=>{throw new DO…
+    168|   expect(()=>PrivacyStorage.importAnalyses(JSON.stringify([record('new…
+       |                                                                              ^
+    169|   expect(memory.get(key)).toBe(before)
+    170| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 20 passed (22)
+   Start at  12:05:31
+   Duration  298ms (transform 29ms, setup 28ms, import 40ms, tests 11ms, environment 147ms)
+

@@ -1,0 +1,9 @@
+
+Running 1 test using 1 worker
+
+(node:32842) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution remains empty after delayed response and reload
+  1 passed (1.5s)

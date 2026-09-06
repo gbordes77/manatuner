@@ -1,0 +1,26 @@
+
+> manatuner@2.7.9 dev
+> vite --host 127.0.0.1 --strictPort
+
+
+  VITE v7.3.6  ready in 268 ms
+
+  ➜  Local:   http://127.0.0.1:3000/
+11:43:44 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:43:44 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:43:44 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:43:44 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:44:32 AM [vite] (client) hmr update /src/components/CardImageTooltip.tsx, /src/pages/AnalyzerPage.tsx, /src/components/ManaCostRow.tsx
+11:44:32 AM [vite] (client) hmr update /src/components/CardImageTooltip.tsx, /src/pages/AnalyzerPage.tsx, /src/components/ManaCostRow.tsx
+11:44:56 AM [vite] (client) hmr update /src/components/analyzer/DeckInputSection.tsx
+11:45:00 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:45:54 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:45:54 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:45:54 AM [vite] (client) hmr update /src/components/analyzer/DeckInputSection.tsx
+11:46:33 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:47:32 AM [vite] (client) page reload docs/engineering/preuves-corrections/S001/dist/index.html
+11:47:42 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx
+11:47:42 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx, /src/components/CardImageTooltip.tsx, /src/components/ManaCostRow.tsx
+11:49:11 AM [vite] (client) hmr update /src/pages/AnalyzerPage.tsx, /src/components/CardImageTooltip.tsx, /src/components/ManaCostRow.tsx
+11:49:21 AM [vite] (client) hmr update /src/components/analyzer/DeckInputSection.tsx
+11:51:00 AM [vite] (client) page reload docs/engineering/preuves-corrections/S001/dist/index.html

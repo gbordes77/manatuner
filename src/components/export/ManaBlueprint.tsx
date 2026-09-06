@@ -1,3 +1,4 @@
+import { calculateStabilityScore } from './manaStability'
 import DownloadIcon from '@mui/icons-material/Download'
 import ImageIcon from '@mui/icons-material/Image'
 import PdfIcon from '@mui/icons-material/PictureAsPdf'
@@ -39,12 +40,18 @@ const BLUEPRINT_COLORS = {
 
 // Mana Stability Index thresholds
 const getStabilityLevel = (
-  score: number
+  score: number | null
 ): {
   label: string
   color: string
   description: string
 } => {
+  if (score === null)
+    return {
+      label: 'Unavailable',
+      color: BLUEPRINT_COLORS.textMuted,
+      description: 'Unrepresented payment symbols',
+    }
   if (score >= 95)
     return {
       label: 'Optimal',
@@ -65,51 +72,6 @@ const getStabilityLevel = (
       description: 'Room for improvement',
     }
   return { label: 'Unstable', color: BLUEPRINT_COLORS.error, description: 'Needs optimization' }
-}
-
-// Calculate overall mana stability score
-const calculateStabilityScore = (analysis: AnalysisResult): number => {
-  const { consistency, landRatio, probabilities } = analysis
-
-  // Weight factors
-  const consistencyWeight = 0.4
-  const landRatioWeight = 0.2
-  const turn2Weight = 0.25
-  const turn4Weight = 0.15
-
-  // Land ratio score (optimal is 0.38-0.42)
-  const optimalRatio = 0.4
-  const ratioDeviation = Math.abs(landRatio - optimalRatio)
-  const landRatioScore = Math.max(0, 1 - ratioDeviation * 5)
-
-  // Average turn 2 probability across colors
-  const turn2Colors = Object.entries(probabilities.turn2.specificColors)
-    .filter(
-      ([color]) =>
-        (analysis.manaRequirements?.[color as keyof typeof analysis.manaRequirements] ?? 0) > 0
-    )
-    .map(([, value]) => value)
-  const avgTurn2 =
-    turn2Colors.length > 0 ? turn2Colors.reduce((a, b) => a + b, 0) / turn2Colors.length : 0
-
-  // Average turn 4 probability
-  const turn4Colors = Object.entries(probabilities.turn4.specificColors)
-    .filter(
-      ([color]) =>
-        (analysis.manaRequirements?.[color as keyof typeof analysis.manaRequirements] ?? 0) > 0
-    )
-    .map(([, value]) => value)
-  const avgTurn4 =
-    turn4Colors.length > 0 ? turn4Colors.reduce((a, b) => a + b, 0) / turn4Colors.length : 0
-
-  const score =
-    (consistency * consistencyWeight +
-      landRatioScore * landRatioWeight +
-      avgTurn2 * turn2Weight +
-      avgTurn4 * turn4Weight) *
-    100
-
-  return Math.round(Math.min(100, Math.max(0, score)))
 }
 
 interface ManaBlueprintProps {
@@ -258,7 +220,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
     lines.push(`# Deck: ${deckName}`)
     lines.push(`# Format: ${detectedFormat}`)
     lines.push(`# Generated: ${new Date().toISOString()}`)
-    lines.push(`# Stability: ${stabilityScore}`)
+    lines.push(`# Stability: ${stabilityScore ?? 'Unavailable'}`)
     lines.push('')
 
     lines.push('section,card_name,quantity,cmc,mana_cost,colors,is_land,produces')
@@ -296,7 +258,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
     const colors: readonly KarstenColor[] = ['W', 'U', 'B', 'R', 'G']
     for (const color of colors) {
       const pipCount = analysisResult.cards
-        .filter((c) => !c.isLand)
+        .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
         .reduce((sum, c) => sum + countPipsInCost(c.manaCost ?? '', color) * c.quantity, 0)
       lines.push(`summary,pip_count_${color},${pipCount}`)
     }
@@ -486,13 +448,13 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                 >
                   LANDS (
                   {analysisResult.cards
-                    .filter((c) => c.isLand && !c.isSideboard)
+                    .filter((c) => c.isLand && !c.isSideboard && !c.isCommander)
                     .reduce((sum, c) => sum + c.quantity, 0)}
                   )
                 </Typography>
                 <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
                   {analysisResult.cards
-                    .filter((card) => card.isLand && !card.isSideboard)
+                    .filter((card) => card.isLand && !card.isSideboard && !card.isCommander)
                     .sort((a, b) => b.quantity - a.quantity || a.name.localeCompare(b.name))
                     .map((card, idx) => (
                       <Typography
@@ -539,13 +501,13 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                 >
                   SPELLS (
                   {analysisResult.cards
-                    .filter((c) => !c.isLand && !c.isSideboard)
+                    .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
                     .reduce((sum, c) => sum + c.quantity, 0)}
                   )
                 </Typography>
                 <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
                   {analysisResult.cards
-                    .filter((card) => !card.isLand && !card.isSideboard)
+                    .filter((card) => !card.isLand && !card.isSideboard && !card.isCommander)
                     .sort(
                       (a, b) =>
                         a.cmc - b.cmc || b.quantity - a.quantity || a.name.localeCompare(b.name)
@@ -689,7 +651,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                 lineHeight: 1,
               }}
             >
-              {stabilityScore}
+              {stabilityScore ?? 'Unavailable'}
             </Typography>
 
             <Box sx={{ flex: 1 }}>
@@ -717,7 +679,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 
               <LinearProgress
                 variant="determinate"
-                value={stabilityScore}
+                value={stabilityScore ?? 0}
                 sx={{
                   height: 8,
                   borderRadius: 4,

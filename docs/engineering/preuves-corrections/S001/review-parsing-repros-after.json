@@ -1,0 +1,62 @@
+[
+  {
+    "text": "60 Forest\n// Sideboard (15)\n15 Island",
+    "parsed": {
+      "entries": [
+        {
+          "name": "Forest",
+          "quantity": 60,
+          "section": "main",
+          "line": 1
+        },
+        {
+          "name": "Island",
+          "quantity": 15,
+          "section": "sideboard",
+          "line": 3
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "text": "60 Forest\n# Sideboard (15)\n15 Island",
+    "parsed": {
+      "entries": [
+        {
+          "name": "Forest",
+          "quantity": 60,
+          "section": "main",
+          "line": 1
+        },
+        {
+          "name": "Island",
+          "quantity": 15,
+          "section": "sideboard",
+          "line": 3
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "text": "Commander\n1 Plains\n// Deck (99)\n99 Forest",
+    "parsed": {
+      "entries": [
+        {
+          "name": "Plains",
+          "quantity": 1,
+          "section": "commander",
+          "line": 2
+        },
+        {
+          "name": "Forest",
+          "quantity": 99,
+          "section": "main",
+          "line": 4
+        }
+      ],
+      "warnings": []
+    }
+  }
+]

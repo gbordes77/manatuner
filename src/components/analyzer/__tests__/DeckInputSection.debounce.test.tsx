@@ -83,3 +83,52 @@ describe('T01 DeckInputSection debounce', () => {
     expect(btn.disabled).toBe(true)
   })
 })
+
+describe('external clear invalidates pending draft persistence', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+
+  it.each(['24 Mountain', ''])(
+    'does not restore a pending draft after Clear (parent %j) and persists subsequent typing',
+    (initialDeck) => {
+      const setDeckList = vi.fn()
+      function Harness() {
+        const [deckList, setParentDeckList] = React.useState(initialDeck)
+        return (
+          <DeckInputSection
+            deckList={deckList}
+            deckName=""
+            setDeckName={vi.fn()}
+            setDeckList={(value) => {
+              setDeckList(value)
+              setParentDeckList(value)
+            }}
+            isAnalyzing={true}
+            analysisResult={null}
+            isDeckMinimized={false}
+            setIsDeckMinimized={vi.fn()}
+            onAnalyze={vi.fn()}
+            onClear={() => setParentDeckList('')}
+            onLoadSample={vi.fn()}
+            isMobile={false}
+            isSmallMobile={false}
+          />
+        )
+      }
+      render(<Harness />)
+      const input = screen.getByRole('textbox', {
+        name: /Paste your decklist/i,
+      }) as HTMLTextAreaElement
+      fireEvent.change(input, { target: { value: '36 Lightning Bolt' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
+      expect(input.value).toBe('')
+      act(() => vi.advanceTimersByTime(DECKLIST_PERSIST_DEBOUNCE_MS))
+      expect(setDeckList).not.toHaveBeenCalled()
+      expect(input.value).toBe('')
+      fireEvent.change(input, { target: { value: '24 Forest' } })
+      act(() => vi.advanceTimersByTime(DECKLIST_PERSIST_DEBOUNCE_MS))
+      expect(setDeckList).toHaveBeenCalledExactlyOnceWith('24 Forest')
+      expect(input.value).toBe('24 Forest')
+    }
+  )
+})

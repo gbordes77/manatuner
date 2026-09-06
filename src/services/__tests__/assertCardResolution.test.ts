@@ -16,8 +16,8 @@ function card(partial: Partial<DeckCard> & { name: string; quantity: number }): 
 }
 
 describe('DeckAnalyzer.assertCardResolution (EDGE-GARBAGE)', () => {
-  it('allows empty card list (no throw)', () => {
-    expect(() => DeckAnalyzer.assertCardResolution([])).not.toThrow()
+  it('rejects empty main population (F01)', () => {
+    expect(() => DeckAnalyzer.assertCardResolution([])).toThrow(/No main-deck cards/)
   })
 
   it('allows fully resolved deck', () => {

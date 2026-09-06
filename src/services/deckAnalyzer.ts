@@ -1,3 +1,4 @@
+import { throwIfAborted, withTimeout } from './http'
 import { MANA_COLORS, ManaColor, WUBRG_COLORS } from '../types'
 import type { LandManaColor, LandMetadata } from '../types/lands'
 import type { ScryfallCard } from '../types/scryfall'
@@ -12,7 +13,7 @@ import { physicalManaProbability } from './castability/physicalManaEngine'
 import {
   applyCommanderFallback as applyCommanderFallbackPure,
   cleanCardName as cleanCardNamePure,
-  detectSideboardStartLine,
+  parseDecklist,
 } from './deckParser'
 import { landService } from './landService'
 import { compareTempoImpact } from './manaCalculator'
@@ -101,7 +102,7 @@ export interface DeckCard {
   isCreature?: boolean
   /**
    * EDH command zone: card sits outside the library; casting still requires legal mana payment.
-   * Set via *CMDR*, a Commander: section, or first non-land fallback on 99–100 lists.
+   * Set only via an explicit *CMDR* marker or Commander section.
    */
   isCommander?: boolean
   // Sideboard detection
@@ -165,6 +166,7 @@ export interface TempoImpactSummary {
 }
 
 export interface AnalysisResult {
+  inputWarnings?: string[]
   totalCards: number
   totalLands: number
   totalNonLands: number
@@ -178,6 +180,10 @@ export interface AnalysisResult {
     turn4: { anyColor: number; specificColors: Record<ManaColor, number> }
   }
   consistency: number
+  /** Numeric zero retained for storage compatibility when the score is unavailable. */
+  consistencyUnavailable?: boolean
+  colorAccessNotes?: string[]
+  colorAccessByTurn?: { turn2: number; turn4: number }
   rating: 'excellent' | 'good' | 'average' | 'poor'
   averageCMC: number
   landRatio: number
@@ -211,9 +217,10 @@ export class DeckAnalyzer {
 
   /** @deprecated Use cardResolver.fetchCardFromScryfallWithMeta — thin delegate (T08). */
   private static async fetchCardFromScryfallWithMeta(
-    cardName: string
+    cardName: string,
+    signal?: AbortSignal
   ): Promise<{ data: ScryfallCard | null; notFound: boolean }> {
-    return resolveCardFromScryfallWithMeta(cardName)
+    return resolveCardFromScryfallWithMeta(cardName, signal)
   }
 
   // Fonction améliorée pour détecter les terrains via Scryfall
@@ -481,215 +488,102 @@ export class DeckAnalyzer {
   }
 
   // Enhanced card parsing with better mana cost handling and LandService integration
-  private static async parseDeckList(deckList: string): Promise<DeckCard[]> {
-    const lines = deckList.split('\n')
+  private static async parseDeckList(deckList: string, signal?: AbortSignal): Promise<DeckCard[]> {
+    const parsed = parseDecklist(deckList)
     const cards: DeckCard[] = []
-    let isSideboardSection = false
-    /** Moxfield / Arena "Commander" header — following cards until Deck/Main */
-    let isCommanderSection = false
+    const entries = parsed.entries.filter(
+      (entry) => entry.section !== 'maybeboard' && entry.section !== 'companion'
+    )
+    const cardNames = entries.map((entry) => entry.name)
+    await batchFetchFromScryfall(cardNames, signal)
+    await landService.prefetchUnknownLands(cardNames, signal)
+    for (const entry of entries) {
+      throwIfAborted(signal)
+      const { name, quantity } = entry
+      // Use LandService for precise land detection with ETB analysis
+      const landMetadata = await landService.detectLand(name, signal)
+      const isLand = landMetadata !== null
 
-    // Pre-scan: detect sideboard start line for blank-line-separated lists
-    const sideboardStartLine = detectSideboardStartLine(lines)
+      let manaCost = ''
+      let colors: ManaColor[] = []
+      let cmc = 0
 
-    // Pre-fetch all card names in batch to populate cache
-    const cardNames: string[] = []
-    for (const line of lines) {
-      const trimmed = line.trim()
-      if (!trimmed) continue
-      // Strip inline SB: prefix for batch fetch
-      const stripped = trimmed.replace(/^sb:\s*/i, '')
-      const patterns = [/^(\d+)\s+(.+)$/, /^(\d+)x\s+(.+)$/i, /^(.+)\s+x(\d+)$/i]
-      for (const pattern of patterns) {
-        const m = stripped.match(pattern)
-        if (m) {
-          const name = pattern === patterns[2] ? m[1].trim() : m[2].trim()
-          cardNames.push(this.cleanCardName(name))
-          break
-        }
-      }
-    }
-    await batchFetchFromScryfall(cardNames)
+      let isCreature = false
+      // resolved=true only when land seed or Scryfall found the card
+      let resolved = false
+      let resolution: 'ok' | 'not_found' | 'unavailable' = 'unavailable'
 
-    // T07: batch-prefetch land metadata for names absent from seed/cache
-    // so the per-card detectLand loop is mostly sync (zero extra for full-seed decks).
-    await landService.prefetchUnknownLands(cardNames)
-
-    for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
-      let trimmedLine = lines[lineIdx].trim()
-
-      // Empty line: check if this is the sideboard split point
-      if (!trimmedLine) {
-        if (sideboardStartLine >= 0 && lineIdx >= sideboardStartLine) {
-          isSideboardSection = true
-        }
-        continue
-      }
-
-      // Detect explicit sideboard section markers
-      const sideboardMarkers = [
-        /^sideboard:?$/i,
-        /^\/\/\s*sideboard/i,
-        /^sb:?$/i,
-        /^#\s*sideboard/i,
-      ]
-
-      if (sideboardMarkers.some((marker) => marker.test(trimmedLine))) {
-        isSideboardSection = true
-        continue
-      }
-
-      // Handle inline SB: prefix (e.g., "SB: 2 Rest in Peace")
-      const inlineSbMatch = trimmedLine.match(/^sb:\s*(.+)$/i)
-      let forceIsSideboard = false
-      if (inlineSbMatch) {
-        trimmedLine = inlineSbMatch[1].trim()
-        forceIsSideboard = true
-      }
-
-      // Blank-line heuristic: if we've passed the detected split line, mark as sideboard
-      if (sideboardStartLine >= 0 && lineIdx > sideboardStartLine) {
-        isSideboardSection = true
-      }
-
-      // Commander section (Moxfield / Archidekt style)
-      if (
-        /^(commander|commanders):?$/i.test(trimmedLine) ||
-        /^\/\/\s*commander/i.test(trimmedLine)
-      ) {
-        isCommanderSection = true
-        isSideboardSection = false
-        continue
-      }
-
-      // Deck / mainboard ends commander section; companion is neither
-      if (
-        /^(deck|mainboard|main\s*board|main):?$/i.test(trimmedLine) ||
-        /^\/\/\s*(deck|mainboard|main)/i.test(trimmedLine)
-      ) {
-        isCommanderSection = false
-        continue
-      }
-
-      // Skip other section markers (Maybeboard, Companion header alone, etc.)
-      if (
-        /^(maybeboard|companion):?$/i.test(trimmedLine) ||
-        /^\/\/\s*(maybeboard|companion)/i.test(trimmedLine)
-      ) {
-        isCommanderSection = false
-        continue
-      }
-
-      const patterns = [/^(\d+)\s+(.+)$/, /^(\d+)x\s+(.+)$/i, /^(.+)\s+x(\d+)$/i]
-
-      let match: RegExpMatchArray | null = null
-      let quantity = 0
-      let name = ''
-
-      for (const pattern of patterns) {
-        match = trimmedLine.match(pattern)
-        if (match) {
-          if (pattern === patterns[2]) {
-            quantity = parseInt(match[2])
-            name = match[1].trim()
-          } else {
-            quantity = parseInt(match[1])
-            name = match[2].trim()
-          }
-          break
-        }
-      }
-
-      if (match && quantity > 0) {
-        // Detect Arena *CMDR* before name normalization strips it
-        const isCmdrMarker = /\*CMDR\*/i.test(name)
-        // Clean card name by removing MTGA set codes like "(TDM) 33" or "(RNA) 245"
-        name = this.cleanCardName(name)
-
-        // Use LandService for precise land detection with ETB analysis
-        const landMetadata = await landService.detectLand(name)
-        const isLand = landMetadata !== null
-
-        let manaCost = ''
-        let colors: ManaColor[] = []
-        let cmc = 0
-
-        let isCreature = false
-        // resolved=true only when land seed or Scryfall found the card
-        let resolved = false
-        let resolution: 'ok' | 'not_found' | 'unavailable' = 'unavailable'
-
-        if (isLand) {
-          // Lands don't have mana costs
-          manaCost = ''
-          colors = []
-          cmc = 0
+      if (isLand) {
+        // Lands don't have mana costs
+        manaCost = ''
+        colors = []
+        cmc = 0
+        resolved = true
+        resolution = 'ok'
+      } else {
+        // For spells, try to get mana cost from Scryfall first
+        const { data: scryfallData, notFound } = await this.fetchCardFromScryfallWithMeta(name, signal)
+        if (scryfallData) {
           resolved = true
           resolution = 'ok'
-        } else {
-          // For spells, try to get mana cost from Scryfall first
-          const { data: scryfallData, notFound } = await this.fetchCardFromScryfallWithMeta(name)
-          if (scryfallData) {
-            resolved = true
-            resolution = 'ok'
-            const frontFace = scryfallData.card_faces?.[0]
-            const resolvedCost = scryfallData.mana_cost || frontFace?.mana_cost
-            const spellType = frontFace?.type_line ?? scryfallData.type_line
-            if (resolvedCost) {
-              manaCost = resolvedCost
-              const parsed = this.parseManaCost(manaCost)
-              colors = parsed.colors
-              cmc = scryfallData.cmc ?? parsed.cmc
-              // Detect creature type from Scryfall type_line
-              isCreature = spellType?.toLowerCase().includes('creature') ?? false
-            } else {
-              // Resolved but no mana_cost (e.g. some special cards) — keep empty cost
-              manaCost = ''
-              colors = []
-              cmc = scryfallData.cmc || 0
-              isCreature = spellType?.toLowerCase().includes('creature') ?? false
-            }
-          } else {
-            // Simulated fallback — track why for garbage hard-fail
-            resolved = false
-            resolution = notFound ? 'not_found' : 'unavailable'
-            manaCost = this.getSimulatedManaCost(name)
+          const frontFace = scryfallData.card_faces?.[0]
+          const resolvedCost = scryfallData.mana_cost || frontFace?.mana_cost
+          const spellType = frontFace?.type_line ?? scryfallData.type_line
+          if (resolvedCost) {
+            manaCost = resolvedCost
             const parsed = this.parseManaCost(manaCost)
             colors = parsed.colors
-            cmc = parsed.cmc
+            cmc = scryfallData.cmc ?? parsed.cmc
+            // Detect creature type from Scryfall type_line
+            isCreature = spellType?.toLowerCase().includes('creature') ?? false
+          } else {
+            // Resolved but no mana_cost (e.g. some special cards) — keep empty cost
+            manaCost = ''
+            colors = []
+            cmc = scryfallData.cmc || 0
+            isCreature = spellType?.toLowerCase().includes('creature') ?? false
           }
+        } else {
+          // Simulated fallback — track why for garbage hard-fail
+          resolved = false
+          resolution = notFound ? 'not_found' : 'unavailable'
+          manaCost = this.getSimulatedManaCost(name)
+          const parsed = this.parseManaCost(manaCost)
+          colors = parsed.colors
+          cmc = parsed.cmc
         }
-
-        // Use LandMetadata for produced mana if available
-        const producedMana =
-          isLand && landMetadata ? (landMetadata.produces as ManaColor[]) : undefined
-
-        // Keep legacy land properties for compatibility, but enhance with LandMetadata
-        const landProperties = isLand ? this.evaluateLandProperties(name) : {}
-        const etbTapped = isLand ? this.resolveEtbTapped(landMetadata, landProperties) : undefined
-
-        cards.push({
-          name,
-          quantity,
-          manaCost,
-          colors,
-          isLand,
-          isCreature: isCreature || undefined,
-          isCommander: isCmdrMarker || isCommanderSection || undefined,
-          producedMana,
-          cmc,
-          isSideboard: forceIsSideboard || isSideboardSection,
-          resolved,
-          resolution,
-          ...landProperties,
-          // Override any legacy field with clone-safe boolean
-          etbTapped,
-          // NEW: Include full LandMetadata for tempo analysis
-          landMetadata: landMetadata || undefined,
-        })
       }
+
+      // Use LandMetadata for produced mana if available
+      const producedMana =
+        isLand && landMetadata ? (landMetadata.produces as ManaColor[]) : undefined
+
+      // Keep legacy land properties for compatibility, but enhance with LandMetadata
+      const landProperties = isLand ? this.evaluateLandProperties(name) : {}
+      const etbTapped = isLand ? this.resolveEtbTapped(landMetadata, landProperties) : undefined
+
+      cards.push({
+        name,
+        quantity,
+        manaCost,
+        colors,
+        isLand,
+        isCreature: isCreature || undefined,
+        isCommander: entry.section === 'commander' || undefined,
+        producedMana,
+        cmc,
+        isSideboard: entry.section === 'sideboard',
+        resolved,
+        resolution,
+        ...landProperties,
+        // Override any legacy field with clone-safe boolean
+        etbTapped,
+        // NEW: Include full LandMetadata for tempo analysis
+        landMetadata: landMetadata || undefined,
+      })
     }
 
-    // EDH fallback: first maindeck non-land if nothing marked
+    // Compatibility delegate: preserves explicit command-zone assignments.
     return this.applyCommanderFallback(cards)
   }
 
@@ -945,7 +839,10 @@ export class DeckAnalyzer {
     // Multi-color reco — identity from non-land spell colors (WUBRG only).
     // P0-EDH-1: do not use land colorDistribution (any-color lands + C inflated
     // Atraxa 4c to "5–6 colors"). Threshold ≥ 3 WUBRG.
-    const activeWubrgCount = countActiveWubrgFromSpells(cards)
+    const activeWubrgCount = WUBRG_COLORS.filter(color => cards.some(card => {
+      const cost = parsePhysicalCost(card.manaCost)
+      return !card.isLand && !cost.unsupportedSymbols && (cost.pips[color] ?? 0) > 0
+    })).length
     if (activeWubrgCount >= 3) {
       recommendations.push(
         `🌈 Multi-color deck detected (${activeWubrgCount} colors). Consider more dual lands and mana fixing.`
@@ -1005,7 +902,7 @@ export class DeckAnalyzer {
     }
 
     // Consistency recommendations
-    if (analysis.consistency !== undefined && analysis.consistency < 0.7) {
+    if (!analysis.consistencyUnavailable && analysis.consistency !== undefined && analysis.consistency < 0.7) {
       recommendations.push(
         `🎲 Low mana consistency (${Math.round(analysis.consistency * 100)}%). Add more dual lands or mana fixing.`
       )
@@ -1035,7 +932,7 @@ export class DeckAnalyzer {
    * seed hits) do not abort analysis, while pure garbage still fails.
    */
   public static assertCardResolution(cards: DeckCard[]): void {
-    if (!cards.length) return
+    if (!cards.length) throw new Error('No main-deck cards found.')
 
     const totalQty = cards.reduce((sum, c) => sum + (c.quantity || 1), 0)
     if (totalQty <= 0) return
@@ -1097,7 +994,19 @@ export class DeckAnalyzer {
     }
     throwIfCancelled()
 
-    const importedCards = await this.parseDeckList(deckList)
+    const inputWarnings = parseDecklist(deckList).warnings
+    let importedCards: DeckCard[]
+    try {
+      // One total resolution budget spans collections, lands, fallbacks and JSON bodies.
+      importedCards = await withTimeout(
+        (resolutionSignal) => this.parseDeckList(deckList, resolutionSignal),
+        30000,
+        signal
+      )
+    } catch (error) {
+      throwIfCancelled()
+      throw error
+    }
     const cards = importedCards.filter((card) => !card.isSideboard && !card.isCommander)
     throwIfCancelled()
     this.assertCardResolution(cards)
@@ -1117,39 +1026,42 @@ export class DeckAnalyzer {
         .reduce((sum, card) => sum + card.quantity, 0)
     })
 
-    // Calcul des besoins en mana basé sur les sorts
-    const manaRequirements: Record<ManaColor, number> = {} as Record<ManaColor, number>
-    MANA_COLORS.forEach((color) => {
-      const requirement = nonLands
-        .filter((card) => {
-          const cost = parsePhysicalCost(card.manaCost)
-          return (
-            (cost.pips[color] ?? 0) > 0 ||
-            (cost.hybrid ?? []).some((mask) => (mask & (1 << 'WUBRGC'.indexOf(color))) !== 0)
-          )
-        })
-        .reduce((sum, card) => sum + card.quantity, 0)
-      manaRequirements[color] = Math.ceil(requirement * 0.6) // Heuristic demand marker, not a Karsten source target
-    })
-
-    // Calcul des probabilités par tour
+    // Fixed color requirements are not the same as hybrid payment alternatives.
+    const parsedPayments = nonLands.map(card => ({ card, cost: parsePhysicalCost(card.manaCost) }))
+    const manaRequirements = Object.fromEntries(MANA_COLORS.map(color => [color,
+      Math.ceil(parsedPayments.filter(({ cost }) => !cost.unsupportedSymbols && (cost.pips[color] ?? 0) > 0)
+        .reduce((sum, { card }) => sum + card.quantity, 0) * 0.6),
+    ])) as Record<ManaColor, number>
     const probabilities = {
       turn1: this.calculateColorProbabilities(cards, manaRequirements, 1),
       turn2: this.calculateColorProbabilities(cards, manaRequirements, 2),
       turn3: this.calculateColorProbabilities(cards, manaRequirements, 3),
       turn4: this.calculateColorProbabilities(cards, manaRequirements, 4),
     }
-
-    // Heuristic summary of access to required colors at T2. Unused colors
-    // must not contribute artificial 100% observations to this average.
-    const activeColors = MANA_COLORS.filter((color) => manaRequirements[color] > 0)
-    const consistency =
-      activeColors.length > 0
-        ? activeColors.reduce((sum, color) => sum + probabilities.turn2[color], 0) /
-          activeColors.length
-        : totalLands > 0
-          ? hypergeom.atLeast(totalCards, totalLands, Math.min(8, totalCards), 1)
-          : 0
+    // Heuristic marginal events: one source from each distinct fixed/OR group.
+    // Repeated pips and simultaneous payment belong to the physical castability engine.
+    const masks = new Set<number>()
+    for (const { cost } of parsedPayments) {
+      if (cost.unsupportedSymbols) continue
+      MANA_COLORS.forEach((color, index) => { if ((cost.pips[color] ?? 0) > 0) masks.add(1 << index) })
+      cost.hybrid?.forEach(mask => masks.add(mask))
+    }
+    const consistencyUnavailable = parsedPayments.some(({ cost }) => cost.unsupportedSymbols)
+    const colorAccessNotes = [
+      ...(parsedPayments.some(({ cost }) => cost.hybrid?.length) ? ['Hybrid access counts each land once in the union of its payment colors. This marginal score does not measure repeated pips or simultaneous payment.'] : []),
+      ...(consistencyUnavailable ? ['Color access score unavailable: a main-deck payment uses unrepresented symbols (such as phyrexian or snow). See individual castability limitations.'] : []),
+    ]
+    const accessAtTurn = (turn: number): number => {
+      const access = [...masks].map(mask => {
+        const sources = lands.filter(land => land.producedMana?.some(color => (mask & (1 << MANA_COLORS.indexOf(color))) !== 0))
+          .reduce((sum, land) => sum + land.quantity, 0)
+        return hypergeom.atLeast(totalCards, sources, Math.min(6 + turn, totalCards), 1)
+      })
+      return access.length > 0 ? access.reduce((sum, value) => sum + value, 0) / access.length
+        : totalLands > 0 ? hypergeom.atLeast(totalCards, totalLands, Math.min(6 + turn, totalCards), 1) : 0
+    }
+    const colorAccessByTurn = consistencyUnavailable ? undefined : { turn2: accessAtTurn(2), turn4: accessAtTurn(4) }
+    const consistency = colorAccessByTurn?.turn2 ?? 0
 
     // Détermination du rating
     let rating: 'excellent' | 'good' | 'average' | 'poor'
@@ -1165,6 +1077,9 @@ export class DeckAnalyzer {
       colorDistribution,
       manaRequirements,
       consistency,
+      consistencyUnavailable,
+      colorAccessNotes,
+      colorAccessByTurn,
       rating,
     }
 
@@ -1285,6 +1200,7 @@ export class DeckAnalyzer {
 
     return {
       ...partialAnalysis,
+      inputWarnings,
       recommendations,
       probabilities: {
         turn1: {

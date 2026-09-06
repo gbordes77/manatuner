@@ -1,0 +1,130 @@
+
+Running 3 tests using 1 worker
+
+(node:29169) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/3] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Enter
+  1) [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Enter 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Edit Deck', exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Edit Deck', exact: true }) with timeout 30000ms
+      - waiting for getByRole('button', { name: 'Edit Deck', exact: true })
+      - Test timeout of 30000ms exceeded.
+
+
+      12 |     await page.getByRole('button', { name: 'Analyze Manabase', exact: true }).click()
+      13 |     const edit = page.getByRole('button', { name: 'Edit Deck', exact: true })
+    > 14 |     await expect(edit).toBeVisible({ timeout: 30000 })
+         |                        ^
+      15 |     await expect(edit).toHaveAttribute('aria-expanded', 'false')
+      16 |     const controlledId = await edit.getAttribute('aria-controls')
+      17 |     await expect(page.locator(`[id="${controlledId}"]`)).toBeAttached()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/edit-deck-keyboard.spec.js:14:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-e7372-ontent-and-focus-with-Enter-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-e7372-ontent-and-focus-with-Enter-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-e7372-ontent-and-focus-with-Enter-chromium/error-context.md
+
+
+(node:29391) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/3] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Space
+  2) [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Space 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Edit Deck', exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Edit Deck', exact: true }) with timeout 30000ms
+      - waiting for getByRole('button', { name: 'Edit Deck', exact: true })
+      - Test timeout of 30000ms exceeded.
+
+
+      12 |     await page.getByRole('button', { name: 'Analyze Manabase', exact: true }).click()
+      13 |     const edit = page.getByRole('button', { name: 'Edit Deck', exact: true })
+    > 14 |     await expect(edit).toBeVisible({ timeout: 30000 })
+         |                        ^
+      15 |     await expect(edit).toHaveAttribute('aria-expanded', 'false')
+      16 |     const controlledId = await edit.getAttribute('aria-controls')
+      17 |     await expect(page.locator(`[id="${controlledId}"]`)).toBeAttached()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/edit-deck-keyboard.spec.js:14:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-71617-ontent-and-focus-with-Space-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-71617-ontent-and-focus-with-Space-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-71617-ontent-and-focus-with-Space-chromium/error-context.md
+
+
+(node:29781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/3] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with pointer
+  3) [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with pointer 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('button', { name: 'Edit Deck', exact: true })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('button', { name: 'Edit Deck', exact: true }) with timeout 30000ms
+      - waiting for getByRole('button', { name: 'Edit Deck', exact: true })
+      - Test timeout of 30000ms exceeded.
+
+
+      12 |     await page.getByRole('button', { name: 'Analyze Manabase', exact: true }).click()
+      13 |     const edit = page.getByRole('button', { name: 'Edit Deck', exact: true })
+    > 14 |     await expect(edit).toBeVisible({ timeout: 30000 })
+         |                        ^
+      15 |     await expect(edit).toHaveAttribute('aria-expanded', 'false')
+      16 |     const controlledId = await edit.getAttribute('aria-controls')
+      17 |     await expect(page.locator(`[id="${controlledId}"]`)).toBeAttached()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/accessibility/edit-deck-keyboard.spec.js:14:24
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-869f6-tent-and-focus-with-pointer-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-869f6-tent-and-focus-with-pointer-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/preuves-corrections/S001/keyboard/red-artifacts/accessibility-edit-deck-ke-869f6-tent-and-focus-with-pointer-chromium/error-context.md
+
+
+  3 failed
+    [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Enter 
+    [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with Space 
+    [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:6:7 › Edit Deck restores content and focus with pointer 
