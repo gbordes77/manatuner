@@ -152,5 +152,10 @@
       "destination": "/library",
       "permanent": true
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "codex/persona-followup-2026-09-10": false
+    }
+  }
 }

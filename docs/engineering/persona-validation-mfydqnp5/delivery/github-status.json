@@ -1,0 +1,11 @@
+{
+  "sha": "2ba772af1f308ea93c68ffea53b0ccef0e49c57d",
+  "state": "failure",
+  "statuses": [
+    {
+      "context": "Vercel",
+      "state": "failure",
+      "target_url": "https://vercel.com/gbordes77s-projects/manatuner-pro/GSUbqhYWrJLucwZJ3hWHzhEoWVia"
+    }
+  ]
+}

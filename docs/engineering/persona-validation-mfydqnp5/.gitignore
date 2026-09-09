@@ -1,0 +1,25 @@
+# Generated artifacts and full failure traces remain local; source, compact evidence and final captures are versioned.
+/dist*/
+/firefox-runtime/
+/browser*/
+/audit-06/
+/cross-06/
+/firefox-fresh-06/
+/math/
+/math-final/
+/math-05/
+/preexisting.patch
+/qa/dev*/
+/qa/dev.config.js
+/qa/contrast-before/
+/qa/contrast-dev/
+/qa/contrast-dev2/
+/qa/candidate-final/
+/qa/candidate-05/
+/qa/candidate-06-multiplayer/
+/delivery/*.html
+/delivery/assets-*.txt
+
+/delivery/*.txt
+/qa/scryfall-edh-public.json
+/qa/edh-deck.txt

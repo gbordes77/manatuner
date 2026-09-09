@@ -1,3 +1,5 @@
+import { SCORE_DEFINITIONS } from '../../data/scoreDefinitions'
+import { version as engineVersion } from '../../../package.json'
 import { healthScoreBand } from '../../utils/healthScore'
 import { calculateStabilityScore } from './manaStability'
 import DownloadIcon from '@mui/icons-material/Download'
@@ -57,7 +59,7 @@ const getStabilityLevel = (
   return {
     label,
     color: severity === 'info' ? BLUEPRINT_COLORS.cyan : BLUEPRINT_COLORS[severity],
-    description: 'Heuristic turn-two color access; not spell castability',
+    description: 'Weighted color access and land balance; not spell castability',
   }
 }
 
@@ -162,9 +164,25 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           slice.height = Math.min(sliceHeight, canvas.height - y)
           const context = slice.getContext('2d')
           if (!context) throw new Error('PDF canvas unavailable')
-          context.drawImage(canvas, 0, y, canvas.width, slice.height, 0, 0, slice.width, slice.height)
-          pdf.addImage(slice.toDataURL('image/png'), 'PNG', 10, 10, imgWidth,
-            (slice.height * imgWidth) / slice.width)
+          context.drawImage(
+            canvas,
+            0,
+            y,
+            canvas.width,
+            slice.height,
+            0,
+            0,
+            slice.width,
+            slice.height
+          )
+          pdf.addImage(
+            slice.toDataURL('image/png'),
+            'PNG',
+            10,
+            10,
+            imgWidth,
+            (slice.height * imgWidth) / slice.width
+          )
         }
 
         pdf.save(`mana-blueprint-${deckName.replace(/\s+/g, '-').toLowerCase()}.pdf`)
@@ -182,6 +200,18 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
       deckName,
       format: detectedFormat,
       generatedAt: new Date().toISOString(),
+      engineVersion,
+      scoreDefinitions: SCORE_DEFINITIONS,
+      assumptions: {
+        snapshotModel: analysisResult.spellAnalysisModel,
+        playDraw: 'PLAY',
+        mulligans: false,
+        ramp: false,
+        xValue: 2,
+        targetTurn: 'max(1, mana value)',
+        targetSpellDrawIncluded: false,
+        note: 'Saved lands-only potential, not interactive Castability settings.',
+      },
       stabilityScore,
       analysis: analysisResult,
     }
@@ -211,13 +241,25 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
     }
     const lines: string[] = []
     lines.push('# ManaTuner CSV export')
-    lines.push(`# Deck: ${deckName}`)
+    lines.push(`# Deck: ${escape(deckName)}`)
     lines.push(`# Format: ${detectedFormat}`)
     lines.push(`# Generated: ${new Date().toISOString()}`)
     lines.push(`# Stability: ${stabilityScore ?? 'Unavailable'}`)
+    lines.push(`# Engine: ${engineVersion}`)
+    for (const [index, definition] of Object.entries(SCORE_DEFINITIONS)) {
+      lines.push(`# ${index}: ${escape(definition)}`)
+    }
+    lines.push(
+      '# Model: saved lands-only potential; PLAY; no mulligans or ramp; X=2; target turn=max(1 mana value); target spell draw excluded'
+    )
+    lines.push(
+      '# Share links carry deck/name/tab only; interactive model settings are not transported'
+    )
     lines.push('')
 
-    lines.push('section,card_name,quantity,cmc,mana_cost,colors,is_land,produces')
+    lines.push(
+      'section,card_name,quantity,cmc,mana_cost,colors,is_land,produces,is_sideboard,is_commander'
+    )
     for (const card of analysisResult.cards) {
       const producesColors = card.landMetadata?.produces?.join('|') ?? ''
       lines.push(
@@ -230,6 +272,8 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           (card.colors ?? []).join('|'),
           card.isLand ? 'true' : 'false',
           producesColors,
+          Boolean(card.isSideboard),
+          Boolean(card.isCommander),
         ].join(',')
       )
     }
@@ -306,693 +350,340 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
       <Typography variant="caption" sx={{ display: { xs: 'block', md: 'none' }, mb: 1 }}>
         Scroll horizontally to view the full blueprint. Exports include its entire width.
       </Typography>
-      <Box role="region" aria-label="Scrollable mana blueprint" tabIndex={0} sx={{ overflowX: 'auto' }}>
-      {/* Blueprint Card - This is what gets exported */}
-      <Paper
-        ref={blueprintRef}
-        data-testid="blueprint-card"
-        sx={{
-          minWidth: 720,
-          background: BLUEPRINT_COLORS.background,
-          borderRadius: 3,
-          overflow: 'hidden',
-          position: 'relative',
-          p: 3,
-          // Grid pattern overlay
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `
+      <Box
+        role="region"
+        aria-label="Scrollable mana blueprint"
+        tabIndex={0}
+        sx={{ overflowX: 'auto' }}
+      >
+        {/* Blueprint Card - This is what gets exported */}
+        <Paper
+          ref={blueprintRef}
+          data-testid="blueprint-card"
+          sx={{
+            minWidth: 720,
+            background: BLUEPRINT_COLORS.background,
+            borderRadius: 3,
+            overflow: 'hidden',
+            position: 'relative',
+            p: 3,
+            // Grid pattern overlay
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `
               linear-gradient(${BLUEPRINT_COLORS.grid}40 1px, transparent 1px),
               linear-gradient(90deg, ${BLUEPRINT_COLORS.grid}40 1px, transparent 1px)
             `,
-            backgroundSize: '20px 20px',
-            pointerEvents: 'none',
-            opacity: 0.5,
-          },
-        }}
-      >
-        {/* Header */}
-        <Box sx={{ position: 'relative', zIndex: 1, mb: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <Box>
+              backgroundSize: '20px 20px',
+              pointerEvents: 'none',
+              opacity: 0.5,
+            },
+          }}
+        >
+          {/* Header */}
+          <Box sx={{ position: 'relative', zIndex: 1, mb: 3 }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+            >
+              <Box>
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: BLUEPRINT_COLORS.cyan,
+                    fontFamily: 'monospace',
+                    letterSpacing: 3,
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  ◆ MANA BLUEPRINT
+                </Typography>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    color: BLUEPRINT_COLORS.text,
+                    fontWeight: 700,
+                    mt: 0.5,
+                  }}
+                >
+                  {deckName}
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                  <Chip
+                    label={detectedFormat}
+                    size="small"
+                    sx={{
+                      bgcolor: BLUEPRINT_COLORS.cyanLight,
+                      color: BLUEPRINT_COLORS.cyan,
+                      fontWeight: 600,
+                      fontFamily: 'monospace',
+                    }}
+                  />
+                  <Chip
+                    label={`${analysisResult.totalCards} cards`}
+                    size="small"
+                    sx={{
+                      bgcolor: BLUEPRINT_COLORS.backgroundLight,
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontFamily: 'monospace',
+                    }}
+                  />
+                </Box>
+              </Box>
+
+              {/* ManaTuner Logo */}
+              <Box sx={{ textAlign: 'right' }}>
+                <Typography
+                  sx={{
+                    color: BLUEPRINT_COLORS.cyan,
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                  }}
+                >
+                  ManaTuner
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Deck List - First section for immediate deck identification */}
+          {analysisResult.cards && analysisResult.cards.length > 0 && (
+            <Box
+              sx={{
+                position: 'relative',
+                zIndex: 1,
+                p: 2.5,
+                bgcolor: BLUEPRINT_COLORS.backgroundLight,
+                borderRadius: 2,
+                border: `1px solid ${BLUEPRINT_COLORS.cyan}40`,
+                mb: 3,
+              }}
+            >
               <Typography
                 variant="overline"
                 sx={{
                   color: BLUEPRINT_COLORS.cyan,
                   fontFamily: 'monospace',
-                  letterSpacing: 3,
-                  fontSize: '0.75rem',
+                  letterSpacing: 2,
+                  fontSize: '0.65rem',
                 }}
               >
-                ◆ MANA BLUEPRINT
+                DECK LIST
               </Typography>
-              <Typography
-                variant="h4"
+
+              {/* Maindeck */}
+              <Box
                 sx={{
-                  color: BLUEPRINT_COLORS.text,
-                  fontWeight: 700,
-                  mt: 0.5,
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 3,
+                  mt: 2,
                 }}
               >
-                {deckName}
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-                <Chip
-                  label={detectedFormat}
-                  size="small"
-                  sx={{
-                    bgcolor: BLUEPRINT_COLORS.cyanLight,
-                    color: BLUEPRINT_COLORS.cyan,
-                    fontWeight: 600,
-                    fontFamily: 'monospace',
-                  }}
-                />
-                <Chip
-                  label={`${analysisResult.totalCards} cards`}
-                  size="small"
-                  sx={{
-                    bgcolor: BLUEPRINT_COLORS.backgroundLight,
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontFamily: 'monospace',
-                  }}
-                />
-              </Box>
-            </Box>
-
-            {/* ManaTuner Logo */}
-            <Box sx={{ textAlign: 'right' }}>
-              <Typography
-                sx={{
-                  color: BLUEPRINT_COLORS.cyan,
-                  fontWeight: 700,
-                  fontSize: '1rem',
-                }}
-              >
-                ManaTuner
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Deck List - First section for immediate deck identification */}
-        {analysisResult.cards && analysisResult.cards.length > 0 && (
-          <Box
-            sx={{
-              position: 'relative',
-              zIndex: 1,
-              p: 2.5,
-              bgcolor: BLUEPRINT_COLORS.backgroundLight,
-              borderRadius: 2,
-              border: `1px solid ${BLUEPRINT_COLORS.cyan}40`,
-              mb: 3,
-            }}
-          >
-            <Typography
-              variant="overline"
-              sx={{
-                color: BLUEPRINT_COLORS.cyan,
-                fontFamily: 'monospace',
-                letterSpacing: 2,
-                fontSize: '0.65rem',
-              }}
-            >
-              DECK LIST
-            </Typography>
-
-            {/* Maindeck */}
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: 3,
-                mt: 2,
-              }}
-            >
-              {/* Lands Column */}
-              <Box>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.cyan,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    fontSize: '0.75rem',
-                    mb: 1,
-                    pb: 0.5,
-                    borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}`,
-                  }}
-                >
-                  LANDS (
-                  {analysisResult.cards
-                    .filter((c) => c.isLand && !c.isSideboard && !c.isCommander)
-                    .reduce((sum, c) => sum + c.quantity, 0)}
-                  )
-                </Typography>
-                <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
-                  {analysisResult.cards
-                    .filter((card) => card.isLand && !card.isSideboard && !card.isCommander)
-                    .sort((a, b) => b.quantity - a.quantity || a.name.localeCompare(b.name))
-                    .map((card, idx) => (
-                      <Typography
-                        key={idx}
-                        sx={{
-                          color: BLUEPRINT_COLORS.text,
-                          fontFamily: 'monospace',
-                          fontSize: '0.7rem',
-                          py: 0.25,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        <Box
-                          component="span"
-                          sx={{
-                            color: BLUEPRINT_COLORS.gold,
-                            fontWeight: 600,
-                            minWidth: 24,
-                            display: 'inline-block',
-                          }}
-                        >
-                          {card.quantity}x
-                        </Box>{' '}
-                        {card.name}
-                      </Typography>
-                    ))}
-                </Box>
-              </Box>
-
-              {/* Spells Column */}
-              <Box>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.cyan,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    fontSize: '0.75rem',
-                    mb: 1,
-                    pb: 0.5,
-                    borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}`,
-                  }}
-                >
-                  SPELLS (
-                  {analysisResult.cards
-                    .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
-                    .reduce((sum, c) => sum + c.quantity, 0)}
-                  )
-                </Typography>
-                <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
-                  {analysisResult.cards
-                    .filter((card) => !card.isLand && !card.isSideboard && !card.isCommander)
-                    .sort(
-                      (a, b) =>
-                        a.cmc - b.cmc || b.quantity - a.quantity || a.name.localeCompare(b.name)
+                {/* Lands Column */}
+                <Box>
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.cyan,
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                      fontSize: '0.75rem',
+                      mb: 1,
+                      pb: 0.5,
+                      borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}`,
+                    }}
+                  >
+                    LANDS (
+                    {analysisResult.cards
+                      .filter((c) => c.isLand && !c.isSideboard && !c.isCommander)
+                      .reduce((sum, c) => sum + c.quantity, 0)}
                     )
-                    .map((card, idx) => (
-                      <Typography
-                        key={idx}
-                        sx={{
-                          color: BLUEPRINT_COLORS.text,
-                          fontFamily: 'monospace',
-                          fontSize: '0.7rem',
-                          py: 0.25,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        <Box
-                          component="span"
+                  </Typography>
+                  <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
+                    {analysisResult.cards
+                      .filter((card) => card.isLand && !card.isSideboard && !card.isCommander)
+                      .sort((a, b) => b.quantity - a.quantity || a.name.localeCompare(b.name))
+                      .map((card, idx) => (
+                        <Typography
+                          key={idx}
                           sx={{
-                            color: BLUEPRINT_COLORS.gold,
-                            fontWeight: 600,
-                            minWidth: 24,
-                            display: 'inline-block',
+                            color: BLUEPRINT_COLORS.text,
+                            fontFamily: 'monospace',
+                            fontSize: '0.7rem',
+                            py: 0.25,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
                           }}
                         >
-                          {card.quantity}x
-                        </Box>{' '}
-                        {card.name}
-                        {card.manaCost && (
                           <Box
                             component="span"
                             sx={{
-                              color: BLUEPRINT_COLORS.textMuted,
-                              fontSize: '0.6rem',
-                              ml: 0.5,
+                              color: BLUEPRINT_COLORS.gold,
+                              fontWeight: 600,
+                              minWidth: 24,
+                              display: 'inline-block',
                             }}
                           >
-                            ({card.manaCost})
-                          </Box>
-                        )}
-                      </Typography>
-                    ))}
-                </Box>
-              </Box>
-            </Box>
-
-            {/* Sideboard Section */}
-            {analysisResult.cards.some((c) => c.isSideboard) && (
-              <Box sx={{ mt: 2, pt: 2, borderTop: `1px dashed ${BLUEPRINT_COLORS.grid}` }}>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontFamily: 'monospace',
-                    fontWeight: 700,
-                    fontSize: '0.75rem',
-                    mb: 1,
-                  }}
-                >
-                  SIDEBOARD (
-                  {analysisResult.cards
-                    .filter((c) => c.isSideboard)
-                    .reduce((sum, c) => sum + c.quantity, 0)}
-                  )
-                </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    gap: 0.5,
-                    maxHeight: 100,
-                    overflowY: 'auto',
-                  }}
-                >
-                  {analysisResult.cards
-                    .filter((card) => card.isSideboard)
-                    .sort((a, b) => a.cmc - b.cmc || a.name.localeCompare(b.name))
-                    .map((card, idx) => (
-                      <Typography
-                        key={idx}
-                        sx={{
-                          color: BLUEPRINT_COLORS.text,
-                          fontFamily: 'monospace',
-                          fontSize: '0.65rem',
-                          py: 0.25,
-                          px: 0.75,
-                          bgcolor: BLUEPRINT_COLORS.grid,
-                          borderRadius: 1,
-                          opacity: 0.85,
-                        }}
-                      >
-                        <Box
-                          component="span"
-                          sx={{
-                            color: BLUEPRINT_COLORS.gold,
-                            fontWeight: 600,
-                          }}
-                        >
-                          {card.quantity}x
-                        </Box>{' '}
-                        {card.name}
-                      </Typography>
-                    ))}
-                </Box>
-              </Box>
-            )}
-          </Box>
-        )}
-
-        {/* Mana Stability Index */}
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            p: 2.5,
-            bgcolor: BLUEPRINT_COLORS.backgroundLight,
-            borderRadius: 2,
-            border: `1px solid ${BLUEPRINT_COLORS.grid}`,
-            mb: 3,
-          }}
-        >
-          <Typography
-            variant="overline"
-            sx={{
-              color: BLUEPRINT_COLORS.textMuted,
-              fontFamily: 'monospace',
-              letterSpacing: 2,
-              fontSize: '0.65rem',
-            }}
-          >
-            HEURISTIC MANA STABILITY INDEX
-          </Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 1 }}>
-            <Typography
-              variant="h2"
-              sx={{
-                color: stability.color,
-                fontWeight: 800,
-                fontFamily: 'monospace',
-                lineHeight: 1,
-              }}
-            >
-              {stabilityScore ?? 'Unavailable'}
-            </Typography>
-
-            <Box sx={{ flex: 1 }}>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'space-between', mb: 0.5 }}>
-                <Typography
-                  sx={{
-                    color: stability.color,
-                    fontWeight: 700,
-                    fontFamily: 'monospace',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  {stability.label}
-                </Typography>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontFamily: 'monospace',
-                    fontSize: '0.75rem',
-                  }}
-                >
-                  {stability.description}
-                </Typography>
-              </Box>
-
-              <LinearProgress
-                variant="determinate"
-                value={stabilityScore ?? 0}
-                sx={{
-                  height: 8,
-                  borderRadius: 4,
-                  bgcolor: BLUEPRINT_COLORS.grid,
-                  '& .MuiLinearProgress-bar': {
-                    borderRadius: 4,
-                    background: `linear-gradient(90deg, ${BLUEPRINT_COLORS.error} 0%, ${BLUEPRINT_COLORS.warning} 50%, ${BLUEPRINT_COLORS.success} 100%)`,
-                  },
-                }}
-              />
-
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontSize: '0.6rem',
-                    fontFamily: 'monospace',
-                  }}
-                >
-                  UNSTABLE
-                </Typography>
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontSize: '0.6rem',
-                    fontFamily: 'monospace',
-                  }}
-                >
-                  OPTIMAL
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-
-        {/* Probability Matrix */}
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            p: 2.5,
-            bgcolor: BLUEPRINT_COLORS.backgroundLight,
-            borderRadius: 2,
-            border: `1px solid ${BLUEPRINT_COLORS.grid}`,
-            mb: 3,
-          }}
-        >
-          <Typography
-            variant="overline"
-            sx={{
-              color: BLUEPRINT_COLORS.textMuted,
-              fontFamily: 'monospace',
-              letterSpacing: 2,
-              fontSize: '0.65rem',
-            }}
-          >
-            HYPERGEOMETRIC PROBABILITY MATRIX
-          </Typography>
-
-          {/* Table Header */}
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '80px repeat(4, 1fr)',
-              gap: 1,
-              mt: 2,
-              mb: 1,
-            }}
-          >
-            <Box />
-            {['T1', 'T2', 'T3', 'T4'].map((turn) => (
-              <Typography
-                key={turn}
-                sx={{
-                  color: BLUEPRINT_COLORS.cyan,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  fontSize: '0.85rem',
-                }}
-              >
-                {turn}
-              </Typography>
-            ))}
-          </Box>
-
-          {/* Color Rows */}
-          {activeColors.map((color) => {
-            const probs = [
-              analysisResult.probabilities.turn1.specificColors[color],
-              analysisResult.probabilities.turn2.specificColors[color],
-              analysisResult.probabilities.turn3.specificColors[color],
-              analysisResult.probabilities.turn4.specificColors[color],
-            ]
-
-            return (
-              <Box
-                key={color}
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: '80px repeat(4, 1fr)',
-                  gap: 1,
-                  py: 0.75,
-                  borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}40`,
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <i
-                    className={`ms ms-${color.toLowerCase()} ms-cost`}
-                    style={{
-                      fontSize: 20,
-                      filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))',
-                    }}
-                  />
-                  <Typography
-                    sx={{
-                      color: BLUEPRINT_COLORS.text,
-                      fontFamily: 'monospace',
-                      fontWeight: 600,
-                      fontSize: '0.8rem',
-                    }}
-                  >
-                    {COLOR_NAMES[color]}
-                  </Typography>
-                </Box>
-
-                {probs.map((prob, idx) => {
-                  const percentage = Math.round((prob || 0) * 100)
-                  let probColor = BLUEPRINT_COLORS.success
-                  if (percentage < 70) probColor = BLUEPRINT_COLORS.error
-                  else if (percentage < 85) probColor = BLUEPRINT_COLORS.warning
-
-                  return (
-                    <Typography
-                      key={idx}
-                      sx={{
-                        color: probColor,
-                        fontFamily: 'monospace',
-                        fontWeight: 600,
-                        textAlign: 'center',
-                        fontSize: '0.9rem',
-                      }}
-                    >
-                      {percentage}%
-                    </Typography>
-                  )
-                })}
-              </Box>
-            )
-          })}
-        </Box>
-
-        {/* Key Stats */}
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 2,
-            mb: 3,
-          }}
-        >
-          {[
-            { label: 'Lands', value: analysisResult.totalLands, icon: '🏔️' },
-            { label: 'Spells', value: analysisResult.totalNonLands, icon: '⚡' },
-            { label: 'Avg CMC', value: analysisResult.averageCMC.toFixed(1), icon: '📊' },
-            {
-              label: 'Land %',
-              value: `${Math.round(analysisResult.landRatio * 100)}%`,
-              icon: '🎯',
-            },
-          ].map((stat) => (
-            <Box
-              key={stat.label}
-              sx={{
-                p: 1.5,
-                bgcolor: BLUEPRINT_COLORS.backgroundLight,
-                borderRadius: 2,
-                border: `1px solid ${BLUEPRINT_COLORS.grid}`,
-                textAlign: 'center',
-              }}
-            >
-              <Typography sx={{ fontSize: '1.2rem', mb: 0.5 }}>{stat.icon}</Typography>
-              <Typography
-                sx={{
-                  color: BLUEPRINT_COLORS.text,
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  fontSize: '1.1rem',
-                }}
-              >
-                {stat.value}
-              </Typography>
-              <Typography
-                sx={{
-                  color: BLUEPRINT_COLORS.textMuted,
-                  fontFamily: 'monospace',
-                  fontSize: '0.65rem',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {stat.label}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-
-        {/* Mulligan Analysis */}
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            p: 2.5,
-            bgcolor: BLUEPRINT_COLORS.backgroundLight,
-            borderRadius: 2,
-            border: `1px solid ${BLUEPRINT_COLORS.grid}`,
-            mb: 3,
-          }}
-        >
-          <Typography
-            variant="overline"
-            sx={{
-              color: BLUEPRINT_COLORS.textMuted,
-              fontFamily: 'monospace',
-              letterSpacing: 2,
-              fontSize: '0.65rem',
-            }}
-          >
-            OPENING HAND ANALYSIS
-          </Typography>
-
-          <Box sx={{ mt: 2 }}>
-            {[
-              {
-                label: 'Perfect Hand (2-4 lands + early play)',
-                value: analysisResult.mulliganAnalysis.perfectHand,
-                color: BLUEPRINT_COLORS.success,
-              },
-              {
-                label: 'Good Hand (2-4 lands)',
-                value: analysisResult.mulliganAnalysis.goodHand,
-                color: BLUEPRINT_COLORS.cyan,
-              },
-              {
-                label: 'Borderline (1 or 5 lands)',
-                value: analysisResult.mulliganAnalysis.averageHand,
-                color: BLUEPRINT_COLORS.warning,
-              },
-              {
-                label: 'Mulligan (0 or 6+ lands)',
-                value: analysisResult.mulliganAnalysis.poorHand,
-                color: BLUEPRINT_COLORS.error,
-              },
-            ].map((item) => (
-              <Box
-                key={item.label}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  py: 0.75,
-                  borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}40`,
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: BLUEPRINT_COLORS.textMuted,
-                    fontFamily: 'monospace',
-                    fontSize: '0.75rem',
-                  }}
-                >
-                  {item.label}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Box
-                    sx={{
-                      width: 60,
-                      height: 6,
-                      bgcolor: BLUEPRINT_COLORS.grid,
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: `${item.value}%`,
-                        height: '100%',
-                        bgcolor: item.color,
-                        borderRadius: 3,
-                      }}
-                    />
+                            {card.quantity}x
+                          </Box>{' '}
+                          {card.name}
+                        </Typography>
+                      ))}
                   </Box>
+                </Box>
+
+                {/* Spells Column */}
+                <Box>
                   <Typography
                     sx={{
-                      color: item.color,
+                      color: BLUEPRINT_COLORS.cyan,
                       fontFamily: 'monospace',
                       fontWeight: 700,
-                      fontSize: '0.85rem',
-                      minWidth: 40,
-                      textAlign: 'right',
+                      fontSize: '0.75rem',
+                      mb: 1,
+                      pb: 0.5,
+                      borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}`,
                     }}
                   >
-                    {item.value}%
+                    SPELLS (
+                    {analysisResult.cards
+                      .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
+                      .reduce((sum, c) => sum + c.quantity, 0)}
+                    )
                   </Typography>
+                  <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
+                    {analysisResult.cards
+                      .filter((card) => !card.isLand && !card.isSideboard && !card.isCommander)
+                      .sort(
+                        (a, b) =>
+                          a.cmc - b.cmc || b.quantity - a.quantity || a.name.localeCompare(b.name)
+                      )
+                      .map((card, idx) => (
+                        <Typography
+                          key={idx}
+                          sx={{
+                            color: BLUEPRINT_COLORS.text,
+                            fontFamily: 'monospace',
+                            fontSize: '0.7rem',
+                            py: 0.25,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          <Box
+                            component="span"
+                            sx={{
+                              color: BLUEPRINT_COLORS.gold,
+                              fontWeight: 600,
+                              minWidth: 24,
+                              display: 'inline-block',
+                            }}
+                          >
+                            {card.quantity}x
+                          </Box>{' '}
+                          {card.name}
+                          {card.manaCost && (
+                            <Box
+                              component="span"
+                              sx={{
+                                color: BLUEPRINT_COLORS.textMuted,
+                                fontSize: '0.6rem',
+                                ml: 0.5,
+                              }}
+                            >
+                              ({card.manaCost})
+                            </Box>
+                          )}
+                        </Typography>
+                      ))}
+                  </Box>
                 </Box>
               </Box>
-            ))}
-          </Box>
-        </Box>
 
-        {/* Top Recommendations */}
-        {analysisResult.recommendations.length > 0 && (
+              {/* Sideboard Section */}
+              {analysisResult.cards.some((c) => c.isSideboard) && (
+                <Box sx={{ mt: 2, pt: 2, borderTop: `1px dashed ${BLUEPRINT_COLORS.grid}` }}>
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontFamily: 'monospace',
+                      fontWeight: 700,
+                      fontSize: '0.75rem',
+                      mb: 1,
+                    }}
+                  >
+                    SIDEBOARD (
+                    {analysisResult.cards
+                      .filter((c) => c.isSideboard)
+                      .reduce((sum, c) => sum + c.quantity, 0)}
+                    )
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: 0.5,
+                      maxHeight: 100,
+                      overflowY: 'auto',
+                    }}
+                  >
+                    {analysisResult.cards
+                      .filter((card) => card.isSideboard)
+                      .sort((a, b) => a.cmc - b.cmc || a.name.localeCompare(b.name))
+                      .map((card, idx) => (
+                        <Typography
+                          key={idx}
+                          sx={{
+                            color: BLUEPRINT_COLORS.text,
+                            fontFamily: 'monospace',
+                            fontSize: '0.65rem',
+                            py: 0.25,
+                            px: 0.75,
+                            bgcolor: BLUEPRINT_COLORS.grid,
+                            borderRadius: 1,
+                            opacity: 0.85,
+                          }}
+                        >
+                          <Box
+                            component="span"
+                            sx={{
+                              color: BLUEPRINT_COLORS.gold,
+                              fontWeight: 600,
+                            }}
+                          >
+                            {card.quantity}x
+                          </Box>{' '}
+                          {card.name}
+                        </Typography>
+                      ))}
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          <Box sx={{ px: 3, py: 2, color: BLUEPRINT_COLORS.text }}>
+            <Typography variant="caption" display="block">
+              Engine {engineVersion} · {SCORE_DEFINITIONS.blueprint}
+            </Typography>
+            <Typography variant="caption" display="block">
+              {SCORE_DEFINITIONS.health} {SCORE_DEFINITIONS.mulligan}
+            </Typography>
+            <Typography variant="caption" display="block">
+              {SCORE_DEFINITIONS.limitation} Saved lands-only potential: PLAY, no mulligans or ramp,
+              X=2, target turn=max(1, mana value); target spell draw excluded.
+            </Typography>
+            <Typography variant="caption" display="block">
+              Share links carry deck, name and tab. Model settings must be selected again.
+            </Typography>
+          </Box>
+          {/* Mana Stability Index */}
           <Box
             sx={{
               position: 'relative',
@@ -1013,78 +704,461 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                 fontSize: '0.65rem',
               }}
             >
-              💡 SUGGESTIONS
+              HEURISTIC MANA STABILITY INDEX
             </Typography>
 
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 1 }}>
+              <Typography
+                variant="h2"
+                sx={{
+                  color: stability.color,
+                  fontWeight: 800,
+                  fontFamily: 'monospace',
+                  lineHeight: 1,
+                }}
+              >
+                {stabilityScore ?? 'Unavailable'}
+              </Typography>
+
+              <Box sx={{ flex: 1 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 1,
+                    justifyContent: 'space-between',
+                    mb: 0.5,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: stability.color,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    {stability.label}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontFamily: 'monospace',
+                      fontSize: '0.75rem',
+                    }}
+                  >
+                    {stability.description}
+                  </Typography>
+                </Box>
+
+                <LinearProgress
+                  variant="determinate"
+                  value={stabilityScore ?? 0}
+                  sx={{
+                    height: 8,
+                    borderRadius: 4,
+                    bgcolor: BLUEPRINT_COLORS.grid,
+                    '& .MuiLinearProgress-bar': {
+                      borderRadius: 4,
+                      background: `linear-gradient(90deg, ${BLUEPRINT_COLORS.error} 0%, ${BLUEPRINT_COLORS.warning} 50%, ${BLUEPRINT_COLORS.success} 100%)`,
+                    },
+                  }}
+                />
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontSize: '0.6rem',
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    UNSTABLE
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontSize: '0.6rem',
+                      fontFamily: 'monospace',
+                    }}
+                  >
+                    OPTIMAL
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Probability Matrix */}
+          <Box
+            sx={{
+              position: 'relative',
+              zIndex: 1,
+              p: 2.5,
+              bgcolor: BLUEPRINT_COLORS.backgroundLight,
+              borderRadius: 2,
+              border: `1px solid ${BLUEPRINT_COLORS.grid}`,
+              mb: 3,
+            }}
+          >
+            <Typography
+              variant="overline"
+              sx={{
+                color: BLUEPRINT_COLORS.textMuted,
+                fontFamily: 'monospace',
+                letterSpacing: 2,
+                fontSize: '0.65rem',
+              }}
+            >
+              HYPERGEOMETRIC PROBABILITY MATRIX
+            </Typography>
+
+            {/* Table Header */}
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: '80px repeat(4, 1fr)',
+                gap: 1,
+                mt: 2,
+                mb: 1,
+              }}
+            >
+              <Box />
+              {['T1', 'T2', 'T3', 'T4'].map((turn) => (
+                <Typography
+                  key={turn}
+                  sx={{
+                    color: BLUEPRINT_COLORS.cyan,
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    textAlign: 'center',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  {turn}
+                </Typography>
+              ))}
+            </Box>
+
+            {/* Color Rows */}
+            {activeColors.map((color) => {
+              const probs = [
+                analysisResult.probabilities.turn1.specificColors[color],
+                analysisResult.probabilities.turn2.specificColors[color],
+                analysisResult.probabilities.turn3.specificColors[color],
+                analysisResult.probabilities.turn4.specificColors[color],
+              ]
+
+              return (
+                <Box
+                  key={color}
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '80px repeat(4, 1fr)',
+                    gap: 1,
+                    py: 0.75,
+                    borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}40`,
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <i
+                      className={`ms ms-${color.toLowerCase()} ms-cost`}
+                      style={{
+                        fontSize: 20,
+                        filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))',
+                      }}
+                    />
+                    <Typography
+                      sx={{
+                        color: BLUEPRINT_COLORS.text,
+                        fontFamily: 'monospace',
+                        fontWeight: 600,
+                        fontSize: '0.8rem',
+                      }}
+                    >
+                      {COLOR_NAMES[color]}
+                    </Typography>
+                  </Box>
+
+                  {probs.map((prob, idx) => {
+                    const percentage = Math.round((prob || 0) * 100)
+                    let probColor = BLUEPRINT_COLORS.success
+                    if (percentage < 70) probColor = BLUEPRINT_COLORS.error
+                    else if (percentage < 85) probColor = BLUEPRINT_COLORS.warning
+
+                    return (
+                      <Typography
+                        key={idx}
+                        sx={{
+                          color: probColor,
+                          fontFamily: 'monospace',
+                          fontWeight: 600,
+                          textAlign: 'center',
+                          fontSize: '0.9rem',
+                        }}
+                      >
+                        {percentage}%
+                      </Typography>
+                    )
+                  })}
+                </Box>
+              )
+            })}
+          </Box>
+
+          {/* Key Stats */}
+          <Box
+            sx={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: 2,
+              mb: 3,
+            }}
+          >
+            {[
+              { label: 'Lands', value: analysisResult.totalLands, icon: '🏔️' },
+              { label: 'Spells', value: analysisResult.totalNonLands, icon: '⚡' },
+              { label: 'Avg CMC', value: analysisResult.averageCMC.toFixed(1), icon: '📊' },
+              {
+                label: 'Land %',
+                value: `${Math.round(analysisResult.landRatio * 100)}%`,
+                icon: '🎯',
+              },
+            ].map((stat) => (
+              <Box
+                key={stat.label}
+                sx={{
+                  p: 1.5,
+                  bgcolor: BLUEPRINT_COLORS.backgroundLight,
+                  borderRadius: 2,
+                  border: `1px solid ${BLUEPRINT_COLORS.grid}`,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography sx={{ fontSize: '1.2rem', mb: 0.5 }}>{stat.icon}</Typography>
+                <Typography
+                  sx={{
+                    color: BLUEPRINT_COLORS.text,
+                    fontFamily: 'monospace',
+                    fontWeight: 700,
+                    fontSize: '1.1rem',
+                  }}
+                >
+                  {stat.value}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: BLUEPRINT_COLORS.textMuted,
+                    fontFamily: 'monospace',
+                    fontSize: '0.65rem',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {stat.label}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+
+          {/* Mulligan Analysis */}
+          <Box
+            sx={{
+              position: 'relative',
+              zIndex: 1,
+              p: 2.5,
+              bgcolor: BLUEPRINT_COLORS.backgroundLight,
+              borderRadius: 2,
+              border: `1px solid ${BLUEPRINT_COLORS.grid}`,
+              mb: 3,
+            }}
+          >
+            <Typography
+              variant="overline"
+              sx={{
+                color: BLUEPRINT_COLORS.textMuted,
+                fontFamily: 'monospace',
+                letterSpacing: 2,
+                fontSize: '0.65rem',
+              }}
+            >
+              OPENING HAND ANALYSIS
+            </Typography>
+
+            <Box sx={{ mt: 2 }}>
+              {[
+                {
+                  label: 'Perfect Hand (2-4 lands + early play)',
+                  value: analysisResult.mulliganAnalysis.perfectHand,
+                  color: BLUEPRINT_COLORS.success,
+                },
+                {
+                  label: 'Good Hand (2-4 lands)',
+                  value: analysisResult.mulliganAnalysis.goodHand,
+                  color: BLUEPRINT_COLORS.cyan,
+                },
+                {
+                  label: 'Borderline (1 or 5 lands)',
+                  value: analysisResult.mulliganAnalysis.averageHand,
+                  color: BLUEPRINT_COLORS.warning,
+                },
+                {
+                  label: 'Mulligan (0 or 6+ lands)',
+                  value: analysisResult.mulliganAnalysis.poorHand,
+                  color: BLUEPRINT_COLORS.error,
+                },
+              ].map((item) => (
+                <Box
+                  key={item.label}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    py: 0.75,
+                    borderBottom: `1px solid ${BLUEPRINT_COLORS.grid}40`,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: BLUEPRINT_COLORS.textMuted,
+                      fontFamily: 'monospace',
+                      fontSize: '0.75rem',
+                    }}
+                  >
+                    {item.label}
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: 60,
+                        height: 6,
+                        bgcolor: BLUEPRINT_COLORS.grid,
+                        borderRadius: 3,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: `${item.value}%`,
+                          height: '100%',
+                          bgcolor: item.color,
+                          borderRadius: 3,
+                        }}
+                      />
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: item.color,
+                        fontFamily: 'monospace',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        minWidth: 40,
+                        textAlign: 'right',
+                      }}
+                    >
+                      {item.value}%
+                    </Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Top Recommendations */}
+          {analysisResult.recommendations.length > 0 && (
+            <Box
+              sx={{
+                position: 'relative',
+                zIndex: 1,
+                p: 2.5,
+                bgcolor: BLUEPRINT_COLORS.backgroundLight,
+                borderRadius: 2,
+                border: `1px solid ${BLUEPRINT_COLORS.grid}`,
+                mb: 3,
+              }}
+            >
+              <Typography
+                variant="overline"
+                sx={{
+                  color: BLUEPRINT_COLORS.textMuted,
+                  fontFamily: 'monospace',
+                  letterSpacing: 2,
+                  fontSize: '0.65rem',
+                }}
+              >
+                💡 SUGGESTIONS
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: BLUEPRINT_COLORS.textMuted,
+                  fontFamily: 'monospace',
+                  fontSize: '0.6rem',
+                  fontStyle: 'italic',
+                  mt: 0.5,
+                  mb: 1.5,
+                  opacity: 0.8,
+                }}
+              >
+                ⚠️ Heuristics only — not mathematical certainties. Your meta and playstyle matter.
+              </Typography>
+
+              <Box>
+                {analysisResult.recommendations.slice(0, 3).map((rec, idx) => (
+                  <Typography
+                    key={idx}
+                    sx={{
+                      color: BLUEPRINT_COLORS.text,
+                      fontFamily: 'monospace',
+                      fontSize: '0.8rem',
+                      py: 0.5,
+                      pl: 2,
+                      borderLeft: `2px solid ${BLUEPRINT_COLORS.gold}40`,
+                      mb: 1,
+                      opacity: 0.9,
+                    }}
+                  >
+                    {rec}
+                  </Typography>
+                ))}
+              </Box>
+            </Box>
+          )}
+
+          {/* Footer */}
+          <Divider sx={{ borderColor: BLUEPRINT_COLORS.grid, my: 2 }} />
+
+          <Box
+            sx={{
+              position: 'relative',
+              zIndex: 1,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Typography
               sx={{
                 color: BLUEPRINT_COLORS.textMuted,
                 fontFamily: 'monospace',
-                fontSize: '0.6rem',
-                fontStyle: 'italic',
-                mt: 0.5,
-                mb: 1.5,
-                opacity: 0.8,
+                fontSize: '0.7rem',
               }}
             >
-              ⚠️ Heuristics only — not mathematical certainties. Your meta and playstyle matter.
+              Generated {new Date().toLocaleDateString()} • manatuner.app
             </Typography>
 
-            <Box>
-              {analysisResult.recommendations.slice(0, 3).map((rec, idx) => (
-                <Typography
-                  key={idx}
-                  sx={{
-                    color: BLUEPRINT_COLORS.text,
-                    fontFamily: 'monospace',
-                    fontSize: '0.8rem',
-                    py: 0.5,
-                    pl: 2,
-                    borderLeft: `2px solid ${BLUEPRINT_COLORS.gold}40`,
-                    mb: 1,
-                    opacity: 0.9,
-                  }}
-                >
-                  {rec}
-                </Typography>
-              ))}
-            </Box>
+            <Typography
+              sx={{
+                color: BLUEPRINT_COLORS.cyan,
+                fontFamily: 'monospace',
+                fontSize: '0.7rem',
+              }}
+            >
+              #ManaTunerBlueprint
+            </Typography>
           </Box>
-        )}
-
-        {/* Footer */}
-        <Divider sx={{ borderColor: BLUEPRINT_COLORS.grid, my: 2 }} />
-
-        <Box
-          sx={{
-            position: 'relative',
-            zIndex: 1,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            sx={{
-              color: BLUEPRINT_COLORS.textMuted,
-              fontFamily: 'monospace',
-              fontSize: '0.7rem',
-            }}
-          >
-            Generated {new Date().toLocaleDateString()} • manatuner.app
-          </Typography>
-
-          <Typography
-            sx={{
-              color: BLUEPRINT_COLORS.cyan,
-              fontFamily: 'monospace',
-              fontSize: '0.7rem',
-            }}
-          >
-            #ManaTunerBlueprint
-          </Typography>
-        </Box>
-      </Paper>
+        </Paper>
       </Box>
     </Box>
   )

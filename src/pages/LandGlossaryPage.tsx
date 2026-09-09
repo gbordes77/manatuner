@@ -76,9 +76,9 @@ const LAND_CATEGORIES: LandCategory[] = [
     name: 'Rainbow Land',
     description: 'Lands that produce any color of mana.',
     whyPowerful:
-      'Perfect mana fixing for any deck. Always enters untapped, giving you immediate access to all 5 colors. Essential for aggressive multicolor decks that need to curve out perfectly.',
+      'Access to all five colors comes with card-specific costs and restrictions. Some enter tapped, some cost life, and some have limited uses; check the individual card before planning an early turn.',
     examples: ['Mana Confluence', 'City of Brass', 'Gemstone Mine', 'Grand Coliseum'],
-    etbTapped: 'No',
+    etbTapped: 'Varies by card',
     colorFix: 'All 5 colors',
     downside: '1 life per tap (or limited uses)',
   },
@@ -121,7 +121,7 @@ const LAND_CATEGORIES: LandCategory[] = [
     name: 'Fastland',
     description: 'Dual lands that enter untapped if you control 2 or fewer other lands.',
     whyPowerful:
-      'Perfect for aggressive decks. Untapped on turns 1-3 when you need to curve out, which is exactly when tempo matters most. The downside of entering tapped late game is often irrelevant.',
+      'Useful for early plays: they enter untapped while you control two or fewer other lands. This depends on your battlefield, not the turn number; ramp or missed land drops can change the timing.',
     examples: [
       'Inspiring Vantage',
       'Seachrome Coast',

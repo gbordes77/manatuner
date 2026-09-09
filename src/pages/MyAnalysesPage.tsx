@@ -1,3 +1,5 @@
+import { COMPARISON_MODEL, savedSpellResult } from '../utils/comparison'
+import { SCORE_DEFINITIONS } from '../data/scoreDefinitions'
 import { healthScoreBand } from '../utils/healthScore'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import CheckIcon from '@mui/icons-material/CheckCircle'
@@ -109,8 +111,8 @@ const HealthBadge: React.FC<{
 const CompareView: React.FC<{
   a: AnalysisRecord
   b: AnalysisRecord
-  onClose: () => void
-}> = ({ a, b }) => {
+  onLoad: (record: AnalysisRecord) => void
+}> = ({ a, b, onLoad }) => {
   const getStats = (record: AnalysisRecord) => ({
     name: record.deckName || 'Unnamed Deck',
     unavailable: Boolean(record.analysis?.consistencyUnavailable),
@@ -137,12 +139,23 @@ const CompareView: React.FC<{
   const sb = getStats(b)
 
   // Find common spells for castability comparison
-  type SpellInfo = { name: string; cmc: number; manaCost: string; isLand?: boolean }
+  type SpellInfo = {
+    name: string
+    cmc: number
+    manaCost: string
+    isLand?: boolean
+    isSideboard?: boolean
+    isCommander?: boolean
+  }
   const spellsA = new Map<string, SpellInfo>(
-    (sa.cards as SpellInfo[]).filter((c) => !c.isLand).map((c) => [c.name, c])
+    (sa.cards as SpellInfo[])
+      .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
+      .map((c) => [c.name, c])
   )
   const spellsB = new Map<string, SpellInfo>(
-    (sb.cards as SpellInfo[]).filter((c) => !c.isLand).map((c) => [c.name, c])
+    (sb.cards as SpellInfo[])
+      .filter((c) => !c.isLand && !c.isSideboard && !c.isCommander)
+      .map((c) => [c.name, c])
   )
   const commonSpells = [...spellsA.keys()].filter((name) => spellsB.has(name))
 
@@ -181,173 +194,214 @@ const CompareView: React.FC<{
   const consistencyDelta = (sb.consistency - sa.consistency) * 100
 
   return (
-    <Box>
-      {/* Header */}
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 3,
-          p: 2,
-          bgcolor: 'action.hover',
-          borderRadius: 2,
-        }}
-      >
-        <Box sx={{ flex: 1, textAlign: 'center' }}>
-          <Typography variant="h6" fontWeight="bold">
-            {sa.name}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Version A
-          </Typography>
-        </Box>
-        <CompareIcon sx={{ mx: 2, color: 'text.secondary' }} />
-        <Box sx={{ flex: 1, textAlign: 'center' }}>
-          <Typography variant="h6" fontWeight="bold">
-            {sb.name}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            Version B
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Health Score comparison */}
-      <Paper sx={{ p: 3, mb: 3, textAlign: 'center' }}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-          Health Score
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
-          <HealthBadge consistency={sa.consistency} unavailable={sa.unavailable} />
-          <Box>
-            {!sa.unavailable && !sb.unavailable && (
-              <DeltaChip value={consistencyDelta} suffix="%" />
-            )}
+    <Box role="region" aria-label="Saved build comparison" tabIndex={0} sx={{ overflowX: 'auto' }}>
+      <Box sx={{ minWidth: 540 }}>
+        {/* Header */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            mb: 3,
+            p: 2,
+            bgcolor: 'action.hover',
+            borderRadius: 2,
+          }}
+        >
+          <Box sx={{ flex: 1, textAlign: 'center' }}>
+            <Typography variant="h6" fontWeight="bold">
+              {sa.name}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Version A
+            </Typography>
           </Box>
-          <HealthBadge consistency={sb.consistency} unavailable={sb.unavailable} />
-        </Box>
-      </Paper>
-
-      {/* Stats comparison */}
-      <Paper sx={{ mb: 3, overflow: 'hidden' }}>
-        <Box sx={{ display: 'flex', py: 1.5, px: 2, bgcolor: 'primary.main', color: 'white' }}>
-          <Typography variant="subtitle2" sx={{ flex: 1 }}>
-            Metric
-          </Typography>
-          <Typography variant="subtitle2" sx={{ width: 80, textAlign: 'center' }}>
-            A
-          </Typography>
-          <Typography variant="subtitle2" sx={{ width: 100, textAlign: 'center' }}>
-            Delta
-          </Typography>
-          <Typography variant="subtitle2" sx={{ width: 80, textAlign: 'center' }}>
-            B
-          </Typography>
-        </Box>
-        <StatRow
-          label="Total Cards"
-          va={String(sa.totalCards)}
-          vb={String(sb.totalCards)}
-          delta={sb.totalCards - sa.totalCards}
-        />
-        <StatRow
-          label="Total Lands"
-          va={String(sa.totalLands)}
-          vb={String(sb.totalLands)}
-          delta={sb.totalLands - sa.totalLands}
-        />
-        <StatRow
-          label="Land Ratio"
-          va={`${(sa.landRatio * 100).toFixed(1)}%`}
-          vb={`${(sb.landRatio * 100).toFixed(1)}%`}
-          delta={(sb.landRatio - sa.landRatio) * 100}
-          suffix="%"
-        />
-        <StatRow
-          label="Avg CMC"
-          va={sa.avgCMC.toFixed(2)}
-          vb={sb.avgCMC.toFixed(2)}
-          delta={sb.avgCMC - sa.avgCMC}
-        />
-        <StatRow
-          label="Consistency"
-          va={sa.unavailable ? 'Unavailable' : `${(sa.consistency * 100).toFixed(1)}%`}
-          vb={sb.unavailable ? 'Unavailable' : `${(sb.consistency * 100).toFixed(1)}%`}
-          delta={sa.unavailable || sb.unavailable ? undefined : consistencyDelta}
-          suffix="%"
-        />
-      </Paper>
-
-      {/* Turn probabilities comparison */}
-      {sa.probabilities && sb.probabilities && (
-        <Paper sx={{ mb: 3, overflow: 'hidden' }}>
-          <Box sx={{ py: 1.5, px: 2, bgcolor: 'secondary.main', color: 'white' }}>
-            <Typography variant="subtitle2">Color Probability by Turn (Any Color)</Typography>
+          <CompareIcon sx={{ mx: 2, color: 'text.secondary' }} />
+          <Box sx={{ flex: 1, textAlign: 'center' }}>
+            <Typography variant="h6" fontWeight="bold">
+              {sb.name}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              Version B
+            </Typography>
           </Box>
-          {(['turn1', 'turn2', 'turn3', 'turn4'] as const).map((turn) => {
-            const pa = sa.probabilities?.[turn]?.anyColor ?? 0
-            const pb = sb.probabilities?.[turn]?.anyColor ?? 0
-            return (
-              <StatRow
-                key={turn}
-                label={turn.replace('turn', 'Turn ')}
-                va={`${(pa * 100).toFixed(1)}%`}
-                vb={`${(pb * 100).toFixed(1)}%`}
-                delta={(pb - pa) * 100}
-                suffix="%"
-              />
-            )
-          })}
+        </Box>
+
+        {/* Health Score comparison */}
+        <Paper sx={{ p: 3, mb: 3, textAlign: 'center' }}>
+          <Typography variant="caption">{SCORE_DEFINITIONS.health}</Typography>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Health Score
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+            <HealthBadge consistency={sa.consistency} unavailable={sa.unavailable} />
+            <Box>
+              {!sa.unavailable && !sb.unavailable && (
+                <DeltaChip value={consistencyDelta} suffix="%" />
+              )}
+            </Box>
+            <HealthBadge consistency={sb.consistency} unavailable={sb.unavailable} />
+          </Box>
         </Paper>
-      )}
 
-      {/* Common spells castability delta */}
-      {commonSpells.length > 0 && (
-        <Paper sx={{ overflow: 'hidden' }}>
-          <Box sx={{ py: 1.5, px: 2, bgcolor: '#e65100', color: 'white' }}>
-            <Typography variant="subtitle2">
-              Castability Comparison ({commonSpells.length} common spells)
+        {/* Stats comparison */}
+        <Paper sx={{ mb: 3, overflow: 'hidden' }}>
+          <Box sx={{ display: 'flex', py: 1.5, px: 2, bgcolor: 'primary.main', color: 'white' }}>
+            <Typography variant="subtitle2" sx={{ flex: 1 }}>
+              Metric
             </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', py: 1, px: 2, bgcolor: 'action.selected' }}>
-            <Typography variant="caption" sx={{ flex: 1, fontWeight: 600 }}>
-              Spell
-            </Typography>
-            <Typography variant="caption" sx={{ width: 80, textAlign: 'center', fontWeight: 600 }}>
+            <Typography variant="subtitle2" sx={{ width: 80, textAlign: 'center' }}>
               A
             </Typography>
-            <Typography variant="caption" sx={{ width: 100, textAlign: 'center', fontWeight: 600 }}>
+            <Typography variant="subtitle2" sx={{ width: 100, textAlign: 'center' }}>
               Delta
             </Typography>
-            <Typography variant="caption" sx={{ width: 80, textAlign: 'center', fontWeight: 600 }}>
+            <Typography variant="subtitle2" sx={{ width: 80, textAlign: 'center' }}>
               B
             </Typography>
           </Box>
-          {commonSpells.slice(0, 20).map((name) => {
-            const probaA =
-              sa.spellAnalysisModel === 'physical-v1'
-                ? sa.spellAnalysis[name]?.percentage
-                : undefined
-            const probaB =
-              sb.spellAnalysisModel === 'physical-v1'
-                ? sb.spellAnalysis[name]?.percentage
-                : undefined
-            const delta = probaA === undefined || probaB === undefined ? undefined : probaB - probaA
-            const cardA = spellsA.get(name)
-            return (
-              <StatRow
-                key={name}
-                label={`${name} (${cardA?.cmc ?? 0} CMC)`}
-                va={probaA === undefined ? 'Unavailable' : `${probaA}%`}
-                vb={probaB === undefined ? 'Unavailable' : `${probaB}%`}
-                delta={delta}
-                suffix="%"
-              />
-            )
-          })}
+          <StatRow
+            label="Total Cards"
+            va={String(sa.totalCards)}
+            vb={String(sb.totalCards)}
+            delta={sb.totalCards - sa.totalCards}
+          />
+          <StatRow
+            label="Total Lands"
+            va={String(sa.totalLands)}
+            vb={String(sb.totalLands)}
+            delta={sb.totalLands - sa.totalLands}
+          />
+          <StatRow
+            label="Land Ratio"
+            va={`${(sa.landRatio * 100).toFixed(1)}%`}
+            vb={`${(sb.landRatio * 100).toFixed(1)}%`}
+            delta={(sb.landRatio - sa.landRatio) * 100}
+            suffix="%"
+          />
+          <StatRow
+            label="Avg CMC"
+            va={sa.avgCMC.toFixed(2)}
+            vb={sb.avgCMC.toFixed(2)}
+            delta={sb.avgCMC - sa.avgCMC}
+          />
+          <StatRow
+            label="Consistency"
+            va={sa.unavailable ? 'Unavailable' : `${(sa.consistency * 100).toFixed(1)}%`}
+            vb={sb.unavailable ? 'Unavailable' : `${(sb.consistency * 100).toFixed(1)}%`}
+            delta={sa.unavailable || sb.unavailable ? undefined : consistencyDelta}
+            suffix="%"
+          />
         </Paper>
-      )}
+
+        {/* Turn probabilities comparison */}
+        {sa.probabilities && sb.probabilities && (
+          <Paper sx={{ mb: 3, overflow: 'hidden' }}>
+            <Box sx={{ py: 1.5, px: 2, bgcolor: 'secondary.main', color: 'white' }}>
+              <Typography variant="subtitle2">Color Probability by Turn (Any Color)</Typography>
+            </Box>
+            {(['turn1', 'turn2', 'turn3', 'turn4'] as const).map((turn) => {
+              const pa = sa.probabilities?.[turn]?.anyColor ?? 0
+              const pb = sb.probabilities?.[turn]?.anyColor ?? 0
+              return (
+                <StatRow
+                  key={turn}
+                  label={turn.replace('turn', 'Turn ')}
+                  va={`${(pa * 100).toFixed(1)}%`}
+                  vb={`${(pb * 100).toFixed(1)}%`}
+                  delta={(pb - pa) * 100}
+                  suffix="%"
+                />
+              )
+            })}
+          </Paper>
+        )}
+
+        <Alert severity="info" sx={{ mb: 2 }}>
+          {COMPARISON_MODEL}
+          <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            <Button onClick={() => onLoad(a)}>Load A in Analyzer</Button>
+            <Button onClick={() => onLoad(b)}>Load B in Analyzer</Button>
+          </Box>
+        </Alert>
+        {/* Common spells castability delta */}
+        {commonSpells.length > 0 && (
+          <Paper sx={{ overflow: 'hidden' }}>
+            <Box sx={{ py: 1.5, px: 2, bgcolor: '#e65100', color: 'white' }}>
+              <Typography variant="subtitle2">
+                Castability Comparison ({commonSpells.length} common spells)
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', py: 1, px: 2, bgcolor: 'action.selected' }}>
+              <Typography variant="caption" sx={{ flex: 1, fontWeight: 600 }}>
+                Spell
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ width: 80, textAlign: 'center', fontWeight: 600 }}
+              >
+                A
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ width: 100, textAlign: 'center', fontWeight: 600 }}
+              >
+                Delta
+              </Typography>
+              <Typography
+                variant="caption"
+                sx={{ width: 80, textAlign: 'center', fontWeight: 600 }}
+              >
+                B
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ p: 2 }}>
+              A:{' '}
+              {
+                commonSpells.filter((name) => savedSpellResult(a, name).percentage !== undefined)
+                  .length
+              }
+              /{commonSpells.length} calculated. B:{' '}
+              {
+                commonSpells.filter((name) => savedSpellResult(b, name).percentage !== undefined)
+                  .length
+              }
+              /{commonSpells.length} calculated. Missing calculations are not zero-risk spells.
+              Deltas require both values under this same model.
+            </Typography>
+            {commonSpells.map((name) => {
+              const resultA = savedSpellResult(a, name)
+              const resultB = savedSpellResult(b, name)
+              const probaA = resultA.percentage
+              const probaB = resultB.percentage
+              const delta =
+                probaA === undefined || probaB === undefined ? undefined : probaB - probaA
+              const cardA = spellsA.get(name)
+              return (
+                <Box key={name} data-testid="comparison-spell">
+                  <StatRow
+                    label={`${name} (${cardA?.cmc ?? 0} CMC)`}
+                    va={probaA === undefined ? 'Unavailable' : `${probaA}%`}
+                    vb={probaB === undefined ? 'Unavailable' : `${probaB}%`}
+                    delta={delta}
+                    suffix="%"
+                  />
+                  {resultA.reason && (
+                    <Typography variant="caption" display="block" sx={{ px: 2, pb: 1 }}>
+                      A — {resultA.reason}
+                    </Typography>
+                  )}
+                  {resultB.reason && (
+                    <Typography variant="caption" display="block" sx={{ px: 2, pb: 1 }}>
+                      B — {resultB.reason}
+                    </Typography>
+                  )}
+                </Box>
+              )
+            })}
+          </Paper>
+        )}
+      </Box>
     </Box>
   )
 }
@@ -1083,7 +1137,7 @@ const MyAnalysesPage: React.FC = () => {
         <Divider />
         <DialogContent>
           {selectedA && selectedB && (
-            <CompareView a={selectedA} b={selectedB} onClose={() => setCompareDialog(false)} />
+            <CompareView a={selectedA} b={selectedB} onLoad={handleLoad} />
           )}
         </DialogContent>
       </Dialog>

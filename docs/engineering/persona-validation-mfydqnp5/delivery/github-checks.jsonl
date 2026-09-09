@@ -1,0 +1,11 @@
+{"conclusion":"success","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34328920814/job/102392626983","name":"Accessibility suite","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34328920814/job/102392626942","name":"E2E core flows (chromium)","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34328920814/job/102392626919","name":"Visual regression","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34204083453/job/101989383454","name":"Visual regression","status":"completed"}
+{"conclusion":"success","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34204083453/job/101989383439","name":"Accessibility suite","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34204083453/job/101989383187","name":"E2E core flows (chromium)","status":"completed"}
+{"conclusion":"success","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34101766338/job/101677581500","name":"Accessibility suite","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34101766338/job/101677581316","name":"Visual regression","status":"completed"}
+{"conclusion":"failure","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34101766338/job/101677581220","name":"E2E core flows (chromium)","status":"completed"}
+{"conclusion":"skipped","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34029327096/job/101476234122","name":"Deploy to Vercel","status":"completed"}
+{"conclusion":"success","details_url":"https://github.com/gbordes77/manatuner/actions/runs/34029327096/job/101475851469","name":"Test \u0026 Build","status":"completed"}

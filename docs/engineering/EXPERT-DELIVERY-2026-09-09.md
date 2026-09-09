@@ -1,0 +1,50 @@
+# Expertise livraison et fiabilité — 9 septembre 2026
+
+## Périmètre et conclusion
+
+Inspection locale du commit `2ba772af1f308ea93c68ffea53b0ccef0e49c57d`, package 2.7.9. Aucun déploiement, installation, changement applicatif, changement CI ou dépendance. Après diagnostic du coordinateur, le périmètre a été étendu à une exclusion précise dans `vitest.config.js`, en plus de ce rapport. Les rapports Playwright modifiés et fichiers non suivis préexistants sont préservés.
+
+La chaîne de livraison comporte déjà un véritable verrou partagé : Vercel, CI main et validation PR invoquent `npm run build:vercel`. Elle vérifie lint, types, tests source/composants/math, contrôle du gate, build, budget, audit high, prérendu et parcours Chromium. Il faut consolider sa reproductibilité et ses preuves, plutôt que reconstruire une nouvelle pipeline.
+
+Cette inspection ne certifie pas la production. Les vérifications privées GitHub/Vercel du 6 septembre restent historiques ; leur état actuel et le SHA effectivement servi n'ont pas été vérifiés ici.
+
+## Contrôles réellement exécutés
+
+Environnement : macOS, Node `v25.2.0`, npm `11.6.2`, dépendances déjà installées. ESLint et TypeScript lancés en parallèle avec les travaux indépendants de l'équipe.
+
+| Commande                                                                          | Résultat du 9 septembre                     | Limite                                                                         |
+| --------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------ |
+| `npm run lint`                                                                    | Code 0                                      | Périmètre `src`, extensions TypeScript/TSX                                     |
+| `npm run type-check`                                                              | Code 0                                      | Compilation sans émission ; exécutée avant la modification de discovery Vitest |
+| `node --test scripts/delivery-gate.test.mjs`                                      | Code 0, 3 tests passants, 0 échec           | Sous-processus simulés ; cela ne constitue pas une exécution complète du gate  |
+| `npx vitest list scripts/delivery-gate.test.mjs --configLoader runner --no-cache` | Code 0, aucune suite listée après exclusion | Confirme que Vitest ne découvre plus ce fichier `node:test`                    |
+| `npm run build:vercel`                                                            | Non exécutée dans cette mission             | Aucune nouvelle preuve build/prérendu/E2E/audit dépendances                    |
+
+Le coordinateur a obtenu sur la première suite unitaire 813 tests passants, quatre timeouts de 5 secondes et une erreur de suite : Vitest ramassait `scripts/delivery-gate.test.mjs`, pourtant écrit pour `node:test`. Correction effectuée : exclusion de ce seul fichier dans `vitest.config.js`, sans changer délais ni assertions. Son exécution indépendante par le gate est conservée et ses 3 tests passent. Les trois fichiers concernés par les timeouts ont ensuite passé 67/67 tests avec `--maxWorkers=1`, selon le compte rendu du coordinateur (15,95 s). Cela suggère une sensibilité à la charge, sans établir une cause racine complète. Le bilan de la suite intégrée après correction appartient au coordinateur.
+
+## Constats prouvés dans le dépôt
+
+1. **Le gate échoue explicitement.** `scripts/delivery-gate.mjs:7` liste neuf étapes ; les lignes 41–45 arrêtent au premier statut non nul ou erreur. Les trois tests dédiés couvrent les échecs de chaque étape, un processus tué et l'ordre de réussite. Les preuves math sont isolées dans un répertoire temporaire supprimé après exécution, sauf destination explicitement fournie.
+2. **Un seul chemin de publication est déclaré.** `vercel.json` référence le gate ; `.github/workflows/ci.yml:48` conserve le déploiement GitHub désactivé. `scripts/native-deployment.mjs` affiche des consignes sans publier. Le contrat statique et les limites de son serveur local sont explicités dans `DELIVERY-CONTRACT.md`.
+3. **Les versions Node divergent.** `.nvmrc` demande `20`, incompatible avec `package.json` qui exige `>=22.12.0`. CI/PR/nightly demandent `22`, l'audit navigateur demande `24`, cette session utilise `25.2.0`. L'incompatibilité de `.nvmrc` est certaine ; aucun échec applicatif n'est imputé aux autres versions sans reproduction.
+4. **Les preuves des échecs de livraison sont incomplètement conservées par les workflows.** CI main téléverse uniquement `dist/` après réussite ; PR ne téléverse aucun artefact ; nightly n'en téléverse pas. Le workflow manuel navigateur conserve au contraire les rapports même après échec. Les traces Chromium du gate existent localement dans `test-results/delivery`, mais les workflows CI/PR ne les téléversent pas. Le gate supprime aussi ses preuves math temporaires dans le `finally`.
+5. **La couverture navigateur et la certification de livraison sont distinctes.** `playwright.delivery.config.js` vise accessibilité/livraison en Chromium, sans retry et sans réutiliser un serveur existant. `browser-audit.yml` couvre six projets manuellement, mais utilise `npm run build` puis Vite preview, et non le candidat prérendu et le serveur statique strict du gate. Nightly vise Chromium sur serveur de développement. Ces suites complémentaires ne démontrent pas les mêmes contrats.
+6. **Les documents d'entrée contredisent les corrections récentes.** `CLAUDE.md`, `SESSION_START.md` et `LAUNCH.md` décrivent encore un prérendu tolérant les erreurs, contrairement au gate et au contrat de septembre. Le suivi du 6 septembre conserve aussi un bilan « non publié » antérieur à l'entrée finale autorisant commit/push. Le commit courant contient les corrections S002, mais un commit ne prouve pas qu'elles sont servies en production.
+
+## Cinq actions prioritaires proposées
+
+| Priorité / responsable       | Action                                                                                                                 | Critère d'acceptation                                                                                                                                                                                                                                                                             |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1 — QA + spécialiste calcul | Comprendre les quatre timeouts du premier passage avant une prochaine livraison                                        | Même SHA et versions consignés ; rejeu isolé déjà réussi (67/67), comportement sous charge à caractériser ; cause expliquée, sans simplement augmenter les délais ; gate complet passant après éventuel correctif                                                                                 |
+| P1 — DevOps                  | Aligner la référence Node locale et les workflows avec le contrat engines et le runtime Vercel effectivement configuré | `.nvmrc` compatible ; version principale de livraison unique, écarts de matrice volontaires documentés ; validation sur installation propre sous cette version et contrôle du runtime distant                                                                                                     |
+| P1 — DevOps + QA             | Conserver les diagnostics du gate quand il échoue                                                                      | Répertoire math explicite et artefacts traces/captures/rapports téléversés avec `if: always()` ; SHA, runtime et résultat attachés ; un échec provoqué démontre à la fois code non nul et accès aux preuves ; aucune preuve historique écrasée                                                    |
+| P1 — Responsable livraison   | Relier preuve locale, SHA publié et vérifications HTTP réelles                                                         | Après une publication autorisée : contrôle Vercel du SHA réussi, alias production identifié, GET routes critiques/article/auteur et 404 inconnue/asset vérifiés ; cible de rollback précédente documentée ; règles GitHub relues séparément                                                       |
+| P2 — QA + documentation      | Clarifier les contrats de suites et actualiser les points d'entrée                                                     | Un parcours import/analyse/reprise couvert sur Chromium, Firefox et WebKit avec artefact construit identifié ; contrat statique testé sur le candidat pertinent ; documents d'entrée renvoient au contrat septembre sans soft-fail obsolète ; Firefox indisponible reste explicitement non validé |
+
+## Limites et reprise
+
+Pas de consultation de réglages distants ni de réseau production dans cette mission. Pas de revendication WCAG complète, de conformité juridique, de performance terrain ou de sécurité des dépendances au 9 septembre. Le suivi de septembre laisse F12-AC5/V09 et plusieurs validations complémentaires ouverts ; ils ne deviennent pas acquis par le présent rapport.
+
+Validation intégrée finale du coordinateur : `npm run test:unit -- --maxWorkers=1` réussit après correction, code 0, **817/817 tests, 80/80 fichiers**, en 134,87 s. Aucun délai ni assertion modifié. Le mode concurrent par défaut n'a pas été rejoué après correction ; la cause des timeouts initiaux reste à caractériser.
+
+Première étape suivante : stabiliser la référence d'exécution et les preuves de livraison. Préserver la publication native unique, le fail-fast du gate et les décisions client-side/Sentry existantes.

@@ -3,14 +3,7 @@
  * Risque : MINIMAL - CSS uniquement
  */
 
-/* ✅ Amélioration du contraste (WCAG AA) */
-.MuiFormHelperText-root {
-  color: #52525b !important; /* au lieu de #71717A */
-}
-
-.MuiTypography-body2 {
-  color: #52525b !important;
-}
+/* Text colors come from the active MUI palette; fixed light-theme overrides made dark text unreadable. */
 
 /* ✅ Focus amélioré pour l'accessibilité */
 .MuiTextField-root .MuiOutlinedInput-root {

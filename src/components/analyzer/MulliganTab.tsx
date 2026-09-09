@@ -108,10 +108,15 @@ const ArchetypeSelector: React.FC<ArchetypeSelectorProps> = ({ value, onChange, 
               <Paper
                 elevation={value === key ? 4 : 1}
                 onClick={() => !disabled && onChange(key)}
-                role="button"
+                component="button"
+                type="button"
+                disabled={disabled}
                 aria-pressed={value === key}
                 data-testid={`archetype-${key}`}
                 sx={{
+                  width: '100%',
+                  color: 'text.primary',
+                  font: 'inherit',
                   p: { xs: 1.25, sm: 2 },
                   minHeight: { xs: 88, sm: 110 },
                   cursor: disabled ? 'not-allowed' : 'pointer',
@@ -241,7 +246,7 @@ Thanks to London Mulligan, this score often stays close to 7-card score because 
 
 If your 7-card hand scores BELOW this threshold, you should mulligan.
 
-Why? Because statistically, a 6-card hand will be better on average.
+This compares the current heuristic score with the expected continuation after a paid mulligan; it does not guarantee a better hand.
 
 In practice: Mentally compare your hand to this threshold to decide.`,
 
@@ -253,7 +258,7 @@ Warning: Going to 5 cards is risky, so this threshold is usually low.`,
 
   manaEfficiency: `Mana Efficiency (0-100%)
 
-Measures how much mana you actually spend over the first 4 turns.
+Estimates mana use in the supported lands-only plan over the first four turns; no ramp or opponent interaction.
 
 100% = You spend all your mana every turn (ideal)
 50% = You waste half your mana (problematic)
@@ -274,7 +279,7 @@ Checks if you have:
 
 Measures if your lands produce the right colors to cast your spells.
 
-100% = All your spells are castable with your lands
+100% = Maximum color-access component of this hand heuristic; not a spell-castability probability
 70% = Some spells are blocked by missing colors
 
 A low score indicates a multicolor manabase problem.`,
@@ -300,15 +305,15 @@ Control: 4-5 lands ideal (less = screw)`,
 Shows the probability of getting each hand quality level.
 
 • Green Curve (7 cards): Normal distribution
-• Blue Curve (6 cards): After 1 mulligan
-• Orange Curve (5 cards): After 2 mulligans
+• Blue Curve (6 cards): After 1 paid mulligan
+• Orange Curve (5 cards): After 2 paid mulligans
 
 The more the curve is to the right, the better the hands.
 The more "peaked" it is, the more predictable the results.`,
 
   optimalStrategy: `Optimal Strategy
 
-These bars show you mathematically calculated decision thresholds.
+These bars optimize a simulated heuristic hand score, not win probability.
 
 How to use them:
 1. Evaluate your hand (the tool does it for you in "Sample Hands")
@@ -402,7 +407,9 @@ const ExpectedValues: React.FC<ExpectedValuesProps> = ({ result }) => {
       shortLabel: 'Mull if below',
       value: result.thresholds.keep7,
       isThreshold: true,
-      tooltip: TOOLTIPS.threshold7,
+      tooltip: result.multiplayer
+        ? 'Before the free mulligan: compare this heuristic hand score with the expected continuation. The first redraw still keeps seven; later mulligans require bottoming.'
+        : TOOLTIPS.threshold7,
     },
     {
       label: 'Keep 6 Threshold',
@@ -460,13 +467,17 @@ const OptimalStrategy: React.FC<OptimalStrategyProps> = ({ result }) => {
     },
     {
       label: 'Keep 6 cards',
-      description: 'After one mulligan',
+      description: result.multiplayer
+        ? 'After the free redraw and one paid mulligan'
+        : 'After one paid mulligan',
       threshold: result.thresholds.keep6,
       color: '#2196f3',
     },
     {
       label: 'Keep 5 cards',
-      description: 'After two mulligans',
+      description: result.multiplayer
+        ? 'After the free redraw and two paid mulligans'
+        : 'After two paid mulligans',
       threshold: result.thresholds.keep5,
       color: '#ff9800',
     },
@@ -1163,10 +1174,10 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                       What is a Mulligan?
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      London mulligan: shuffle your hand into the library and draw seven again.
-                      Once you keep, put one card on the bottom for each counted mulligan.
-                      The simulator evaluates kept hands from seven down to a forced keep at four cards. Enable multiplayer
-                      mode to model a free first mulligan.
+                      London mulligan: shuffle your hand into the library and draw seven again. Once
+                      you keep, put one card on the bottom for each counted mulligan. The simulator
+                      evaluates kept hands from seven down to a forced keep at four cards. Enable
+                      multiplayer mode to model a free first mulligan.
                     </Typography>
                   </Box>
 
@@ -1176,7 +1187,8 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Each hand gets a heuristic score for its first turns. These hand-quality bands
-                      differ from the deck-level Health Score because they measure a different quantity.
+                      differ from the deck-level Health Score because they measure a different
+                      quantity.
                       <strong> 85+</strong> = excellent hand, <strong>70-84</strong> = good,
                       <strong> 55-69</strong> = playable but risky, <strong>&lt;55</strong> =
                       consider mulligan.
@@ -1189,8 +1201,11 @@ export const MulliganTab: React.FC<MulliganTabProps> = memo(
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Compare your hand's score to the <strong>"Mull if below"</strong> threshold.
-                      If your hand scores lower, statistically you'll get a better 6-card hand by
-                      mulliganing.
+                      {multiplayer
+                        ? 'Before the free mulligan, the first redraw still keeps seven cards. Use the after-free threshold for the next decision.'
+                        : 'A paid mulligan draws seven again; keep six after bottoming one card.'}{' '}
+                      The threshold optimizes the simulated heuristic score and does not guarantee a
+                      better hand or a win.
                     </Typography>
                   </Box>
                 </Box>

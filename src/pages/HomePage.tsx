@@ -447,6 +447,9 @@ export const HomePage: React.FC = () => {
               </Button>
             </AnimatedContainer>
           </Box>
+          <Button href="/analyzer?sample=exact" sx={{ mt: 2 }}>
+            Try a basic-land exact example
+          </Button>
 
           {/* P2-2: product output preview above the fold — not only bullets.
               Stylized sample result so newcomers see a real Health Score shape. */}
@@ -510,7 +513,8 @@ export const HomePage: React.FC = () => {
             <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
               Calculations and saved analyses stay in this browser.
             </Box>{' '}
-            Card lookups and images use Scryfall; fonts use external providers. <a href="/privacy">See our privacy policy.</a>
+            Card lookups and images use Scryfall; fonts use external providers.{' '}
+            <a href="/privacy">See our privacy policy.</a>
           </Typography>
 
           {/* Format coverage caption — replaces the 3 sample-deck shortcuts
@@ -659,8 +663,8 @@ export const HomePage: React.FC = () => {
               <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
                 Saito&apos;s
               </Box>{' '}
-              tournament mindset — {articlesReferenceSeed.length} curated references organized by skill level. Dead links
-              restored via archive.org.
+              tournament mindset — {articlesReferenceSeed.length} curated references organized by
+              skill level. Dead links restored via archive.org.
             </Typography>
 
             <Button
@@ -700,7 +704,8 @@ export const HomePage: React.FC = () => {
                 letterSpacing: '0.03em',
               }}
             >
-              {articlesReferenceSeed.length} references · 5 curated tracks · Karsten · PVDDR · Saito · Chapin · Budde
+              {articlesReferenceSeed.length} references · 5 curated tracks · Karsten · PVDDR · Saito
+              · Chapin · Budde
             </Typography>
           </Box>
         </Box>
@@ -861,7 +866,7 @@ export const HomePage: React.FC = () => {
             <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
               five curated tracks across every format
             </Box>
-            , with dead links restored via archive.org.
+            , with available archives and unavailable sources clearly labeled.
           </Typography>
         </Box>
 
@@ -871,7 +876,8 @@ export const HomePage: React.FC = () => {
               id: 'first-fnm',
               emoji: '🎴',
               title: 'Your First FNM',
-              count: 5,
+              count: articlesReferenceSeed.filter((article) => article.curatorTrack === 'first-fnm')
+                .length,
               tagline: 'Starting out',
               accent: theme.palette.mana.blue,
               description:
@@ -882,7 +888,8 @@ export const HomePage: React.FC = () => {
               id: 'rcq',
               emoji: '🏆',
               title: 'Preparing for an RCQ',
-              count: 7,
+              count: articlesReferenceSeed.filter((article) => article.curatorTrack === 'rcq')
+                .length,
               tagline: 'Leveling up',
               accent: theme.palette.mana.green,
               description:
@@ -893,7 +900,8 @@ export const HomePage: React.FC = () => {
               id: 'pro-tour',
               emoji: '🎯',
               title: 'Pro Tour Preparation',
-              count: 9,
+              count: articlesReferenceSeed.filter((article) => article.curatorTrack === 'pro-tour')
+                .length,
               tagline: 'Mastering',
               accent: theme.palette.mana.red,
               description:
@@ -904,7 +912,8 @@ export const HomePage: React.FC = () => {
               id: 'commander',
               emoji: '👑',
               title: 'Commander Pod',
-              count: 5,
+              count: articlesReferenceSeed.filter((article) => article.curatorTrack === 'commander')
+                .length,
               tagline: 'Piloting 100 cards',
               accent: '#6B3FA0',
               description:
@@ -915,7 +924,8 @@ export const HomePage: React.FC = () => {
               id: 'limited',
               emoji: '📦',
               title: 'Limited (Draft & Sealed)',
-              count: 3,
+              count: articlesReferenceSeed.filter((article) => article.curatorTrack === 'limited')
+                .length,
               tagline: 'Cracking packs',
               accent: '#D4B85A',
               description:
@@ -1185,7 +1195,7 @@ export const HomePage: React.FC = () => {
               {
                 num: '2',
                 title: 'Get Probabilities',
-                desc: 'Cast chances for every spell, every turn',
+                desc: 'Mana estimates for supported spells and turns',
                 mana: 'u',
               },
               {

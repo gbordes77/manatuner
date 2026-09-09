@@ -11,6 +11,8 @@
 
 [Live Demo](https://manatuner.app) | [Docs index](./docs/README.md) | [Product status](./docs/product/STATUS.md) | [Guide](https://manatuner.app/guide)
 
+**Engineering handoff (2026-09-09):** see [session handoff](./HANDOFF.md) for the current expert review. Release and test figures below are historical; consult the [September correction register](./docs/engineering/SUIVI-CORRECTIONS-MANATUNER-2026-09-06.md) for correction evidence.
+
 ---
 
 ## Overview
@@ -258,3 +260,13 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ---
 
 **Ready to optimize your manabase?** [Start analyzing now](https://manatuner.app)
+
+## Product evaluation
+
+The [September 9, 2026 persona audit](docs/session/PERSONA_AUDIT_2026-09-09.md) documents six simulated player perspectives and observed production journeys. It includes scored findings, evidence limitations, and priorities for clearer explanations and comparison workflows. This evaluation is not a user study or a mathematical certification.
+
+Implementation follow-up is documented in the [team handoff](docs/handoff/HANDOFF-PERSONAS-2026-09-09.md) and [task journal](docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md), with acceptance criteria and separate local and production verification states.
+
+## Persona follow-up (September 2026)
+
+Local improvements clarify the three heuristic scores, preserve calculation-limit explanations in saved comparisons, add a basic-land exact example, and adapt London mulligan help to multiplayer. Blueprint exports retain deck names and include engine version, model assumptions and separate sideboard/commander flags in CSV. See the [task journal](docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md) for validation evidence and production status. The exact example is a synthetic calculation fixture, not a tournament-legal list.

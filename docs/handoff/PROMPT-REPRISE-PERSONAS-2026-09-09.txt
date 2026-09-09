@@ -1,0 +1,22 @@
+Reprends ManaTuner dans /Volumes/DataDisk/_Projects/Project Mana base V2.
+
+Mission : traiter les améliorations issues de l’audit des six personas. Lance les investigations, puis les corrections locales et validations prévues dans le journal ; ne t’arrête pas à un nouveau plan. Aucun push, déploiement ou message externe n’est demandé.
+
+Lis dans cet ordre :
+1. AGENTS.md
+2. docs/handoff/HANDOFF-PERSONAS-2026-09-09.md
+3. docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md
+4. docs/session/PERSONA_AUDIT_2026-09-09.md et les preuves individuelles utiles
+5. docs/engineering/SUIVI-CORRECTIONS-MANATUNER-2026-09-06.md
+6. docs/engineering/preuves-corrections/S002/SESSION-VERIFIEE.md
+7. docs/engineering/DELIVERY-CONTRACT.md
+
+Commence par l’agent local context-manager s’il existe, sinon agent-organizer. Fais relever HEAD, changements préexistants, runtime et état public/local. Compare chaque constat aux corrections S002 avant de coder : ne réimplémente pas une correction déjà présente. Le label Engine ne prouve pas le SHA publié ; si celui-ci est inaccessible, documente la limite et continue les travaux locaux indépendants.
+
+Lance ensuite des agents spécialisés disponibles, avec ownership des fichiers : contrat éditorial/pédagogie, comparaison/modèles, livraison/QA. Respecte les dépendances T00–T10 du journal et évite les écritures concurrentes sur les mêmes fichiers. Chaque tâche exige une reproduction, des critères d’acceptation et des preuves. Les limites du modèle ne doivent jamais devenir des probabilités inventées.
+
+Vérifie le serveur local sur le port 3000, ou démarre-le avec la commande du journal. Après les changements frontend, inspecte réellement les pages et donne les URLs de revue. Termine par les tests pertinents et npm run build:vercel avec les chemins absolus de preuves isolés décrits dans le journal. Ne réutilise pas les dossiers S001/S002 ou les rapports existants.
+
+Préserve les fichiers utilisateur et toutes les modifications préexistantes. N’active pas Sentry et n’élargis pas le chantier à API/backend/métagame/i18n. Le partage reste en #d= et les calculs client-side.
+
+Tiens le journal à jour au fil du travail. Termine avec tâches vérifiées, tests réellement exécutés, preuves, URLs et blocages restants ; actualise HANDOFF.md, AGENTS.md et SESSION_NOTES.md, ainsi que README.md si pertinent. Distingue vérifié localement et vérifié en production. T11 publication reste bloquée sans autorisation actuelle ; une étude avec de vrais joueurs reste en attente si les participants manquent.

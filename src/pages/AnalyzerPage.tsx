@@ -92,6 +92,7 @@ const AnalyzerPage: React.FC = () => {
   // loads the Atraxa EDH sample if no deck is in state yet.
   const [focusDeckEditor, setFocusDeckEditor] = useState(false)
   const [commanderPreset, setCommanderPreset] = useState(false)
+  const [exactExample, setExactExample] = useState(false)
   const { suggestFromDeckSize, unlockFormatAuto } = useAcceleration()
 
   // Banner flag in sessionStorage survives React 18 Strict Mode remount after
@@ -161,6 +162,8 @@ const AnalyzerPage: React.FC = () => {
     if (sampleParam) {
       const sample = sampleParam === '1' ? SAMPLE_DECKS.midrange : SAMPLE_DECKS[sampleParam]
       if (sample) {
+        setExactExample(sampleParam === 'exact')
+        dispatch(setActiveTab(0))
         dispatch(setDeckList(sample.list))
         dispatch(setDeckName(sample.name))
         unlockFormatAuto()
@@ -364,6 +367,7 @@ const AnalyzerPage: React.FC = () => {
     [deckList, deckName, dispatch, suggestFromDeckSize, markCommanderPreset, isMobile]
   )
   const handleClear = useCallback(() => {
+    setExactExample(false)
     cancelAnalysis()
     setCommanderPreset(false)
     clearCommanderPresetFlag()
@@ -377,6 +381,7 @@ const AnalyzerPage: React.FC = () => {
   }, [dispatch, clearCommanderPresetFlag, cancelAnalysis])
 
   const handleLoadSample = useCallback(() => {
+    setExactExample(false)
     // Midrange 60-card sample — leave Commander mode if it was active
     setCommanderPreset(false)
     clearCommanderPresetFlag()
@@ -463,15 +468,14 @@ const AnalyzerPage: React.FC = () => {
             data-testid="commander-preset-banner"
           >
             <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              Commander mode — 100-card math, priority horizon T4–T8, Karsten targets scaled N/60,
-              explicit command zone detection.
+              Commander estimation example — 99 library cards + 1 commander, four colors for Atraxa,
+              priority horizon T4–T8, Karsten targets scaled N/60, explicit command zone detection.
             </Typography>
             <Typography variant="caption" sx={{ display: 'block', mt: 0.5, opacity: 0.85 }}>
               Paste your own 100-card list anytime (Atraxa sample is only a starter). Castability
               pins the commander first and prioritizes CMC 4–8; library size excludes the commander
-              for other spells only when explicitly marked (*CMDR* or Commander section).
-              Manabase uses deck-size-scaled Karsten sources. Rule 0 / multiplayer politics are out
-              of scope.{' '}
+              for other spells only when explicitly marked (*CMDR* or Commander section). Manabase
+              uses deck-size-scaled Karsten sources. Rule 0 / multiplayer politics are out of scope.{' '}
               <Box component="a" href="/guide#commander" sx={{ color: 'inherit', fontWeight: 600 }}>
                 Guide: Commander
               </Box>
@@ -517,7 +521,7 @@ const AnalyzerPage: React.FC = () => {
                 mb: 2,
               }}
             >
-              Analyze your manabase with proven mathematical precision
+              Explore mana estimates and supported exact calculations
             </Typography>
 
             {/* Feature Tags */}
@@ -579,7 +583,7 @@ const AnalyzerPage: React.FC = () => {
               borderRadius: 3,
               border: '2px dashed',
               borderColor: 'primary.light',
-              background: 'linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%)',
+              background: theme.palette.background.paper,
               '&:hover': {
                 boxShadow: '0 8px 24px rgba(25, 118, 210, 0.15)',
                 backgroundColor: '#e3f2fd',
@@ -818,7 +822,11 @@ const AnalyzerPage: React.FC = () => {
 
                   {/* One-phrase verdict — Léo persona ask: "tell me plainly
                       whether my deck is good before I read 5 tabs". */}
-                  <QuickVerdict analysisResult={analysisResult} manabaseVerdict={manabaseVerdict} />
+                  <QuickVerdict
+                    analysisResult={analysisResult}
+                    manabaseVerdict={manabaseVerdict}
+                    onReviewManabase={() => dispatch(setActiveTab(3))}
+                  />
 
                   {/* P3-7: engine provenance for screenshots / Discord debates */}
                   <Typography
@@ -996,7 +1004,10 @@ const AnalyzerPage: React.FC = () => {
                   <>
                     <TabPanel value={activeTab} index={0}>
                       <ErrorBoundary label="AnalyzerTab.Castability">
-                        <CastabilityTab analysisResult={analysisResult} />
+                        <CastabilityTab
+                          analysisResult={analysisResult}
+                          initialModel={exactExample ? 'exact' : 'estimate'}
+                        />
                       </ErrorBoundary>
                     </TabPanel>
 
@@ -1032,7 +1043,7 @@ const AnalyzerPage: React.FC = () => {
                       <ErrorBoundary label="AnalyzerTab.Blueprint">
                         <ManaBlueprint
                           analysisResult={analysisResult}
-                          deckName={`Deck ${new Date().toLocaleDateString()}`}
+                          deckName={deckName || 'Unnamed Deck'}
                         />
                       </ErrorBoundary>
                     </TabPanel>

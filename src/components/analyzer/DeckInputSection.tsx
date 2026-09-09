@@ -218,13 +218,18 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
                     onClick={handleClearClick}
                     startIcon={<ClearIcon />}
                     sx={{
-                      color: 'var(--mtg-red)',
-                      borderColor: 'var(--mtg-red)',
+                      color: (theme) =>
+                        theme.palette.mode === 'dark' ? theme.palette.error.main : 'var(--mtg-red)',
+                      borderColor: (theme) =>
+                        theme.palette.mode === 'dark' ? theme.palette.error.main : 'var(--mtg-red)',
                       minWidth: isMobile ? 'auto' : '120px',
                       fontSize: isMobile ? '0.875rem' : '1rem',
                       fontWeight: 600,
                       '&:hover': {
-                        borderColor: 'var(--mtg-red)',
+                        borderColor: (theme) =>
+                          theme.palette.mode === 'dark'
+                            ? theme.palette.error.main
+                            : 'var(--mtg-red)',
                         backgroundColor: 'rgba(220, 53, 69, 0.1)',
                       },
                     }}

@@ -248,6 +248,11 @@ const EnhancedSpellAnalysis: React.FC<EnhancedSpellAnalysisProps> = ({
           ))}
         </Alert>
       )}
+      <Alert severity="info" sx={{ mb: 2 }}>
+        {spellData.length === 0
+          ? 'No spells calculated. Risk categories below have no calculated data; zero entries do not mean a safe deck.'
+          : `${spellData.length} distinct spells calculated; risk categories cover only these results.`}
+      </Alert>
       {/* Performance Insights - FIRST (reliable) */}
       <Paper className="mtg-card" sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" fontWeight="600" mb={2} color="var(--mtg-blue-dark)">

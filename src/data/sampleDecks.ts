@@ -4,6 +4,10 @@
  */
 
 export const SAMPLE_DECKS: Record<string, { name: string; list: string }> = {
+  exact: {
+    name: 'Basic Plains — exact model demonstration',
+    list: '24 Plains\n36 Savannah Lions',
+  },
   midrange: {
     name: "Nature's Rhythm (Midrange Combo)",
     list: `4 Llanowar Elves (FDN) 227
@@ -208,6 +212,7 @@ export function countDeckListCards(list: string): number {
 
 /** Expected legal totals per sample key (asserted in unit tests). */
 export const SAMPLE_DECK_EXPECTED_TOTALS: Record<string, number> = {
+  exact: 60,
   midrange: 60,
   aggro: 60,
   control: 60,

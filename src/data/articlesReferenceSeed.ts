@@ -252,7 +252,7 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     description:
       "Reid's sideboarding chapter from the Level One course on magic.wizards.com. The framework for building and piloting a 15-card sideboard that actually wins games.",
     curatorNote:
-      "FNM doesn't really use sideboards. RCQ does. This is the crash course you need before your first competitive event that goes multiple rounds with best-of-three matches.",
+      "Sideboarding matters in best-of-three matches, including FNM events that use that structure. Check your event's format; this chapter helps you prepare a sideboard plan for local play and an RCQ.",
     curatorTrack: 'rcq',
     seriesId: 'reid-level-one',
     seriesPart: 4,

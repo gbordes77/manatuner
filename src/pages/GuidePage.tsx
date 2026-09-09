@@ -83,7 +83,7 @@ export const GuidePage: React.FC = () => {
       icon: <AnalyticsIcon sx={{ fontSize: 32 }} />,
       title: 'Analysis',
       description:
-        'Three sub-tabs under Analysis: Spells & Tempo (per-spell castability with tempo impact from tapped lands), Probabilities (mana curve chart, color distribution, land drop odds by turn), and Recommendations (prioritized fixes for your manabase). The Health Score is the consistency % shown in the verdict above the tabs.',
+        'Three sub-tabs under Analysis: Spells & Tempo (per-spell castability with tempo impact from tapped lands), Probabilities (mana curve chart, color distribution, land drop odds by turn), and Recommendations (prioritized fixes for your manabase). Health Score summarizes heuristic turn-two color access. Blueprint Stability also weighs land ratio and later color access; Mulligan measures opening-hand quality. These indices answer different questions, not win probability.',
       color: '#ff9800',
     },
     {
@@ -171,7 +171,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What makes ManaTuner different?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.",
+                    text: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.',
                   },
                 },
                 {
@@ -203,7 +203,7 @@ export const GuidePage: React.FC = () => {
                   name: 'Is my deck data saved anywhere?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
+                    text: 'Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.',
                   },
                 },
                 {
@@ -235,7 +235,7 @@ export const GuidePage: React.FC = () => {
                   name: 'Does ManaTuner work for Commander decks?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Yes. ManaTuner analyzes any deck size. For 99-card Commander/EDH decks, the hypergeometric calculations automatically adapt to the larger deck and singleton constraints. Commander-specific ramp cards (Sol Ring, signets, talismans) are all correctly detected.',
+                    text: 'Yes. The Atraxa example uses 99 library cards plus one explicitly marked commander and a T4–T8 priority horizon. Default castability is an estimate. Ramp and conditional lands have model-specific coverage; check the displayed limitations. ManaTuner does not validate deck legality.',
                   },
                 },
                 {
@@ -274,7 +274,7 @@ export const GuidePage: React.FC = () => {
                   '@type': 'HowToStep',
                   position: 3,
                   name: 'Check Castability per spell',
-                  text: 'The Castability tab opens in Estimate mode. P1 and P2 distinguish play and draw. Exact modes enumerate only their represented model; unsupported cases are flagged. Ramp estimates and gameplay outcomes are not generally exact.',
+                  text: 'Castability opens in Estimate mode by default; the basic-land exact example selects Exact. Perfect drops conditions on having enough lands, while Realistic includes land-draw uncertainty. Starting player is a separate setting. Exact modes enumerate only their represented model; unsupported cases are flagged. Ramp estimates and gameplay outcomes are not generally exact.',
                 },
                 {
                   '@type': 'HowToStep',
@@ -868,10 +868,10 @@ export const GuidePage: React.FC = () => {
                 {[
                   'Hypergeometric math scales automatically to 100 cards — no hardcoded 60-card assumptions.',
                   'Singleton detection: duplicate basic lands are counted, everything else is expected to be unique.',
-                  'Mana rocks (Sol Ring, Arcane Signet, Signets, Talismans) are detected as non-land sources.',
-                  'Mana dorks (Llanowar Elves, Birds of Paradise, Ignoble Hierarch…) add to your effective sources.',
-                  'Land ramp (Cultivate, Three Visits, Nature’s Lore, Farseek) adjusts the tempo-aware curve.',
-                  'Triomes, shocks, fetches, filters and check-lands are all typed and costed correctly.',
+                  'Supported mana rocks are listed as non-land sources; detection does not imply support in every calculation mode.',
+                  'Supported mana dorks can contribute to estimated effective sources; inspect the source breakdown.',
+                  'Land-ramp coverage depends on the card and model. Check which producers are listed; opening-hand plans do not include ramp.',
+                  'Conditional lands and fetches have model-specific restrictions. Exact results are unavailable when a mechanic is not represented.',
                   'Color identity: the deck list is analysed as-is; ManaTuner trusts your singleton + identity.',
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
@@ -908,7 +908,7 @@ export const GuidePage: React.FC = () => {
                   'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
                   'Castability priority horizon is T4–T8 in Commander mode (CMC 4–8 listed after the commander). Early rocks/dorks still appear below.',
                   'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
-                  'Partners or Backgrounds must be entered on separate lines under Commander:. Their payment results are separate; multiplayer rules and commander tax are outside the model.',
+                  'Partners or Backgrounds must be entered on separate lines under Commander:. Their payment results are separate. Castability excludes mulligans and commander tax; the Mulligan tab can model the multiplayer free first mulligan and turn-one draw.',
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
                     <ListItemIcon sx={{ minWidth: 30 }}>
@@ -1033,7 +1033,7 @@ export const GuidePage: React.FC = () => {
         {[
           {
             q: 'What makes ManaTuner different?',
-            a: "ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.",
+            a: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.',
           },
           {
             q: 'What do Best Case and Realistic mean in Castability?',
@@ -1049,7 +1049,7 @@ export const GuidePage: React.FC = () => {
           },
           {
             q: 'Is my deck data saved anywhere?',
-            a: "Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.",
+            a: 'Calculations and saved analyses stay in your browser. Card lookups send card names or identifiers to Scryfall; images and fonts use external services. See the privacy policy for details.',
           },
         ].map((faq, index) => (
           <Accordion

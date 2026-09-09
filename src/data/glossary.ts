@@ -43,7 +43,7 @@ export const GLOSSARY: Record<string, { short: string; long?: string }> = {
     long: 'A Steam Vents counts as both a blue source and a red source. Llanowar Elves count as a green source.',
   },
   'etb-tapped': {
-    short: "Enters the battlefield tapped — you can't use it the turn you play it.",
+    short: 'Enters the battlefield tapped — you cannot tap it for mana while it remains tapped.',
     long: 'A land that ETBs tapped effectively costs you a turn of mana. This reduces your on-curve probability.',
   },
   'mana-curve': {

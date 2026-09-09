@@ -1,0 +1,302 @@
+[
+  {
+    "file": ".env.example",
+    "S002": "659ca11566ab8cf2534feb9a224fa35b826afa335e385e22542670063d01f675",
+    "local": "659ca11566ab8cf2534feb9a224fa35b826afa335e385e22542670063d01f675",
+    "same": true
+  },
+  {
+    "file": ".github/workflows/ci.yml",
+    "S002": "7b061568414f8a13340c7327a34f09e3c4014bca491c189c53988287eccbe65c",
+    "local": "7b061568414f8a13340c7327a34f09e3c4014bca491c189c53988287eccbe65c",
+    "same": true
+  },
+  {
+    "file": ".github/workflows/nightly-quality.yml",
+    "S002": "db73019b12b6998f6d78b7e427b87f723ced6ce2ca52f058e68528d1380f6121",
+    "local": "db73019b12b6998f6d78b7e427b87f723ced6ce2ca52f058e68528d1380f6121",
+    "same": true
+  },
+  {
+    "file": ".github/workflows/pr-validation.yml",
+    "S002": "4dabbcbd6548cfa7ec3dac8b816603b5dd2677e756446484f332fa2b2e7d7314",
+    "local": "4dabbcbd6548cfa7ec3dac8b816603b5dd2677e756446484f332fa2b2e7d7314",
+    "same": true
+  },
+  {
+    "file": "docs/engineering/DELIVERY-CONTRACT.md",
+    "S002": "88e590289463794420156df4fc78ba678f46161568cfd43d563ea567b58155fa",
+    "local": "88e590289463794420156df4fc78ba678f46161568cfd43d563ea567b58155fa",
+    "same": true
+  },
+  {
+    "file": "docs/privacy/DATA-FLOWS.md",
+    "S002": "2f969b8323fd94d587e4b6096c2d8529efab55990f918dbe34f6789522675832",
+    "local": "2f969b8323fd94d587e4b6096c2d8529efab55990f918dbe34f6789522675832",
+    "same": true
+  },
+  {
+    "file": "index.html",
+    "S002": "baf1279b298a35fcd2af121401c05a62dc78725d30886c10fe3e81aa82f6c625",
+    "local": "baf1279b298a35fcd2af121401c05a62dc78725d30886c10fe3e81aa82f6c625",
+    "same": true
+  },
+  {
+    "file": "package-lock.json",
+    "S002": "1d1bcea207554bb222e7b655094e21d2aba0937ae9f87dd1283211374e2e3877",
+    "local": "1d1bcea207554bb222e7b655094e21d2aba0937ae9f87dd1283211374e2e3877",
+    "same": true
+  },
+  {
+    "file": "package.json",
+    "S002": "3f810c0bbb73c263f3412ff335fc9a4fc99789ced28a1002fcaaf9a9155b3d2e",
+    "local": "3f810c0bbb73c263f3412ff335fc9a4fc99789ced28a1002fcaaf9a9155b3d2e",
+    "same": true
+  },
+  {
+    "file": "playwright.audit.config.js",
+    "S002": "928c4898d66aa7ec247df1a2d745cdb0f2c895d9f17e7300e6ab52278482d1ab",
+    "local": "928c4898d66aa7ec247df1a2d745cdb0f2c895d9f17e7300e6ab52278482d1ab",
+    "same": true
+  },
+  {
+    "file": "playwright.delivery.config.js",
+    "S002": "fba55dd66f4b4f70a314cf9628594a36ea33bab6f4c5f1cbf7ee4b7a31fc4ce0",
+    "local": "fba55dd66f4b4f70a314cf9628594a36ea33bab6f4c5f1cbf7ee4b7a31fc4ce0",
+    "same": true
+  },
+  {
+    "file": "public/llms-full.txt",
+    "S002": "d7ac1884760f05778e6224a78a9c13b618385f1b0035df5f45541771053e4c14",
+    "local": "d7ac1884760f05778e6224a78a9c13b618385f1b0035df5f45541771053e4c14",
+    "same": true
+  },
+  {
+    "file": "public/llms.txt",
+    "S002": "dd078384fd26c9ebfb035c4da06f71c0f2869fdf96caa6c34c36992249e86370",
+    "local": "dd078384fd26c9ebfb035c4da06f71c0f2869fdf96caa6c34c36992249e86370",
+    "same": true
+  },
+  {
+    "file": "scripts/check-bundle-budget.mjs",
+    "S002": "400a6cfb33a9f4367deb0ae14439fa327933595b752bb4e7f620cc8093126dfd",
+    "local": "400a6cfb33a9f4367deb0ae14439fa327933595b752bb4e7f620cc8093126dfd",
+    "same": true
+  },
+  {
+    "file": "scripts/check-html-contract.mjs",
+    "S002": "e73aa424fc1fcb23608500ec005a7c611acb0c75242d71e0bc183024493bfdf4",
+    "local": "e73aa424fc1fcb23608500ec005a7c611acb0c75242d71e0bc183024493bfdf4",
+    "same": true
+  },
+  {
+    "file": "scripts/delivery-gate.mjs",
+    "S002": "6e3c31bb29a9c63e259bf877bdb26bdd2652805e7eb90f50934ecc7039cac60c",
+    "local": "6e3c31bb29a9c63e259bf877bdb26bdd2652805e7eb90f50934ecc7039cac60c",
+    "same": true
+  },
+  {
+    "file": "scripts/delivery-gate.test.mjs",
+    "S002": "aae916c1f264fd7b4e32e961fd81a59946d158fb90c70c2081a20e3c1d718beb",
+    "local": "aae916c1f264fd7b4e32e961fd81a59946d158fb90c70c2081a20e3c1d718beb",
+    "same": true
+  },
+  {
+    "file": "scripts/prerender.mjs",
+    "S002": "1364ad37ac1c40ca4ff4542b8ceb9290d34e6dcbb64601d01ee35ed23b519c4d",
+    "local": "1364ad37ac1c40ca4ff4542b8ceb9290d34e6dcbb64601d01ee35ed23b519c4d",
+    "same": true
+  },
+  {
+    "file": "scripts/serve-candidate.mjs",
+    "S002": "9418813588c2e2e5e6424b073c5601ab3662e73fdbdb03f1fed208416cac4462",
+    "local": "9418813588c2e2e5e6424b073c5601ab3662e73fdbdb03f1fed208416cac4462",
+    "same": true
+  },
+  {
+    "file": "src/App.tsx",
+    "S002": "f951e6f834c3acde9a1a98f5c304c2ce2162339cc547dbf0f18ef88939239529",
+    "local": "f951e6f834c3acde9a1a98f5c304c2ce2162339cc547dbf0f18ef88939239529",
+    "same": true
+  },
+  {
+    "file": "src/components/PrivacySettings.tsx",
+    "S002": "42d1f3a90450754690b0f5541a37d656594fdf4b9e0baed09f595e5120de336a",
+    "local": "42d1f3a90450754690b0f5541a37d656594fdf4b9e0baed09f595e5120de336a",
+    "same": true
+  },
+  {
+    "file": "src/components/analyzer/ManabaseFullTab.tsx",
+    "S002": "9c05a0238cb37be41588569758a85274adf964a8af50efc3462d3624a95a7fa6",
+    "local": "9c05a0238cb37be41588569758a85274adf964a8af50efc3462d3624a95a7fa6",
+    "same": true
+  },
+  {
+    "file": "src/components/analyzer/MulliganTab.tsx",
+    "S002": "2eac8a87456d067c0453e9c5b97d9986b39dcd07790c804b3b88d906b4c40f19",
+    "local": "2eac8a87456d067c0453e9c5b97d9986b39dcd07790c804b3b88d906b4c40f19",
+    "same": true
+  },
+  {
+    "file": "src/components/analyzer/QuickVerdict.tsx",
+    "S002": "a8972e20c68e24fc18b74eab6d6d5366727c9b70e1a16f38163814164d5ea593",
+    "local": "a8972e20c68e24fc18b74eab6d6d5366727c9b70e1a16f38163814164d5ea593",
+    "same": true
+  },
+  {
+    "file": "src/components/export/ManaBlueprint.tsx",
+    "S002": "08549a56bb7a509ca5c243064b828034f3c3a7c1df0a7df1bd589f0aa7de2bea",
+    "local": "08549a56bb7a509ca5c243064b828034f3c3a7c1df0a7df1bd589f0aa7de2bea",
+    "same": true
+  },
+  {
+    "file": "src/components/layout/StaticPages.tsx",
+    "S002": "4082f77c16b6dcc570ecd3dc3227489b0e41a5369e626015d88445864da5179f",
+    "local": "4082f77c16b6dcc570ecd3dc3227489b0e41a5369e626015d88445864da5179f",
+    "same": true
+  },
+  {
+    "file": "src/data/analyzerTabs.ts",
+    "S002": "0ec1e458629815316807b2e813fed61f20715745d3ef37ddfe9bc093a0215655",
+    "local": "0ec1e458629815316807b2e813fed61f20715745d3ef37ddfe9bc093a0215655",
+    "same": true
+  },
+  {
+    "file": "src/main.tsx",
+    "S002": "08307a8ad7627ffef8e09fd5d22a3cdc85a80a789b9add7f522c3cfaa607ada9",
+    "local": "08307a8ad7627ffef8e09fd5d22a3cdc85a80a789b9add7f522c3cfaa607ada9",
+    "same": true
+  },
+  {
+    "file": "src/pages/AnalyzerPage.tsx",
+    "S002": "68679f322b2d2be34b5a7bcb294e75d87858a58c810bb3dbac784c5cb575ed45",
+    "local": "68679f322b2d2be34b5a7bcb294e75d87858a58c810bb3dbac784c5cb575ed45",
+    "same": true
+  },
+  {
+    "file": "src/pages/ArticleDetailPage.tsx",
+    "S002": "273513d6ec1922660b3276af7e5f397f92127e6d6ceafd76ddf07bb144c89425",
+    "local": "273513d6ec1922660b3276af7e5f397f92127e6d6ceafd76ddf07bb144c89425",
+    "same": true
+  },
+  {
+    "file": "src/pages/GuidePage.tsx",
+    "S002": "bab129b26024205f8462b1dc4a137aef94699b16bfa7cd41b217d4b3ac4e2e83",
+    "local": "bab129b26024205f8462b1dc4a137aef94699b16bfa7cd41b217d4b3ac4e2e83",
+    "same": true
+  },
+  {
+    "file": "src/pages/HomePage.tsx",
+    "S002": "b3985dc6e1766c52d010816742a919116cd702b4d43c2718eef8ad3921b3d43b",
+    "local": "b3985dc6e1766c52d010816742a919116cd702b4d43c2718eef8ad3921b3d43b",
+    "same": true
+  },
+  {
+    "file": "src/pages/MathematicsPage.tsx",
+    "S002": "89205f28b8a98766c7aa60a5b6a976f6456459ab23e42a469cb0a5e806eccf30",
+    "local": "89205f28b8a98766c7aa60a5b6a976f6456459ab23e42a469cb0a5e806eccf30",
+    "same": true
+  },
+  {
+    "file": "src/pages/MyAnalysesPage.tsx",
+    "S002": "718b5c43f0051bd66f6eed96b21bf7275febd0c648b25705396ae38c0d07e23d",
+    "local": "718b5c43f0051bd66f6eed96b21bf7275febd0c648b25705396ae38c0d07e23d",
+    "same": true
+  },
+  {
+    "file": "src/services/scryfallPersistentCache.ts",
+    "S002": "e264dadc0ee4d2dc0d5d3b0bac668bddb2ca63e7e732d170b5cfb0448d36c2a3",
+    "local": "e264dadc0ee4d2dc0d5d3b0bac668bddb2ca63e7e732d170b5cfb0448d36c2a3",
+    "same": true
+  },
+  {
+    "file": "src/utils/__tests__/editorialContract.test.js",
+    "S002": "fb2fa8a258c472910f7ec540fab2a1e066c883184deafd4cfa736072b35d66c0",
+    "local": "fb2fa8a258c472910f7ec540fab2a1e066c883184deafd4cfa736072b35d66c0",
+    "same": true
+  },
+  {
+    "file": "src/utils/__tests__/prerenderLib.test.ts",
+    "S002": "e2d8f76dc955d6abf396774a649bb481a677a33d08ee054acb4a325f1baa5b37",
+    "local": "e2d8f76dc955d6abf396774a649bb481a677a33d08ee054acb4a325f1baa5b37",
+    "same": true
+  },
+  {
+    "file": "src/utils/healthScore.ts",
+    "S002": "ee883a415c260ddbf6b9d7ae1f9198d770eeff98e34e7d776c951bd5d88f78c1",
+    "local": "ee883a415c260ddbf6b9d7ae1f9198d770eeff98e34e7d776c951bd5d88f78c1",
+    "same": true
+  },
+  {
+    "file": "src/utils/prerenderLib.ts",
+    "S002": "53d4291a8d763cb7776e05753f4d25b81de62fd3c6cb7daadad966d06941237f",
+    "local": "53d4291a8d763cb7776e05753f4d25b81de62fd3c6cb7daadad966d06941237f",
+    "same": true
+  },
+  {
+    "file": "tests/component/PrivacyDisclosure.test.tsx",
+    "S002": "8dfd3dd777b4d35baa768bcd31a60139350295213d9fda6d07f0352e5dd44bcf",
+    "local": "8dfd3dd777b4d35baa768bcd31a60139350295213d9fda6d07f0352e5dd44bcf",
+    "same": true
+  },
+  {
+    "file": "tests/e2e/accessibility/a11y.spec.js",
+    "S002": "a1113c08a0baf0f6186f873073dc51be7e06957fbc9bf1cbf5f95e2cc9a94a6a",
+    "local": "a1113c08a0baf0f6186f873073dc51be7e06957fbc9bf1cbf5f95e2cc9a94a6a",
+    "same": true
+  },
+  {
+    "file": "tests/e2e/core-flows/final-audit.spec.js",
+    "S002": "580d2a8a890b7c0d321844fc99f66d439857b937b11e2b2dcea63abbe2739940",
+    "local": "580d2a8a890b7c0d321844fc99f66d439857b937b11e2b2dcea63abbe2739940",
+    "same": true
+  },
+  {
+    "file": "tests/e2e/core-flows/privacy-audit.spec.js",
+    "S002": "7b77eb1781abb025f15755a9ca262dab78b8b5e10812bf92cdf9e8d38e608cbd",
+    "local": "7b77eb1781abb025f15755a9ca262dab78b8b5e10812bf92cdf9e8d38e608cbd",
+    "same": true
+  },
+  {
+    "file": "tests/e2e/delivery/html-contract.spec.js",
+    "S002": "ee761e7c17ad63a93e91056597279ca12f3493f076616e27bbfd8198c957e926",
+    "local": "ee761e7c17ad63a93e91056597279ca12f3493f076616e27bbfd8198c957e926",
+    "same": true
+  },
+  {
+    "file": "tests/fixtures/scryfall-sample-audit.json",
+    "S002": "18e8f3cf41bf198674296e443e8cc59eb5945de2b20525c58e2cf67ffa95c6d3",
+    "local": "18e8f3cf41bf198674296e443e8cc59eb5945de2b20525c58e2cf67ffa95c6d3",
+    "same": true
+  },
+  {
+    "file": "tests/math-audit/canonical.test.ts",
+    "S002": "a8dcd62d5b24329f768d0ec5209a68ae936427f944ba13c087e7cd7ca69405b3",
+    "local": "a8dcd62d5b24329f768d0ec5209a68ae936427f944ba13c087e7cd7ca69405b3",
+    "same": true
+  },
+  {
+    "file": "tests/math-audit/independent.test.ts",
+    "S002": "b9d7b80ee0b8aa1eee9fcdff7f92818a799f1b85914718ad406f574a8a61c809",
+    "local": "b9d7b80ee0b8aa1eee9fcdff7f92818a799f1b85914718ad406f574a8a61c809",
+    "same": true
+  },
+  {
+    "file": "tests/math-audit/known-limitations.test.ts",
+    "S002": "e1b2c2c8400b099bb6caf228229ec15bb13371e3a242cf3338504792840d362d",
+    "local": "e1b2c2c8400b099bb6caf228229ec15bb13371e3a242cf3338504792840d362d",
+    "same": true
+  },
+  {
+    "file": "tests/math-audit/pathways.test.ts",
+    "S002": "f76bf6eee240632c12b6fc1ea0316a4ddce5940c45b910034b033eb4550e8412",
+    "local": "f76bf6eee240632c12b6fc1ea0316a4ddce5940c45b910034b033eb4550e8412",
+    "same": true
+  },
+  {
+    "file": "vercel.json",
+    "S002": "0c31668c9720cbd01654a83410f50389b5c0d39faba1b0237754ae493466bfad",
+    "local": "0c31668c9720cbd01654a83410f50389b5c0d39faba1b0237754ae493466bfad",
+    "same": true
+  }
+]

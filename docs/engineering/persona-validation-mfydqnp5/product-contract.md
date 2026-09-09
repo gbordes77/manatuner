@@ -1,0 +1,49 @@
+# T01 / T06 — contrat produit et écarts éditoriaux
+
+10 septembre 2026. Relecture source locale comparée au rapport S002, sans modification produit à ce stade. Rôle local lu : `~/.Codex/agents/product-manager.toml`. Les constats publics proviennent de l’audit du 9 septembre, pas d’une nouvelle preuve du SHA servi.
+
+## Contrat commun utilisable par les lots frontend et modèles
+
+- **Estimation (défaut)** : estimation agrégée d’accès aux couleurs, disponibilité des terrains et accélération représentée. La loi hypergéométrique de pioche est exacte sous tirage sans remise ; cela ne rend pas exacte la probabilité de lancer un sort.
+- **Exact** : uniquement l’événement et les ressources annoncés par le panneau. L’énumération physique mesure l’existence d’au moins une séquence légale dans l’historique tiré ; c’est une castabilité potentielle, susceptible de favoriser une décision qui connaît les futures pioches. La politique de paiement séparée est non clairvoyante sous ses hypothèses. Ni victoire ni jeu complet. Mécanique non représentée, métadonnées manquantes ou budget dépassé : indisponibilité motivée, jamais zéro ou valeur de substitution.
+- **Health** : moyenne heuristique d’accès tour deux aux couleurs fixes ou groupes alternatifs hybrides ; ne mesure pas le paiement simultané des pips, le séquençage ou le ramp. Inconnu reste inconnu. Bandes communes 85/70/55.
+- **Blueprint Stability** : indice composite distinct : 40 % consistency, 20 % adéquation du ratio de terrains à 40 %, 25 % accès couleur T2, 15 % accès couleur T4 (`components/export/manaStability.ts`). Même vocabulaire de bandes ne signifie pas même grandeur. Afficher cette différence à côté du score, conserver sa formule.
+- **Mulligan** : qualité heuristique des mains/valeur attendue après politique de mulligan, pas Health et pas victoire. Optimisation de l’arrêt sur distributions échantillonnées et bottoming heuristique, arrêt forcé à quatre. Repioche toujours sept ; bottoming après keep. Multijoueur : premier mulligan gratuit, seuil sept initial distinct du seuil sept après gratuit, pioche T1. Les plans affichés n’incluent pas le ramp.
+- **Commander** : uniquement section ou marqueur explicite ; Atraxa = 99 bibliothèque + 1 commandant, quatre couleurs, horizon T4–T8. Exemple d’estimation. Détection d’un producteur ne garantit pas prise en charge par chaque modèle. Ne pas promettre validation de légalité, identité, partenaires ou taxe du commandant.
+- **Données** : calcul/historique locaux, noms/identifiants vers Scryfall ; images et polices externes, métadonnées de connexion. Partage `#d=` récupérable par tout détenteur ; effacement local ne révoque pas le lien. Sentry désactivé pour cette campagne ; F12-AC5 juridique reste externe.
+
+## Matrice source / S002 / restant
+
+| Constat audit public                         | Source actuelle et S002                                                                                                                                                  | Travail restant local                                                                                       |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Exactitude absolue, absence de transmissions | Corrections S002 largement présentes dans Home/Guide/Mathematics/Privacy et `public/llms*.txt`                                                                           | Conserver ; vérifier rendu et HTML candidat, pas réimplémenter                                              |
+| Health assimilé à consistency %              | `GuidePage.tsx:86` conserve « Health Score is the consistency % » malgré définition S002 plus bas                                                                        | Remplacer par définition heuristique et distinguer Blueprint/Mulligan                                       |
+| Ramp Commander tous reconnus                 | FAQ structurée Guide ligne238 « all correctly detected » ; liste lignes869–874 promet Cultivate/Three Visits/Nature’s Lore/Farseek et tous terrains correctement traités | Supprimer universalité, renvoyer couverture carte/modèle ; synchroniser FAQ et corps                        |
+| Compteur global Home54/Library65             | S002 utilise déjà `articlesReferenceSeed.length` pour les totaux                                                                                                         | Pas de changement global requis                                                                             |
+| Compteurs parcours                           | Home lignes874–919 conserve 5/7/9/5/3 ; Library groupe le seed via `curatorTrack`                                                                                        | Dériver Home par la même propriété, ne compter ni auteurs ni liens comme articles supplémentaires           |
+| FNM sans sideboard                           | `articlesReferenceSeed.ts:255` affirme encore « FNM doesn't really use sideboards »                                                                                      | Corriger selon format/match, préserver auteur/citation/archive/état lost                                    |
+| London aide duel dans multijoueur            | S002 a corrigé redraw/bottom ; `MulliganTab.tsx` tooltip threshold7 et aide1192 parlent encore de meilleure main6                                                        | Rendre l’aide dépendante du résultat simulé et du mulligan gratuit ; ne pas promettre meilleure main future |
+| Entrée First FNM                             | Library possède déjà Start Here, ancre et aperçu articles                                                                                                                | Valider navigation et clavier ; ne pas recréer une entrée existante                                         |
+| Glossaire ETB                                | `glossary.ts:46` « can't use it the turn you play it » est trop général                                                                                                  | Préciser mana par engagement tant que le terrain reste engagé ; pas interdiction de toute utilisation       |
+
+## Texte FNM proposé et source primaire
+
+« Sideboarding matters in best-of-three matches, including FNM events that use that structure. Check your event’s format; this chapter helps you prepare a sideboard plan for both local play and an RCQ. »
+
+Source primaire consultée le 10 septembre 2026 : [Reid Duke, The Sideboard](https://magic.wizards.com/en/news/feature/sideboard-2015-08-10), décrit l’usage du sideboard dans les matchs. [Page officielle FNM](https://magic.wizards.com/en/play-events/friday-night-magic), retrouvée dans la recherche primaire ; aucune promesse que tous les FNM emploient une structure unique. La relecture ne certifie pas les 65 contenus externes.
+
+## Acceptation et limites
+
+Revue du DOM/HTML construit sur `/`, `/guide`, `/mathematics`, `/about`, `/privacy`, `/library` ; parcours indices et aide duel/multijoueur dans Analyzer ; inventaire des compteurs égal au seed. Contrat des modèles inchangé, tests fonctionnels du gate conservés. Les six notes personas restent simulées : T09 requiert de vrais participants et ne peut pas être clôturée par cette relecture. Aucun code, publication ou nouvelle validation automatisée dans ce premier rapport.
+
+## Lot exécuté après comparaison T00
+
+Le lead a confirmé 50/50 fichiers du manifest S002 identiques localement et un HTML public différent ; SHA public toujours inconnu. Les résidus ci-dessus sont donc des compléments à S002.
+
+Fichiers modifiés : `src/pages/HomePage.tsx`, `src/pages/GuidePage.tsx`, `src/pages/LandGlossaryPage.tsx`, `src/data/articlesReferenceSeed.ts`. Home dérive désormais chaque compteur via `curatorTrack` comme Library ; lien explicite vers `/analyzer?sample=exact` (implémentation du preset attribuée au lead). Guide distingue les trois indices, remplace les promesses universelles Commander par couverture carte/modèle dans FAQ structurée et corps. La note FNM est conditionnelle à la structure du match. Le glossaire terrains présente ETB rainbow comme dépendant de la carte et fastland comme condition de battlefield, pas de numéro de tour. Auteurs, inventaire, archives et lost sont conservés.
+
+Sources règles : [notes officielles Kaladesh](https://magic.wizards.com/en/news/feature/kaladesh-release-notes-2016-09-16) consultées ; tentative [Gatherer Grand Coliseum](https://gatherer.wizards.com/ONS/en-us/319/grand-coliseum) refusée HTTP403, donc pas de certification du texte primaire de cette carte. La correction rainbow évite une règle universelle ; elle ne revendique pas un audit de toutes les cartes. Le glossaire commun `src/data/glossary.ts` reste hors ownership et sa précision ETB suggérée n’est pas appliquée.
+
+Validation ciblée réelle : `npx vitest run src/utils/__tests__/editorialContract.test.js src/data/__tests__/articlesReferenceSeed.test.ts --configLoader runner --no-cache --reporter=verbose` : 21/21 acquis (`editorial-tests.log`). ESLint des quatre fichiers : code0 (`editorial-lint.log`). `git diff --check` : code0. Les formules des trois indices n’ont pas été modifiées par ce lot.
+
+Premier contrôle serveur `http://127.0.0.1:3000/` : connexion refusée (curl code7), demandé au lead de lancer le serveur partagé. Rendu, clavier, light/dark et HTML candidat restent à vérifier dans la campagne coordonnée ; aucune réussite visuelle déduite des tests source. URLs de revue : `http://127.0.0.1:3000/`, `/guide`, `/land-glossary`, `/library`. Pas de publication par cet agent.

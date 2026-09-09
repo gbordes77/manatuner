@@ -1,0 +1,22 @@
+ M README.md
+ M playwright-report/index.html
+ M test-results.json
+ M test-results/.last-run.json
+ M vitest.config.js
+?? .claude/worktrees/
+?? .mcp.json.bak.20260801-140417
+?? .playwright-mcp/
+?? AGENTS.md
+?? HANDOFF.md
+?? SESSION_NOTES.md
+?? docs/engineering/AUDIT-COMPARATIF-POST-CORRECTIFS-MANATUNER-2026-09-06.docx
+?? docs/engineering/EXPERT-CONTEXT-2026-09-09.md
+?? docs/engineering/EXPERT-DELIVERY-2026-09-09.md
+?? docs/engineering/EXPERT-PRODUCT-2026-09-09.md
+?? docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md
+?? docs/engineering/persona-validation-mfydqnp5/
+?? docs/handoff/HANDOFF-PERSONAS-2026-09-09.md
+?? docs/handoff/PROMPT-REPRISE-MANATUNER.txt
+?? docs/handoff/PROMPT-REPRISE-PERSONAS-2026-09-09.txt
+?? docs/session/PERSONA_AUDIT_2026-09-09.md
+?? docs/session/persona-audit-2026-09-09/

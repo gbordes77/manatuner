@@ -1,0 +1,42 @@
+[
+  {
+    "path": "docs/engineering/persona-validation-mfydqnp5/qa/candidate-06/persona-followup-T04-T07-p-4eef8-s-EDH-horizon-and-CSV-zones-chromium/atraxa.csv",
+    "columns": [
+      "section",
+      "card_name",
+      "quantity",
+      "cmc",
+      "mana_cost",
+      "colors",
+      "is_land",
+      "produces",
+      "is_sideboard",
+      "is_commander"
+    ],
+    "mainCount": 99,
+    "mainLands": 43,
+    "commanders": 1,
+    "sideboard": 1,
+    "sha256": "97da183fe687c74f54a325f7f5855c8473360bfdc30fc0a6066156d1872002d6"
+  },
+  {
+    "path": "docs/engineering/persona-validation-mfydqnp5/qa/candidate-06/persona-followup-T07-JSON--0cf4a-ngine-and-score-definitions-chromium/persona.csv",
+    "columns": [
+      "section",
+      "card_name",
+      "quantity",
+      "cmc",
+      "mana_cost",
+      "colors",
+      "is_land",
+      "produces",
+      "is_sideboard",
+      "is_commander"
+    ],
+    "mainCount": 60,
+    "mainLands": 24,
+    "commanders": 0,
+    "sideboard": 0,
+    "sha256": "79e7b363617b84c811408cc8ba58aecaff4612a10cafd274af22a553f35d6f03"
+  }
+]

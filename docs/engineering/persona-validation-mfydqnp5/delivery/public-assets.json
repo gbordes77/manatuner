@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/mathematics",
+    "status": 200,
+    "sha256": "92a5a9cdceeb8bc04f3ae1dc0ab909d53edf6feae582d16fcd46dd72173623be",
+    "bytes": 12452
+  },
+  {
+    "path": "/assets/index-DFp0hwDC.js",
+    "status": 200,
+    "sha256": "38c0edfbcef1f9f7b699c18504ba11ad250cbd923cb17ecfe2ada5829828f69a",
+    "bytes": 154797
+  },
+  {
+    "path": "/__persona_probe_missing_20260910",
+    "status": 200,
+    "sha256": "92a5a9cdceeb8bc04f3ae1dc0ab909d53edf6feae582d16fcd46dd72173623be",
+    "bytes": 12452
+  }
+]

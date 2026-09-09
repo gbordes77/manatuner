@@ -1,6 +1,9 @@
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import { Alert, Box, List, ListItem, ListItemText, Tooltip, Typography } from '@mui/material'
 import React from 'react'
+import { SCORE_DEFINITIONS } from '../../data/scoreDefinitions'
+import { computeColorDeltas } from './karstenDeltas'
+import { Button } from '@mui/material'
 import { healthScoreBand } from '../../utils/healthScore'
 import { AnalysisResult } from '../../services/deckAnalyzer'
 
@@ -9,6 +12,7 @@ const HEALTH_SCORE_HELP =
 
 interface QuickVerdictProps {
   analysisResult: AnalysisResult
+  onReviewManabase?: () => void
   /**
    * Rolled-up Karsten verdict from `summarizeColorDeltas`. Null when the deck
    * is land-only or no spells were detected (in which case we skip the color
@@ -62,7 +66,14 @@ function detectFormatFamily(totalCards: number): FormatFamily {
   return 'constructed'
 }
 
-export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, manabaseVerdict }) => {
+export const QuickVerdict: React.FC<QuickVerdictProps> = ({
+  analysisResult,
+  manabaseVerdict,
+  onReviewManabase,
+}) => {
+  const deficit = computeColorDeltas(analysisResult)
+    .filter((d) => d.delta < 0)
+    .sort((a, b) => a.delta - b.delta)[0]
   const consistencyPct = Math.round((analysisResult.consistency || 0) * 100)
   const format = detectFormatFamily(analysisResult.totalCards || 0)
   const isEDH = format === 'edh'
@@ -141,6 +152,30 @@ export const QuickVerdict: React.FC<QuickVerdictProps> = ({ analysisResult, mana
           ? 'Unrepresented payment symbols prevent a meaningful color access score. Review individual spell limitations.'
           : phrase}
       </Typography>
+      {deficit && (
+        <Typography variant="body2" sx={{ mt: 1 }} data-testid="priority-source-deficit">
+          Priority: {deficit.color} has {deficit.actual} sources against a Karsten target of{' '}
+          {deficit.required} ({-deficit.delta} short)
+          {deficit.wasScaled ? ' · scaled to deck size' : ''}
+          {deficit.wasClamped ? ' · extrapolated beyond the published table' : ''}. Review candidate
+          land swaps in Manabase, then compare a new build.
+          {onReviewManabase && (
+            <Button size="small" onClick={onReviewManabase}>
+              Review mana sources
+            </Button>
+          )}
+        </Typography>
+      )}
+      <Box component="details" sx={{ mt: 1 }}>
+        <Typography component="summary" variant="body2" sx={{ cursor: 'pointer' }}>
+          Why the three scores differ
+        </Typography>
+        {Object.values(SCORE_DEFINITIONS).map((text) => (
+          <Typography key={text} variant="caption" display="block">
+            {text}
+          </Typography>
+        ))}
+      </Box>
       {analysisResult.colorAccessNotes?.map((note) => (
         <Typography key={note} variant="caption" sx={{ display: 'block', mt: 1 }}>
           {note}
