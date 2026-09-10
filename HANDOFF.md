@@ -1,4 +1,4 @@
-> **Préférence permanente : travailler sur `main`, aucune branche annexe.** Exception uniquement pour une justification majeure expliquée avant l’action et acceptée par l’utilisateur. Voir la règle prioritaire en tête de [AGENTS.md](AGENTS.md) ; les anciennes consignes de branche dédiée sont historiques.
+> **Préférence permanente : travailler sur `main`, tous les pushes vers `origin/main`, aucune branche annexe.** Exception uniquement pour une justification majeure expliquée avant l’action et acceptée par l’utilisateur, ou une nouvelle instruction explicite de sa part. Préférence reconfirmée le 10 septembre 2026. Voir la règle prioritaire en tête de [AGENTS.md](AGENTS.md) ; les anciennes consignes de branche dédiée sont historiques.
 
 # Point de reprise actuel — améliorations personas
 
@@ -83,3 +83,14 @@ L’utilisateur demande désormais que tous les correctifs de la mission soient 
 ## Reprise R01–R07 exécutée — 10 septembre 2026
 
 La dernière demande autorise uniquement le commit/push sur `codex/persona-followup-2026-09-10` et interdit main/merge/force-push/déploiement. Cette exception remplace la destination historique de cette mission. Le [bilan courant](docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md) décrit corrections, candidat, preuves, réserves et vérification après hooks. Priorités restantes : confirmation utilisateur, participants réels, revue juridique et appareils physiques ; aucune publication demandée.
+
+## Réaudit après R01–R07 — 10 septembre 2026
+
+- Rapport courant : `docs/session/PERSONA_REAUDIT_POST_R01_R07_2026-09-10.md`, six rapports et preuves lead dans `docs/session/persona-reaudit-r01-r07-2026-09-10/`.
+- Candidat dist-04 du HEAD e14f329 :3,78/5=15,11/20 ; précédent14,67/20, initial12,89/20. Six agents sans CUA : HTTP/sources/preuves attribuées ; lead réalise les nouveaux clics exact/Blueprint/sauvegarde/Compare20vs24.
+- Push vérifié sur branche dédiée, origin/main reste2ba772a ; accueil public encore ancien. Aucune nouvelle note de production, aucun nouveau gate. Résidu20sources Guide vs21 Mathematics confirmé.
+- Audit uniquement : aucun code produit, changement de branche, commit/push/déploiement. Rapports utilisateur existants préservés. Priorités : cohérence20/21, pédagogie première décision, partage des réglages, participants réels et publication distincte. Service de revue http://127.0.0.1:4187/.
+
+## Publication sur main et Vercel — 10 septembre 2026
+
+La demande utilisateur « si non fais le » autorise désormais main et la production Vercel. Main a été avancée sans divergence vers e14f329, puis le correctif runtime e206991 a été commité et poussé. Les ajouts postréaudit et rapports utilisateur sont préservés. Le premier déploiement a échoué faute de libnspr4.so ; setup-build-browser installe les bibliothèques natives uniquement sur Vercel/Linux, erreurs bloquantes, puis npm ci. Chromium, options et gate inchangés. Six tests ciblés acquis ; CI GitHub réussie et Vercel READY pour e2069916186737fedac3ae3cb58f4e7872d728ce. Gate natif complet acquis, dont101routes et16Chromium. Vérification publique :5routes200 avec textes actualisés, route inconnue404/noindex. SHA origin/main identique. Preuves de cette publication : docs/engineering/main-publication-kyj03ixa/ (local, non versionné).

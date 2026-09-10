@@ -1,0 +1,138 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - region "Feedback banner" [ref=e5]:
+    - generic [ref=e7]:
+      - alert [ref=e8]:
+        - generic [ref=e10]:
+          - generic [ref=e11]: Help us improve ManaTuner! (dismiss = hide banner; feedback stays in the footer)
+          - link "Give feedback — opens Tally form in a new tab" [ref=e12] [cursor=pointer]:
+            - /url: https://tally.so/r/A7KRkN
+            - text: Give Feedback
+      - button "Dismiss feedback banner" [ref=e16] [cursor=pointer]
+  - banner [ref=e19]:
+    - generic [ref=e20]:
+      - link "ManaTuner - Back to home" [ref=e21] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e22]:
+          - generic [ref=e23]: 
+          - generic [ref=e24]: 
+          - generic [ref=e25]: 
+          - generic [ref=e26]: 
+          - generic [ref=e27]: 
+        - generic [ref=e28]: ManaTuner
+      - generic [ref=e29]:
+        - link [ref=e30] [cursor=pointer]:
+          - /url: /analyzer
+        - link [ref=e34] [cursor=pointer]:
+          - /url: /my-analyses
+        - link [ref=e38] [cursor=pointer]:
+          - /url: /library
+        - button [ref=e42] [cursor=pointer]
+      - link "Feedback" [ref=e49] [cursor=pointer]:
+        - /url: https://tally.so/r/A7KRkN
+      - link "View source code on GitHub" [ref=e53] [cursor=pointer]:
+        - /url: https://github.com/gbordes77/manatuner
+  - main [ref=e56]:
+    - generic [ref=e106]:
+      - generic:
+        - generic: 
+        - generic: 
+        - generic: 
+        - generic: 
+        - generic: 
+        - generic: 
+        - generic: 
+      - generic [ref=e107]:
+        - heading "ManaTuner" [level=1] [ref=e108]
+        - heading "Analyze your manabase with proven mathematical precision" [level=6] [ref=e111]
+        - generic [ref=e112]:
+          - generic [ref=e113]: Castability
+          - generic [ref=e117]: Mulligan Sim
+          - generic [ref=e121]: Karsten Math
+      - generic [ref=e125]:
+        - generic [ref=e127]:
+          - heading "Your Deck" [level=5] [ref=e128]
+          - generic [ref=e131]:
+            - generic [ref=e132]:
+              - generic [ref=e133]: Deck Name (optional)
+              - generic [ref=e134]:
+                - textbox "Deck Name (optional)" [ref=e135]:
+                  - /placeholder: e.g. Rakdos Midrange, Mono-Red Aggro...
+                  - text: Nature's Rhythm (Midrange Combo)
+                - group:
+                  - generic: Deck Name (optional)
+            - generic [ref=e136]:
+              - generic [ref=e137]: Deck List
+              - generic [ref=e138]:
+                - textbox "Paste your decklist in MTGA, Moxfield, Archidekt, or plain text format. Each line should be quantity followed by card name, e.g. \"4 Lightning Bolt\"." [ref=e139]:
+                  - /placeholder: "Paste your decklist here...\nFormat: 4 Lightning Bolt\n3 Counterspell\n..."
+                  - text: 4 Llanowar Elves (FDN) 227 4 Gene Pollinator (EOE) 186 4 Spider Manifestation (SPM) 148 4 Badgermole Cub (TLA) 167 4 Nature's Rhythm (TDM) 150 4 Ouroboroid (EOE) 201 4 Brightglass Gearhulk (DFT) 191 2 Archdruid's Charm (MKM) 151 1 Craterhoof Behemoth (TDM) 138 1 Insidious Fungus (DSK) 186 1 Nurturing Pixie (OTJ) 20 1 Meltstrider's Resolve (EOE) 199 2 Seam Rip (EOE) 34 1 Soul-Guide Lantern (EOC) 143 3 Abandoned Air Temple (TLA) 263 4 Hushwood Verge (DSK) 261 4 Temple Garden (ECL) 268 2 Multiversal Passage (SPM) 180 2 Plains (FDN) 295 8 Forest (FDN) 291
+                - group:
+                  - generic: Deck List
+              - paragraph [ref=e140]: "Supported: MTGA, Moxfield, Archidekt, MTGGoldfish. Sideboard auto-detected."
+            - generic [ref=e141]:
+              - button [ref=e142] [cursor=pointer]
+              - generic [ref=e146]:
+                - button [ref=e147] [cursor=pointer]
+                - button [active] [ref=e151] [cursor=pointer]
+        - generic [ref=e157]:
+          - heading [level=6] [ref=e161]:
+            - text: Paste a decklist and hit
+            - strong [ref=e162]: Analyze
+            - text: .
+          - generic [ref=e163]:
+            - generic [ref=e164]: Castability
+            - generic [ref=e166]: Mulligan
+            - generic [ref=e168]: Manabase
+      - generic [ref=e172]:
+        - heading "💾 Your Data" [level=2] [ref=e176]
+        - paragraph [ref=e178]: 📱 All your analyses are stored locally in your browser
+        - generic [ref=e179]:
+          - button [ref=e180] [cursor=pointer]
+          - button [ref=e184] [cursor=pointer]
+          - button [ref=e188] [cursor=pointer]
+          - button [ref=e192] [cursor=pointer]
+  - contentinfo [ref=e72]:
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - paragraph [ref=e77]: Crafted with
+          - generic [ref=e78]: ❤️
+          - paragraph [ref=e79]: for the MTG community
+        - paragraph [ref=e80]: © 2025-2026 ManaTuner. Open source under MIT License.
+        - generic [ref=e81]:
+          - text: ManaTuner is unofficial Fan Content permitted under the
+          - link "Fan Content Policy" [ref=e82] [cursor=pointer]:
+            - /url: https://company.wizards.com/en/legal/fancontentpolicy
+          - text: . Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - link "Analyzer" [ref=e85] [cursor=pointer]:
+            - /url: /analyzer
+          - link "Guide" [ref=e86] [cursor=pointer]:
+            - /url: /guide
+          - link "Mathematics" [ref=e87] [cursor=pointer]:
+            - /url: /mathematics
+          - link "Land Glossary" [ref=e88] [cursor=pointer]:
+            - /url: /land-glossary
+          - link "About" [ref=e89] [cursor=pointer]:
+            - /url: /about
+          - link "Privacy" [ref=e90] [cursor=pointer]:
+            - /url: /privacy
+        - generic [ref=e91]:
+          - link "Give Feedback" [ref=e92] [cursor=pointer]:
+            - /url: https://tally.so/r/A7KRkN
+          - separator [ref=e96]
+          - link "GitHub" [ref=e97] [cursor=pointer]:
+            - /url: https://github.com/gbordes77/manatuner
+          - separator [ref=e100]
+          - link "Scryfall API" [ref=e101] [cursor=pointer]:
+            - /url: https://scryfall.com
+          - separator [ref=e102]
+          - link "Keyrune Icons" [ref=e103] [cursor=pointer]:
+            - /url: https://andrewgioia.github.io/Keyrune/
+        - generic [ref=e104]:
+          - text: Probability mathematics based on
+          - link "Frank Karsten's research" [ref=e105] [cursor=pointer]:
+            - /url: https://www.channelfireball.com/articles/how-many-lands-do-you-need-to-consistently-hit-your-land-drops/

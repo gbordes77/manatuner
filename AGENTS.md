@@ -4,7 +4,7 @@
 
 Instruction explicite du 10 septembre 2026, applicable à toutes les futures sessions de ce projet et à tous les sous-agents :
 
-- Travailler directement sur la branche principale **`main`**. Les corrections, commits et pushes demandés doivent aboutir à `main`.
+- Travailler directement sur la branche principale **`main`**. Les corrections et commits demandés doivent aboutir à `main` ; **tous les pushes doivent cibler `origin/main`**, sauf nouvelle instruction explicite contraire de l’utilisateur. Préférence reconfirmée le 10 septembre 2026.
 - **Ne jamais créer de branche annexe par défaut**, y compris une branche `codex/*`, une branche de confort, de sauvegarde ou un worktree qui crée une branche. La délégation à des agents ne justifie pas une exception.
 - Une exception exige une **justification majeure, concrète et clairement expliquée à l’utilisateur avant l’action**, puis son accord explicite. Présenter le risque réel, pourquoi travailler sur main ne convient pas et comment le travail reviendra dans main.
 - Cette préférence remplace les anciennes consignes du projet recommandant une branche dédiée. Ne pas déduire d’un ancien document une autorisation de créer une branche.
@@ -67,3 +67,14 @@ Référence : `docs/engineering/persona-validation-mfydqnp5/FINAL.md`, candidat 
 - Preuves neuves : `docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md`. R01–R07 : modes/FAQ, confidentialité, motifs Compare groupés et arrondis, règle85%, compteur dérivé, Blueprint99+1, recette CSV, fixture synthétique. Formules et protocole `#d=` conservés.
 - Revue visuelle révèle fond CSS clair en thème sombre : GlobalStyles lie le fond réel au thème. Axe seul ne détectait pas ce gradient ; test fond/image/luminance ajouté. Un scénario regroupant8routes dépasse30s : désormais un scénario par route et largeur, sans délai augmenté.
 - Ne pas attribuer les anciens résultats dist-06 au candidat actuel. Rapports utilisateur préexistants exclus du staging et vérifiés par empreintes.
+
+## Réaudit après R01–R07 — 10 septembre 2026
+
+- Rapport courant : `docs/session/PERSONA_REAUDIT_POST_R01_R07_2026-09-10.md`, six rapports et preuves lead dans `docs/session/persona-reaudit-r01-r07-2026-09-10/`.
+- Candidat dist-04 du HEAD e14f329 :3,78/5=15,11/20 ; précédent14,67/20, initial12,89/20. Six agents sans CUA : HTTP/sources/preuves attribuées ; lead réalise les nouveaux clics exact/Blueprint/sauvegarde/Compare20vs24.
+- Push vérifié sur branche dédiée, origin/main reste2ba772a ; accueil public encore ancien. Aucune nouvelle note de production, aucun nouveau gate. Résidu20sources Guide vs21 Mathematics confirmé.
+- Audit uniquement : aucun code produit, changement de branche, commit/push/déploiement. Rapports utilisateur existants préservés. Priorités : cohérence20/21, pédagogie première décision, partage des réglages, participants réels et publication distincte. Service de revue http://127.0.0.1:4187/.
+
+## Publication sur main et Vercel — 10 septembre 2026
+
+La demande utilisateur « si non fais le » autorise désormais main et la production Vercel. Main a été avancée sans divergence vers e14f329, puis le correctif runtime e206991 a été commité et poussé. Les ajouts postréaudit et rapports utilisateur sont préservés. Le premier déploiement a échoué faute de libnspr4.so ; setup-build-browser installe les bibliothèques natives uniquement sur Vercel/Linux, erreurs bloquantes, puis npm ci. Chromium, options et gate inchangés. Six tests ciblés acquis ; CI GitHub réussie et Vercel READY pour e2069916186737fedac3ae3cb58f4e7872d728ce. Gate natif complet acquis, dont101routes et16Chromium. Vérification publique :5routes200 avec textes actualisés, route inconnue404/noindex. SHA origin/main identique. Preuves de cette publication : docs/engineering/main-publication-kyj03ixa/ (local, non versionné).

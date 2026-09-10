@@ -1,0 +1,15 @@
+Poursuis les corrections de ManaTuner dans le projet :
+/Volumes/DataDisk/_Projects/Project Mana base V2
+
+Lis d’abord ce document de passation, puis les rapports et preuves qu’il référence :
+/Volumes/DataDisk/_Projects/Project Mana base V2/docs/handoff/HANDOFF-CORRECTIONS-MANATUNER-2026-09-05.md
+
+Vérifie les consignes locales, git status et la version réelle du dépôt. Préserve tous les changements utilisateur préexistants. La référence publiée est ac790fd ; ne suppose pas qu’elle est encore HEAD. Les dernières validations comptaient 593 tests unitaires et 438 scénarios navigateur réussis, avec 8 tests ignorés : ce sont des références historiques à préserver, pas des résultats à annoncer pour du nouveau code non testé.
+
+Commence par le lot A1 → A2 → A3 du document : scores incomplets, propagation des statuts des anciennes approximations et cohérence des contrats. Reproduis les défauts avant de les qualifier de bugs, puis corrige-les avec des régressions pertinentes. Poursuis ensuite les extensions prioritaires du domaine exact, une famille à la fois, avec un oracle indépendant et un périmètre explicite.
+
+Je veux des corrections mises en œuvre, pas seulement un plan. Ne remplace jamais un calcul indisponible par un pourcentage inventé ; ne confonds pas potentiel de paiement, stratégie non clairvoyante, probabilité de tirer puis lancer et score heuristique. N’affaiblis pas les assertions pour faire passer les tests et ne promets pas une fiabilité universelle à 100 %.
+
+Tu es autorisé à modifier les fichiers nécessaires, créer les tests et preuves, commiter et pousser les lots validés sur main, puis vérifier leur déploiement Vercel natif. Respecte les consignes plus récentes éventuelles. Ne touche pas aux fichiers utilisateur annexes et évite les déploiements en double.
+
+Exécute les validations adaptées, puis les contrôles complets requis, dont les navigateurs sous Linux quand nécessaire. Termine par un bilan français indiquant précisément ce qui est corrigé, testé et publié, et ce qui reste hors modèle ou non résolu. Mets à jour le rapport d’audit et la passation pour la discussion suivante.

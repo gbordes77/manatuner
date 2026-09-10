@@ -87,3 +87,18 @@ Environ22minutes de travail initial et validation, avant commit/push. Briefing a
 - CSV réimportés par Python :60/24 et99/43+1commandant+1réserve. Partage réel clipboard/contexte vierge vérifié.
 - Commandes : git status/log/fetch/diff, prettier ciblé, vitest ciblé, build:vercel, suites audit/persona, read-blueprint-csv.py ; détails et logs dans COMMANDS.md. Services existants3000/4186 intacts ; audit4300 et candidat4311 isolés.
 - Destination explicitement autorisée : codex/persona-followup-2026-09-10, auto-déploiement false. Aucun main/merge/force-push/déploiement. Rapports utilisateur préservés par SHA-256. Confirmation visuelle demandée ; réserves humaines/juridiques/Firefox/appareils restent distinctes.
+
+## Réaudit après R01–R07 — 10 septembre 2026
+
+- Rapport courant : `docs/session/PERSONA_REAUDIT_POST_R01_R07_2026-09-10.md`, six rapports et preuves lead dans `docs/session/persona-reaudit-r01-r07-2026-09-10/`.
+- Candidat dist-04 du HEAD e14f329 :3,78/5=15,11/20 ; précédent14,67/20, initial12,89/20. Six agents sans CUA : HTTP/sources/preuves attribuées ; lead réalise les nouveaux clics exact/Blueprint/sauvegarde/Compare20vs24.
+- Push vérifié sur branche dédiée, origin/main reste2ba772a ; accueil public encore ancien. Aucune nouvelle note de production, aucun nouveau gate. Résidu20sources Guide vs21 Mathematics confirmé.
+- Audit uniquement : aucun code produit, changement de branche, commit/push/déploiement. Rapports utilisateur existants préservés. Priorités : cohérence20/21, pédagogie première décision, partage des réglages, participants réels et publication distincte. Service de revue http://127.0.0.1:4187/.
+
+## Publication sur main et Vercel — 10 septembre 2026
+
+La demande utilisateur « si non fais le » autorise désormais main et la production Vercel. Main a été avancée sans divergence vers e14f329, puis le correctif runtime e206991 a été commité et poussé. Les ajouts postréaudit et rapports utilisateur sont préservés. Le premier déploiement a échoué faute de libnspr4.so ; setup-build-browser installe les bibliothèques natives uniquement sur Vercel/Linux, erreurs bloquantes, puis npm ci. Chromium, options et gate inchangés. Six tests ciblés acquis ; CI GitHub réussie et Vercel READY pour e2069916186737fedac3ae3cb58f4e7872d728ce. Gate natif complet acquis, dont101routes et16Chromium. Vérification publique :5routes200 avec textes actualisés, route inconnue404/noindex. SHA origin/main identique. Preuves de cette publication : docs/engineering/main-publication-kyj03ixa/ (local, non versionné).
+
+## Préférence de push reconfirmée — 10 septembre 2026
+
+À la demande explicite du propriétaire, tous les pushes du projet ciblent `origin/main`, sauf nouvelle instruction explicite contraire. Règle durable précisée dans AGENTS.md et HANDOFF.md. Modifications existantes préservées ; aucun changement applicatif ni nouveau test pour cette mise à jour documentaire.

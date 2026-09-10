@@ -1,0 +1,88 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#main-content"
+  - region "Feedback banner" [ref=e5]:
+    - generic [ref=e7]:
+      - alert [ref=e8]:
+        - generic [ref=e10]:
+          - generic [ref=e11]: Help us improve ManaTuner! (dismiss = hide banner; feedback stays in the footer)
+          - link "Give feedback — opens Tally form in a new tab" [ref=e12] [cursor=pointer]:
+            - /url: https://tally.so/r/A7KRkN
+            - text: Give Feedback
+      - button "Dismiss feedback banner" [ref=e16] [cursor=pointer]
+  - banner [ref=e19]:
+    - generic [ref=e20]:
+      - link "ManaTuner - Back to home" [ref=e21] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e22]:
+          - generic [ref=e23]: 
+          - generic [ref=e24]: 
+          - generic [ref=e25]: 
+          - generic [ref=e26]: 
+          - generic [ref=e27]: 
+        - generic [ref=e28]: ManaTuner
+      - generic [ref=e29]:
+        - link [ref=e30] [cursor=pointer]:
+          - /url: /analyzer
+        - link [ref=e34] [cursor=pointer]:
+          - /url: /my-analyses
+        - link [ref=e38] [cursor=pointer]:
+          - /url: /library
+        - button [ref=e42] [cursor=pointer]
+      - link "Feedback" [ref=e49] [cursor=pointer]:
+        - /url: https://tally.so/r/A7KRkN
+      - link "View source code on GitHub" [ref=e53] [cursor=pointer]:
+        - /url: https://github.com/gbordes77/manatuner
+  - main [ref=e56]:
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e60]: 
+        - generic [ref=e62]: 
+        - generic [ref=e64]: 
+        - generic [ref=e66]: 
+        - generic [ref=e68]: 
+      - heading "Reading the stack..." [level=6] [ref=e70]
+      - paragraph [ref=e71]: Processing deck data
+  - contentinfo [ref=e72]:
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - paragraph [ref=e77]: Crafted with
+          - generic [ref=e78]: ❤️
+          - paragraph [ref=e79]: for the MTG community
+        - paragraph [ref=e80]: © 2025-2026 ManaTuner. Open source under MIT License.
+        - generic [ref=e81]:
+          - text: ManaTuner is unofficial Fan Content permitted under the
+          - link "Fan Content Policy" [ref=e82] [cursor=pointer]:
+            - /url: https://company.wizards.com/en/legal/fancontentpolicy
+          - text: . Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - link "Analyzer" [ref=e85] [cursor=pointer]:
+            - /url: /analyzer
+          - link "Guide" [ref=e86] [cursor=pointer]:
+            - /url: /guide
+          - link "Mathematics" [ref=e87] [cursor=pointer]:
+            - /url: /mathematics
+          - link "Land Glossary" [ref=e88] [cursor=pointer]:
+            - /url: /land-glossary
+          - link "About" [ref=e89] [cursor=pointer]:
+            - /url: /about
+          - link "Privacy" [ref=e90] [cursor=pointer]:
+            - /url: /privacy
+        - generic [ref=e91]:
+          - link "Give Feedback" [ref=e92] [cursor=pointer]:
+            - /url: https://tally.so/r/A7KRkN
+          - separator [ref=e96]
+          - link "GitHub" [ref=e97] [cursor=pointer]:
+            - /url: https://github.com/gbordes77/manatuner
+          - separator [ref=e100]
+          - link "Scryfall API" [ref=e101] [cursor=pointer]:
+            - /url: https://scryfall.com
+          - separator [ref=e102]
+          - link "Keyrune Icons" [ref=e103] [cursor=pointer]:
+            - /url: https://andrewgioia.github.io/Keyrune/
+        - generic [ref=e104]:
+          - text: Probability mathematics based on
+          - link "Frank Karsten's research" [ref=e105] [cursor=pointer]:
+            - /url: https://www.channelfireball.com/articles/how-many-lands-do-you-need-to-consistently-hit-your-land-drops/

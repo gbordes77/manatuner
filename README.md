@@ -15,6 +15,8 @@
 
 ---
 
+**Persona review (2026-09-10, corrected local candidate):** [latest comparative report](./docs/session/PERSONA_REAUDIT_POST_R01_R07_2026-09-10.md). Simulated score15.11/20, previously14.67/20; this is not a new production score or test run.
+
 ## Overview
 
 ManaTuner answers the fundamental question every Magic player asks: **"Can I cast my spells on curve?"**
@@ -278,3 +280,5 @@ Remaining re-audit findings are tracked in the [correction and validation missio
 Project contributors and agents should follow the [main-branch workflow preference](AGENTS.md#préférence-permanente-du-propriétaire--branche-principale-uniquement): work on `main`; any exceptional branch requires a substantial explanation and the owner's prior agreement.
 
 The re-audit corrections clarify calculation modes, group unavailable comparison reasons, format comparison percentages and identify Commander library/command zones. CSV import instructions are available in the [Blueprint CSV recipe](docs/engineering/BLUEPRINT-CSV.md). The [current validation report](docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md) records local evidence; this mission explicitly authorizes the dedicated branch and excludes deployment.
+
+Vercel builds install missing Chromium system libraries on Amazon Linux before the locked npm install; prerender and delivery checks remain mandatory. See [native deployment](docs/deployment/NATIVE-DEPLOYMENT.md).
