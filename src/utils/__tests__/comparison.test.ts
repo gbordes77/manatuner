@@ -1,5 +1,10 @@
 import { beforeEach, afterEach, expect, it, vi } from 'vitest'
-import { savedSpellResult } from '../comparison'
+import {
+  savedSpellResult,
+  formatComparisonPercentage,
+  formatComparisonDelta,
+  groupComparisonReasons,
+} from '../comparison'
 import { DeckAnalyzer } from '../../services/deckAnalyzer'
 import { landService } from '../../services/landService'
 import { PrivacyStorage, type AnalysisRecord } from '../../lib/privacy'
@@ -104,4 +109,40 @@ it('basic-land examples agree with independent combinatorics and survive history
         100
     )
   )
+})
+
+it('formats comparison without changing saved values or hiding a signed difference', () => {
+  const precise = 97.8385472740882
+  expect(formatComparisonPercentage(precise)).toBe('97.8%')
+  expect(formatComparisonPercentage(0)).toBe('0%')
+  expect(formatComparisonPercentage(undefined)).toBe('Unavailable')
+  expect(formatComparisonDelta(0, '%')).toBe('=')
+  expect(formatComparisonDelta(-0.001, '%')).toBe('-<0.1%')
+  expect(formatComparisonDelta(0.001, '%')).toBe('+<0.1%')
+  expect(formatComparisonDelta(-2.125, '%')).toBe('-2.1%')
+  const snapshot = record({
+    spellAnalysisModel: 'physical-v1',
+    spellAnalysis: { Lions: { percentage: precise } },
+  })
+  formatComparisonPercentage(savedSpellResult(snapshot, 'Lions').percentage)
+  expect(savedSpellResult(snapshot, 'Lions').percentage).toBe(precise)
+})
+it('groups common reasons across versions and keeps distinct spell causes and real zero', () => {
+  const a = record({
+    spellAnalysisModel: 'physical-v1',
+    spellAnalysis: { Zero: { percentage: 0 } },
+    unsupportedSpellAnalysis: { Lions: 'Land restriction', Bear: 'Land restriction' },
+  })
+  const b = record({
+    spellAnalysisModel: 'physical-v1',
+    spellAnalysis: { Zero: { percentage: 0 } },
+    unsupportedSpellAnalysis: { Lions: 'Land restriction', Bear: 'Search budget exceeded' },
+  })
+  const before = JSON.stringify([a, b])
+  const groups = groupComparisonReasons(a, b, ['Lions', 'Bear', 'Zero'])
+  expect(groups).toHaveLength(2)
+  expect(groups[0]).toMatchObject({ a: ['Lions', 'Bear'], b: ['Lions'] })
+  expect(groups[1]).toMatchObject({ a: [], b: ['Bear'] })
+  expect(groups[1].reason).toContain('Search budget exceeded')
+  expect(JSON.stringify([a, b])).toBe(before)
 })

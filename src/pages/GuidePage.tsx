@@ -69,7 +69,7 @@ export const GuidePage: React.FC = () => {
       title: 'Castability',
       description:
         'Model-based castability by turn. The default is an estimate; exact modes state their supported scope. This is the first tab you see after analysis.',
-      color: '#2196f3',
+      color: '#0d47a1',
       badge: 'Core Feature',
     },
     {
@@ -84,20 +84,20 @@ export const GuidePage: React.FC = () => {
       title: 'Analysis',
       description:
         'Three sub-tabs under Analysis: Spells & Tempo (per-spell castability with tempo impact from tapped lands), Probabilities (mana curve chart, color distribution, land drop odds by turn), and Recommendations (prioritized fixes for your manabase). Health Score summarizes heuristic turn-two color access. Blueprint Stability also weighs land ratio and later color access; Mulligan measures opening-hand quality. These indices answer different questions, not win probability.',
-      color: '#ff9800',
+      color: '#a83b00',
     },
     {
       icon: <PsychologyIcon sx={{ fontSize: 32 }} />,
       title: 'Manabase',
       description: 'Complete breakdown of your lands: basics, duals, fetches, utility.',
-      color: '#00bcd4',
+      color: '#006064',
     },
     {
       icon: '📋',
       title: 'Blueprint',
       description:
-        'Export your complete analysis as PNG, PDF, or JSON. Share on Discord or archive your progress.',
-      color: '#00D9FF',
+        'Export a saved analysis snapshot as PNG, PDF, JSON or CSV. Share it or archive your progress.',
+      color: '#006064',
       badge: 'NEW',
     },
   ]
@@ -108,7 +108,7 @@ export const GuidePage: React.FC = () => {
       formula: 'P(X≥k)',
       desc: 'Chance of drawing the required number of sources under the draw model',
       color: '#e3f2fd',
-      borderColor: '#1976d2',
+      borderColor: '#0d47a1',
       details:
         'Hypergeometric distribution — exact draws under sampling without replacement; casting adds model assumptions',
     },
@@ -117,7 +117,7 @@ export const GuidePage: React.FC = () => {
       formula: '90%',
       desc: 'How many sources you actually need per color',
       color: '#e8f5e9',
-      borderColor: '#4caf50',
+      borderColor: '#1b5e20',
       details: 'Pro-level targets: 14 sources for 1 pip T1, 20 for 2 pips T2, 23 for 3 pips T3',
     },
     {
@@ -131,17 +131,18 @@ export const GuidePage: React.FC = () => {
     {
       title: 'Smart Mulligan',
       formula: 'E[V₇]',
-      desc: 'Mathematically optimal keep or mulligan thresholds',
+      desc: 'Keep or mulligan thresholds for a heuristic score',
       color: '#fff3e0',
-      borderColor: '#ff9800',
-      details: 'Bellman equation: keep 7 if hand quality ≥ expected value of mulling to 6',
+      borderColor: '#a83b00',
+      details:
+        'Bellman equation: compare the hand score with the next redraw value, including any free multiplayer mulligan',
     },
     {
       title: 'Health Score',
       formula: '0-100',
       desc: 'Heuristic average of turn-two access to each required color or hybrid group',
       color: '#e0f7fa',
-      borderColor: '#00bcd4',
+      borderColor: '#006064',
       details: HEALTH_SCORE_BANDS,
     },
     {
@@ -149,7 +150,7 @@ export const GuidePage: React.FC = () => {
       formula: '4×',
       desc: 'Tailored scoring per deck type',
       color: '#fce4ec',
-      borderColor: '#e91e63',
+      borderColor: '#ad1457',
       details: 'Aggro: curve | Midrange: balance | Control: colors | Combo: pieces',
     },
   ]
@@ -158,7 +159,7 @@ export const GuidePage: React.FC = () => {
     <Container maxWidth="lg" sx={{ py: 4, position: 'relative' }}>
       <SEO
         title="How to Build an MTG Mana Base (Standard → Commander) | ManaTuner"
-        description="3-minute walkthrough to building an optimal MTG mana base — Standard, Pioneer, Modern, Legacy, and 100-card Commander. Castability math, Monte Carlo mulligan, and Blueprint export."
+        description="3-minute walkthrough to evaluating an MTG mana base — Standard, Pioneer, Modern, Legacy, and 100-card Commander. Castability math, Monte Carlo mulligan, and Blueprint export."
         path="/guide"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -171,7 +172,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What makes ManaTuner different?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.',
+                    text: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands), and Bellman equation for heuristic-score keep/mulligan thresholds across 4 deck archetypes. It also factors in mana rocks and dorks, not just lands.',
                   },
                 },
                 {
@@ -179,7 +180,7 @@ export const GuidePage: React.FC = () => {
                   name: 'What do Best Case and Realistic mean in Castability?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Perfect drops (Best Case): probability of having the right colors assuming perfect land drops. Realistic: on-curve chance including mana screw (and ramp when enabled). Focus on Realistic.',
+                    text: 'Mana estimates is the default mode. Within it, Perfect drops conditions on enough lands while Realistic includes land-draw uncertainty; selected ramp and removal assumptions apply. Exact goldfish potential is a separate supported model with foresight, no removal and full ramp survival. Neither mode includes mulligans or drawing the target spell.',
                   },
                 },
                 {
@@ -187,7 +188,7 @@ export const GuidePage: React.FC = () => {
                   name: "Why is my castability below 90% even when I follow Karsten's recommendations?",
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: "The Castability tab shows single-draw probability (one hand, no mulligan). Karsten's tables target 90% including mulligans. With 14 red sources, your single-draw chance at Turn 1 is 86%, but with mulligans factored in, your effective chance exceeds 90%.",
+                    text: 'Castability measures mana availability from random opening hands and draws through the target turn, without mulligans and assuming the target spell is available. It is not conditioned on your specific hand. Karsten’s published targets condition on enough lands after a specified London mulligan policy and target 89% plus mana value (91% for a two-mana spell). These are different events; see Mathematics for the model limits.',
                   },
                 },
                 {
@@ -195,7 +196,7 @@ export const GuidePage: React.FC = () => {
                   name: 'Can I export or share my analysis?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Yes. The Blueprint tab lets you export your complete analysis as PNG, PDF, or JSON. Perfect for sharing on Discord, Reddit, or archiving your deck tuning progress.',
+                    text: 'Yes. The Blueprint tab lets you export a saved analysis snapshot as PNG, PDF, JSON or CSV. It does not reproduce interactive Castability settings; shared links carry deck, name and tab only.',
                   },
                 },
                 {
@@ -286,7 +287,7 @@ export const GuidePage: React.FC = () => {
                   '@type': 'HowToStep',
                   position: 5,
                   name: 'Export your Blueprint',
-                  text: 'The Blueprint tab exports the full analysis as PNG, PDF, or JSON for sharing on Discord, Reddit, or archiving your deck progress.',
+                  text: 'The Blueprint tab exports a saved analysis snapshot as PNG, PDF, JSON or CSV. Interactive Castability settings are not reproduced in this snapshot.',
                 },
               ],
             },
@@ -372,7 +373,7 @@ export const GuidePage: React.FC = () => {
           >
             Your Results
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             The 5 Analysis Tabs
           </Typography>
         </Box>
@@ -466,7 +467,7 @@ export const GuidePage: React.FC = () => {
           >
             Getting Started
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Step-by-Step Guide
           </Typography>
         </Box>
@@ -508,7 +509,15 @@ export const GuidePage: React.FC = () => {
               Copy your decklist from MTGO, MTGA, Moxfield, or any source and paste it in the text
               area. ManaTuner accepts any standard text format.
             </Typography>
-            <Paper sx={{ p: 2, bgcolor: '#e3f2fd', borderRadius: 2 }}>
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: '#e3f2fd',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                borderRadius: 2,
+              }}
+            >
               <Typography variant="body2" fontWeight={600} color="#1565c0">
                 💡 Tip: Click "Try Example" to see a sample deck and understand the format.
               </Typography>
@@ -568,7 +577,7 @@ export const GuidePage: React.FC = () => {
               ].map((item, i) => (
                 <ListItem key={i}>
                   <ListItemIcon>
-                    <CheckIcon sx={{ color: '#4caf50' }} />
+                    <CheckIcon sx={{ color: '#1b5e20' }} />
                   </ListItemIcon>
                   <ListItemText primary={item.text} secondary={item.sub} />
                 </ListItem>
@@ -610,17 +619,26 @@ export const GuidePage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body1" paragraph>
-              <strong>Start with Castability</strong> - look for any spell below 90% probability.
-              These are your weak spots.
+              <strong>Start with Castability</strong> — check the selected mode, target turn and
+              cost for your key spells. Read the assumptions before interpreting a percentage.
             </Typography>
             <Typography variant="body1" paragraph>
-              Explore <strong>Mulligan Strategy</strong> - select your archetype and learn your
-              optimal keep thresholds.
+              Explore <strong>Mulligan Strategy</strong> - select your archetype and learn your keep
+              thresholds under the selected heuristic score.
             </Typography>
-            <Paper sx={{ p: 2, bgcolor: '#fff3e0', borderRadius: 2 }}>
-              <Typography variant="body2" fontWeight={600} color="#e65100">
-                🎯 Pro Tip: If a key spell is below 85% castability, you need more sources of that
-                color.
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: '#fff3e0',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="body2" fontWeight={600} color="#a83b00">
+                🎯 Pro Tip: A key spell below 85% is a prompt to investigate, not an automatic
+                instruction to add colored sources. Check its cost, target turn, land count,
+                sequencing and model limits, then compare a change with the same settings.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -636,7 +654,7 @@ export const GuidePage: React.FC = () => {
           >
             Under the Hood
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             The Math Behind ManaTuner
           </Typography>
           <Typography
@@ -659,6 +677,8 @@ export const GuidePage: React.FC = () => {
                     height: '100%',
                     borderRadius: 3,
                     bgcolor: math.color,
+                    color: '#263238',
+                    '& .MuiTypography-root': { color: 'inherit' },
                     border: '2px solid',
                     borderColor: math.borderColor,
                     transition: 'all 0.3s ease',
@@ -690,9 +710,10 @@ export const GuidePage: React.FC = () => {
                     variant="caption"
                     sx={{
                       fontFamily: 'monospace',
-                      color: 'text.secondary',
                       display: 'block',
                       bgcolor: 'rgba(255,255,255,0.5)',
+                      color: '#263238',
+                      '& .MuiTypography-root': { color: 'inherit' },
                       p: 1,
                       borderRadius: 1,
                     }}
@@ -732,7 +753,7 @@ export const GuidePage: React.FC = () => {
           >
             Format Specific
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Quick Tips by Format
           </Typography>
         </Box>
@@ -743,13 +764,13 @@ export const GuidePage: React.FC = () => {
               name: 'Limited',
               lands: '16-18',
               tips: ['40-card deck', '17 lands is default'],
-              color: '#4caf50',
+              color: '#1b5e20',
             },
             {
               name: 'Standard',
               lands: '24-26',
               tips: ['Minimize taplands', 'Curve peaks T3-T4'],
-              color: '#2196f3',
+              color: '#0d47a1',
             },
             {
               name: 'Pioneer',
@@ -761,19 +782,19 @@ export const GuidePage: React.FC = () => {
               name: 'Modern',
               lands: '19-23',
               tips: ['Fetches essential', 'T1-T3 critical'],
-              color: '#f44336',
+              color: '#b71c1c',
             },
             {
               name: 'Legacy',
               lands: '18-22',
               tips: ['Duals + fetches', 'Every land untapped'],
-              color: '#ff9800',
+              color: '#a83b00',
             },
             {
               name: 'Commander',
               lands: '36-38',
               tips: ['100-card singleton', 'Color identity only', 'Sol Ring + Signets'],
-              color: '#00bcd4',
+              color: '#006064',
             },
           ].map((format, index) => (
             <Grid item xs={6} md={3} key={index}>
@@ -829,7 +850,7 @@ export const GuidePage: React.FC = () => {
           <Chip
             label="New in v2.5.6"
             size="small"
-            sx={{ bgcolor: '#00bcd4', color: 'white', fontWeight: 700, mb: 1.5 }}
+            sx={{ bgcolor: '#006064', color: 'white', fontWeight: 700, mb: 1.5 }}
           />
           <Typography
             variant="h4"
@@ -876,7 +897,7 @@ export const GuidePage: React.FC = () => {
                 ].map((item, i) => (
                   <ListItem key={i} sx={{ px: 0, py: 0.25 }}>
                     <ListItemIcon sx={{ minWidth: 30 }}>
-                      <CheckIcon sx={{ color: '#4caf50', fontSize: 18 }} />
+                      <CheckIcon sx={{ color: '#1b5e20', fontSize: 18 }} />
                     </ListItemIcon>
                     <ListItemText
                       primary={item}
@@ -1013,7 +1034,7 @@ export const GuidePage: React.FC = () => {
               py: 1.5,
               borderRadius: 3,
               fontWeight: 700,
-              bgcolor: '#00bcd4',
+              bgcolor: '#006064',
               '&:hover': { bgcolor: '#00838f' },
             }}
           >
@@ -1025,7 +1046,7 @@ export const GuidePage: React.FC = () => {
       {/* FAQ */}
       <Box sx={{ mb: 6 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Frequently Asked Questions
           </Typography>
         </Box>
@@ -1033,19 +1054,19 @@ export const GuidePage: React.FC = () => {
         {[
           {
             q: 'What makes ManaTuner different?',
-            a: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for optimal keep/mulligan thresholds across 4 deck archetypes.',
+            a: 'ManaTuner combines hypergeometric draw calculations, Monte Carlo mulligan simulation (10,000 hands, configurable up to 50k), and Bellman equation for heuristic-score keep/mulligan thresholds across 4 deck archetypes.',
           },
           {
             q: 'What do Best Case and Realistic mean in Castability?',
-            a: "Perfect drops (Best Case): probability of having the right colors assuming you hit all your land drops on curve. Realistic: on-curve cast chance including mana screw (and rocks/dorks when acceleration is on). Both numbers come from the same model so Perfect drops is always \u2265 Realistic. Focus on Realistic \u2014 it's the number that matters for deckbuilding.",
+            a: 'Mana estimates is the default mode. Within it, Perfect drops conditions on enough lands while Realistic includes land-draw uncertainty; selected ramp and removal assumptions apply. Exact goldfish potential is a separate supported model with foresight, no removal and full ramp survival. Neither mode includes mulligans or drawing the target spell.',
           },
           {
             q: "Why is my castability below 90% even when I follow Karsten's recommendations?",
-            a: "Because the Castability tab shows your single-draw probability: the chance of casting a spell with one specific hand. Karsten's tables target 90% including the option to mulligan bad hands. With 14 red sources, your single-draw chance at Turn 1 is 86% \u2014 but across a real game where you'd mulligan a no-red hand, your effective chance climbs above 90%. Both numbers are correct; they answer different questions. See the Mathematics page for details.",
+            a: 'Castability measures mana availability from random opening hands and draws through the target turn, without mulligans and assuming the target spell is available. It is not conditioned on your specific hand. Karsten’s published targets condition on enough lands after a specified London mulligan policy and target 89% plus mana value (91% for a two-mana spell). These are different events; see Mathematics for the model limits.',
           },
           {
             q: 'Can I export or share my analysis?',
-            a: 'Yes! The Blueprint tab lets you export your complete analysis as PNG (shareable image), PDF (print-ready document), or JSON (raw data). Perfect for sharing on Discord, Reddit, or archiving your deck tuning progress.',
+            a: 'Yes! The Blueprint tab lets you export a saved analysis snapshot as PNG, PDF, JSON or CSV. It does not reproduce interactive Castability settings; shared links carry deck, name and tab only.',
           },
           {
             q: 'Is my deck data saved anywhere?',
@@ -1089,7 +1110,7 @@ export const GuidePage: React.FC = () => {
         }}
       >
         <Box>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Ready to Analyze?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.9, mt: 0.5 }}>
@@ -1107,7 +1128,7 @@ export const GuidePage: React.FC = () => {
             fontSize: '1.1rem',
             fontWeight: 700,
             bgcolor: 'white',
-            color: '#1976d2',
+            color: '#0d47a1',
             borderRadius: 3,
             '&:hover': {
               bgcolor: 'rgba(255,255,255,0.9)',

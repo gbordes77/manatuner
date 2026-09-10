@@ -1,0 +1,60 @@
+[WebServer] (node:88077) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 17 tests using 1 worker
+
+(node:88078) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:31:5 › T04 home exact example starts supported and agrees with independent opening-hand oracle
+[2/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:43:5 › T07 JSON and CSV retain deck identity, totals, engine and score definitions
+[3/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:73:5 › T07 real clipboard share opens in a separate clean browser context
+[4/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:99:7 › T08 exact example keyboard and viewport 360 in light and dark themes
+[5/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:99:7 › T08 exact example keyboard and viewport 390 in light and dark themes
+[6/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:99:7 › T08 exact example keyboard and viewport 768 in light and dark themes
+[7/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:99:7 › T08 exact example keyboard and viewport 1440 in light and dark themes
+[8/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:134:5 › T03 real midrange persists explicit unsupported reasons across reload
+[9/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:154:5 › T03 compatible 24 and 20 Plains builds compare actual saved probabilities
+[10/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:186:5 › T05 multiplayer control exposes the free redraw contract and toggles without simulation
+[11/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:200:5 › T04/T07 public Atraxa example keeps 99 plus commander, four colors, EDH horizon and CSV zones
+[12/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:238:5 › T05 real 3k worker distinguishes free and paid mulligan results and guidance
+[13/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:274:5 › R03 identical saved builds show equality without an unavailable result
+[14/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:287:5 › R03 unsupported midrange groups shared reasons and keeps spell details accessible
+[15/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:313:5 › R03/R05 synthetic snapshot boundary keeps zero distinct from unavailable
+[16/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:334:7 › R01–R07 editorial routes and history keyboard, themes and viewport 390
+[17/17] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:334:7 › R01–R07 editorial routes and history keyboard, themes and viewport 1440
+  1) [chromium] › tests/e2e/core-flows/persona-followup.spec.js:334:7 › R01–R07 editorial routes and history keyboard, themes and viewport 1440
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.evaluate: Test timeout of 30000ms exceeded.
+
+      347 |   await analyze(page)
+      348 |   await page.getByTestId('tab-mulligan').click()
+    > 349 |   await page.getByText('Quick (3k)', { exact: true }).click()
+          |                    ^
+      350 |   const multiplayer = page.getByRole('checkbox', {
+      351 |     name: 'Multiplayer: free first mulligan and turn-one draw',
+      352 |   })
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/persona-followup.spec.js:349:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/persona/persona-followup-R01–R07-e-4f423-rd-themes-and-viewport-1440-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/reaudit-fixes-szrp1r9w/persona/persona-followup-R01–R07-e-4f423-rd-themes-and-viewport-1440-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/persona/persona-followup-R01–R07-e-4f423-rd-themes-and-viewport-1440-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/reaudit-fixes-szrp1r9w/persona/persona-followup-R01–R07-e-4f423-rd-themes-and-viewport-1440-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/persona-followup.spec.js:334:7 › R01–R07 editorial routes and history keyboard, themes and viewport 1440
+  16 passed (1.3m)

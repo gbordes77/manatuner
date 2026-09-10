@@ -1,0 +1,26 @@
+{
+  "candidate": "dist-04",
+  "verified": true,
+  "exports": [
+    {
+      "file": "persona-04/persona-followup-T04-T07-p-4eef8-s-EDH-horizon-and-CSV-zones-chromium/atraxa.csv",
+      "sha256": "14e1770796835147d909fcc3ef0fc777d21ad701907fefbed0fd4c8e9622dae7",
+      "totals": {
+        "library": 99,
+        "lands": 43,
+        "commanders": 1,
+        "sideboard": 1
+      }
+    },
+    {
+      "file": "persona-04/persona-followup-T07-JSON--0cf4a-ngine-and-score-definitions-chromium/persona.csv",
+      "sha256": "1ac0ecdfabbb3e3d8ab48e6cfc7fbcfeb60bb75d291da4c74032e81a1bac0925",
+      "totals": {
+        "library": 60,
+        "lands": 24,
+        "commanders": 0,
+        "sideboard": 0
+      }
+    }
+  ]
+}

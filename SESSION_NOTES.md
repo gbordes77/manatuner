@@ -53,3 +53,37 @@ Durée non chronométrée. Demande : handoff, journal des tâches et prompt à c
 ### Validation finale — 10 septembre 2026
 
 Référence : `docs/engineering/persona-validation-mfydqnp5/FINAL.md`, candidat `dist-06` et manifest SHA-256. Gate complet799tests/79fichiers +16Chromium +101routes; audit33Chromium; personas12Chromium;8WebKit acquis. Firefox reste bloqué avant navigation même en installation isolée neuve. Sombre corrigé et contrôlé quantitativement. Trois rapports préexistants préservés. T09/juridique/appareils physiques/confirmation visuelle utilisateur restent distincts des validations techniques. Publication applicative non autorisée ; branche de commit/push dédiée désactivée côté auto-déploiement via vercel.json.
+
+## 2026-09-10 — réaudit après correctifs
+
+Durée non chronométrée précisément.
+
+- Lecture FINAL.md, journal et étatGit ; HEAD251731694b2a0b6b74102a73d50e56fae8ce2750. Briefing organizer vérifie270sources/configs et154artefacts conformes manifest.
+- Serveur strict dist-06 lancé port4186 ; aucune réutilisation du service3000 préexistant.
+- Six personas réévalués avec six agents distincts, nouveaux ou réutilisés selon limites de sessions. Quatre contextes CUA indisponibles : lectures HTTP/exports/preuves attribuées, aucun parcours inventé.
+- Lead rejoue nouvel exemple exact98%, ouvre aide3scores, constate résidu Nothing sent to servers et Compare1/1sur deux builds identiques. Captures360clair/sombre et JSON QA reconsultés, pas nouveaux tests mobiles/exports.
+- Consolidation et calculs :116/36→132/36,3,2222→3,6667/5 ; gain1,7778/20. Notes entières et deltas avant arrondi.
+- Rapport `docs/session/PERSONA_REAUDIT_2026-09-10.md`, six rapports et preuves dans `persona-reaudit-2026-09-10/`. Aucun code produit, push ou déploiement ; fichiers préexistants préservés.
+- Suite : harmoniser résidus documentaires et affiner parcours comparaison ; vrais participants, juridique et validation publique restent distincts.
+
+## 2026-09-10 — préparation mission corrections/tests/commit/push
+
+Demande documentaire uniquement pour lancement par prochaine équipe. Branche et origin vérifiés ; exclusion auto-déploiement confirmée dans vercel.json. Briefing organizer lecture seule. Création de la mission R01–R07 avec critères, chemins de preuves neufs, gate et suitesChromium, puis contrôle commit/hooks/SHA distant ; création du prompt correspondant. Aucun correctif produit, test, commit ou push exécuté. Liens et diff documentaire vérifiés. Durée non chronométrée.
+
+## 2026-09-10 — correction de destination Git
+
+L’utilisateur impose main pour tous les correctifs, sans branche annexe. Mission et prompt mis à jour : intégration des correctifs déjà commités, validation du candidat final, commit sur main, push origin main:main et égalité des SHA. Possibilité de déploiement natif explicitée. Anciennes destinations conservées seulement comme historique. Aucun changement de branche, commit, push ou déploiement exécuté dans cette réponse.
+
+## 2026-09-10 — préférence Git permanente mémorisée
+
+À la demande explicite de l’utilisateur, règle durable ajoutée en tête d’AGENTS.md et rappelée en tête de HANDOFF.md : main uniquement, aucune branche annexe par défaut, exception pour justification majeure expliquée puis accord explicite. Applicable aux futures sessions et sous-agents. Aucun changement de branche ni suppression, commit ou push effectué. Vérification documentaire uniquement.
+
+## 2026-09-10 — mission R01–R07 exécutée
+
+Environ22minutes de travail initial et validation, avant commit/push. Briefing agent-organizer (context-manager absent), rédaction marketing-writer, QA devops-engineer et implémentation lead. Les corrections sont détaillées dans `docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md`.
+
+- Gate04 acquis801/79+3tests gate+101routes+16Chromium ; audit33/33 ; personas23/23 sur dist-04. Tests ciblés4/4.
+- Un test agrégé8parcours dépassait30s : séparation sans augmentation délai. Les captures montrent gradient clair en sombre ; axe seul ne le détectait pas. GlobalStyles corrigé et test image/luminance rouge→vert. Contrastes éditoriaux détectés ensuite et corrigés ; échecs/diagnostics conservés.
+- CSV réimportés par Python :60/24 et99/43+1commandant+1réserve. Partage réel clipboard/contexte vierge vérifié.
+- Commandes : git status/log/fetch/diff, prettier ciblé, vitest ciblé, build:vercel, suites audit/persona, read-blueprint-csv.py ; détails et logs dans COMMANDS.md. Services existants3000/4186 intacts ; audit4300 et candidat4311 isolés.
+- Destination explicitement autorisée : codex/persona-followup-2026-09-10, auto-déploiement false. Aucun main/merge/force-push/déploiement. Rapports utilisateur préservés par SHA-256. Confirmation visuelle demandée ; réserves humaines/juridiques/Firefox/appareils restent distinctes.

@@ -48,7 +48,7 @@ const MathematicsPage: React.FC = () => {
     <Container maxWidth="lg" sx={{ py: 4, position: 'relative' }}>
       <SEO
         title="MTG Manabase Math — Hypergeometric, Karsten, Bellman | ManaTuner"
-        description="Exact formulas for MTG mana base probability. Hypergeometric P(X≥k), Karsten tables, Monte Carlo 10K hands, Bellman mulligan thresholds — with author attribution and citations."
+        description="Understand default mana estimates, supported exact goldfish potential, saved comparisons and heuristic mulligan thresholds, with formulas and research references."
         path="/mathematics"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -101,10 +101,10 @@ const MathematicsPage: React.FC = () => {
           SECTION 1 — Hero: Start with the PROBLEM, not the math
           ================================================================ */}
       <Alert severity="info" sx={{ mb: 3 }}>
-        Castability rows now show potential castability from physical mana sources in a supported
-        goldfish model. Every cost must be paid legally. Mulligans, other card effects and the
-        chance of drawing the target spell are excluded. Unsupported mechanics show no percentage.
-        The formulas below also describe the older estimates used in secondary summary charts.
+        Castability opens in Mana estimates by default. Exact goldfish potential is a separate mode
+        with a restricted model. Both exclude mulligans and the chance of drawing the target spell;
+        neither is conditioned on a hand you entered. Saved comparisons use their own fixed
+        lands-only snapshot, described below.
       </Alert>
       <AnimatedContainer animation="fadeInUp">
         <Box sx={{ textAlign: 'center', mb: 5 }}>
@@ -132,17 +132,32 @@ const MathematicsPage: React.FC = () => {
             <Chip
               icon={<FunctionsIcon />}
               label="Exact Draw Probabilities"
-              sx={{ bgcolor: '#e3f2fd', color: '#1565c0', fontWeight: 600 }}
+              sx={{
+                bgcolor: '#e3f2fd',
+                '& .MuiTypography-root': { color: 'inherit' },
+                color: '#1565c0',
+                fontWeight: 600,
+              }}
             />
             <Chip
               icon={<CasinoIcon />}
               label="10,000 Simulations"
-              sx={{ bgcolor: '#f3e5f5', color: '#7b1fa2', fontWeight: 600 }}
+              sx={{
+                bgcolor: '#f3e5f5',
+                '& .MuiTypography-root': { color: 'inherit' },
+                color: '#7b1fa2',
+                fontWeight: 600,
+              }}
             />
             <Chip
               icon={<TrendingUpIcon />}
               label="Pro-Level Research"
-              sx={{ bgcolor: '#fff3e0', color: '#e65100', fontWeight: 600 }}
+              sx={{
+                bgcolor: '#fff3e0',
+                '& .MuiTypography-root': { color: 'inherit' },
+                color: '#a83b00',
+                fontWeight: 600,
+              }}
             />
           </Box>
         </Box>
@@ -165,14 +180,20 @@ const MathematicsPage: React.FC = () => {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                  <FunctionsIcon sx={{ color: '#1976d2', fontSize: 32 }} />
-                  <Typography variant="h6" fontWeight={700} color="#1976d2">
+                  <FunctionsIcon sx={{ color: '#0d47a1', fontSize: 32 }} />
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    sx={{
+                      color: (theme) => (theme.palette.mode === 'dark' ? '#90caf9' : '#0d47a1'),
+                    }}
+                  >
                     How Many Lands?
                   </Typography>
                 </Box>
                 <Typography variant="body1" paragraph>
-                  The right land count ensures you hit your drops on curve and cast your spells on
-                  time — every game, not just sometimes.
+                  Land count changes your chance of hitting land drops on curve. No land count
+                  guarantees the right draws every game.
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <strong>ManaTuner calculates</strong> an estimate of having enough mana each turn,
@@ -193,8 +214,14 @@ const MathematicsPage: React.FC = () => {
                 }}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                  <TrendingUpIcon sx={{ color: '#4caf50', fontSize: 32 }} />
-                  <Typography variant="h6" fontWeight={700} color="#4caf50">
+                  <TrendingUpIcon sx={{ color: '#1b5e20', fontSize: 32 }} />
+                  <Typography
+                    variant="h6"
+                    fontWeight={700}
+                    sx={{
+                      color: (theme) => (theme.palette.mode === 'dark' ? '#a5d6a7' : '#1b5e20'),
+                    }}
+                  >
                     How Many Sources per Color?
                   </Typography>
                 </Box>
@@ -213,9 +240,10 @@ const MathematicsPage: React.FC = () => {
       </Box>
 
       <Alert severity="warning" sx={{ mb: 4 }}>
-        Audit note: exact hypergeometric draws do not validate the complete casting model.
-        Multicolor and hybrid payments, tapped lands and ramp sequencing remain approximate.
-        Mulligan scores are heuristics; stopping thresholds optimize that score, not win rate.
+        Exact hypergeometric draws do not make every casting estimate exact. Mana estimates
+        approximate source overlap and sequencing; exact mode refuses unsupported cases or those
+        exceeding its calculation budget. Mulligan thresholds optimize a heuristic score, not win
+        rate.
       </Alert>
       {/* ================================================================
           SECTION 3 — Three Engines, Three Questions
@@ -229,7 +257,7 @@ const MathematicsPage: React.FC = () => {
           >
             How It Works
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             <CompareArrowsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
             Three Engines, Three Questions
           </Typography>
@@ -247,15 +275,15 @@ const MathematicsPage: React.FC = () => {
           {[
             {
               tab: 'Castability Tab',
-              engine: 'Hypergeometric Distribution',
+              engine: 'Estimates or supported exact goldfish',
               icon: <FunctionsIcon sx={{ fontSize: 32 }} />,
               question: 'Can I cast this spell on curve?',
               detail:
-                'The hypergeometric draw distribution is exact. Spell castability adds approximations for simultaneous colors, land timing and acceleration; it is not an exact gameplay probability.',
-              color: '#1976d2',
+                'Mana estimates approximate mana availability. Exact goldfish potential checks whether at least one legal sequence exists within its supported model, with foresight of the drawn history. Both assume the target spell is available.',
+              color: '#0d47a1',
               bgColor: '#e3f2fd',
               example:
-                'Your Counterspell has 82% chance of being castable on Turn 2 with 20 blue sources',
+                'Compare the same spell, target turn and settings before interpreting a change.',
             },
             {
               tab: 'Recommendations',
@@ -264,9 +292,9 @@ const MathematicsPage: React.FC = () => {
               question: 'How many sources do I need?',
               detail:
                 "Based on Frank Karsten's published simulations: targets are conditional on enough lands after London mulligans, at 89 + mana value percent (90–96% for published turns). These are deckbuilding guidelines.",
-              color: '#4caf50',
+              color: '#1b5e20',
               bgColor: '#e8f5e9',
-              example: '"Add 3 more blue sources to reach the 90% consistency threshold"',
+              example: 'For a two-mana spell, the published conditional target is 91%.',
             },
             {
               tab: 'Mulligan Tab',
@@ -274,10 +302,11 @@ const MathematicsPage: React.FC = () => {
               icon: <CasinoIcon sx={{ fontSize: 32 }} />,
               question: 'Should I keep or mulligan?',
               detail:
-                '10,000 sampled hands per kept-hand size from your main deck. Optimal stopping theory calculates the hand quality threshold below which you should mulligan — customized for your archetype.',
+                'By default, 10,000 sampled hands per kept-hand size from your main deck. Bellman recursion calculates keep thresholds for the selected archetype’s heuristic hand score, not a win probability.',
               color: '#9c27b0',
               bgColor: '#f3e5f5',
-              example: 'Keep 7 if hand score > 62, otherwise mulligan to 6',
+              example:
+                'Duel: compare keeping seven with a redraw followed by bottoming one. Multiplayer may allow a free first redraw.',
             },
           ].map((item, index) => (
             <Grid item xs={12} md={4} key={index}>
@@ -352,10 +381,12 @@ const MathematicsPage: React.FC = () => {
           mb: 6,
           borderRadius: 3,
           bgcolor: '#fff8e1',
+          color: '#263238',
+          '& .MuiTypography-root': { color: 'inherit' },
           border: '2px solid #ffc107',
         }}
       >
-        <Typography variant="h5" fontWeight={700} color="#f57f17" gutterBottom>
+        <Typography variant="h5" fontWeight={700} color="#a83b00" gutterBottom>
           Why do castability estimates differ from Karsten targets?
         </Typography>
         <Typography variant="body1" paragraph>
@@ -363,20 +394,46 @@ const MathematicsPage: React.FC = () => {
         </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2.5, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
-              <Typography variant="subtitle2" fontWeight={700} color="#1976d2" gutterBottom>
-                ManaTuner: mana available without mulligans
+            <Paper
+              sx={{
+                p: 2.5,
+                borderRadius: 2,
+                bgcolor: 'rgba(255,255,255,0.7)',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+              }}
+            >
+              <Typography
+                variant="subtitle2"
+                fontWeight={700}
+                sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#90caf9' : '#0d47a1') }}
+                gutterBottom
+              >
+                Mana estimates: mana available without mulligans
               </Typography>
               <Typography variant="body2">
                 This estimates mana availability from the opening hand and draws through the target
-                turn. It assumes the spell is available and applies no mulligan policy. Multicolor,
-                tempo and acceleration calculations include approximations.
+                turn. It assumes the spell is available and applies no mulligan policy. In Estimate
+                mode, color, tempo and acceleration calculations include approximations.
               </Typography>
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 2.5, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.7)' }}>
-              <Typography variant="subtitle2" fontWeight={700} color="#4caf50" gutterBottom>
+            <Paper
+              sx={{
+                p: 2.5,
+                borderRadius: 2,
+                bgcolor: 'rgba(255,255,255,0.7)',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+              }}
+            >
+              <Typography
+                variant="subtitle2"
+                fontWeight={700}
+                sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#a5d6a7' : '#1b5e20') }}
+                gutterBottom
+              >
                 Karsten: conditional color consistency
               </Typography>
               <Typography variant="body2">
@@ -389,14 +446,14 @@ const MathematicsPage: React.FC = () => {
         </Grid>
         <Typography
           variant="body2"
-          sx={{ mt: 2, fontWeight: 600, color: '#f57f17', textAlign: 'center' }}
+          sx={{ mt: 2, fontWeight: 600, color: '#a83b00', textAlign: 'center' }}
         >
           A conditional source target cannot be compared directly with unconditional castability.
         </Typography>
       </Paper>
 
       {/* ================================================================
-          SECTION 5 — Realistic vs Best Case (the two probability modes)
+          SECTION 5 — Estimate, Exact and saved snapshot contracts
           ================================================================ */}
       <Box id="probabilities" sx={{ mb: 6, scrollMarginTop: '80px' }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
@@ -406,7 +463,7 @@ const MathematicsPage: React.FC = () => {
           >
             Castability Tab
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Two Ways to Read Your Odds
           </Typography>
         </Box>
@@ -414,62 +471,77 @@ const MathematicsPage: React.FC = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, borderRadius: 3, height: '100%', border: '2px solid #4caf50' }}>
-              <Typography variant="h6" fontWeight={700} gutterBottom sx={{ color: '#4caf50' }}>
-                Realistic (primary)
+              <Typography
+                variant="h6"
+                fontWeight={700}
+                gutterBottom
+                sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#a5d6a7' : '#1b5e20') }}
+              >
+                Mana estimates (default)
               </Typography>
               <Typography variant="body2" paragraph>
-                <strong>What it answers:</strong> "If I keep this hand, can I cast this spell on
-                curve?"
+                <strong>Event:</strong> estimated mana availability from random opening hands and
+                draws through the target turn, assuming the spell is already available.
               </Typography>
-              <Typography variant="body2" component="div">
-                Checks two things at once:
-                <ol style={{ paddingLeft: 20, margin: '8px 0' }}>
-                  <li>
-                    <strong>Enough lands</strong> — P(drawing at least N lands by turn N)
-                  </li>
-                  <li>
-                    <strong>Right colors</strong> — P(those lands include the colors you need)
-                  </li>
-                </ol>
+              <Typography variant="body2" paragraph>
+                Realistic includes land-draw uncertainty. Perfect drops conditions on having enough
+                lands. Source overlap, color payments and ramp sequencing are approximated using the
+                selected ramp and removal settings.
               </Typography>
-              <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
-                This is the number to optimize. It accounts for both land count and color
-                availability.
+              <Typography variant="body2" color="text.secondary">
+                These are two views within Estimate mode, not the choice between Estimate and Exact.
+                Neither evaluates your specific observed hand or includes mulligans.
               </Typography>
             </Paper>
           </Grid>
 
           <Grid item xs={12} md={6}>
             <Paper sx={{ p: 3, borderRadius: 3, height: '100%', border: '2px solid #2196f3' }}>
-              <Typography variant="h6" fontWeight={700} gutterBottom sx={{ color: '#2196f3' }}>
-                Perfect drops / Best case (secondary)
+              <Typography
+                variant="h6"
+                fontWeight={700}
+                gutterBottom
+                sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#90caf9' : '#0d47a1') }}
+              >
+                Exact goldfish potential (supported cases)
               </Typography>
               <Typography variant="body2" paragraph>
-                <strong>What it answers:</strong> "If I hit a land every turn, do I have the right
-                colors?"
+                <strong>Event:</strong> at least one legal mana sequence can pay the cost by the
+                target turn under the represented resource model. Choices can use the full drawn
+                history, so this is an upper bound for play without foresight.
               </Typography>
               <Typography variant="body2" paragraph>
-                Assumes perfect land drops, then checks color availability. For the{' '}
-                <strong>same model</strong> (lands-only or lands+ramp), Perfect drops is always ≥
-                Realistic because it ignores mana screw. Do not compare Perfect drops from one
-                engine to Realistic from another.
+                This mode uses 0% removal and 100% ramp survival, regardless of Estimate settings.
+                It excludes mulligans and drawing the target spell. Unsupported mechanics or a
+                calculation exceeding the budget produce no percentage, not 0%.
               </Typography>
-              <Typography variant="body2" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
-                Use it to evaluate your color balance independently of your land count.
+              <Typography variant="body2" color="text.secondary">
+                <Link href="/analyzer?sample=exact">Try the basic-land exact example</Link>: 24
+                Plains and 36 Savannah Lions. This is a synthetic test fixture, not a legal
+                tournament decklist.
               </Typography>
             </Paper>
           </Grid>
 
           <Grid item xs={12}>
-            <Paper sx={{ p: 3, borderRadius: 3, bgcolor: '#e8f5e9' }}>
+            <Paper
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                bgcolor: '#e8f5e9',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+              }}
+            >
               <Typography variant="subtitle2" fontWeight={700} gutterBottom>
-                +Ramp bonus (when dorks/rocks detected)
+                Saved Analysis, Compare and exports: a fixed snapshot
               </Typography>
               <Typography variant="body2">
-                When your deck contains mana accelerators (Llanowar Elves, Sol Ring, Wild Growth,
-                Lotus Cobra...), ManaTuner calculates the probability of having them online and adds
-                their mana contribution. The engine evaluates up to 3 accelerators simultaneously,
-                including synergies like enhancers that boost other dorks.
+                Saved per-spell probabilities use physical-v1 lands-only potential, on the play,
+                with no mulligans or ramp and X=2. They exclude drawing the target spell and refuse
+                unsupported mechanics. They do not reproduce the interactive Castability settings.
+                Compare only calculated rows under this shared contract; unavailable values are not
+                zero. Health, Blueprint and Mulligan scores are separate heuristic indices.
               </Typography>
             </Paper>
           </Grid>
@@ -488,7 +560,7 @@ const MathematicsPage: React.FC = () => {
           >
             For the Curious
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             <ScienceIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
             The Math Under the Hood
           </Typography>
@@ -520,10 +592,11 @@ const MathematicsPage: React.FC = () => {
                   height: 48,
                   borderRadius: '50%',
                   bgcolor: '#e3f2fd',
+                  '& .MuiTypography-root': { color: 'inherit' },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#1976d2',
+                  color: '#0d47a1',
                 }}
               >
                 <FunctionsIcon />
@@ -552,6 +625,8 @@ const MathematicsPage: React.FC = () => {
                 my: 3,
                 borderRadius: 2,
                 bgcolor: '#e3f2fd',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
                 textAlign: 'center',
               }}
             >
@@ -594,12 +669,20 @@ const MathematicsPage: React.FC = () => {
               ))}
             </Grid>
 
-            <Paper sx={{ p: 2, bgcolor: '#e8f5e9', borderRadius: 2 }}>
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: '#e8f5e9',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                borderRadius: 2,
+              }}
+            >
               <Typography variant="body2" fontWeight={600} color="#2e7d32">
                 <strong>Concrete example:</strong> 14 red sources in a 60-card deck, opening hand of
                 7 cards. Probability of at least 1 red source = <strong>86.1%</strong>. That means
-                roughly 1 in 7 games you'll start with zero red mana — which is why Karsten
-                recommends 14 sources (mulligans bring it up to ~90%).
+                roughly 1 in 7 opening hands contain no red source. This draw event differs from
+                Karsten’s conditional casting target with its stated mulligan policy.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -623,6 +706,7 @@ const MathematicsPage: React.FC = () => {
                   height: 48,
                   borderRadius: '50%',
                   bgcolor: '#f3e5f5',
+                  '& .MuiTypography-root': { color: 'inherit' },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -643,10 +727,10 @@ const MathematicsPage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body1" paragraph>
-              The simulator samples 10,000 hands for each kept-hand size from four to seven by default.
-              It shuffles the main deck, draws seven, chooses a heuristic subset, and evaluates
-              opening-hand quality. Bellman recursion compares keeping with another mulligan;
-              this is not a simulation of complete games or win rate.
+              The simulator samples 10,000 hands for each kept-hand size from four to seven by
+              default. It shuffles the main deck, draws seven, chooses a heuristic subset, and
+              evaluates opening-hand quality. Bellman recursion compares keeping with another
+              mulligan; this is not a simulation of complete games or win rate.
             </Typography>
 
             <Grid container spacing={2} sx={{ my: 2 }}>
@@ -695,12 +779,20 @@ const MathematicsPage: React.FC = () => {
               ))}
             </Grid>
 
-            <Paper sx={{ p: 2, bgcolor: '#f3e5f5', borderRadius: 2 }}>
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: '#f3e5f5',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                borderRadius: 2,
+              }}
+            >
               <Typography variant="body2" fontWeight={600} color="#7b1fa2">
-                <strong>Why both?</strong> The hypergeometric formula gives exact draw probabilities under sampling without replacement.
-                Monte Carlo can check simple draw events against those answers. Mulligan results
-                additionally depend on the reward model and sampling uncertainty; this does not
-                establish the accuracy of every castability estimate.
+                <strong>Why both?</strong> The hypergeometric formula gives exact draw probabilities
+                under sampling without replacement. Monte Carlo can check simple draw events against
+                those answers. Mulligan results additionally depend on the reward model and sampling
+                uncertainty; this does not establish the accuracy of every castability estimate.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -724,10 +816,11 @@ const MathematicsPage: React.FC = () => {
                   height: 48,
                   borderRadius: '50%',
                   bgcolor: '#e8f5e9',
+                  '& .MuiTypography-root': { color: 'inherit' },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#4caf50',
+                  color: '#1b5e20',
                 }}
               >
                 <TrendingUpIcon />
@@ -762,7 +855,13 @@ const MathematicsPage: React.FC = () => {
             <TableContainer component={Paper} sx={{ my: 3, borderRadius: 2 }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ bgcolor: '#e8f5e9' }}>
+                  <TableRow
+                    sx={{
+                      bgcolor: '#e8f5e9',
+                      color: '#263238',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                    }}
+                  >
                     <TableCell>
                       <Typography fontWeight={700}>Mana Cost</Typography>
                     </TableCell>
@@ -828,10 +927,11 @@ const MathematicsPage: React.FC = () => {
                   height: 48,
                   borderRadius: '50%',
                   bgcolor: '#fff3e0',
+                  '& .MuiTypography-root': { color: 'inherit' },
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#ff9800',
+                  color: '#a83b00',
                 }}
               >
                 <CalculateIcon />
@@ -859,27 +959,46 @@ const MathematicsPage: React.FC = () => {
               for those sample distributions; the scores are not win probabilities.
             </Typography>
 
-            <Paper sx={{ p: 3, my: 3, borderRadius: 2, bgcolor: '#fff3e0', textAlign: 'center' }}>
-              <Typography variant="overline" color="#e65100" fontWeight={700}>
+            <Paper
+              sx={{
+                p: 3,
+                my: 3,
+                borderRadius: 2,
+                bgcolor: '#fff3e0',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant="overline" color="#a83b00" fontWeight={700}>
                 The Logic
               </Typography>
               <Typography
                 variant="h6"
-                sx={{ fontFamily: 'monospace', color: '#e65100', fontWeight: 700 }}
+                sx={{ fontFamily: 'monospace', color: '#a83b00', fontWeight: 700 }}
               >
-                Keep 7 if EV(hand) {'>'} EV(mulligan to 6)
+                Keep if hand score {'>'} continuation value
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Where EV(mulligan to 6) already accounts for the option to go down to 5
+                The continuation value includes later redraws. London redraws seven, then bottoms
+                cards for counted mulligans; a free multiplayer redraw keeps seven.
               </Typography>
             </Paper>
 
-            <Paper sx={{ p: 2, bgcolor: '#fff3e0', borderRadius: 2 }}>
-              <Typography variant="body2" fontWeight={600} color="#e65100">
-                <strong>In practice:</strong> ManaTuner runs 10,000 simulations with these
-                thresholds pre-computed for your archetype (aggro keeps more aggressively, control
-                mulligans more freely). The result is a concrete "keep" or "mulligan" recommendation
-                for each simulated hand.
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: '#fff3e0',
+                color: '#263238',
+                '& .MuiTypography-root': { color: 'inherit' },
+                borderRadius: 2,
+              }}
+            >
+              <Typography variant="body2" fontWeight={600} color="#a83b00">
+                <strong>In practice:</strong> ManaTuner samples 10,000 hands per kept-hand size by
+                default and derives thresholds from the selected archetype’s scores. A keep or
+                mulligan indication applies to that heuristic model, not to all strategic factors in
+                a real game.
               </Typography>
             </Paper>
           </AccordionDetails>
@@ -897,7 +1016,7 @@ const MathematicsPage: React.FC = () => {
           >
             Quick Reference
           </Typography>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="text.primary">
             Rules of Thumb
           </Typography>
         </Box>
@@ -906,7 +1025,12 @@ const MathematicsPage: React.FC = () => {
           <Grid item xs={12} md={6}>
             <Card sx={{ height: '100%', borderRadius: 3, border: '2px solid #1976d2' }}>
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight={700} color="#1976d2" gutterBottom>
+                <Typography
+                  variant="h6"
+                  fontWeight={700}
+                  sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#90caf9' : '#0d47a1') }}
+                  gutterBottom
+                >
                   <TimelineIcon sx={{ mr: 1, verticalAlign: 'middle', fontSize: 20 }} />
                   Land Count by Archetype
                 </Typography>
@@ -922,12 +1046,22 @@ const MathematicsPage: React.FC = () => {
                   <Chip
                     label="Midrange: 22-26"
                     size="small"
-                    sx={{ bgcolor: '#fff3e0', color: '#e65100', fontWeight: 600 }}
+                    sx={{
+                      bgcolor: '#fff3e0',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                      color: '#a83b00',
+                      fontWeight: 600,
+                    }}
                   />
                   <Chip
                     label="Control: 26-28"
                     size="small"
-                    sx={{ bgcolor: '#e3f2fd', color: '#1565c0', fontWeight: 600 }}
+                    sx={{
+                      bgcolor: '#e3f2fd',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                      color: '#1565c0',
+                      fontWeight: 600,
+                    }}
                   />
                 </Box>
               </CardContent>
@@ -936,7 +1070,12 @@ const MathematicsPage: React.FC = () => {
           <Grid item xs={12} md={6}>
             <Card sx={{ height: '100%', borderRadius: 3, border: '2px solid #9c27b0' }}>
               <CardContent sx={{ p: 3 }}>
-                <Typography variant="h6" fontWeight={700} color="#9c27b0" gutterBottom>
+                <Typography
+                  variant="h6"
+                  fontWeight={700}
+                  sx={{ color: (theme) => (theme.palette.mode === 'dark' ? '#ce93d8' : '#9c27b0') }}
+                  gutterBottom
+                >
                   <FunctionsIcon sx={{ mr: 1, verticalAlign: 'middle', fontSize: 20 }} />
                   Color Sources Needed
                 </Typography>
@@ -947,17 +1086,32 @@ const MathematicsPage: React.FC = () => {
                   <Chip
                     label="1 pip on T1: 14"
                     size="small"
-                    sx={{ bgcolor: '#f3e5f5', fontWeight: 600 }}
+                    sx={{
+                      bgcolor: '#f3e5f5',
+                      color: '#263238',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                      fontWeight: 600,
+                    }}
                   />
                   <Chip
                     label="2 pips on T2: 21"
                     size="small"
-                    sx={{ bgcolor: '#f3e5f5', fontWeight: 600 }}
+                    sx={{
+                      bgcolor: '#f3e5f5',
+                      color: '#263238',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                      fontWeight: 600,
+                    }}
                   />
                   <Chip
                     label="3 pips on T3: 23"
                     size="small"
-                    sx={{ bgcolor: '#f3e5f5', fontWeight: 600 }}
+                    sx={{
+                      bgcolor: '#f3e5f5',
+                      color: '#263238',
+                      '& .MuiTypography-root': { color: 'inherit' },
+                      fontWeight: 600,
+                    }}
                   />
                 </Box>
               </CardContent>
@@ -997,7 +1151,7 @@ const MathematicsPage: React.FC = () => {
         }}
       >
         <Box>
-          <Typography variant="h4" component="h2" fontWeight={700}>
+          <Typography variant="h4" component="h2" fontWeight={700} color="inherit">
             Ready to Fix Your Mana?
           </Typography>
           <Typography variant="body1" sx={{ opacity: 0.9, mt: 0.5 }}>
@@ -1015,7 +1169,7 @@ const MathematicsPage: React.FC = () => {
             fontSize: '1.1rem',
             fontWeight: 700,
             bgcolor: 'white',
-            color: '#1976d2',
+            color: '#0d47a1',
             borderRadius: 3,
             '&:hover': {
               bgcolor: 'rgba(255,255,255,0.9)',

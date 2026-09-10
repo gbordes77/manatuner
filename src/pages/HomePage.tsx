@@ -144,7 +144,7 @@ export const HomePage: React.FC = () => {
     {
       icon: <PsychologyIcon sx={{ fontSize: 40 }} />,
       title: 'Export Blueprint',
-      description: 'Download your analysis as PNG, PDF or JSON. Share on Discord or archive.',
+      description: 'Download your analysis as PNG, PDF, JSON or CSV. Share on Discord or archive.',
       color: theme.palette.mana.multicolor,
       manaColor: 'w' as const,
       isNew: true,

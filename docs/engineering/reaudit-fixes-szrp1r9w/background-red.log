@@ -1,0 +1,44 @@
+[WebServer] (node:89443) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 1 test using 1 worker
+
+(node:89457) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 390
+  1) [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 390
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "none"
+    Received: "linear-gradient(135deg, rgb(245, 247, 250) 0%, rgb(195, 207, 226) 100%)"
+
+      500 |           })
+      501 |           await testInfo.attach(`${route.slice(1)}-${width}-dark-body-background`, { body: JSON.stringify(background), contentType: 'application/json' })
+    > 502 |           expect(background.image).toBe('none')
+          |                                    ^
+      503 |           expect(background.alpha).toBe(1)
+      504 |           expect(background.luminance).toBeLessThan(0.1)
+      505 |         }
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/persona-followup.spec.js:502:36
+
+    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/background-red/persona-followup-R01–R07-m-60373-ast-themes-and-viewport-390-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/reaudit-fixes-szrp1r9w/background-red/persona-followup-R01–R07-m-60373-ast-themes-and-viewport-390-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/background-red/persona-followup-R01–R07-m-60373-ast-themes-and-viewport-390-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/reaudit-fixes-szrp1r9w/background-red/persona-followup-R01–R07-m-60373-ast-themes-and-viewport-390-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 390

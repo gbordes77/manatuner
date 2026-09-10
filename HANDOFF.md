@@ -1,3 +1,5 @@
+> **Préférence permanente : travailler sur `main`, aucune branche annexe.** Exception uniquement pour une justification majeure expliquée avant l’action et acceptée par l’utilisateur. Voir la règle prioritaire en tête de [AGENTS.md](AGENTS.md) ; les anciennes consignes de branche dédiée sont historiques.
+
 # Point de reprise actuel — améliorations personas
 
 Lire en priorité la [passation du 9 septembre](docs/handoff/HANDOFF-PERSONAS-2026-09-09.md), puis le [journal des tâches T00–T11](docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md). Le [prompt prêt à copier](docs/handoff/PROMPT-REPRISE-PERSONAS-2026-09-09.txt) précise les lectures, agents et validations à lancer. Toutes les tâches de correction restent ouvertes ; documents préparés, aucun correctif produit exécuté dans cette session.
@@ -61,3 +63,23 @@ Référence des corrections de septembre : [suivi](docs/engineering/SUIVI-CORREC
 ### Validation finale — 10 septembre 2026
 
 Référence : `docs/engineering/persona-validation-mfydqnp5/FINAL.md`, candidat `dist-06` et manifest SHA-256. Gate complet799tests/79fichiers +16Chromium +101routes; audit33Chromium; personas12Chromium;8WebKit acquis. Firefox reste bloqué avant navigation même en installation isolée neuve. Sombre corrigé et contrôlé quantitativement. Trois rapports préexistants préservés. T09/juridique/appareils physiques/confirmation visuelle utilisateur restent distincts des validations techniques. Publication applicative non autorisée ; branche de commit/push dédiée désactivée côté auto-déploiement via vercel.json.
+
+## Réaudit des personas — 10 septembre 2026
+
+- [Rapport comparatif](docs/session/PERSONA_REAUDIT_2026-09-10.md) : production du9septembre → candidat local dist-06 ; moyenne3,22→3,67/5, soit12,89→14,67/20 (+1,78).
+- Six évaluations distinctes, grille inchangée. Léo3,50 ; Sarah3,83 ; Karim3,83 ; Natsuki3,67 ; David3,50 ; Thibault3,67. Notes indicatives : quatre agents sans navigateur personnel utilisent HTTP, preuves actuelles partagées et artefacts QA attribués.
+- Identité du candidat contrôlée :270sources/configs et154artefacts conformes au manifest, HEAD2517316. Aucun nouveau gate ni déploiement.
+- Résidus : Mathematics mélange des descriptions de modèles ; My Analyses affirme encore Nothing sent to servers ; Library Five/7 ; comparaison compatible fonctionne mais précision affichée excessive, exemple midrange encore0/14 expliqué.
+- Preuves/rapports : `docs/session/persona-reaudit-2026-09-10/`. Serveur strict créé pour revue sur http://127.0.0.1:4186/ ; serveur3000 préexistant intact. Aucun code produit modifié.
+
+## Prochaine mission — résidus, tests et push
+
+À la demande de l’utilisateur, [mission R01–R07](docs/handoff/MISSION-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.md) et [prompt exécutable](docs/handoff/PROMPT-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.txt) préparés. Ils couvrent corrections, nouveau candidat/tests, commit ciblé et push sur `codex/persona-followup-2026-09-10`, dont l’auto-déploiement reste désactivé. Aucun correctif ni commit/push exécuté lors de la préparation de ces documents.
+
+## Instruction utilisateur prioritaire — destination main
+
+L’utilisateur demande désormais que tous les correctifs de la mission soient intégrés, commités et poussés sur **main**, sans branche annexe. Mission et prompt corrections/tests/push actualisés. Cette instruction remplace leur ancienne destination de branche dédiée. Inclure les correctifs pertinents déjà commités sur la branche existante ; préserver le travail local et les fichiers personnels. Le push main peut déclencher le déploiement natif : suivre son état, ne pas promettre qu’il est désactivé. Aucune mutation Git effectuée lors de cette mise à jour documentaire.
+
+## Reprise R01–R07 exécutée — 10 septembre 2026
+
+La dernière demande autorise uniquement le commit/push sur `codex/persona-followup-2026-09-10` et interdit main/merge/force-push/déploiement. Cette exception remplace la destination historique de cette mission. Le [bilan courant](docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md) décrit corrections, candidat, preuves, réserves et vérification après hooks. Priorités restantes : confirmation utilisateur, participants réels, revue juridique et appareils physiques ; aucune publication demandée.

@@ -270,3 +270,11 @@ Implementation follow-up is documented in the [team handoff](docs/handoff/HANDOF
 ## Persona follow-up (September 2026)
 
 Local improvements clarify the three heuristic scores, preserve calculation-limit explanations in saved comparisons, add a basic-land exact example, and adapt London mulligan help to multiplayer. Blueprint exports retain deck names and include engine version, model assumptions and separate sideboard/commander flags in CSV. See the [task journal](docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md) for validation evidence and production status. The exact example is a synthetic calculation fixture, not a tournament-legal list.
+
+The [September 10 candidate re-audit](docs/session/PERSONA_REAUDIT_2026-09-10.md) compares the corrected local artifact with the September 9 production assessment. It documents improvements, remaining issues, and differences in verification coverage; it does not establish a production deployment.
+
+Remaining re-audit findings are tracked in the [correction and validation mission](docs/handoff/MISSION-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.md), including scoped commit and branch push verification, separately from deployment.
+
+Project contributors and agents should follow the [main-branch workflow preference](AGENTS.md#préférence-permanente-du-propriétaire--branche-principale-uniquement): work on `main`; any exceptional branch requires a substantial explanation and the owner's prior agreement.
+
+The re-audit corrections clarify calculation modes, group unavailable comparison reasons, format comparison percentages and identify Commander library/command zones. CSV import instructions are available in the [Blueprint CSV recipe](docs/engineering/BLUEPRINT-CSV.md). The [current validation report](docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md) records local evidence; this mission explicitly authorizes the dedicated branch and excludes deployment.

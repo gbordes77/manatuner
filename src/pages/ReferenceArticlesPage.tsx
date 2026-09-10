@@ -735,6 +735,7 @@ export const ReferenceArticlesPage: React.FC = () => {
               sx={{
                 fontWeight: 700,
                 fontFamily: '"Cinzel", serif',
+                color: 'text.primary',
                 mt: 0.5,
                 fontSize: { xs: '1.4rem', md: '1.75rem' },
               }}
@@ -819,10 +820,10 @@ export const ReferenceArticlesPage: React.FC = () => {
                   color="text.secondary"
                   sx={{ mb: 2, lineHeight: 1.55, maxWidth: 560 }}
                 >
-                  Five short, welcoming reads that cover everything you need before your first
-                  Friday Night Magic — mana bases, mulligans, and how to play your deck instead of
-                  fighting it. Skip ahead to RCQ, Pro Tour, Commander, or Limited once these feel
-                  natural.
+                  {trackedByTrack['first-fnm'].length} welcoming reads to help you prepare for your
+                  first Friday Night Magic — mana bases, mulligans, and how to play your deck
+                  instead of fighting it. Skip ahead to RCQ, Pro Tour, Commander, or Limited once
+                  these feel natural.
                 </Typography>
                 <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ gap: 1 }}>
                   <Button
@@ -1597,9 +1598,10 @@ export const ReferenceArticlesPage: React.FC = () => {
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {progress.readCount} article{progress.readCount === 1 ? '' : 's'} opened ·{' '}
-            {progress.bookmarkCount} bookmarked. Stored on this device only —{' '}
+            {progress.bookmarkCount} bookmarked. Article and bookmark progress uses this device’s
+            storage —{' '}
             <Box component="span" sx={{ fontWeight: 600, color: 'text.primary' }}>
-              nothing leaves your browser
+              progress is saved locally
             </Box>
             .
           </Typography>

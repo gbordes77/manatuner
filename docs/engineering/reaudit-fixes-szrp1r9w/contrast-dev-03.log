@@ -1,0 +1,16 @@
+
+Running 8 tests using 1 worker
+
+(node:91700) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 390
+[2/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 390
+[3/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 390
+[4/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 390
+[5/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+[6/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 1440
+[7/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 1440
+[8/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 1440
+  8 passed (54.3s)

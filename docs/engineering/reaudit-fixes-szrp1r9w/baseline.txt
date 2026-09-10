@@ -1,0 +1,17 @@
+ M AGENTS.md
+ M HANDOFF.md
+ M README.md
+ M SESSION_NOTES.md
+ M playwright-report/index.html
+ M test-results.json
+ M test-results/.last-run.json
+?? .claude/worktrees/
+?? .mcp.json.bak.20260801-140417
+?? .playwright-mcp/
+?? docs/engineering/AUDIT-COMPARATIF-POST-CORRECTIFS-MANATUNER-2026-09-06.docx
+?? docs/engineering/reaudit-fixes-szrp1r9w/
+?? docs/handoff/MISSION-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.md
+?? docs/handoff/PROMPT-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.txt
+?? docs/handoff/PROMPT-REPRISE-MANATUNER.txt
+?? docs/session/PERSONA_REAUDIT_2026-09-10.md
+?? docs/session/persona-reaudit-2026-09-10/

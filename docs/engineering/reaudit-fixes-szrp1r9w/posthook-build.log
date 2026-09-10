@@ -1,0 +1,45 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2517 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/index.html                                    12.74 kB │ gzip:   3.96 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/mulliganArchetype.worker-BPK14lCK.js   13.93 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/index-B402_fsG.css                     16.18 kB │ gzip:   4.11 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/FloatingManaSymbols-BHOF-h0e.js         1.20 kB │ gzip:   0.64 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/CardImageTooltip-ojnDZkh0.js            1.35 kB │ gzip:   0.70 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/AuthorPage-BetN_isE.js                  3.90 kB │ gzip:   1.78 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/PrivacySettings-C9aaXAj6.js             6.08 kB │ gzip:   2.52 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/ArticleDetailPage-CpUVOPOa.js           7.75 kB │ gzip:   2.93 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/privacy-BGQjxgG-.js                     8.19 kB │ gzip:   3.21 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/EnhancedCharts-BFSBeAN7.js              8.44 kB │ gzip:   2.50 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/AnalysisTab-Bg-IstnN.js                 9.30 kB │ gzip:   3.05 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/StaticPages-Imm-cIxz.js                12.32 kB │ gzip:   4.40 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/EnhancedSpellAnalysis-5DIq6n50.js      13.15 kB │ gzip:   3.92 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/useLibraryProgress-I4yvj7l-.js         13.40 kB │ gzip:   5.29 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/LandGlossaryPage-y5x_wQBc.js           13.70 kB │ gzip:   5.12 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/ManabaseFullTab-k4imfDuS.js            13.77 kB │ gzip:   4.84 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/ManaBlueprint-BVScwYlh.js              17.83 kB │ gzip:   5.74 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/MyAnalysesPage-CdFtujWd.js             22.16 kB │ gzip:   6.88 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/MulliganTab-Dl2fHPY1.js                26.28 kB │ gzip:   8.75 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/GuidePage-BZuK3CTK.js                  28.04 kB │ gzip:   8.57 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/ReferenceArticlesPage-AeiV12jl.js      28.22 kB │ gzip:   8.38 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/MathematicsPage-DaPwIBR1.js            28.39 kB │ gzip:   7.70 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/vendor-mui-icons-qlCXnTuD.js           37.33 kB │ gzip:  11.34 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/PaymentPolicyPanel-C8okdHIe.js         44.15 kB │ gzip:   6.35 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/vendor-redux-75R2jQVp.js               46.95 kB │ gzip:  15.76 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/CastabilityTab-BVp8oYEI.js             70.82 kB │ gzip:  18.91 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/Onboarding-Dp-tN27a.js                101.80 kB │ gzip:  31.58 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/AnalyzerPage-Cz6xFTMy.js              135.46 kB │ gzip:  37.71 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/index.es-DjSM56qC.js                  157.96 kB │ gzip:  52.59 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/index-BAHzL_J_.js                     206.24 kB │ gzip:  58.76 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/vendor-mui-DIfVggoO.js                370.12 kB │ gzip: 111.39 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/jspdf.es.min-DQgZsAzL.js              385.89 kB │ gzip: 124.85 kB
+docs/engineering/reaudit-fixes-szrp1r9w/posthook/assets/vendor-charts-clH8u0qK.js             419.29 kB │ gzip: 112.37 kB
+✓ built in 3.02s

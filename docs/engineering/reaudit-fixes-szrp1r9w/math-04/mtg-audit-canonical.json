@@ -1,0 +1,57 @@
+[
+  {
+    "input": {
+      "N": 60,
+      "K": 0,
+      "n": 7,
+      "minimum": 1
+    },
+    "expected": 0,
+    "actual": 0,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "input": {
+      "N": 60,
+      "K": 1,
+      "n": 7,
+      "minimum": 1
+    },
+    "expected": 0.11666666666666667,
+    "actual": 0.11666666666666889,
+    "delta": 2.220446049250313e-15,
+    "status": "PASS"
+  },
+  {
+    "input": {
+      "N": 60,
+      "K": 24,
+      "n": 7,
+      "minimum": 1
+    },
+    "expected": 0.9783854727408821,
+    "actual": 0.9783854727409045,
+    "delta": 2.2426505097428162e-14,
+    "status": "PASS"
+  },
+  {
+    "input": {
+      "N": 60,
+      "K": 60,
+      "n": 7,
+      "minimum": 1
+    },
+    "expected": 1,
+    "actual": 1,
+    "delta": 0,
+    "status": "PASS"
+  },
+  {
+    "input": "12 cards, 4 unrestricted WUB lands, 8 nonlands; WUB on T3, play",
+    "expected": 0.7636363636363637,
+    "actual": 0.763636363636363,
+    "delta": -6.661338147750939e-16,
+    "status": "PASS"
+  }
+]

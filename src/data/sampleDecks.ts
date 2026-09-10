@@ -1,6 +1,7 @@
 /**
  * Sample decks for Analyzer (?sample=key).
- * Totals must stay legal: limited=40, constructed=60, edh=100.
+ * Example sizes: limited=40, constructed=60, edh=100.
+ * The exact example is a synthetic model fixture, not a tournament-legal list.
  */
 
 export const SAMPLE_DECKS: Record<string, { name: string; list: string }> = {

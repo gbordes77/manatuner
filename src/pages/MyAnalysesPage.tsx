@@ -1,4 +1,10 @@
-import { COMPARISON_MODEL, savedSpellResult } from '../utils/comparison'
+import {
+  COMPARISON_MODEL,
+  savedSpellResult,
+  formatComparisonPercentage,
+  formatComparisonDelta,
+  groupComparisonReasons,
+} from '../utils/comparison'
 import { SCORE_DEFINITIONS } from '../data/scoreDefinitions'
 import { healthScoreBand } from '../utils/healthScore'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
@@ -61,11 +67,11 @@ const MANA_COLORS_MAP: Record<string, string> = {
 // ─── Delta Display Helper ───────────────────────────────────────────────────
 
 const DeltaChip: React.FC<{ value: number; suffix?: string }> = ({ value, suffix = '' }) => {
-  if (Math.abs(value) < 0.1) return <Chip label="=" size="small" variant="outlined" />
+  if (value === 0) return <Chip label="=" size="small" variant="outlined" />
   const positive = value > 0
   return (
     <Chip
-      label={`${positive ? '+' : ''}${value.toFixed(1)}${suffix}`}
+      label={formatComparisonDelta(value, suffix)}
       size="small"
       sx={{
         fontWeight: 'bold',
@@ -158,6 +164,7 @@ const CompareView: React.FC<{
       .map((c) => [c.name, c])
   )
   const commonSpells = [...spellsA.keys()].filter((name) => spellsB.has(name))
+  const reasonGroups = groupComparisonReasons(a, b, commonSpells)
 
   const StatRow: React.FC<{
     label: string
@@ -322,6 +329,7 @@ const CompareView: React.FC<{
           <Box sx={{ mt: 1, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             <Button onClick={() => onLoad(a)}>Load A in Analyzer</Button>
             <Button onClick={() => onLoad(b)}>Load B in Analyzer</Button>
+            <Button href="/analyzer?sample=exact">Try the basic-land exact example</Button>
           </Box>
         </Alert>
         {/* Common spells castability delta */}
@@ -369,6 +377,29 @@ const CompareView: React.FC<{
               /{commonSpells.length} calculated. Missing calculations are not zero-risk spells.
               Deltas require both values under this same model.
             </Typography>
+            {reasonGroups.length > 0 && (
+              <Box data-testid="comparison-unavailable-reasons" sx={{ px: 2, pb: 2 }}>
+                <Typography variant="subtitle2">Why results are unavailable</Typography>
+                {reasonGroups.map((group, index) => (
+                  <Box key={group.reason} sx={{ mt: 1 }}>
+                    <Typography variant="body2">
+                      Reason {index + 1}: {group.reason}
+                    </Typography>
+                    <Box component="details">
+                      <Box component="summary" sx={{ cursor: 'pointer' }}>
+                        Affected spells — A: {group.a.length}, B: {group.b.length}
+                      </Box>
+                      {group.a.length > 0 && (
+                        <Typography variant="body2">A: {group.a.join(', ')}</Typography>
+                      )}
+                      {group.b.length > 0 && (
+                        <Typography variant="body2">B: {group.b.join(', ')}</Typography>
+                      )}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
             {commonSpells.map((name) => {
               const resultA = savedSpellResult(a, name)
               const resultB = savedSpellResult(b, name)
@@ -381,19 +412,21 @@ const CompareView: React.FC<{
                 <Box key={name} data-testid="comparison-spell">
                   <StatRow
                     label={`${name} (${cardA?.cmc ?? 0} CMC)`}
-                    va={probaA === undefined ? 'Unavailable' : `${probaA}%`}
-                    vb={probaB === undefined ? 'Unavailable' : `${probaB}%`}
+                    va={formatComparisonPercentage(probaA)}
+                    vb={formatComparisonPercentage(probaB)}
                     delta={delta}
                     suffix="%"
                   />
                   {resultA.reason && (
                     <Typography variant="caption" display="block" sx={{ px: 2, pb: 1 }}>
-                      A — {resultA.reason}
+                      A — Reason{' '}
+                      {reasonGroups.findIndex((group) => group.reason === resultA.reason) + 1}
                     </Typography>
                   )}
                   {resultB.reason && (
                     <Typography variant="caption" display="block" sx={{ px: 2, pb: 1 }}>
-                      B — {resultB.reason}
+                      B — Reason{' '}
+                      {reasonGroups.findIndex((group) => group.reason === resultB.reason) + 1}
                     </Typography>
                   )}
                 </Box>
@@ -1002,8 +1035,8 @@ const MyAnalysesPage: React.FC = () => {
               color="text.secondary"
               sx={{ mb: 2, maxWidth: 420, mx: 'auto' }}
             >
-              Analyze a deck and it will appear here automatically (local only — nothing leaves your
-              browser). Or open a sample in one click:
+              Analyze a deck and it will be saved in this browser automatically. Card lookups use
+              Scryfall; external requests are described in Privacy. Or open a sample in one click:
             </Typography>
             <Box
               sx={{
@@ -1084,8 +1117,10 @@ const MyAnalysesPage: React.FC = () => {
 
       {/* Privacy footer */}
       <Box sx={{ mt: 4, display: 'flex', gap: 1, justifyContent: 'center', flexWrap: 'wrap' }}>
-        <Chip label="Data stays on your device" size="small" variant="outlined" />
-        <Chip label="Nothing sent to servers" size="small" variant="outlined" />
+        <Chip label="Analyses stored in this browser" size="small" variant="outlined" />
+        <Button href="/privacy" size="small">
+          External requests & privacy
+        </Button>
         <Chip label="Full control of your data" size="small" variant="outlined" />
       </Box>
 

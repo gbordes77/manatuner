@@ -1,0 +1,45 @@
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2517 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+dist/index.html                                    12.74 kB │ gzip:   3.96 kB
+dist/assets/mulliganArchetype.worker-BPK14lCK.js   13.93 kB
+dist/assets/index-B402_fsG.css                     16.18 kB │ gzip:   4.11 kB
+dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+dist/assets/FloatingManaSymbols-BHOF-h0e.js         1.20 kB │ gzip:   0.64 kB
+dist/assets/CardImageTooltip-DDOtzoom.js            1.35 kB │ gzip:   0.70 kB
+dist/assets/AuthorPage-CxigvFw8.js                  3.90 kB │ gzip:   1.78 kB
+dist/assets/PrivacySettings-DhQ-KaGI.js             6.08 kB │ gzip:   2.51 kB
+dist/assets/ArticleDetailPage-DzJ-LcaT.js           7.75 kB │ gzip:   2.93 kB
+dist/assets/privacy-De2plahP.js                     8.19 kB │ gzip:   3.21 kB
+dist/assets/EnhancedCharts-BFSBeAN7.js              8.44 kB │ gzip:   2.50 kB
+dist/assets/AnalysisTab-MBwrdIae.js                 9.30 kB │ gzip:   3.05 kB
+dist/assets/StaticPages-s5lhJxAQ.js                12.32 kB │ gzip:   4.40 kB
+dist/assets/EnhancedSpellAnalysis-ROU0uyqY.js      13.15 kB │ gzip:   3.91 kB
+dist/assets/useLibraryProgress-D4UjdW5e.js         13.35 kB │ gzip:   5.27 kB
+dist/assets/LandGlossaryPage-C6cI57xV.js           13.70 kB │ gzip:   5.12 kB
+dist/assets/ManabaseFullTab-CbsagiZy.js            13.77 kB │ gzip:   4.84 kB
+dist/assets/ManaBlueprint-D2vFGnv_.js              17.84 kB │ gzip:   5.74 kB
+dist/assets/MyAnalysesPage-D99A5UWI.js             22.16 kB │ gzip:   6.87 kB
+dist/assets/MulliganTab-Dl2fHPY1.js                26.28 kB │ gzip:   8.75 kB
+dist/assets/MathematicsPage-Cthr5hOI.js            26.83 kB │ gzip:   7.58 kB
+dist/assets/GuidePage-DG91cwX4.js                  27.71 kB │ gzip:   8.52 kB
+dist/assets/ReferenceArticlesPage-DZmRlCwQ.js      28.20 kB │ gzip:   8.37 kB
+dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+dist/assets/vendor-mui-icons-qlCXnTuD.js           37.33 kB │ gzip:  11.34 kB
+dist/assets/PaymentPolicyPanel-C8okdHIe.js         44.15 kB │ gzip:   6.35 kB
+dist/assets/vendor-redux-75R2jQVp.js               46.95 kB │ gzip:  15.76 kB
+dist/assets/CastabilityTab-Bt8PQZMZ.js             70.82 kB │ gzip:  18.90 kB
+dist/assets/Onboarding-Dp-tN27a.js                101.80 kB │ gzip:  31.58 kB
+dist/assets/AnalyzerPage-JRlsKb-4.js              135.46 kB │ gzip:  37.71 kB
+dist/assets/index.es-DjSM56qC.js                  157.96 kB │ gzip:  52.59 kB
+dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+dist/assets/index-ChxEHWm4.js                     206.24 kB │ gzip:  58.75 kB
+dist/assets/vendor-mui-DIfVggoO.js                370.12 kB │ gzip: 111.39 kB
+dist/assets/jspdf.es.min-SPWfrMwg.js              385.89 kB │ gzip: 124.85 kB
+dist/assets/vendor-charts-clH8u0qK.js             419.29 kB │ gzip: 112.37 kB
+✓ built in 3.09s

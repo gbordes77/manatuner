@@ -1,0 +1,325 @@
+
+> manatuner@2.7.9 build:vercel
+> node scripts/delivery-gate.mjs
+
+[delivery gate] npm run lint
+
+> manatuner@2.7.9 lint
+> eslint src --ext .ts,.tsx --max-warnings=0
+
+[delivery gate] npm run type-check
+
+> manatuner@2.7.9 type-check
+> tsc --noEmit
+
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+
+ RUN  v4.1.10 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+
+ Test Files  79 passed (79)
+      Tests  801 passed (801)
+   Start at  08:34:23
+   Duration  8.53s (transform 3.27s, setup 4.37s, import 18.40s, tests 14.27s, environment 24.53s)
+
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] All candidate checks passed; build may finish.
+✔ every failing check prevents later build/publish readiness (2.115375ms)
+✔ a killed check also blocks readiness (0.4135ms)
+✔ successful checks run exactly once and in order (0.511459ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47.881875
+[delivery gate] npx vite build --outDir /Volumes/DataDisk/_Projects/Project Mana base V2/docs/engineering/reaudit-fixes-szrp1r9w/dist
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2517 modules transformed.
+Circular chunk: vendor-mui -> vendor-redux -> vendor-mui. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/paymentPolicy.worker-BJ_r2YNs.js        9.39 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/index.html                                    12.74 kB │ gzip:   3.96 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/mulliganArchetype.worker-BPK14lCK.js   13.93 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/index-B402_fsG.css                     16.18 kB │ gzip:   4.11 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/manaColors-CdHs3f_8.js                  0.42 kB │ gzip:   0.24 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/FloatingManaSymbols-CGGG-Ofw.js         1.20 kB │ gzip:   0.65 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/CardImageTooltip-C75y0D1F.js            1.35 kB │ gzip:   0.70 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/AuthorPage-rxs0tTcd.js                  3.90 kB │ gzip:   1.77 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/PrivacySettings-CwR6nnBM.js             6.08 kB │ gzip:   2.51 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/ArticleDetailPage-XSQLZVUi.js           7.75 kB │ gzip:   2.93 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/privacy-B0uiDL3j.js                     8.19 kB │ gzip:   3.21 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/EnhancedCharts-DjuTl-F5.js              8.44 kB │ gzip:   2.51 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/AnalysisTab-wb2Bwu54.js                 9.30 kB │ gzip:   3.05 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/StaticPages-Ca90RK-F.js                12.32 kB │ gzip:   4.40 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/EnhancedSpellAnalysis-DIAMpZAm.js      13.15 kB │ gzip:   3.91 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/useLibraryProgress-BsoLkk8b.js         13.35 kB │ gzip:   5.27 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/LandGlossaryPage-6War0eZ4.js           13.70 kB │ gzip:   5.12 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/ManabaseFullTab-DG_rFQ4H.js            13.77 kB │ gzip:   4.84 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/ManaBlueprint-DEhHObMF.js              17.84 kB │ gzip:   5.74 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/MyAnalysesPage-CMSQ_H_f.js             22.16 kB │ gzip:   6.87 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/MulliganTab-Buc_AU5r.js                26.28 kB │ gzip:   8.76 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/MathematicsPage-D89_RoYI.js            26.83 kB │ gzip:   7.58 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/GuidePage-CgAdZOSH.js                  27.70 kB │ gzip:   8.52 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/ReferenceArticlesPage-BO9mTyaj.js      28.20 kB │ gzip:   8.37 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/purify.es-Ktofpjop.js                  28.68 kB │ gzip:  10.96 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/vendor-mui-icons-CXd-WJEu.js           37.33 kB │ gzip:  11.34 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/PaymentPolicyPanel-CQ8ve-G3.js         44.15 kB │ gzip:   6.35 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/vendor-redux-Bc1t3V2X.js               46.95 kB │ gzip:  15.76 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/CastabilityTab-BfLpkg-x.js             70.82 kB │ gzip:  18.90 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/Onboarding-BYzdDrPn.js                101.80 kB │ gzip:  31.58 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/AnalyzerPage-Jy1-70MK.js              135.46 kB │ gzip:  37.71 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/index.es-DmCRpKFg.js                  157.96 kB │ gzip:  52.59 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/vendor-react-YPwVjS-F.js              191.95 kB │ gzip:  62.92 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/html2canvas.esm-DmLBsbfV.js           200.54 kB │ gzip:  46.94 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/index-DbZVbdKA.js                     206.14 kB │ gzip:  58.73 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/vendor-mui-CPNqbaNh.js                370.11 kB │ gzip: 111.38 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/jspdf.es.min-BpfHobeY.js              385.89 kB │ gzip: 124.85 kB
+docs/engineering/reaudit-fixes-szrp1r9w/dist/assets/vendor-charts-DRj6zYwE.js             419.29 kB │ gzip: 112.37 kB
+✓ built in 3.33s
+[delivery gate] node scripts/check-bundle-budget.mjs
+Bundle budget check (QW3)
+     409.5 KB  vendor-charts-DRj6zYwE.js
+     376.8 KB  jspdf.es.min-BpfHobeY.js
+     361.4 KB  vendor-mui-CPNqbaNh.js
+     201.3 KB  index-DbZVbdKA.js
+     195.8 KB  html2canvas.esm-DmLBsbfV.js
+     187.5 KB  vendor-react-YPwVjS-F.js
+     154.3 KB  index.es-DmCRpKFg.js
+     132.3 KB  AnalyzerPage-Jy1-70MK.js
+      99.4 KB  Onboarding-BYzdDrPn.js
+      69.2 KB  CastabilityTab-BfLpkg-x.js
+      45.9 KB  vendor-redux-Bc1t3V2X.js
+      43.1 KB  PaymentPolicyPanel-CQ8ve-G3.js
+      36.5 KB  vendor-mui-icons-CXd-WJEu.js
+      28.0 KB  purify.es-Ktofpjop.js
+      27.5 KB  ReferenceArticlesPage-BO9mTyaj.js
+
+OK — all budgets within limits
+[delivery gate] npm audit --audit-level=high
+# npm audit report
+
+@vitest/mocker  2.1.0 - 4.1.10
+Severity: moderate
+Vitest: Path Traversal / Arbitrary File Read via @vitest/mocker Redirect Mock - https://github.com/advisories/GHSA-82fw-gwwq-j7x9
+fix available via `npm audit fix`
+node_modules/@vitest/mocker
+  vitest  2.1.0-beta.1 - 4.1.10
+  Depends on vulnerable versions of @vitest/coverage-v8
+  Depends on vulnerable versions of @vitest/mocker
+  Depends on vulnerable versions of @vitest/ui
+  node_modules/vitest
+    @vitest/coverage-v8  2.1.0-beta.1 - 4.1.10
+    Depends on vulnerable versions of vitest
+    node_modules/@vitest/coverage-v8
+    @vitest/ui  2.1.0-beta.1 - 4.1.10
+    Depends on vulnerable versions of vitest
+    node_modules/@vitest/ui
+
+
+4 moderate severity vulnerabilities
+
+To address all issues, run:
+  npm audit fix
+[delivery gate] node scripts/prerender.mjs
+
+--- Prerendering ManaTuner ---
+
+Routes: 9 static + 65 articles + 27 authors = 101 total
+Concurrency: 4 · timeout: 20000ms
+Starting preview server...
+Preview server running at http://127.0.0.1:4174
+  Rendering /guide ...  Rendering /mathematics ...  Rendering /analyzer ...  Rendering / ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/mathematics/index.html
+  Rendering /land-glossary ...  Rendering /about ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/guide/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/analyzer/index.html
+  Rendering /privacy ...  Rendering /library ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/about/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/land-glossary/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/privacy/index.html
+  Rendering /my-analyses ...  Rendering /library/reid-duke-level-one-building-a-deck ...  Rendering /library/karsten-how-many-lands-2022 ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/my-analyses/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-building-a-deck/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-how-many-lands-2022/index.html
+  Rendering /library/kuisma-beat-bad-luck ...  Rendering /library/chapin-art-of-mulligan ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/index.html
+  Rendering /library/saito-part-2-having-fun ...  Rendering /library/reid-duke-level-one-mulligans ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/chapin-art-of-mulligan/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-2-having-fun/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/kuisma-beat-bad-luck/index.html
+  Rendering /library/reid-duke-level-one-sequencing ...  Rendering /library/pvddr-6-heuristics ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-mulligans/index.html
+  Rendering /library/manfield-prepare-tournament ...  Rendering /library/reid-duke-level-one-sideboarding ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-sequencing/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-6-heuristics/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/manfield-prepare-tournament/index.html
+  Rendering /library/reid-duke-level-one-sideboard-plans ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-sideboarding/index.html
+  Rendering /library/reid-duke-mulligans-part-iii-constructed ...  Rendering /library/pvddr-one-mistake-archive ...  Rendering /library/fortier-ladder-series ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-sideboard-plans/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-mulligans-part-iii-constructed/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-one-mistake-archive/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/fortier-ladder-series/index.html
+  Rendering /library/zvi-using-time-wisely ...  Rendering /library/pvddr-when-to-mulligan ...  Rendering /library/saito-part-1-concentration ...  Rendering /library/fortier-dash-method ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/zvi-using-time-wisely/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-when-to-mulligan/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-1-concentration/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/fortier-dash-method/index.html
+  Rendering /library/dagen-puzzling-improvements ...  Rendering /library/moudou-game-theory-series ...  Rendering /library/chapin-61-cards-russian-roulette ...  Rendering /library/yahi-maths-inventory ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/moudou-game-theory-series/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/dagen-puzzling-improvements/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/chapin-61-cards-russian-roulette/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/yahi-maths-inventory/index.html
+  Rendering /library/pvddr-best-vs-known ...  Rendering /library/chapin-information-cascades ...  Rendering /library/zvi-elephant-method ...  Rendering /library/saito-part-3-environment ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-best-vs-known/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/chapin-information-cascades/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/zvi-elephant-method/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-3-environment/index.html
+  Rendering /library/saito-part-4-metagame ...  Rendering /library/saito-part-5-connections ...  Rendering /library/saito-part-7-other-lessons ...  Rendering /library/pvddr-pv-rule ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-4-metagame/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-5-connections/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/saito-part-7-other-lessons/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-pv-rule/index.html
+  Rendering /library/karsten-colored-sources-2022 ...  Rendering /library/karsten-hypergeometric-intro ...  Rendering /library/karsten-colored-sources-2018-archive ...  Rendering /library/karsten-commander-manabase ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-hypergeometric-intro/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-colored-sources-2022/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-colored-sources-2018-archive/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-commander-manabase/index.html
+  Rendering /library/wizards-commander-brackets-2024 ...  Rendering /library/command-zone-podcast ...  Rendering /library/game-knights-command-zone-studios ...  Rendering /library/edhrec-articles-hub ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/wizards-commander-brackets-2024/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/command-zone-podcast/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/game-knights-command-zone-studios/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/edhrec-articles-hub/index.html
+  Rendering /library/limited-resources-podcast ...  Rendering /library/seventeen-lands-blog ...  Rendering /library/lsv-draft-signals-classic ...  Rendering /library/reid-duke-signals-booster-draft ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/limited-resources-podcast/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/seventeen-lands-blog/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/lsv-draft-signals-classic/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-signals-booster-draft/index.html
+  Rendering /library/reid-duke-sideboarding-limited ...  Rendering /library/reid-duke-mulligans-part-ii-limited ...  Rendering /library/chapin-next-level-deckbuilding ...  Rendering /library/reid-duke-level-one-role-assignment ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-sideboarding-limited/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-mulligans-part-ii-limited/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/chapin-next-level-deckbuilding/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-role-assignment/index.html
+  Rendering /library/reid-duke-level-one-play-or-draw ...  Rendering /library/chapin-next-level-magic-tempo ...  Rendering /library/reid-duke-level-one-full-course ...  Rendering /library/zvi-whos-the-beatdown-2-multitasking ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-play-or-draw/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/chapin-next-level-magic-tempo/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/reid-duke-level-one-full-course/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/zvi-whos-the-beatdown-2-multitasking/index.html
+  Rendering /library/flores-whos-the-beatdown ...  Rendering /library/pvddr-ten-commandments ...  Rendering /library/karsten-london-mulligan ...  Rendering /library/lsv-mulligans ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/flores-whos-the-beatdown/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-ten-commandments/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/karsten-london-mulligan/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/lsv-mulligans/index.html
+  Rendering /library/pvddr-how-to-sideboard ...  Rendering /library/wizards-banned-restricted ...  Rendering /library/boa-mtgo-getting-started ...  Rendering /library/depraz-mtgo-stops ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pvddr-how-to-sideboard/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/wizards-banned-restricted/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/depraz-mtgo-stops/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/boa-mtgo-getting-started/index.html
+  Rendering /library/pcm-15-avoir-un-plan ...  Rendering /library/battle-chads-mtg-study-win-rates ...  Rendering /library/pcm-67-coherence-depraz ...  Rendering /library/pcm-92-tourner-cartes ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pcm-15-avoir-un-plan/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/battle-chads-mtg-study-win-rates/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pcm-67-coherence-depraz/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pcm-92-tourner-cartes/index.html
+  Rendering /library/pcm-164-erwan-control ...  Rendering /library/pcm-125-heuristiques ...  Rendering /library/lsv-looter-problem-lost ...  Rendering /library/author/reid-duke ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pcm-164-erwan-control/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/pcm-125-heuristiques/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/lsv-looter-problem-lost/index.html
+  Rendering /library/author/matti-kuisma ...  Rendering /library/author/frank-karsten ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/reid-duke/index.html
+  Rendering /library/author/patrick-chapin ...  Rendering /library/author/tomoharu-saito ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/matti-kuisma/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/frank-karsten/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/patrick-chapin/index.html
+  Rendering /library/author/paulo-vitor-damo-da-rosa ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/tomoharu-saito/index.html
+  Rendering /library/author/remi-fortier ...  Rendering /library/author/seth-manfield ...  Rendering /library/author/zvi-mowshowitz ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/paulo-vitor-damo-da-rosa/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/seth-manfield/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/remi-fortier/index.html
+  Rendering /library/author/pierre-dagen ...  Rendering /library/author/moudou ...  Rendering /library/author/anael-yahi ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/zvi-mowshowitz/index.html
+  Rendering /library/author/gavin-verhey-wizards-of-the-coast ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/pierre-dagen/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/moudou/index.html
+  Rendering /library/author/jimmy-wong-josh-lee-kwai ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/anael-yahi/index.html
+  Rendering /library/author/josh-lee-kwai-jimmy-wong ...  Rendering /library/author/edhrec-staff-contributors ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/gavin-verhey-wizards-of-the-coast/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/jimmy-wong-josh-lee-kwai/index.html
+  Rendering /library/author/marshall-sutcliffe-luis-scott-vargas ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/josh-lee-kwai-jimmy-wong/index.html
+  Rendering /library/author/17lands-team ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/edhrec-staff-contributors/index.html
+  Rendering /library/author/luis-scott-vargas ...  Rendering /library/author/mike-flores ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/marshall-sutcliffe-luis-scott-vargas/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/17lands-team/index.html
+  Rendering /library/author/wizards-of-the-coast ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/luis-scott-vargas/index.html
+  Rendering /library/author/el-gran-boa ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/mike-flores/index.html
+  Rendering /library/author/jean-emmanuel-depraz ...  Rendering /library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/wizards-of-the-coast/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/el-gran-boa/index.html
+  Rendering /library/author/charles-wickham-theau-mery ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/jean-emmanuel-depraz/index.html
+  Rendering /library/author/charles-wickham-theau-mery-jean-emmanuel-depraz ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/battle-chads-with-eduardo-sajgalik-sahar-mirhadi/index.html
+  Rendering /library/author/theau-mery-erwan-maisonneuve ... -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/charles-wickham-theau-mery/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/charles-wickham-theau-mery-jean-emmanuel-depraz/index.html
+ -> docs/engineering/reaudit-fixes-szrp1r9w/dist/library/author/theau-mery-erwan-maisonneuve/index.html
+
+Prerender complete: 101 succeeded, 0 failed
+---
+
+HTML contract passed: 101 public routes, unique metadata, local assets and noindex 404. Vercel serves unmatched static paths with 404.html; local preview is not evidence of deployed routing.
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[WebServer] (node:87011) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 16 tests using 1 worker
+
+(node:87012) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:28:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear
+[2/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:38:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear
+[3/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:51:7 › Accessibility smoke (EN) › Analyzer with fixed card metadata — no critical/serious axe
+[4/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:71:7 › Accessibility smoke (EN) › Analyzer navigation is unique in the active desktop or mobile menu
+[5/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:87:7 › Accessibility smoke (EN) › Keyboard: tab reaches primary actions on home
+[6/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:98:7 › Accessibility smoke (EN) › Footer contrast text is readable (grey.800 / grey.300)
+[7/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:111:7 › Accessibility smoke (EN) › Home hero shows product preview (P2-2)
+[8/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:117:7 › Accessibility smoke (EN) › Analyzer primary buttons use text + icons (no emoji-only)
+[9/16] [chromium] › tests/e2e/accessibility/a11y.spec.js:127:7 › Accessibility smoke (EN) › After analyze, focus lands on Health Score verdict (P2-11)
+[10/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[11/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[12/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[13/16] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[14/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:4:5 › initial HTTP content, 404, asset and direct analyzer reload
+[15/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:40:5 › direct analyzer query and reload mount the candidate chunks
+[16/16] [chromium] › tests/e2e/delivery/html-contract.spec.js:50:5 › contrast checker detects a real footer regression
+  16 passed (19.4s)
+[delivery gate] All candidate checks passed; build may finish.

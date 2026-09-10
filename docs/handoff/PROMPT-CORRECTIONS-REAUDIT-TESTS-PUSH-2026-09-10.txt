@@ -1,0 +1,22 @@
+MISE À JOUR PRIORITAIRE — reprise du 10 septembre 2026 : uniquement origin/codex/persona-followup-2026-09-10 ; auto-déploiement désactivé. Aucun main, merge, force-push ou déploiement. Les consignes main ci-dessous sont historiques et remplacées par la dernière demande utilisateur. Voir la mission et le bilan reaudit-fixes-szrp1r9w/FINAL.md.
+
+Reprends ManaTuner dans /Volumes/DataDisk/_Projects/Project Mana base V2.
+
+Lis AGENTS.md, puis exécute intégralement la mission :
+docs/handoff/MISSION-CORRECTIONS-REAUDIT-TESTS-PUSH-2026-09-10.md
+Lis aussi le réaudit, les preuves et le contrat de livraison référencés dans ce fichier.
+
+Je t’autorise à réaliser les corrections R01–R07, les tests, puis à intégrer, commiter et pousser tout le travail de cette mission sur origin/main. Aucune branche annexe : travaille sur main et intègre aussi les correctifs pertinents déjà commités sur la branche existante, sans perdre les changements locaux. Cette instruction remplace les anciennes consignes de branche dédiée. Ne t’arrête pas à un plan ni à un commit local. Aucun force-push ou activation Sentry. Le push main peut déclencher le déploiement natif existant : suis et rapporte son état, sans déploiement manuel supplémentaire.
+
+Commence par context-manager local s’il existe, sinon agent-organizer. Délègue les lots indépendants aux spécialistes disponibles avec ownership des fichiers. Préserve tous les changements utilisateur préexistants.
+
+Corrige les incohérences Mathematics/Guide/Privacy, les répétitions et arrondis de Compare, les compteurs et la pédagogie, puis le contexte EDH/partage/export défini dans la mission. Préserve les formules et les refus hors modèle.
+
+Vérifie les parcours réels et les pages modifiées, exécute les tests ciblés, le gate npm run build:vercel et les suites Chromium prévues sur un nouveau candidat avec preuves isolées. Ne réutilise pas dist-06 comme preuve des nouveaux changements. Tiens le journal de mission et la documentation de suivi à jour.
+
+Avant le commit, relis le diff et indexe seulement les corrections, tests, preuves compactes et documents pertinents. N’inclus pas les rapports de tests ou fichiers personnels préexistants. Vérifie que tous les correctifs attendus sont intégrés à main. L’exclusion de déploiement de l’ancienne branche ne s’applique pas à main. Respecte les hooks et vérifie que le code finalement commité correspond au candidat testé.
+
+Pousse avec :
+git push origin main:main
+
+Vérifie que la branche courante est main avant le commit et le push, puis que le SHA origin/main correspond au SHA main local. Termine avec les corrections réalisées, tests réellement exécutés, preuves, SHA du commit et du push, état des checks distants et réserves restantes. Ne présente pas ce push comme une publication du site.

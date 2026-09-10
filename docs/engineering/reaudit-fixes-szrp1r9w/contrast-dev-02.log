@@ -1,0 +1,325 @@
+
+Running 8 tests using 1 worker
+
+(node:91053) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 390
+[2/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 390
+  1) [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 390
+
+    Error: [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#0a4f85",
+                  "bgColor": "#0d0d0f",
+                  "contrastRatio": 2.28,
+                  "fontSize": "18.0pt (24px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<body>",
+                    "target": [
+                      "body"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2 class=\"MuiTypography-root MuiTypography-h4 css-1q0saw8-MuiTypography-root\">The 5 Analysis Tabs</h2>",
+            "target": [
+              ".css-8qb8m4.MuiBox-root:nth-child(4) > .css-3b2wtl.MuiBox-root > .css-1q0saw8-MuiTypography-root"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1"
+          }
+        ]
+      }
+    ]
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 58
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#0d0d0f",
+    +               "contrastRatio": 2.28,
+    +               "expectedContrastRatio": "3:1",
+    +               "fgColor": "#0a4f85",
+    +               "fontSize": "18.0pt (24px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1",
+    +         "html": "<h2 class=\"MuiTypography-root MuiTypography-h4 css-1q0saw8-MuiTypography-root\">The 5 Analysis Tabs</h2>",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-8qb8m4.MuiBox-root:nth-child(4) > .css-3b2wtl.MuiBox-root > .css-1q0saw8-MuiTypography-root",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      515 |         const contrast = await new AxeBuilder({ page }).include('main').withRules(['color-contrast']).analyze()
+      516 |         await testInfo.attach(`${route.slice(1)}-${width}-${colorScheme}-contrast`, { body: JSON.stringify(contrast), contentType: 'application/json' })
+    > 517 |         expect(contrast.violations, JSON.stringify(contrast.violations, null, 2)).toEqual([])
+          |                                                                                   ^
+      518 |       }
+      519 |     })
+      520 |   }
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/persona-followup.spec.js:517:83
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-g-34e5a-ast-themes-and-viewport-390-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-g-34e5a-ast-themes-and-viewport-390-chromium/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-g-34e5a-ast-themes-and-viewport-390-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-g-34e5a-ast-themes-and-viewport-390-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:91139) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 390
+[4/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 390
+[5/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+  2) [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+
+    Error: [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "tags": [
+          "cat.color",
+          "wcag2aa",
+          "wcag143",
+          "TTv5",
+          "TT13.c",
+          "EN-301-549",
+          "EN-9.1.4.3",
+          "ACT",
+          "RGAAv4",
+          "RGAA-3.2.1"
+        ],
+        "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+        "nodes": [
+          {
+            "any": [
+              {
+                "id": "color-contrast",
+                "data": {
+                  "fgColor": "#0a4f85",
+                  "bgColor": "#0d0d0f",
+                  "contrastRatio": 2.28,
+                  "fontSize": "18.0pt (24px)",
+                  "fontWeight": "bold",
+                  "messageKey": null,
+                  "expectedContrastRatio": "3:1"
+                },
+                "relatedNodes": [
+                  {
+                    "html": "<body>",
+                    "target": [
+                      "body"
+                    ]
+                  }
+                ],
+                "impact": "serious",
+                "message": "Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1"
+              }
+            ],
+            "all": [],
+            "none": [],
+            "impact": "serious",
+            "html": "<h2 class=\"MuiTypography-root MuiTypography-h4 css-1q0saw8-MuiTypography-root\">",
+            "target": [
+              ".css-8qb8m4.MuiBox-root:nth-child(6) > .css-3b2wtl.MuiBox-root > h2"
+            ],
+            "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1"
+          }
+        ]
+      }
+    ]
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 58
+
+    - Array []
+    + Array [
+    +   Object {
+    +     "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    +     "help": "Elements must meet minimum color contrast ratio thresholds",
+    +     "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright",
+    +     "id": "color-contrast",
+    +     "impact": "serious",
+    +     "nodes": Array [
+    +       Object {
+    +         "all": Array [],
+    +         "any": Array [
+    +           Object {
+    +             "data": Object {
+    +               "bgColor": "#0d0d0f",
+    +               "contrastRatio": 2.28,
+    +               "expectedContrastRatio": "3:1",
+    +               "fgColor": "#0a4f85",
+    +               "fontSize": "18.0pt (24px)",
+    +               "fontWeight": "bold",
+    +               "messageKey": null,
+    +             },
+    +             "id": "color-contrast",
+    +             "impact": "serious",
+    +             "message": "Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1",
+    +             "relatedNodes": Array [
+    +               Object {
+    +                 "html": "<body>",
+    +                 "target": Array [
+    +                   "body",
+    +                 ],
+    +               },
+    +             ],
+    +           },
+    +         ],
+    +         "failureSummary": "Fix any of the following:
+    +   Element has insufficient color contrast of 2.28 (foreground color: #0a4f85, background color: #0d0d0f, font size: 18.0pt (24px), font weight: bold). Expected contrast ratio of 3:1",
+    +         "html": "<h2 class=\"MuiTypography-root MuiTypography-h4 css-1q0saw8-MuiTypography-root\">",
+    +         "impact": "serious",
+    +         "none": Array [],
+    +         "target": Array [
+    +           ".css-8qb8m4.MuiBox-root:nth-child(6) > .css-3b2wtl.MuiBox-root > h2",
+    +         ],
+    +       },
+    +     ],
+    +     "tags": Array [
+    +       "cat.color",
+    +       "wcag2aa",
+    +       "wcag143",
+    +       "TTv5",
+    +       "TT13.c",
+    +       "EN-301-549",
+    +       "EN-9.1.4.3",
+    +       "ACT",
+    +       "RGAAv4",
+    +       "RGAA-3.2.1",
+    +     ],
+    +   },
+    + ]
+
+      515 |         const contrast = await new AxeBuilder({ page }).include('main').withRules(['color-contrast']).analyze()
+      516 |         await testInfo.attach(`${route.slice(1)}-${width}-${colorScheme}-contrast`, { body: JSON.stringify(contrast), contentType: 'application/json' })
+    > 517 |         expect(contrast.violations, JSON.stringify(contrast.violations, null, 2)).toEqual([])
+          |                                                                                   ^
+      518 |       }
+      519 |     })
+      520 |   }
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/persona-followup.spec.js:517:83
+
+    attachment #4: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-m-f36cd-st-themes-and-viewport-1440-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-m-f36cd-st-themes-and-viewport-1440-chromium/error-context.md
+
+    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-m-f36cd-st-themes-and-viewport-1440-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/reaudit-fixes-szrp1r9w/contrast-dev-02/persona-followup-R01–R07-m-f36cd-st-themes-and-viewport-1440-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:91304) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[6/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 1440
+[7/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 1440
+[8/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /my-analyses keyboard, contrast, themes and viewport 1440
+  2 failed
+    [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 390
+    [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+  6 passed (53.4s)

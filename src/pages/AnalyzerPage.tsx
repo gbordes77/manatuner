@@ -412,7 +412,7 @@ const AnalyzerPage: React.FC = () => {
             'Post-board sideboard swap editor',
             'Monte Carlo mulligan simulation (10,000 hands)',
             'Turn-by-turn color requirement probabilities',
-            'Export blueprint as PNG, PDF, or JSON',
+            'Export blueprint as PNG, PDF, JSON or CSV',
           ],
           isPartOf: { '@id': 'https://www.manatuner.app/#software' },
           offers: {
@@ -445,6 +445,12 @@ const AnalyzerPage: React.FC = () => {
       >
         {/* Floating mana symbols background */}
         <FloatingManaSymbols />
+        {exactExample && (
+          <Alert severity="info" sx={{ mb: 2 }}>
+            Synthetic model fixture: 24 Plains / 36 Savannah Lions demonstrates a supported exact
+            calculation. This is not a tournament-legal decklist.
+          </Alert>
+        )}
 
         {/* Commander preset banner — shown whenever the user arrived via
             /analyzer?format=commander (Library → Analyzer handoff) OR loaded
@@ -994,7 +1000,7 @@ const AnalyzerPage: React.FC = () => {
                       icon={<DownloadIcon sx={{ fontSize: 18 }} />}
                       iconPosition="start"
                       label={ANALYZER_TABS[4]}
-                      aria-label="Blueprint - Export analysis as PNG, PDF or JSON"
+                      aria-label="Blueprint - Export analysis as PNG, PDF, JSON or CSV"
                       id="analyzer-tab-4"
                       aria-controls="analyzer-tabpanel-4"
                       data-testid="tab-blueprint"

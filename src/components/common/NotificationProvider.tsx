@@ -1,4 +1,4 @@
-import { Alert, AlertColor, CssBaseline, Snackbar } from '@mui/material'
+import { Alert, AlertColor, CssBaseline, GlobalStyles, Snackbar } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import { darkTheme, lightTheme } from '../../theme'
@@ -68,6 +68,13 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     <CombinedContext.Provider value={contextValue}>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <CssBaseline />
+        <GlobalStyles
+          styles={{
+            body: {
+              background: isDark ? darkTheme.palette.background.default : 'var(--bg-primary)',
+            },
+          }}
+        />
         {children}
 
         <Snackbar

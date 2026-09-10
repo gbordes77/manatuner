@@ -302,7 +302,12 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = ({
               label={statusMeta.label}
               color={statusMeta.color === 'default' ? undefined : statusMeta.color}
               variant="outlined"
-              sx={{ height: 22, fontSize: '0.65rem', fontWeight: 600 }}
+              sx={{
+                height: 22,
+                fontSize: '0.65rem',
+                fontWeight: 600,
+                color: statusMeta.color === 'warning' && !isDark ? '#805600' : undefined,
+              }}
             />
           )}
         </Stack>

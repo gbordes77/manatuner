@@ -81,6 +81,10 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
   const stabilityScore = calculateStabilityScore(analysisResult)
   const stability = getStabilityLevel(stabilityScore)
 
+  const commanderCount = analysisResult.cards
+    .filter((card) => card.isCommander && !card.isSideboard)
+    .reduce((total, card) => total + card.quantity, 0)
+
   // Auto-detect format based on deck size
   const detectedFormat =
     format ||
@@ -347,6 +351,9 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
         </Menu>
       </Box>
 
+      <Typography variant="caption" display="block" sx={{ mb: 1 }}>
+        Export as PNG, PDF, JSON or CSV. CSV contains separate deck and summary tables.
+      </Typography>
       <Typography variant="caption" sx={{ display: { xs: 'block', md: 'none' }, mb: 1 }}>
         Scroll horizontally to view the full blueprint. Exports include its entire width.
       </Typography>
@@ -424,7 +431,12 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                     }}
                   />
                   <Chip
-                    label={`${analysisResult.totalCards} cards`}
+                    data-testid="blueprint-deck-zones"
+                    label={
+                      commanderCount > 0
+                        ? `Library: ${analysisResult.totalCards} + commander: ${commanderCount}`
+                        : `${analysisResult.totalCards} cards`
+                    }
                     size="small"
                     sx={{
                       bgcolor: BLUEPRINT_COLORS.backgroundLight,
@@ -782,7 +794,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                       fontFamily: 'monospace',
                     }}
                   >
-                    OPTIMAL
+                    HIGH INDEX
                   </Typography>
                 </Box>
               </Box>

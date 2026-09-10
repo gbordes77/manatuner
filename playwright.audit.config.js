@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
+const auditPort = Number(process.env.AUDIT_PORT || 3000)
+if (!Number.isInteger(auditPort) || auditPort < 1024 || auditPort > 65535)
+  throw new Error('Invalid AUDIT_PORT')
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: [
@@ -14,11 +17,19 @@ export default defineConfig({
   workers: 1,
   reporter: 'line',
   outputDir: process.env.AUDIT_TEST_OUTPUT || 'test-results/audit',
-  use: { baseURL: 'http://127.0.0.1:3000', screenshot: 'only-on-failure', trace: 'retain-on-failure' },
+  use: {
+    baseURL: `http://127.0.0.1:${auditPort}`,
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
+  },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: { command: 'CANDIDATE_PORT=3000 node scripts/serve-candidate.mjs', url: 'http://127.0.0.1:3000', reuseExistingServer: false },
+  webServer: {
+    command: `CANDIDATE_PORT=${auditPort} node scripts/serve-candidate.mjs`,
+    url: `http://127.0.0.1:${auditPort}`,
+    reuseExistingServer: false,
+  },
 })

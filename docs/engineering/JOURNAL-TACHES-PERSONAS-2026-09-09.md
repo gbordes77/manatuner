@@ -226,3 +226,7 @@ T00–T07 vérifiés localement selon les preuves finales ; T08 vérifié techni
 799tests/79fichiers +3tests du gate +101routes +61Chromium +8WebKit acquis. Firefox8cas bloqués avant navigation, y compris après installation isolée neuve ; ce n'est pas un succès ou un défaut applicatif prouvé. Voir FINAL pour les réserves juridiques/humaines et avis moderate de dépendances dev.
 
 Revue exports : deux pages PDF rendues/inspectées, PNG complet, CSV lu par parseur indépendant ; flags commandant/sideboard et totaux vérifiés. Revue sombre : problèmes CSS découverts puis corrigés, axe ciblé aux quatre dimensions/deux thèmes. Trois rapports préexistants strictement préservés, vitest.config.js inclut sa seule exclusion préexistante pertinente.
+
+## Résidus R01–R07 — campagne du10septembre2026
+
+Corrections et nouvelle validation dans [FINAL](reaudit-fixes-szrp1r9w/FINAL.md). Gate04:801tests/79fichiers+3tests gate+101routes+16Chromium, audit33 et personas23. Motifs Compare, chiffres, modèle/FAQ, confidentialité, EDH/CSV et fixture vérifiés. Fond sombre/contrastes découverts pendant validation puis corrigés, traces des échecs conservées. Dernière autorisation de cette mission : uniquement branche codex/persona-followup-2026-09-10, pas main/merge/déploiement. Confirmation utilisateur et validations externes distinctes.
