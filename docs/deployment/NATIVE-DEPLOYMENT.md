@@ -7,3 +7,11 @@ Le CLI Vercel n'est plus une dépendance du dépôt : ses builders serveur n'int
 La compilation Vercel reste `npm run build:vercel`. Ce retrait ne corrige pas les dépendances internes du service Vercel ou d'un CLI installé séparément ; l'audit npm décrit uniquement le graphe effectivement installé par ce dépôt.
 
 Sources : [intégration GitHub](https://vercel.com/docs/git/vercel-for-github), [rollback de production](https://vercel.com/docs/deployments/rollback-production-deployment).
+
+## Bibliothèques Chromium dans le build Vercel
+
+Le build du commit e14f329 a reproduit le manque de `libnspr4.so` après téléchargement réussi de Chromium. L'image Amazon Linux2023 de Vercel permet l'installation de paquets système avec `dnf` dans Install Command ([documentation officielle](https://vercel.com/docs/builds/build-image)).
+
+`node scripts/setup-build-browser.mjs && npm ci` installe les bibliothèques natives manquantes seulement sur Linux avec `VERCEL=1` ou `true`, puis installe les dépendances verrouillées. Toute erreur ou interruption bloque l'installation. Le binaire Chromium verrouillé par Playwright, ses options, le gate `build:vercel`, le prerender complet et les contrôles d'accessibilité restent identiques. Aucun déploiement CLI supplémentaire.
+
+Validation ciblée : `node --test scripts/setup-build-browser.node-test.mjs scripts/delivery-gate.test.mjs`. Le test natif de l'image réelle appartient au déploiement Vercel du nouveau commit ; un succès sur macOS ne le remplace pas.

@@ -157,5 +157,6 @@
     "deploymentEnabled": {
       "codex/persona-followup-2026-09-10": false
     }
-  }
+  },
+  "installCommand": "node scripts/setup-build-browser.mjs && npm ci"
 }
