@@ -1,0 +1,33 @@
+# ManaTuner CSV export
+# Deck:,Unnamed Deck
+# Format: Constructed
+# Generated: 2026-09-14T04:59:35.004Z
+# Stability: 99
+# Engine: 2.7.9
+# health: Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.
+# blueprint: "Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%)."
+# mulligan: Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.
+# limitation: "These are heuristic indices, not win probabilities or guaranteed keep decisions."
+# Model: saved lands-only potential; PLAY; no mulligans or ramp; X=2; target turn=max(1 mana value); target spell draw excluded
+# Share links carry deck/name/tab only; interactive model settings are not transported
+
+section,card_name,quantity,cmc,mana_cost,colors,is_land,produces,is_sideboard,is_commander
+deck,Plains,24,0,,,true,W,false,false
+deck,Savannah Lions,36,1,{W},W,false,,false,false
+
+section,metric,value
+summary,total_cards,60
+summary,total_lands,24
+summary,land_ratio,0.4
+summary,average_cmc,1
+summary,effective_sources_W,24
+summary,effective_sources_U,0
+summary,effective_sources_B,0
+summary,effective_sources_R,0
+summary,effective_sources_G,0
+summary,effective_sources_C,0
+summary,pip_count_W,36
+summary,pip_count_U,0
+summary,pip_count_B,0
+summary,pip_count_R,0
+summary,pip_count_G,0

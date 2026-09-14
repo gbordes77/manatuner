@@ -5,7 +5,7 @@
  */
 
 import type { ScryfallCard } from '../types/scryfall'
-import { abortableDelay, fetchJsonWithTimeout, isCancellation, throwIfAborted } from './http'
+import { fetchJsonWithTimeout, HttpTimeoutError, isCancellation, throwIfAborted } from './http'
 import { BoundedMap } from './scryfall'
 
 // Audit fix H4 (2026-04-13): BoundedMap (LRU, cap 500) instead of unbounded Map.
@@ -52,13 +52,16 @@ export async function batchFetchFromScryfall(
         }
       }
     } catch (error) {
+      // A child request deadline is recoverable; a parent cancellation/deadline is not.
+      throwIfAborted(signal)
+      if (error instanceof HttpTimeoutError) {
+        console.warn('Scryfall collection timed out; continuing with named lookups', error)
+        // Skip remaining collections in this invocation. The caller resolves uncached
+        // cards exact-first under its original, unrenewed analysis deadline.
+        return
+      }
       if (isCancellation(error)) throw error
       console.warn('Scryfall batch fetch failed, falling back to individual calls', error)
-    }
-
-    // Respect Scryfall rate limit (100ms between requests)
-    if (i + BATCH_SIZE < uncached.length) {
-      await abortableDelay(100, signal)
     }
   }
 }

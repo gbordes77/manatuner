@@ -1,0 +1,133 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/hooks/__tests__/useCardImage.network.test.ts (4 tests | 1 failed) 26ms
+     × aborts on name change and never displays the old image response 7ms
+(node:70121) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 6)
+(Use `node --trace-warnings ...` to show where the warning was created)
+stdout | src/services/__tests__/networkCancellation.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ src/services/__tests__/networkCancellation.test.ts (7 tests | 5 failed) 10021ms
+     × cancels a land collection body without falling back or caching absence 2ms
+     × cancels exact-to-fuzzy card fallback and does not cache an aborted response 5002ms
+     × distinguishes exact+fuzzy 404 from transient card failure 5004ms
+     × does not negative-cache transient land failures and can recover 3ms
+     × bounds the entire sequential deck resolution at 30 seconds 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/hooks/__tests__/useCardImage.network.test.ts > F08 card image network lifecycle > aborts on name change and never displays the old image response
+AssertionError: expected undefined to be true // Object.is equality
+
+- Expected:
+true
+
++ Received:
+undefined
+
+ ❯ src/hooks/__tests__/useCardImage.network.test.ts:47:32
+     45|     await act(async () => vi.advanceTimersByTimeAsync(300))
+     46|     rerender({ name: 'F08 New Image' })
+     47|     expect(oldSignal?.aborted).toBe(true)
+       |                                ^
+     48|     await act(async () => resolveOld({ image_uris: { normal: 'https://…
+     49|     expect(result.current).toMatchObject({ imageUrl: null, loading: fa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 resolver lineage and cache integrity > cancels a land collection body without falling back or caching absence
+AssertionError: expected "vi.fn()" to be called once, but got 0 times
+ ❯ src/services/__tests__/networkCancellation.test.ts:76:18
+     74|     const outcome = fetchLandDataBatch(['F08 Test Land'], controller.s…
+     75|     await vi.advanceTimersByTimeAsync(100)
+     76|     expect(json).toHaveBeenCalledOnce()
+       |                  ^
+     77|     controller.abort()
+     78|     expect(await outcome).toMatchObject({ name: 'AbortError' })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 resolver lineage and cache integrity > cancels exact-to-fuzzy card fallback and does not cache an aborted response
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/services/__tests__/networkCancellation.test.ts:83:3
+     81|   })
+     82|
+     83|   it('cancels exact-to-fuzzy card fallback and does not cache an abort…
+       |   ^
+     84|     const { fetchCardFromScryfallWithMeta, getCardResolverCacheSize } =
+     85|       await import('../cardResolver')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 resolver lineage and cache integrity > distinguishes exact+fuzzy 404 from transient card failure
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/services/__tests__/networkCancellation.test.ts:103:3
+    101|   })
+    102|
+    103|   it('distinguishes exact+fuzzy 404 from transient card failure', asyn…
+       |   ^
+    104|     const { fetchCardFromScryfallWithMeta } = await import('../cardRes…
+    105|     const fetchMock = vi
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 resolver lineage and cache integrity > does not negative-cache transient land failures and can recover
+HttpTimeoutError: Request timed out after 8000ms
+ ❯ src/services/http.ts:84:28
+     82|   externalSignal?.addEventListener('abort', onAbort, { once: true })
+     83|   const timer = setTimeout(
+     84|     () => controller.abort(new HttpTimeoutError(`Request timed out aft…
+       |                            ^
+     85|     timeoutMs
+     86|   )
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/services/__tests__/networkCancellation.test.ts > F08 resolver lineage and cache integrity > bounds the entire sequential deck resolution at 30 seconds
+AssertionError: expected 0 to be greater than 1
+ ❯ src/services/__tests__/networkCancellation.test.ts:169:19
+    167|     await vi.advanceTimersByTimeAsync(29999)
+    168|     const calls = fetchMock.mock.calls.length
+    169|     expect(calls).toBeGreaterThan(1)
+       |                   ^
+    170|     await vi.advanceTimersByTimeAsync(1)
+    171|     expect(await outcome).toBeInstanceOf(HttpTimeoutError)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+HttpTimeoutError: Request timed out after 8000ms
+ ❯ src/services/http.ts:84:28
+     82|   externalSignal?.addEventListener('abort', onAbort, { once: true })
+     83|   const timer = setTimeout(
+     84|     () => controller.abort(new HttpTimeoutError(`Request timed out aft…
+       |                            ^
+     85|     timeoutMs
+     86|   )
+ ❯ callTimer ../Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:1773:25
+ ❯ Object.next ../Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:2566:18
+ ❯ Immediate.<anonymous> ../Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:2669:48
+ ❯ processImmediate node:internal/timers:504:21
+
+This error originated in "src/services/__tests__/networkCancellation.test.ts" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "does not negative-cache transient land failures and can recover". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  6 failed | 47 passed (53)
+     Errors  1 error
+   Start at  06:25:04
+   Duration  11.45s (transform 859ms, setup 565ms, import 1.07s, tests 11.53s, environment 5.70s)
+

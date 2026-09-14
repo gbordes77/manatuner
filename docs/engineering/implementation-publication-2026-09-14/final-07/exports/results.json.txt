@@ -1,0 +1,32 @@
+[
+  {
+    "id": "constructed",
+    "width": 390,
+    "theme": "dark",
+    "total": 60,
+    "commander": 0,
+    "lands": 24,
+    "goodHand": 77,
+    "reportMatchesDownload": true
+  },
+  {
+    "id": "commander",
+    "width": 1440,
+    "theme": "light",
+    "total": 99,
+    "commander": 1,
+    "lands": 43,
+    "goodHand": 77,
+    "reportMatchesDownload": true
+  },
+  {
+    "id": "formula",
+    "width": 390,
+    "theme": "light",
+    "total": 60,
+    "commander": 0,
+    "lands": 59,
+    "goodHand": 0,
+    "reportMatchesDownload": true
+  }
+]

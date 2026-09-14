@@ -1,0 +1,4 @@
+
+> manatuner@2.7.9 lint
+> eslint src --ext .ts,.tsx --max-warnings=0
+

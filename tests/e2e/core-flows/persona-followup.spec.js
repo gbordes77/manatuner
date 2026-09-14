@@ -100,7 +100,14 @@ test('T07 JSON and CSV retain deck identity, totals, engine and score definition
     expect.arrayContaining(['health', 'blueprint', 'mulligan', 'limitation'])
   )
   expect(data.assumptions.playDraw).toBe('PLAY')
-  expect(bodies.csv).toContain('# Deck: "Persona, ""White"""')
+  const metadataLine = bodies.csv.split('\n').find((line) => line.startsWith('# Deck:,'))
+  expect(metadataLine).toBeDefined()
+  // Decode the single CSV value; verify identity, not an obsolete comment layout.
+  const encodedName = metadataLine.slice('# Deck:,'.length)
+  const decodedName = encodedName.startsWith('"')
+    ? encodedName.slice(1, -1).replace(/""/g, '"')
+    : encodedName
+  expect(decodedName).toBe(data.deckName)
   expect(bodies.csv).toContain(`# Engine: ${data.engineVersion}`)
   expect(bodies.csv).toContain('deck,Plains,24,')
   expect(bodies.csv).toContain('deck,Savannah Lions,36,')
@@ -472,7 +479,7 @@ test('R03/R05 synthetic snapshot boundary keeps zero distinct from unavailable',
 
 for (const width of [390, 1440]) {
   for (const route of ['/mathematics', '/guide', '/library', '/my-analyses']) {
-    test(`R01–R07 ${route} keyboard, contrast, themes and viewport ${width}`, async ({
+    test(`@visual R01–R07 ${route} keyboard, contrast, themes and viewport ${width}`, async ({
       page,
     }, testInfo) => {
       await page.setViewportSize({ width, height: 900 })
@@ -481,6 +488,8 @@ for (const width of [390, 1440]) {
         await page.evaluate((theme) => localStorage.setItem('manatuner-theme', theme), colorScheme)
         await page.goto(route)
         await expect(page.getByRole('main')).toBeVisible()
+        // Main belongs to the shell; wait for the lazy page before observing animations.
+        await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toBeVisible()
         expect(
           await page.evaluate(() => ({
             width: innerWidth,

@@ -1,0 +1,3152 @@
+{
+  "deckName": "Public Atraxa zone validation",
+  "format": "Commander",
+  "generatedAt": "2026-09-14T05:23:55.380Z",
+  "engineVersion": "2.7.9",
+  "scoreDefinitions": {
+    "health": "Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.",
+    "blueprint": "Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%).",
+    "mulligan": "Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.",
+    "limitation": "These are heuristic indices, not win probabilities or guaranteed keep decisions."
+  },
+  "assumptions": {
+    "snapshotModel": "physical-v1",
+    "playDraw": "PLAY",
+    "mulligans": false,
+    "ramp": false,
+    "xValue": 2,
+    "targetTurn": "max(1, mana value)",
+    "targetSpellDrawIncluded": false,
+    "note": "Saved lands-only potential, not interactive Castability settings."
+  },
+  "stabilityScore": null,
+  "analysis": {
+    "totalCards": 99,
+    "totalLands": 43,
+    "totalNonLands": 56,
+    "colorDistribution": {
+      "W": 18,
+      "U": 18,
+      "B": 21,
+      "R": 4,
+      "G": 18,
+      "C": 1
+    },
+    "manaRequirements": {
+      "W": 9,
+      "U": 11,
+      "B": 5,
+      "R": 0,
+      "G": 12,
+      "C": 0
+    },
+    "consistency": 0,
+    "consistencyUnavailable": true,
+    "colorAccessNotes": [
+      "Color access score unavailable: a main-deck payment uses unrepresented symbols (such as phyrexian or snow). See individual castability limitations."
+    ],
+    "rating": "poor",
+    "inputWarnings": [],
+    "recommendations": [
+      "🌈 Multi-color deck detected (4 colors). Consider more dual lands and mana fixing.",
+      "❤️ High life cost from lands (12 sources). Consider life gain or aggressive strategy.",
+      "🎨 Excellent mana flexibility (12 flexible sources). Great for multicolor strategies."
+    ],
+    "probabilities": {
+      "turn1": {
+        "anyColor": 0.9798029521794034,
+        "specificColors": {
+          "W": 0.7664264638841606,
+          "U": 0.7664264638841606,
+          "B": 0.82253667481045,
+          "R": 1,
+          "G": 0.7664264638841606,
+          "C": 1
+        }
+      },
+      "turn2": {
+        "anyColor": 0.9888038104471906,
+        "specificColors": {
+          "W": 0.8121256339937416,
+          "U": 0.8121256339937416,
+          "B": 0.8630446077340874,
+          "R": 1,
+          "G": 0.8121256339937416,
+          "C": 1
+        }
+      },
+      "turn3": {
+        "anyColor": 0.9938482474983958,
+        "specificColors": {
+          "W": 0.8492875965004644,
+          "U": 0.8492875965004644,
+          "B": 0.8946496982569626,
+          "R": 1,
+          "G": 0.8492875965004644,
+          "C": 1
+        }
+      },
+      "turn4": {
+        "anyColor": 0.9966507125269074,
+        "specificColors": {
+          "W": 0.8794300772004001,
+          "U": 0.8794300772004001,
+          "B": 0.919231435330374,
+          "R": 1,
+          "G": 0.8794300772004001,
+          "C": 1
+        }
+      }
+    },
+    "averageCMC": 3.0892857142857144,
+    "landRatio": 0.43434343434343436,
+    "manaCurve": {
+      "0": 0,
+      "1": 7,
+      "2": 13,
+      "3": 16,
+      "4": 14,
+      "5": 3,
+      "6": 2,
+      "7+": 1
+    },
+    "mulliganAnalysis": {
+      "perfectHand": 64,
+      "goodHand": 77,
+      "averageHand": 19,
+      "poorHand": 4,
+      "terribleHand": 0
+    },
+    "spellAnalysis": {},
+    "unsupportedSpellAnalysis": {
+      "Sol Ring": "Unsupported land restriction: Command Tower",
+      "Arcane Signet": "Unsupported land restriction: Command Tower",
+      "Talisman of Progress": "Unsupported land restriction: Command Tower",
+      "Talisman of Hierarchy": "Unsupported land restriction: Command Tower",
+      "Talisman of Dominance": "Unsupported land restriction: Command Tower",
+      "Chromatic Lantern": "Unsupported land restriction: Command Tower",
+      "Cultivate": "Unsupported land restriction: Command Tower",
+      "Kodama's Reach": "Unsupported land restriction: Command Tower",
+      "Farseek": "Unsupported land restriction: Command Tower",
+      "Nature's Lore": "Unsupported land restriction: Command Tower",
+      "Three Visits": "Unsupported land restriction: Command Tower",
+      "Rhystic Study": "Unsupported land restriction: Command Tower",
+      "Mystic Remora": "Unsupported land restriction: Command Tower",
+      "Esper Sentinel": "Unsupported land restriction: Command Tower",
+      "Guardian Project": "Unsupported land restriction: Command Tower",
+      "Beast Whisperer": "Unsupported land restriction: Command Tower",
+      "Tezzeret's Gambit": "Invalid mana cost, population or horizon",
+      "Painful Truths": "Unsupported land restriction: Command Tower",
+      "Swords to Plowshares": "Unsupported land restriction: Command Tower",
+      "Path to Exile": "Unsupported land restriction: Command Tower",
+      "Anguished Unmaking": "Unsupported land restriction: Command Tower",
+      "Assassin's Trophy": "Unsupported land restriction: Command Tower",
+      "Beast Within": "Unsupported land restriction: Command Tower",
+      "Counterspell": "Unsupported land restriction: Command Tower",
+      "Arcane Denial": "Unsupported land restriction: Command Tower",
+      "Cyclonic Rift": "Unsupported land restriction: Command Tower",
+      "Toxic Deluge": "Unsupported land restriction: Command Tower",
+      "Damnation": "Unsupported land restriction: Command Tower",
+      "Wrath of God": "Unsupported land restriction: Command Tower",
+      "Supreme Verdict": "Unsupported land restriction: Command Tower",
+      "Doubling Season": "Unsupported land restriction: Command Tower",
+      "Parallel Lives": "Unsupported land restriction: Command Tower",
+      "Hardened Scales": "Unsupported land restriction: Command Tower",
+      "The Ozolith": "Unsupported land restriction: Command Tower",
+      "Deepglow Skate": "Unsupported land restriction: Command Tower",
+      "Evolution Sage": "Unsupported land restriction: Command Tower",
+      "Flux Channeler": "Unsupported land restriction: Command Tower",
+      "Contagion Engine": "Unsupported land restriction: Command Tower",
+      "Vraska, Golgari Queen": "Unsupported land restriction: Command Tower",
+      "Teferi, Master of Time": "Unsupported land restriction: Command Tower",
+      "Narset, Parter of Veils": "Unsupported land restriction: Command Tower",
+      "Elspeth, Sun's Champion": "Unsupported land restriction: Command Tower",
+      "Jace, the Mind Sculptor": "Unsupported land restriction: Command Tower",
+      "Tamiyo, Field Researcher": "Unsupported land restriction: Command Tower",
+      "Nissa, Voice of Zendikar": "Unsupported land restriction: Command Tower",
+      "Ajani, the Greathearted": "Unsupported land restriction: Command Tower",
+      "Oko, Thief of Crowns": "Unsupported land restriction: Command Tower",
+      "Teferi, Time Raveler": "Unsupported land restriction: Command Tower",
+      "Oath of Teferi": "Unsupported land restriction: Command Tower",
+      "Oath of Kaya": "Unsupported land restriction: Command Tower",
+      "Oath of Gideon": "Unsupported land restriction: Command Tower",
+      "Oath of Ajani": "Unsupported land restriction: Command Tower",
+      "Sage of Hours": "Unsupported land restriction: Command Tower",
+      "Spark Double": "Unsupported land restriction: Command Tower",
+      "The Great Henge": "Unsupported land restriction: Command Tower",
+      "Gideon, Ally of Zendikar": "Unsupported land restriction: Command Tower"
+    },
+    "spellAnalysisModel": "physical-v1",
+    "tempoImpactByColor": {
+      "W": {
+        "color": "W",
+        "method": "heuristic",
+        "reason": "Unsupported land restriction: Command Tower",
+        "rawSources": 20,
+        "effectiveSources": 13.7,
+        "rawProbability": 0.881,
+        "tempoAdjustedProbability": 0.762,
+        "impact": 0.119,
+        "impactPercent": "12%"
+      },
+      "U": {
+        "color": "U",
+        "method": "heuristic",
+        "reason": "Unsupported land restriction: Command Tower",
+        "rawSources": 20,
+        "effectiveSources": 13.7,
+        "rawProbability": 0.881,
+        "tempoAdjustedProbability": 0.762,
+        "impact": 0.119,
+        "impactPercent": "12%"
+      },
+      "B": {
+        "color": "B",
+        "method": "heuristic",
+        "reason": "Unsupported land restriction: Command Tower",
+        "rawSources": 23,
+        "effectiveSources": 14.8,
+        "rawProbability": 0.918,
+        "tempoAdjustedProbability": 0.787,
+        "impact": 0.13,
+        "impactPercent": "13%"
+      },
+      "R": {
+        "color": "R",
+        "method": "heuristic",
+        "reason": "Unsupported land restriction: Command Tower",
+        "rawSources": 6,
+        "effectiveSources": 5.9,
+        "rawProbability": 0.444,
+        "tempoAdjustedProbability": 0.444,
+        "impact": 0,
+        "impactPercent": "0%"
+      },
+      "G": {
+        "color": "G",
+        "method": "heuristic",
+        "reason": "Unsupported land restriction: Command Tower",
+        "rawSources": 20,
+        "effectiveSources": 13.8,
+        "rawProbability": 0.881,
+        "tempoAdjustedProbability": 0.762,
+        "impact": 0.119,
+        "impactPercent": "12%"
+      }
+    },
+    "landMetadata": [
+      {
+        "name": "Command Tower",
+        "category": "utility",
+        "produces": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Exotic Orchard",
+        "category": "utility",
+        "produces": [],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Reflecting Pool",
+        "category": "utility",
+        "produces": [],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Mana Confluence",
+        "category": "utility",
+        "produces": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "City of Brass",
+        "category": "utility",
+        "produces": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Reliquary Tower",
+        "category": "utility",
+        "produces": [
+          "C"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Bojuka Bog",
+        "category": "utility",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_tapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100,
+        "scryfallData": {
+          "oracleText": "This land enters tapped.\nWhen this land enters, exile target player's graveyard.\n{T}: Add {B}.",
+          "typeLine": "Land",
+          "layout": "normal"
+        }
+      },
+      {
+        "name": "Urborg, Tomb of Yawgmoth",
+        "category": "utility",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 70,
+        "scryfallData": {
+          "oracleText": "Each land is a Swamp in addition to its other land types.",
+          "typeLine": "Legendary Land",
+          "layout": "normal"
+        }
+      },
+      {
+        "name": "Hallowed Fountain",
+        "category": "shock",
+        "produces": [
+          "W",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains",
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Breeding Pool",
+        "category": "shock",
+        "produces": [
+          "G",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest",
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Overgrown Tomb",
+        "category": "shock",
+        "produces": [
+          "B",
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp",
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Watery Grave",
+        "category": "shock",
+        "produces": [
+          "U",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Island",
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Temple Garden",
+        "category": "shock",
+        "produces": [
+          "G",
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest",
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Godless Shrine",
+        "category": "shock",
+        "produces": [
+          "W",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "pay_life",
+            "amount": 2
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains",
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Fabled Passage",
+        "category": "fetch",
+        "produces": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "producesAny": true,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Plains",
+          "Island",
+          "Swamp",
+          "Mountain",
+          "Forest"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Flooded Strand",
+        "category": "fetch",
+        "produces": [
+          "W",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Plains",
+          "Island"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Misty Rainforest",
+        "category": "fetch",
+        "produces": [
+          "G",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Forest",
+          "Island"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Polluted Delta",
+        "category": "fetch",
+        "produces": [
+          "U",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Island",
+          "Swamp"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Windswept Heath",
+        "category": "fetch",
+        "produces": [
+          "G",
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Forest",
+          "Plains"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Marsh Flats",
+        "category": "fetch",
+        "produces": [
+          "W",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": true,
+        "fetchTargets": [
+          "Plains",
+          "Swamp"
+        ],
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Indatha Triome",
+        "category": "triome",
+        "produces": [
+          "W",
+          "B",
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_tapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains",
+          "Swamp",
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Zagoth Triome",
+        "category": "triome",
+        "produces": [
+          "B",
+          "G",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_tapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp",
+          "Forest",
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Raffine's Tower",
+        "category": "triome",
+        "produces": [
+          "W",
+          "U",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_tapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains",
+          "Island",
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Glacial Fortress",
+        "category": "check",
+        "produces": [
+          "W",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Plains",
+              "Island"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Drowned Catacomb",
+        "category": "check",
+        "produces": [
+          "U",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Island",
+              "Swamp"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Woodland Cemetery",
+        "category": "check",
+        "produces": [
+          "B",
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Swamp",
+              "Forest"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Sunpetal Grove",
+        "category": "check",
+        "produces": [
+          "G",
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Forest",
+              "Plains"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Hinterland Harbor",
+        "category": "check",
+        "produces": [
+          "G",
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Forest",
+              "Island"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Isolated Chapel",
+        "category": "check",
+        "produces": [
+          "W",
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "conditional",
+          "condition": {
+            "type": "control_basic",
+            "basicTypes": [
+              "Plains",
+              "Swamp"
+            ]
+          }
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Island",
+        "category": "basic",
+        "produces": [
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Island",
+        "category": "basic",
+        "produces": [
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Island",
+        "category": "basic",
+        "produces": [
+          "U"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Island"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Swamp",
+        "category": "basic",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Swamp",
+        "category": "basic",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Swamp",
+        "category": "basic",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Swamp",
+        "category": "basic",
+        "produces": [
+          "B"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Swamp"
+        ],
+        "confidence": 100
+      }
+    ],
+    "cards": [
+      {
+        "name": "Atraxa, Praetors' Voice",
+        "quantity": 1,
+        "manaCost": "{G}{W}{U}{B}",
+        "colors": [
+          "G",
+          "W",
+          "U",
+          "B"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "isCommander": true,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Sol Ring",
+        "quantity": 1,
+        "manaCost": "{1}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Arcane Signet",
+        "quantity": 1,
+        "manaCost": "{2}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Talisman of Progress",
+        "quantity": 1,
+        "manaCost": "{2}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Talisman of Hierarchy",
+        "quantity": 1,
+        "manaCost": "{2}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Talisman of Dominance",
+        "quantity": 1,
+        "manaCost": "{2}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Chromatic Lantern",
+        "quantity": 1,
+        "manaCost": "{3}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Cultivate",
+        "quantity": 1,
+        "manaCost": "{2}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Kodama's Reach",
+        "quantity": 1,
+        "manaCost": "{2}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Farseek",
+        "quantity": 1,
+        "manaCost": "{1}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Nature's Lore",
+        "quantity": 1,
+        "manaCost": "{1}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Three Visits",
+        "quantity": 1,
+        "manaCost": "{1}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Rhystic Study",
+        "quantity": 1,
+        "manaCost": "{2}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Mystic Remora",
+        "quantity": 1,
+        "manaCost": "{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Esper Sentinel",
+        "quantity": 1,
+        "manaCost": "{W}",
+        "colors": [
+          "W"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Guardian Project",
+        "quantity": 1,
+        "manaCost": "{3}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Beast Whisperer",
+        "quantity": 1,
+        "manaCost": "{2}{G}{G}",
+        "colors": [
+          "G",
+          "G"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Tezzeret's Gambit",
+        "quantity": 1,
+        "manaCost": "{3}{U/P}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Painful Truths",
+        "quantity": 1,
+        "manaCost": "{2}{B}",
+        "colors": [
+          "B"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Swords to Plowshares",
+        "quantity": 1,
+        "manaCost": "{W}",
+        "colors": [
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Path to Exile",
+        "quantity": 1,
+        "manaCost": "{W}",
+        "colors": [
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Anguished Unmaking",
+        "quantity": 1,
+        "manaCost": "{1}{W}{B}",
+        "colors": [
+          "W",
+          "B"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Assassin's Trophy",
+        "quantity": 1,
+        "manaCost": "{B}{G}",
+        "colors": [
+          "B",
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Beast Within",
+        "quantity": 1,
+        "manaCost": "{2}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Counterspell",
+        "quantity": 1,
+        "manaCost": "{U}{U}",
+        "colors": [
+          "U",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Arcane Denial",
+        "quantity": 1,
+        "manaCost": "{1}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Cyclonic Rift",
+        "quantity": 1,
+        "manaCost": "{1}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Toxic Deluge",
+        "quantity": 1,
+        "manaCost": "{2}{B}",
+        "colors": [
+          "B"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Damnation",
+        "quantity": 1,
+        "manaCost": "{2}{B}{B}",
+        "colors": [
+          "B",
+          "B"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Wrath of God",
+        "quantity": 1,
+        "manaCost": "{2}{W}{W}",
+        "colors": [
+          "W",
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Supreme Verdict",
+        "quantity": 1,
+        "manaCost": "{1}{W}{W}{U}",
+        "colors": [
+          "W",
+          "W",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Doubling Season",
+        "quantity": 1,
+        "manaCost": "{4}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 5,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Parallel Lives",
+        "quantity": 1,
+        "manaCost": "{3}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Hardened Scales",
+        "quantity": 1,
+        "manaCost": "{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "The Ozolith",
+        "quantity": 1,
+        "manaCost": "{1}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Deepglow Skate",
+        "quantity": 1,
+        "manaCost": "{4}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 5,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Evolution Sage",
+        "quantity": 1,
+        "manaCost": "{2}{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Flux Channeler",
+        "quantity": 1,
+        "manaCost": "{2}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Contagion Engine",
+        "quantity": 1,
+        "manaCost": "{6}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 6,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Vraska, Golgari Queen",
+        "quantity": 1,
+        "manaCost": "{2}{B}{G}",
+        "colors": [
+          "B",
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Teferi, Master of Time",
+        "quantity": 1,
+        "manaCost": "{2}{U}{U}",
+        "colors": [
+          "U",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Narset, Parter of Veils",
+        "quantity": 1,
+        "manaCost": "{1}{U}{U}",
+        "colors": [
+          "U",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Elspeth, Sun's Champion",
+        "quantity": 1,
+        "manaCost": "{4}{W}{W}",
+        "colors": [
+          "W",
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 6,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Jace, the Mind Sculptor",
+        "quantity": 1,
+        "manaCost": "{2}{U}{U}",
+        "colors": [
+          "U",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Tamiyo, Field Researcher",
+        "quantity": 1,
+        "manaCost": "{1}{G}{W}{U}",
+        "colors": [
+          "G",
+          "W",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Nissa, Voice of Zendikar",
+        "quantity": 1,
+        "manaCost": "{1}{G}{G}",
+        "colors": [
+          "G",
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Ajani, the Greathearted",
+        "quantity": 1,
+        "manaCost": "{2}{G}{W}",
+        "colors": [
+          "G",
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Oko, Thief of Crowns",
+        "quantity": 1,
+        "manaCost": "{1}{G}{U}",
+        "colors": [
+          "G",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Teferi, Time Raveler",
+        "quantity": 1,
+        "manaCost": "{1}{W}{U}",
+        "colors": [
+          "W",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Oath of Teferi",
+        "quantity": 1,
+        "manaCost": "{3}{W}{U}",
+        "colors": [
+          "W",
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 5,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Oath of Kaya",
+        "quantity": 1,
+        "manaCost": "{1}{W}{B}",
+        "colors": [
+          "W",
+          "B"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Oath of Gideon",
+        "quantity": 1,
+        "manaCost": "{2}{W}",
+        "colors": [
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 3,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Oath of Ajani",
+        "quantity": 1,
+        "manaCost": "{G}{W}",
+        "colors": [
+          "G",
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Sage of Hours",
+        "quantity": 1,
+        "manaCost": "{1}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Spark Double",
+        "quantity": 1,
+        "manaCost": "{3}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "The Great Henge",
+        "quantity": 1,
+        "manaCost": "{7}{G}{G}",
+        "colors": [
+          "G",
+          "G"
+        ],
+        "isLand": false,
+        "cmc": 9,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Gideon, Ally of Zendikar",
+        "quantity": 1,
+        "manaCost": "{2}{W}{W}",
+        "colors": [
+          "W",
+          "W"
+        ],
+        "isLand": false,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Command Tower",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Command Tower",
+          "category": "utility",
+          "produces": [
+            "W",
+            "U",
+            "B",
+            "R",
+            "G"
+          ],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Exotic Orchard",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Exotic Orchard",
+          "category": "utility",
+          "produces": [],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Reflecting Pool",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Reflecting Pool",
+          "category": "utility",
+          "produces": [],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Mana Confluence",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Mana Confluence",
+          "category": "utility",
+          "produces": [
+            "W",
+            "U",
+            "B",
+            "R",
+            "G"
+          ],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "City of Brass",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "City of Brass",
+          "category": "utility",
+          "produces": [
+            "W",
+            "U",
+            "B",
+            "R",
+            "G"
+          ],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Reliquary Tower",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "C"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Reliquary Tower",
+          "category": "utility",
+          "produces": [
+            "C"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Bojuka Bog",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": true,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Bojuka Bog",
+          "category": "utility",
+          "produces": [
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_tapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100,
+          "scryfallData": {
+            "oracleText": "This land enters tapped.\nWhen this land enters, exile target player's graveyard.\n{T}: Add {B}.",
+            "typeLine": "Land",
+            "layout": "normal"
+          }
+        }
+      },
+      {
+        "name": "Urborg, Tomb of Yawgmoth",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Urborg, Tomb of Yawgmoth",
+          "category": "utility",
+          "produces": [
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 70,
+          "scryfallData": {
+            "oracleText": "Each land is a Swamp in addition to its other land types.",
+            "typeLine": "Legendary Land",
+            "layout": "normal"
+          }
+        }
+      },
+      {
+        "name": "Hallowed Fountain",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Hallowed Fountain",
+          "category": "shock",
+          "produces": [
+            "W",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains",
+            "Island"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Breeding Pool",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Breeding Pool",
+          "category": "shock",
+          "produces": [
+            "G",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Forest",
+            "Island"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Overgrown Tomb",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Overgrown Tomb",
+          "category": "shock",
+          "produces": [
+            "B",
+            "G"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Swamp",
+            "Forest"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Watery Grave",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "U",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Watery Grave",
+          "category": "shock",
+          "produces": [
+            "U",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Island",
+            "Swamp"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Temple Garden",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "W"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Temple Garden",
+          "category": "shock",
+          "produces": [
+            "G",
+            "W"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Forest",
+            "Plains"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Godless Shrine",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "ravland": true,
+        "landMetadata": {
+          "name": "Godless Shrine",
+          "category": "shock",
+          "produces": [
+            "W",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "pay_life",
+              "amount": 2
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains",
+            "Swamp"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Fabled Passage",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Fabled Passage",
+          "category": "fetch",
+          "produces": [
+            "W",
+            "U",
+            "B",
+            "R",
+            "G"
+          ],
+          "producesAny": true,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Plains",
+            "Island",
+            "Swamp",
+            "Mountain",
+            "Forest"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Flooded Strand",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "fetchland": [
+          "Plains",
+          "Island"
+        ],
+        "landMetadata": {
+          "name": "Flooded Strand",
+          "category": "fetch",
+          "produces": [
+            "W",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Plains",
+            "Island"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Misty Rainforest",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Misty Rainforest",
+          "category": "fetch",
+          "produces": [
+            "G",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Forest",
+            "Island"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Polluted Delta",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "U",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "fetchland": [
+          "Island",
+          "Swamp"
+        ],
+        "landMetadata": {
+          "name": "Polluted Delta",
+          "category": "fetch",
+          "produces": [
+            "U",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Island",
+            "Swamp"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Windswept Heath",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "W"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Windswept Heath",
+          "category": "fetch",
+          "produces": [
+            "G",
+            "W"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Forest",
+            "Plains"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Marsh Flats",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "fetchland": [
+          "Plains",
+          "Swamp"
+        ],
+        "landMetadata": {
+          "name": "Marsh Flats",
+          "category": "fetch",
+          "produces": [
+            "W",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": true,
+          "fetchTargets": [
+            "Plains",
+            "Swamp"
+          ],
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Indatha Triome",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "B",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": true,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Indatha Triome",
+          "category": "triome",
+          "produces": [
+            "W",
+            "B",
+            "G"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_tapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains",
+            "Swamp",
+            "Forest"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Zagoth Triome",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B",
+          "G",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": true,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Zagoth Triome",
+          "category": "triome",
+          "produces": [
+            "B",
+            "G",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_tapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Swamp",
+            "Forest",
+            "Island"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Raffine's Tower",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": true,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Raffine's Tower",
+          "category": "triome",
+          "produces": [
+            "W",
+            "U",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_tapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains",
+            "Island",
+            "Swamp"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Glacial Fortress",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Glacial Fortress",
+          "category": "check",
+          "produces": [
+            "W",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Plains",
+                "Island"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Drowned Catacomb",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "U",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Drowned Catacomb",
+          "category": "check",
+          "produces": [
+            "U",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Island",
+                "Swamp"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Woodland Cemetery",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B",
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Woodland Cemetery",
+          "category": "check",
+          "produces": [
+            "B",
+            "G"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Swamp",
+                "Forest"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Sunpetal Grove",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "W"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Sunpetal Grove",
+          "category": "check",
+          "produces": [
+            "G",
+            "W"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Forest",
+                "Plains"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Hinterland Harbor",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G",
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Hinterland Harbor",
+          "category": "check",
+          "produces": [
+            "G",
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Forest",
+                "Island"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Isolated Chapel",
+        "quantity": 1,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W",
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "checkland": true,
+        "landMetadata": {
+          "name": "Isolated Chapel",
+          "category": "check",
+          "produces": [
+            "W",
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "conditional",
+            "condition": {
+              "type": "control_basic",
+              "basicTypes": [
+                "Plains",
+                "Swamp"
+              ]
+            }
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Forest",
+        "quantity": 4,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Forest",
+          "category": "basic",
+          "produces": [
+            "G"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Forest"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Plains",
+        "quantity": 3,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Plains",
+          "category": "basic",
+          "produces": [
+            "W"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Island",
+        "quantity": 3,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "U"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Island",
+          "category": "basic",
+          "produces": [
+            "U"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Island"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Swamp",
+        "quantity": 4,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "B"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Swamp",
+          "category": "basic",
+          "produces": [
+            "B"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Swamp"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Savannah Lions",
+        "quantity": 1,
+        "manaCost": "{W}",
+        "colors": [
+          "W"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 1,
+        "isSideboard": true,
+        "resolved": true,
+        "resolution": "ok"
+      }
+    ]
+  }
+}

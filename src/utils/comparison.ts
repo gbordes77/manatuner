@@ -54,3 +54,63 @@ export function groupComparisonReasons(a: AnalysisRecord, b: AnalysisRecord, nam
   }
   return [...groups.values()]
 }
+
+/** A delta is meaningful only inside the fixed snapshot contract. */
+export function comparisonBlockReason(a: AnalysisRecord, b: AnalysisRecord): string | undefined {
+  if (
+    a.analysis?.spellAnalysisModel !== 'physical-v1' ||
+    b.analysis?.spellAnalysisModel !== 'physical-v1'
+  )
+    return 'The saved models differ or are unavailable. Analyze both lists under the current model.'
+  if (
+    typeof a.analysis?.totalCards !== 'number' ||
+    a.analysis.totalCards !== b.analysis?.totalCards
+  )
+    return 'The library populations differ. Restore the same number of library cards to compare deltas.'
+  const commanders = (r: AnalysisRecord) =>
+    (r.analysis?.cards || [])
+      .filter(
+        (c: { isCommander?: boolean; isSideboard?: boolean }) => c.isCommander && !c.isSideboard
+      )
+      .map((c: { name: string; quantity: number }) => `${c.quantity} ${c.name}`)
+      .sort()
+      .join('\n')
+  if (commanders(a) !== commanders(b))
+    return 'The commanders differ. Keep the original commander for this comparison.'
+  const spells = (record: AnalysisRecord) =>
+    new Map<string, { manaCost?: string; cmc?: number }>(
+      (record.analysis?.cards || [])
+        .filter(
+          (card: { isLand?: boolean; isCommander?: boolean; isSideboard?: boolean }) =>
+            !card.isLand && !card.isCommander && !card.isSideboard
+        )
+        .map((card: { name: string; manaCost?: string; cmc?: number }) => [card.name, card])
+    )
+  const spellsA = spells(a),
+    spellsB = spells(b)
+  for (const [name, card] of spellsA) {
+    const other = spellsB.get(name)
+    if (other && (card.manaCost !== other.manaCost || card.cmc !== other.cmc))
+      return 'The saved spell costs or target turns differ. Reanalyze both lists before comparing.'
+  }
+  return undefined
+}
+
+/** Conservative event check for the heuristic Health average, whose groups
+ * depend on spell costs. Spell-specific potential keeps its own contract. */
+export function sameHealthQuestion(a: AnalysisRecord, b: AnalysisRecord): boolean {
+  const costs = (r: AnalysisRecord) =>
+    [
+      ...new Set<string>(
+        (r.analysis?.cards || [])
+          .filter(
+            (c: { isLand?: boolean; isCommander?: boolean; isSideboard?: boolean }) =>
+              !c.isLand && !c.isCommander && !c.isSideboard
+          )
+          .map((c: { manaCost?: string }) => c.manaCost || 'unknown')
+      ),
+    ]
+      .sort()
+      .join('|')
+  return costs(a) === costs(b)
+}

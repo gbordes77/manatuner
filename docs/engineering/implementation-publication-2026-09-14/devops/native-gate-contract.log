@@ -1,0 +1,74 @@
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] npm run lint
+[delivery gate] npm run lint
+[delivery gate] npm run type-check
+[delivery gate] npx vitest run src tests/component tests/math-audit --configLoader runner --no-cache
+[delivery gate] node --test scripts/delivery-gate.test.mjs
+[delivery gate] npx vite build --outDir dist
+[delivery gate] node scripts/check-bundle-budget.mjs
+[delivery gate] npm audit --audit-level=high
+[delivery gate] node scripts/prerender.mjs
+[delivery gate] npx playwright test --config=playwright.delivery.config.js --project=chromium
+[delivery gate] All candidate checks passed; build may finish.
+✔ every failing check prevents later build/publish readiness (7.404208ms)
+✔ a killed check also blocks readiness (0.878041ms)
+✔ successful checks run exactly once and in order (2.288792ms)
+[build browser] Installing Vercel Chromium native libraries with dnf
+[build browser] Installing Vercel Chromium native libraries with dnf
+[build browser] Installing Vercel Chromium native libraries with dnf
+[build browser] Installing Vercel Chromium native libraries with dnf
+✔ browser setup does not install native packages on local or non-Vercel hosts (0.383458ms)
+✔ Vercel Linux installs native libraries exactly once and accepts success (1.656083ms)
+✔ missing dnf, package failure and termination all block installation (0.655916ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 86.488166

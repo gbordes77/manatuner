@@ -1,0 +1,78 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stdout | src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > finishes a real deck analysis via named GET when every collection hangs
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+stderr | src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > finishes a real deck analysis via named GET when every collection hangs
+Scryfall collection timed out; continuing with named lookups HttpTimeoutError: Request timed out after 8000ms
+    at /Volumes/DataDisk/_Projects/Project Mana base V2/src/services/http.ts:84:28
+    at callTimer (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:1773:25)
+    at doTickInner (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:2444:30)
+    at doTick (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:2525:21)
+    at Immediate.<anonymous> (file:///Volumes/DataDisk/_Projects/Project%20Mana%20base%20V2/node_modules/vitest/dist/chunks/test.DNmyFkvJ.js:2546:34)
+    at processImmediate (node:internal/timers:504:21)
+
+ ❯ src/services/__tests__/collectionTimeout.test.ts (4 tests | 2 failed) 107ms
+     × finishes a real deck analysis via named GET when every collection hangs 103ms
+     × recovers land metadata through GET after a local collection timeout 1ms
+stdout | src/services/__tests__/landBatch.t07.test.ts
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ src/services/__tests__/landBatch.t07.test.ts (7 tests | 1 failed) 1064ms
+     × batch failure falls back to sequential named 615ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > finishes a real deck analysis via named GET when every collection hangs
+AssertionError: expected undefined to be 60 // Object.is equality
+
+- Expected:
+60
+
++ Received:
+undefined
+
+ ❯ src/services/__tests__/collectionTimeout.test.ts:29:33
+     27|     await vi.advanceTimersByTimeAsync(20_000)
+     28|     const analysis = await result
+     29|     expect(analysis.totalCards).toBe(60)
+       |                                 ^
+     30|     expect(analysis.totalLands).toBe(24)
+     31|     expect(analysis.cards.some((c: { name: string }) => c.name === 'Sa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > recovers land metadata through GET after a local collection timeout
+TypeError: lands.get is not a function
+ ❯ src/services/__tests__/collectionTimeout.test.ts:43:18
+     41|     await vi.advanceTimersByTimeAsync(9000)
+     42|     const lands = await result
+     43|     expect(lands.get('Plains')?.produced_mana).toEqual(['W'])
+       |                  ^
+     44|   })
+     45|   it('does not fall back after user cancellation', async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/services/__tests__/landBatch.t07.test.ts > T07 fetchLandDataBatch > batch failure falls back to sequential named
+ReferenceError: HttpTimeoutError is not defined
+ ❯ fetchLandDataBatch src/services/scryfall.ts:537:51
+    535|     } catch (error) {
+    536|       throwIfAborted(signal)
+    537|       const collectionTimedOut = error instanceof HttpTimeoutError
+       |                                                   ^
+    538|       if (!collectionTimedOut && isCancellation(error)) throw error
+    539|       console.error('[Scryfall] Batch land data fetch failed (chunk):'…
+ ❯ src/services/__tests__/landBatch.t07.test.ts:152:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  3 failed | 19 passed (22)
+   Start at  06:44:28
+   Duration  1.65s (transform 301ms, setup 238ms, import 288ms, tests 1.21s, environment 1.25s)
+

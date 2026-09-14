@@ -1,0 +1,8 @@
+[
+  {
+    pass: false,
+    error: 'TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\n' +
+      'Call log:\n' +
+      "\x1B[2m  - waiting for getByTestId('analysis-results') to be visible\x1B[22m\n"
+  }
+]

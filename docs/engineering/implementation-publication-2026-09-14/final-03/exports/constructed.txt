@@ -1,0 +1,42 @@
+ManaTuner analysis context
+Deck: Unnamed Deck
+Library: 60 cards; 24 lands. Commander: 0; sideboard: 0.
+Question: potential to cast a listed spell by its mana-value turn, excluding the chance of drawing that spell.
+Model: physical-v1; report engine 2.7.9. Saved lands-only potential: on the play, no mulligans or ramp, X=2, target turn=max(1, mana value). Target spell draw is excluded; a legal sequence may use future draws. Interactive Castability settings are not saved here.
+Limits: supported payment mechanics only; unavailable results are not zero. These results do not measure win rate or overall deck quality.
+Share links contain deck, name and tab only. Interactive model settings are not transported. This text provides context, not a complete interactive scenario.
+
+SCORES (HEURISTICS)
+Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.
+Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%).
+Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.
+These are heuristic indices, not win probabilities or guaranteed keep decisions.
+Health: 98.82%
+Blueprint Stability: 99 / 100 (index)
+Average mana value: 1.00; land ratio: 40.00%
+
+OPENING HAND ANALYSIS — classification heuristic, not a keep recommendation
+Perfect (2–4 lands + early play): 77.00%
+Good (2–4 lands): 77.00%
+Borderline (1 or 5 lands): 19.00%
+Poor (0 or 6 lands): 3.00%
+Terrible (7 lands, or 0 lands without an early play): 0.00%
+These categories overlap; they do not sum to 100%. Seven-card starting hand, no mulligans.
+
+COLOR SOURCE PROBABILITIES — at least one required-color source, on the play, no mulligans
+T1–T4 see 7–10 cards. Colors not required by the deck use a 100% convention, not evidence of a source.
+turn1: any color 97.84%; W 97.84%; U 100.00%; B 100.00%; R 100.00%; G 100.00%; C 100.00%
+turn2: any color 98.82%; W 98.82%; U 100.00%; B 100.00%; R 100.00%; G 100.00%; C 100.00%
+turn3: any color 99.36%; W 99.36%; U 100.00%; B 100.00%; R 100.00%; G 100.00%; C 100.00%
+turn4: any color 99.66%; W 99.66%; U 100.00%; B 100.00%; R 100.00%; G 100.00%; C 100.00%
+
+SAVED SPELL POTENTIAL — percentage, under the model above
+Savannah Lions: 97.84%
+
+SUGGESTIONS — heuristics only, not mathematical certainties
+🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources.
+
+DECK BY ZONE
+Deck
+24 Plains
+36 Savannah Lions

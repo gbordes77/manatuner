@@ -1,0 +1,20 @@
+
+> manatuner@2.7.9 build:vercel
+> node scripts/delivery-gate.mjs
+
+[delivery gate] npm run lint
+
+> manatuner@2.7.9 lint
+> eslint src --ext .ts,.tsx --max-warnings=0
+
+[delivery gate] npm run type-check
+
+> manatuner@2.7.9 type-check
+> tsc --noEmit
+
+src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx(195,66): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.
+    Object literal may only specify known properties, and 'exact' does not exist in type 'ByRoleOptions'.
+  Overload 2 of 2, '(role: ByRoleMatcher, options?: ByRoleOptions | undefined): HTMLElement', gave the following error.
+    Object literal may only specify known properties, and 'exact' does not exist in type 'ByRoleOptions'.
+Delivery blocked by npm: exit 2

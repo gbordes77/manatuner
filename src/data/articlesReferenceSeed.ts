@@ -788,10 +788,10 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
   {
     id: 'wizards-commander-brackets-2024',
     title: 'Introducing Commander Brackets',
-    subtitle: 'A shared vocabulary for deck power level',
+    subtitle: 'Beta introduction — February 11, 2025',
     author: 'Gavin Verhey & Wizards of the Coast',
     publisher: 'Wizards of the Coast',
-    year: 2024,
+    year: 2025,
     category: 'fundamentals',
     secondaryCategories: ['deckbuilding'],
     level: 'beginner',
@@ -801,11 +801,11 @@ export const articlesReferenceSeed: ReferenceArticle[] = [
     primaryUrl:
       'https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta',
     description:
-      "The official 5-bracket power-level system (Exhibition → cEDH) that ended a decade of 'what power level is your deck?' confusion. Rule 0 conversations made concrete.",
+      'The original Commander Brackets beta introduction, published February 11, 2025. A vocabulary for discussing game expectations, not a guarantee of balanced pods. This historical article is distinct from later updates.',
     readingTimeMin: 8,
     curatorTrack: 'commander',
     curatorNote:
-      "Before this document, every pod started with a 10-minute negotiation. Now you say 'Bracket 2-3' and everyone shuffles up. Read it, memorize the five tiers, and stop having the same conversation twice a week.",
+      'Use this introduction to understand the intent of Brackets, then check Wizards’ later updates before discussing your deck. Keep the Rule 0 conversation: a bracket alone does not describe every playgroup’s expectations.',
   },
 
   {

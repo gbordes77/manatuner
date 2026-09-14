@@ -1,0 +1,122 @@
+# ManaTuner CSV export
+# Deck:,Public Atraxa zone validation
+# Format: Commander
+# Generated: 2026-09-14T05:23:54.714Z
+# Stability: Unavailable
+# Engine: 2.7.9
+# health: Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.
+# blueprint: "Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%)."
+# mulligan: Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.
+# limitation: "These are heuristic indices, not win probabilities or guaranteed keep decisions."
+# Model: saved lands-only potential; PLAY; no mulligans or ramp; X=2; target turn=max(1 mana value); target spell draw excluded
+# Share links carry deck/name/tab only; interactive model settings are not transported
+
+section,card_name,quantity,cmc,mana_cost,colors,is_land,produces,is_sideboard,is_commander
+deck,"Atraxa, Praetors' Voice",1,4,{G}{W}{U}{B},G|W|U|B,false,,false,true
+deck,Sol Ring,1,1,{1},,false,,false,false
+deck,Arcane Signet,1,2,{2},,false,,false,false
+deck,Talisman of Progress,1,2,{2},,false,,false,false
+deck,Talisman of Hierarchy,1,2,{2},,false,,false,false
+deck,Talisman of Dominance,1,2,{2},,false,,false,false
+deck,Chromatic Lantern,1,3,{3},,false,,false,false
+deck,Cultivate,1,3,{2}{G},G,false,,false,false
+deck,Kodama's Reach,1,3,{2}{G},G,false,,false,false
+deck,Farseek,1,2,{1}{G},G,false,,false,false
+deck,Nature's Lore,1,2,{1}{G},G,false,,false,false
+deck,Three Visits,1,2,{1}{G},G,false,,false,false
+deck,Rhystic Study,1,3,{2}{U},U,false,,false,false
+deck,Mystic Remora,1,1,{U},U,false,,false,false
+deck,Esper Sentinel,1,1,{W},W,false,,false,false
+deck,Guardian Project,1,4,{3}{G},G,false,,false,false
+deck,Beast Whisperer,1,4,{2}{G}{G},G|G,false,,false,false
+deck,Tezzeret's Gambit,1,4,{3}{U/P},U,false,,false,false
+deck,Painful Truths,1,3,{2}{B},B,false,,false,false
+deck,Swords to Plowshares,1,1,{W},W,false,,false,false
+deck,Path to Exile,1,1,{W},W,false,,false,false
+deck,Anguished Unmaking,1,3,{1}{W}{B},W|B,false,,false,false
+deck,Assassin's Trophy,1,2,{B}{G},B|G,false,,false,false
+deck,Beast Within,1,3,{2}{G},G,false,,false,false
+deck,Counterspell,1,2,{U}{U},U|U,false,,false,false
+deck,Arcane Denial,1,2,{1}{U},U,false,,false,false
+deck,Cyclonic Rift,1,2,{1}{U},U,false,,false,false
+deck,Toxic Deluge,1,3,{2}{B},B,false,,false,false
+deck,Damnation,1,4,{2}{B}{B},B|B,false,,false,false
+deck,Wrath of God,1,4,{2}{W}{W},W|W,false,,false,false
+deck,Supreme Verdict,1,4,{1}{W}{W}{U},W|W|U,false,,false,false
+deck,Doubling Season,1,5,{4}{G},G,false,,false,false
+deck,Parallel Lives,1,4,{3}{G},G,false,,false,false
+deck,Hardened Scales,1,1,{G},G,false,,false,false
+deck,The Ozolith,1,1,{1},,false,,false,false
+deck,Deepglow Skate,1,5,{4}{U},U,false,,false,false
+deck,Evolution Sage,1,3,{2}{G},G,false,,false,false
+deck,Flux Channeler,1,3,{2}{U},U,false,,false,false
+deck,Contagion Engine,1,6,{6},,false,,false,false
+deck,"Vraska, Golgari Queen",1,4,{2}{B}{G},B|G,false,,false,false
+deck,"Teferi, Master of Time",1,4,{2}{U}{U},U|U,false,,false,false
+deck,"Narset, Parter of Veils",1,3,{1}{U}{U},U|U,false,,false,false
+deck,"Elspeth, Sun's Champion",1,6,{4}{W}{W},W|W,false,,false,false
+deck,"Jace, the Mind Sculptor",1,4,{2}{U}{U},U|U,false,,false,false
+deck,"Tamiyo, Field Researcher",1,4,{1}{G}{W}{U},G|W|U,false,,false,false
+deck,"Nissa, Voice of Zendikar",1,3,{1}{G}{G},G|G,false,,false,false
+deck,"Ajani, the Greathearted",1,4,{2}{G}{W},G|W,false,,false,false
+deck,"Oko, Thief of Crowns",1,3,{1}{G}{U},G|U,false,,false,false
+deck,"Teferi, Time Raveler",1,3,{1}{W}{U},W|U,false,,false,false
+deck,Oath of Teferi,1,5,{3}{W}{U},W|U,false,,false,false
+deck,Oath of Kaya,1,3,{1}{W}{B},W|B,false,,false,false
+deck,Oath of Gideon,1,3,{2}{W},W,false,,false,false
+deck,Oath of Ajani,1,2,{G}{W},G|W,false,,false,false
+deck,Sage of Hours,1,2,{1}{U},U,false,,false,false
+deck,Spark Double,1,4,{3}{U},U,false,,false,false
+deck,The Great Henge,1,9,{7}{G}{G},G|G,false,,false,false
+deck,"Gideon, Ally of Zendikar",1,4,{2}{W}{W},W|W,false,,false,false
+deck,Command Tower,1,0,,,true,W|U|B|R|G,false,false
+deck,Exotic Orchard,1,0,,,true,,false,false
+deck,Reflecting Pool,1,0,,,true,,false,false
+deck,Mana Confluence,1,0,,,true,W|U|B|R|G,false,false
+deck,City of Brass,1,0,,,true,W|U|B|R|G,false,false
+deck,Reliquary Tower,1,0,,,true,C,false,false
+deck,Bojuka Bog,1,0,,,true,B,false,false
+deck,"Urborg, Tomb of Yawgmoth",1,0,,,true,B,false,false
+deck,Hallowed Fountain,1,0,,,true,W|U,false,false
+deck,Breeding Pool,1,0,,,true,G|U,false,false
+deck,Overgrown Tomb,1,0,,,true,B|G,false,false
+deck,Watery Grave,1,0,,,true,U|B,false,false
+deck,Temple Garden,1,0,,,true,G|W,false,false
+deck,Godless Shrine,1,0,,,true,W|B,false,false
+deck,Fabled Passage,1,0,,,true,W|U|B|R|G,false,false
+deck,Flooded Strand,1,0,,,true,W|U,false,false
+deck,Misty Rainforest,1,0,,,true,G|U,false,false
+deck,Polluted Delta,1,0,,,true,U|B,false,false
+deck,Windswept Heath,1,0,,,true,G|W,false,false
+deck,Marsh Flats,1,0,,,true,W|B,false,false
+deck,Indatha Triome,1,0,,,true,W|B|G,false,false
+deck,Zagoth Triome,1,0,,,true,B|G|U,false,false
+deck,Raffine's Tower,1,0,,,true,W|U|B,false,false
+deck,Glacial Fortress,1,0,,,true,W|U,false,false
+deck,Drowned Catacomb,1,0,,,true,U|B,false,false
+deck,Woodland Cemetery,1,0,,,true,B|G,false,false
+deck,Sunpetal Grove,1,0,,,true,G|W,false,false
+deck,Hinterland Harbor,1,0,,,true,G|U,false,false
+deck,Isolated Chapel,1,0,,,true,W|B,false,false
+deck,Forest,4,0,,,true,G,false,false
+deck,Plains,3,0,,,true,W,false,false
+deck,Island,3,0,,,true,U,false,false
+deck,Swamp,4,0,,,true,B,false,false
+deck,Savannah Lions,1,1,{W},W,false,,true,false
+
+section,metric,value
+summary,total_cards,99
+summary,total_lands,43
+summary,land_ratio,0.43434343434343436
+summary,average_cmc,3.0892857142857144
+summary,effective_sources_W,18
+summary,effective_sources_U,18
+summary,effective_sources_B,21
+summary,effective_sources_R,4
+summary,effective_sources_G,18
+summary,effective_sources_C,1
+summary,pip_count_W,19
+summary,pip_count_U,22
+summary,pip_count_B,8
+summary,pip_count_R,0
+summary,pip_count_G,23

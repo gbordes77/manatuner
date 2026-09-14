@@ -1,0 +1,75 @@
+{
+  "cards": [
+    {
+      "section": "deck",
+      "card_name": "Atraxa, Praetors' Voice",
+      "quantity": 1,
+      "cmc": "4",
+      "mana_cost": "{G}{W}{U}{B}",
+      "colors": "G|W|U|B",
+      "is_land": false,
+      "produces": "",
+      "is_sideboard": false,
+      "is_commander": true
+    },
+    {
+      "section": "deck",
+      "card_name": "Forest",
+      "quantity": 43,
+      "cmc": "0",
+      "mana_cost": "",
+      "colors": "",
+      "is_land": true,
+      "produces": "G",
+      "is_sideboard": false,
+      "is_commander": false
+    },
+    {
+      "section": "deck",
+      "card_name": "Llanowar Elves",
+      "quantity": 56,
+      "cmc": "1",
+      "mana_cost": "{G}",
+      "colors": "G",
+      "is_land": false,
+      "produces": "",
+      "is_sideboard": false,
+      "is_commander": false
+    },
+    {
+      "section": "deck",
+      "card_name": "Negate",
+      "quantity": 2,
+      "cmc": "2",
+      "mana_cost": "{1}{U}",
+      "colors": "U",
+      "is_land": false,
+      "produces": "",
+      "is_sideboard": true,
+      "is_commander": false
+    }
+  ],
+  "metrics": {
+    "total_cards": "99",
+    "total_lands": "43",
+    "land_ratio": "0.43434343434343436",
+    "average_cmc": "1",
+    "effective_sources_W": "0",
+    "effective_sources_U": "0",
+    "effective_sources_B": "0",
+    "effective_sources_R": "0",
+    "effective_sources_G": "43",
+    "effective_sources_C": "0",
+    "pip_count_W": "0",
+    "pip_count_U": "0",
+    "pip_count_B": "0",
+    "pip_count_R": "0",
+    "pip_count_G": "56"
+  },
+  "totals": {
+    "library": 99,
+    "lands": 43,
+    "commanders": 1,
+    "sideboard": 2
+  }
+}

@@ -60,6 +60,11 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
     // Track last value pushed to parent to avoid redundant dispatches.
     const lastFlushedRef = useRef(deckList)
+    const pendingDraftRef = useRef<string | null>(null)
+    const setDeckListRef = useRef(setDeckList)
+    useEffect(() => {
+      setDeckListRef.current = setDeckList
+    }, [setDeckList])
 
     // Sync from parent when external sources update deckList (sample, clear, share URL).
     useEffect(() => {
@@ -67,6 +72,7 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
         clearTimeout(debounceRef.current)
         debounceRef.current = null
       }
+      pendingDraftRef.current = null
       setLocalDeckList(deckList)
       lastFlushedRef.current = deckList
     }, [deckList])
@@ -74,35 +80,42 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
     useEffect(() => {
       return () => {
         if (debounceRef.current) clearTimeout(debounceRef.current)
+        debounceRef.current = null
+        // SPA route departure must not discard the last <300 ms of typing.
+        // Only pending edits flush: initial StrictMode cleanup and explicit
+        // Clear/sample actions never replay an older draft.
+        const draft = pendingDraftRef.current
+        pendingDraftRef.current = null
+        if (draft !== null && draft !== lastFlushedRef.current) {
+          lastFlushedRef.current = draft
+          setDeckListRef.current(draft)
+        }
       }
     }, [])
 
-    const flushDeckList = useCallback(
-      (value: string) => {
-        if (debounceRef.current) {
-          clearTimeout(debounceRef.current)
-          debounceRef.current = null
-        }
-        if (value !== lastFlushedRef.current) {
-          lastFlushedRef.current = value
-          setDeckList(value)
-        }
-      },
-      [setDeckList]
-    )
+    const flushDeckList = useCallback((value: string) => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+        debounceRef.current = null
+      }
+      pendingDraftRef.current = null
+      if (value !== lastFlushedRef.current) {
+        lastFlushedRef.current = value
+        setDeckListRef.current(value)
+      }
+    }, [])
 
-    const handleDeckListChange = useCallback(
-      (value: string) => {
-        setLocalDeckList(value)
-        if (debounceRef.current) clearTimeout(debounceRef.current)
-        debounceRef.current = setTimeout(() => {
-          debounceRef.current = null
-          lastFlushedRef.current = value
-          setDeckList(value)
-        }, DECKLIST_PERSIST_DEBOUNCE_MS)
-      },
-      [setDeckList]
-    )
+    const handleDeckListChange = useCallback((value: string) => {
+      setLocalDeckList(value)
+      pendingDraftRef.current = value
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      debounceRef.current = setTimeout(() => {
+        debounceRef.current = null
+        pendingDraftRef.current = null
+        lastFlushedRef.current = value
+        setDeckListRef.current(value)
+      }, DECKLIST_PERSIST_DEBOUNCE_MS)
+    }, [])
 
     const handleClearClick = useCallback(() => {
       // Clear also cancels an unpersisted draft when the parent is already empty.
@@ -110,10 +123,20 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
         clearTimeout(debounceRef.current)
         debounceRef.current = null
       }
+      pendingDraftRef.current = null
       lastFlushedRef.current = ''
       setLocalDeckList('')
       onClear()
     }, [onClear])
+
+    const handleLoadSampleClick = useCallback(() => {
+      if (debounceRef.current) clearTimeout(debounceRef.current)
+      debounceRef.current = null
+      pendingDraftRef.current = null
+      // Reset local typing even if the selected example equals the parent value.
+      setLocalDeckList(deckList)
+      onLoadSample()
+    }, [deckList, onLoadSample])
 
     const handleAnalyzeClick = useCallback(() => {
       const value = localDeckList
@@ -163,6 +186,7 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
                 placeholder="Paste your decklist here...&#10;Format: 4 Lightning Bolt&#10;3 Counterspell&#10;..."
                 value={localDeckList}
                 onChange={(e) => handleDeckListChange(e.target.value)}
+                onBlur={(e) => flushDeckList(e.target.value)}
                 // Audit fix UX/WCAG (2026-04-13): proper accessibility labels for
                 // screen readers + maxLength to prevent multi-MB paste pathology.
                 inputProps={{
@@ -240,7 +264,7 @@ export const DeckInputSection: React.FC<DeckInputSectionProps> = memo(
                   <Button
                     variant="outlined"
                     size={isMobile ? 'medium' : 'large'}
-                    onClick={onLoadSample}
+                    onClick={handleLoadSampleClick}
                     startIcon={<PlaylistAddCheckIcon />}
                     sx={{
                       minWidth: isMobile ? 'auto' : '140px',

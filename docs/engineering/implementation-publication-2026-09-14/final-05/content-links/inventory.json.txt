@@ -1,0 +1,403 @@
+{
+  "source": "src/data/articlesReferenceSeed.ts",
+  "sha256": "d0cf6c196057498103826599b36e1b12a1a7167680c82bdd3d43e5783c8a8ccb",
+  "count": 65,
+  "articles": [
+    {
+      "id": "reid-duke-level-one-building-a-deck",
+      "title": "Level One: Building a Mana Base",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/building-mana-base-2014-11-24"
+    },
+    {
+      "id": "karsten-how-many-lands-2022",
+      "title": "How Many Lands Do You Need in Your Deck?",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.tcgplayer.com/content/article/How-Many-Lands-Do-You-Need-in-Your-Deck-An-Updated-Analysis/cd1c1a24-d439-4a8e-b369-b936edb0b38a/"
+    },
+    {
+      "id": "kuisma-beat-bad-luck",
+      "title": "How to Beat Bad Luck",
+      "linkStatus": "live",
+      "primaryUrl": "https://article.hareruyamtg.com/article/41870/?lang=en"
+    },
+    {
+      "id": "chapin-art-of-mulligan",
+      "title": "The Art of the Mulligan",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/the-art-of-the-mulligan/"
+    },
+    {
+      "id": "saito-part-2-having-fun",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220520011135/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-2-having-fun/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-2-having-fun/"
+    },
+    {
+      "id": "reid-duke-level-one-mulligans",
+      "title": "Level One: Mulligans",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/mulligans-2015-01-26"
+    },
+    {
+      "id": "reid-duke-level-one-sequencing",
+      "title": "Level One: Sequencing",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/sequencing-2015-02-16"
+    },
+    {
+      "id": "pvddr-6-heuristics",
+      "title": "Six Heuristics to Make You a Better Magic Player",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/magic-the-gathering/premium/six-heuristics-to-make-you-a-better-magic-player/"
+    },
+    {
+      "id": "manfield-prepare-tournament",
+      "title": "How to Prepare for a Magic Tournament",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.tcgplayer.com/content/article/How-to-Prepare-for-a-Magic-Tournament/f961017a-117e-4cea-8576-170a0414d3e1/"
+    },
+    {
+      "id": "reid-duke-level-one-sideboarding",
+      "title": "Level One: Sideboarding",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/sideboard-2015-08-10"
+    },
+    {
+      "id": "reid-duke-level-one-sideboard-plans",
+      "title": "Level One: Sideboard Plans",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/sideboard-plans-2015-03-09"
+    },
+    {
+      "id": "reid-duke-mulligans-part-iii-constructed",
+      "title": "Level One: Mulligans Part III — Constructed",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/mulligans-part-iii-constructed-2015-06-29"
+    },
+    {
+      "id": "pvddr-one-mistake-archive",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20201209132902/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/its-better-to-make-one-mistake-everyone-sees-than-two-only-you-know-about/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/its-better-to-make-one-mistake-everyone-sees-than-two-only-you-know-about/"
+    },
+    {
+      "id": "fortier-ladder-series",
+      "title": "Tournament Preparation Like A Pro: Ladder And Series",
+      "linkStatus": "live",
+      "primaryUrl": "https://mtgdecks.net/theory/tournament-preparation-ladder-and-series-mtg-157"
+    },
+    {
+      "id": "zvi-using-time-wisely",
+      "title": "Using Your Time Wisely",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/feature-article-using-your-time-wisely/"
+    },
+    {
+      "id": "pvddr-when-to-mulligan",
+      "title": "When to Mulligan",
+      "linkStatus": "lost",
+      "primaryUrl": "https://www.channelfireball.com/articles/when-to-mulligan/"
+    },
+    {
+      "id": "saito-part-1-concentration",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220520020828/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-1-concentration/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-1-concentration/"
+    },
+    {
+      "id": "fortier-dash-method",
+      "title": "Innovation And Performance In Magic: The DASH Method",
+      "linkStatus": "live",
+      "primaryUrl": "https://mtgdecks.net/theory/innovation-and-perfomance-in-magic-dash-method-mtg-163"
+    },
+    {
+      "id": "dagen-puzzling-improvements",
+      "title": "Puzzling Improvements",
+      "linkStatus": "live",
+      "primaryUrl": "https://article.hareruyamtg.com/article/article_en_44/?lang=en"
+    },
+    {
+      "id": "moudou-game-theory-series",
+      "title": "Les Bases de la Théorie des Jeux (appliquée à Magic)",
+      "linkStatus": "live",
+      "primaryUrl": "https://youtube.com/playlist?list=PLad4ffhFKLnfzNXJWxyBdRXO5lrkjL556"
+    },
+    {
+      "id": "chapin-61-cards-russian-roulette",
+      "title": "61 Cards — Magic Russian Roulette",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/61-cards-magic-russian-roulette/"
+    },
+    {
+      "id": "yahi-maths-inventory",
+      "title": "Comprehensive MTG Maths Inventory",
+      "linkStatus": "live",
+      "primaryUrl": "https://docs.google.com/spreadsheets/d/1YvQkZyNJNKEjUlewPjmdEPDqqvnZCD5Y_IRKQ5qU-TM/edit?usp=sharing"
+    },
+    {
+      "id": "pvddr-best-vs-known",
+      "title": "Should You Play What Is Best Or What You Know?",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.threeforonetrading.com/en/experience-vs-meta"
+    },
+    {
+      "id": "chapin-information-cascades",
+      "title": "Information Cascades in Magic",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/information-cascades-in-magic/"
+    },
+    {
+      "id": "zvi-elephant-method",
+      "title": "The Elephant Method: A Case Study",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/the-elephant-method-a-case-study/"
+    },
+    {
+      "id": "saito-part-3-environment",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220701191943/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-3-improving-your-magic-environment/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-3-improving-your-magic-environment/"
+    },
+    {
+      "id": "saito-part-4-metagame",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220520003840/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-4-familiarizing-yourself-with-the-metagame/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-4-familiarizing-yourself-with-the-metagame/"
+    },
+    {
+      "id": "saito-part-5-connections",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220520002930/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-5-building-connections-with-others-2/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-5-building-connections-with-others-2/"
+    },
+    {
+      "id": "saito-part-7-other-lessons",
+      "title": "Important Things for Tournament Success",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20220627183739/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-7-other-lessons-learned/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-7-other-lessons-learned/"
+    },
+    {
+      "id": "pvddr-pv-rule",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.tcgplayer.com/content/article/PV-s-Rule/0d7fbcf6-570b-458a-bf02-ae46f097d515/"
+    },
+    {
+      "id": "karsten-colored-sources-2022",
+      "title": "How Many Sources Do You Need to Consistently Cast Your Spells? (2022 Update)",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.tcgplayer.com/content/article/How-Many-Sources-Do-You-Need-to-Consistently-Cast-Your-Spells-A-2022-Update/dc23a7d2-0a16-4c0b-ad36-586fcca03ad8/"
+    },
+    {
+      "id": "karsten-hypergeometric-intro",
+      "title": "An Introduction to the Hypergeometric Distribution for Magic Players",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20201107233402/https://www.channelfireball.com/articles/an-introduction-to-the-hypergeometric-distribution-for-magic-players/",
+      "originalUrl": "https://www.channelfireball.com/articles/an-introduction-to-the-hypergeometric-distribution-for-magic-players/"
+    },
+    {
+      "id": "karsten-colored-sources-2018-archive",
+      "title": "How Many Colored Mana Sources Do You Need to Consistently Cast Your Spells?",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20190208133353/https://www.channelfireball.com/articles/how-many-colored-mana-sources-do-you-need-to-consistently-cast-your-spells-a-guilds-of-ravnica-update/",
+      "originalUrl": "https://www.channelfireball.com/articles/how-many-colored-mana-sources-do-you-need-to-consistently-cast-your-spells-a-guilds-of-ravnica-update/"
+    },
+    {
+      "id": "karsten-commander-manabase",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20230315090726/https://strategy.channelfireball.com/all-strategy/home/whats-an-optimal-mana-curve-and-land-ramp-count-for-commander/",
+      "originalUrl": "https://strategy.channelfireball.com/all-strategy/home/whats-an-optimal-mana-curve-and-land-ramp-count-for-commander/"
+    },
+    {
+      "id": "wizards-commander-brackets-2024",
+      "title": "Introducing Commander Brackets",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta"
+    },
+    {
+      "id": "command-zone-podcast",
+      "title": "The Command Zone",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcasts.apple.com/us/podcast/the-command-zone/id898023861",
+      "originalUrl": "https://www.thecommandzone.com/"
+    },
+    {
+      "id": "game-knights-command-zone-studios",
+      "title": "Game Knights",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.youtube.com/@CommandZone",
+      "originalUrl": "https://www.youtube.com/@CommandZoneStudios"
+    },
+    {
+      "id": "edhrec-articles-hub",
+      "title": "EDHREC Articles",
+      "linkStatus": "live",
+      "primaryUrl": "https://edhrec.com/articles"
+    },
+    {
+      "id": "limited-resources-podcast",
+      "title": "Limited Resources",
+      "linkStatus": "live",
+      "primaryUrl": "https://lrcast.com/"
+    },
+    {
+      "id": "seventeen-lands-blog",
+      "title": "17Lands Blog",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.17lands.com/blog"
+    },
+    {
+      "id": "lsv-draft-signals-classic",
+      "title": "Reading the Signals — A Draft Fundamentals Primer",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/2020*/channelfireball.com/articles/reading-the-signals",
+      "originalUrl": "https://www.channelfireball.com/articles/reading-the-signals/"
+    },
+    {
+      "id": "reid-duke-signals-booster-draft",
+      "title": "Level One: Signals in Booster Draft",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/signals-booster-draft-2015-01-19"
+    },
+    {
+      "id": "reid-duke-sideboarding-limited",
+      "title": "Level One: Sideboarding in Limited",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/sideboarding-limited-2015-01-12"
+    },
+    {
+      "id": "reid-duke-mulligans-part-ii-limited",
+      "title": "Level One: Mulligans Part II — Limited",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/mulligans-part-ii-limited-2015-06-15"
+    },
+    {
+      "id": "chapin-next-level-deckbuilding",
+      "title": "Next Level Deckbuilding",
+      "linkStatus": "live",
+      "primaryUrl": "https://starcitygames.com/next-level-deckbuilding-ebook/"
+    },
+    {
+      "id": "reid-duke-level-one-role-assignment",
+      "title": "Level One: Role Assignment",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/role-assignment-2015-01-05"
+    },
+    {
+      "id": "reid-duke-level-one-play-or-draw",
+      "title": "Level One: Play or Draw?",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/play-or-draw-2015-03-16"
+    },
+    {
+      "id": "chapin-next-level-magic-tempo",
+      "title": "Next Level Magic Preview — Tempo",
+      "linkStatus": "live",
+      "primaryUrl": "https://articles.starcitygames.com/articles/next-level-magic-preview-tempo/"
+    },
+    {
+      "id": "reid-duke-level-one-full-course",
+      "title": "Level One: The Full Course",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/news/feature/level-one-full-course-2015-10-05"
+    },
+    {
+      "id": "zvi-whos-the-beatdown-2-multitasking",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20200804023440/https://magic.tcgplayer.com/db/article.asp?ID=2754",
+      "originalUrl": "http://magic.tcgplayer.com/db/article.asp?ID=2754"
+    },
+    {
+      "id": "pvddr-ten-commandments",
+      "title": "The Ten Commandments of Deckbuilding",
+      "linkStatus": "lost",
+      "primaryUrl": "https://www.channelfireball.com/articles/the-ten-commandments-of-deckbuilding/"
+    },
+    {
+      "id": "flores-whos-the-beatdown",
+      "linkStatus": "archived",
+      "primaryUrl": "https://web.archive.org/web/20210120002241/https://articles.starcitygames.com/premium/whos-the-beatdown/",
+      "originalUrl": "https://articles.starcitygames.com/premium/whos-the-beatdown/"
+    },
+    {
+      "id": "karsten-london-mulligan",
+      "title": "What Are the New London Mulligan Odds?",
+      "linkStatus": "lost",
+      "primaryUrl": "https://www.channelfireball.com/articles/what-are-the-new-london-mulligan-odds/"
+    },
+    {
+      "id": "lsv-mulligans",
+      "title": "Mulligans",
+      "linkStatus": "lost",
+      "primaryUrl": "https://www.channelfireball.com/articles/mulligans/"
+    },
+    {
+      "id": "pvddr-how-to-sideboard",
+      "title": "How to Sideboard",
+      "linkStatus": "lost",
+      "primaryUrl": "https://www.channelfireball.com/articles/how-to-sideboard/"
+    },
+    {
+      "id": "wizards-banned-restricted",
+      "title": "Banned & Restricted Announcements",
+      "linkStatus": "live",
+      "primaryUrl": "https://magic.wizards.com/en/banned-restricted-list"
+    },
+    {
+      "id": "boa-mtgo-getting-started",
+      "linkStatus": "live",
+      "primaryUrl": "https://youtu.be/SoK6Dlm1FPg"
+    },
+    {
+      "id": "depraz-mtgo-stops",
+      "title": "Petite leçon de stops",
+      "linkStatus": "live",
+      "primaryUrl": "https://youtu.be/xLFjxcKmDr4"
+    },
+    {
+      "id": "battle-chads-mtg-study-win-rates",
+      "title": "Secrets to INSANE win rates? The MTG Study That Changes Everything",
+      "linkStatus": "live",
+      "primaryUrl": "https://www.youtube.com/watch?v=M8FRevbZJxs"
+    },
+    {
+      "id": "pcm-15-avoir-un-plan",
+      "title": "Level-up : Avoir un plan",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcastermage.podbean.com/e/15-level-up-avoir-un-plan/"
+    },
+    {
+      "id": "pcm-67-coherence-depraz",
+      "title": "Level-up : La cohérence à Magic, avec J-E Depraz",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcastermage.podbean.com/e/67-level-up-la-coherence-a-magic-avec-j-e-depraz/"
+    },
+    {
+      "id": "pcm-92-tourner-cartes",
+      "title": "Level-up : Tourner autour des cartes",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcastermage.podbean.com/e/92-level-up-tourner-autours-de-cartes/"
+    },
+    {
+      "id": "pcm-125-heuristiques",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcastermage.podbean.com/e/125-level-up-les-heuristiques-c-est-pas-automatique/"
+    },
+    {
+      "id": "pcm-164-erwan-control",
+      "linkStatus": "live",
+      "primaryUrl": "https://podcastermage.podbean.com/e/164-dans-la-peau-d-un-grand-pere-a-magic-avec-erwan-maisonneuve/"
+    },
+    {
+      "id": "lsv-looter-problem-lost",
+      "linkStatus": "lost",
+      "primaryUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/luis-scott-vargas-articles/whats-the-play-the-looter-problem/"
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+[
+  {
+    type: 'request',
+    method: 'GET',
+    url: 'http://127.0.0.1:4197/src/services/scryfall.ts?t=1789361089849',
+    time: 1789361120179
+  },
+  {
+    type: 'response',
+    status: 200,
+    url: 'http://127.0.0.1:4197/src/services/scryfall.ts?t=1789361089849',
+    time: 1789361120179
+  },
+  {
+    type: 'request',
+    method: 'GET',
+    url: 'http://127.0.0.1:4197/src/services/scryfallPersistentCache.ts',
+    time: 1789361120179
+  },
+  {
+    type: 'response',
+    status: 200,
+    url: 'http://127.0.0.1:4197/src/services/scryfallPersistentCache.ts',
+    time: 1789361120179
+  },
+  {
+    type: 'request',
+    method: 'POST',
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361120537
+  },
+  {
+    type: 'request',
+    method: 'POST',
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361128527
+  },
+  {
+    type: 'failed',
+    url: 'https://api.scryfall.com/cards/collection',
+    failure: { errorText: 'net::ERR_ABORTED' }
+  },
+  {
+    type: 'console',
+    text: '[Scryfall] Batch land data fetch failed (chunk): HttpTimeoutError: Request timed out after 8000ms\n' +
+      '    at http://127.0.0.1:4197/src/services/http.ts:58:28'
+  },
+  {
+    type: 'request',
+    method: 'GET',
+    url: 'https://api.scryfall.com/cards/named?exact=Savannah%20Lions',
+    time: 1789361136529
+  },
+  {
+    type: 'failed',
+    url: 'https://api.scryfall.com/cards/collection',
+    failure: { errorText: 'net::ERR_ABORTED' }
+  },
+  {
+    type: 'request',
+    method: 'GET',
+    url: 'http://127.0.0.1:4197/src/services/scryfall.ts?t=1789361136592',
+    time: 1789361136597
+  },
+  {
+    type: 'response',
+    status: 200,
+    url: 'http://127.0.0.1:4197/src/services/scryfall.ts?t=1789361136592',
+    time: 1789361136601
+  },
+  {
+    type: 'failed',
+    url: 'https://api.scryfall.com/cards/named?exact=Savannah%20Lions',
+    failure: { errorText: 'net::ERR_ABORTED' }
+  },
+  {
+    type: 'result',
+    success: false,
+    body: 'Skip to main content\n' +
+      'Help us improve ManaTuner! (dismiss = hide banner; feedback stays in the footer)\n' +
+      'Give Feedback\n' +
+      'ManaTuner\n' +
+      'Analyzer\n' +
+      'My Analyses\n' +
+      'Library\n' +
+      'Learn\n' +
+      'Feedback\n' +
+      'Synthetic model fixture: 24 Plains / 36 Savannah Lions demonstrates a supported exact calculation. This is not a tournament-legal decklist.\n' +
+      'ManaTuner\n' +
+      'Explore mana estimates and supported exact calculations\n' +
+      'Castability\n' +
+      'Mulligan Sim\n' +
+      'Karsten Math\n' +
+      'Your Deck\n' +
+      'Deck Name (optional)\n' +
+      'Deck Name (optional)\n' +
+      'Deck List\n' +
+      'Deck List\n' +
+      '\n' +
+      'Supported: MTGA, Moxfield, Archidekt, MTGGoldfish. Sideboard auto-detected.\n' +
+      '\n' +
+      'Analyze Manabase\n' +
+      'Clear\n' +
+      'Try Example\n' +
+      'Paste a decklist and hit Analyze.\n' +
+      'Castability\n' +
+      'Mulligan\n' +
+      'Manabase\n' +
+      '💾 Your Data\n' +
+      '\n' +
+      '📱 All your analyses are stored locally in your browser\n' +
+      '\n' +
+      'Export\n' +
+      'Import (merge)\n' +
+      'Info\n' +
+      'Reset\n' +
+      '\n' +
+      'Crafted with\n' +
+      '\n' +
+      '❤️\n' +
+      '\n' +
+      'for the MTG community\n' +
+      '\n' +
+      '© 2025-2026 ManaTuner. Open source under MIT License.\n' +
+      '\n' +
+      'ManaTuner is unofficial Fan Content permitted under the Fan Content Policy. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.\n' +
+      'Analyzer\n' +
+      'Guide\n' +
+      'Mathematics\n' +
+      'Land Glossary\n' +
+      'About\n' +
+      'Privacy\n' +
+      'Give Feedback\n' +
+      'GitHub\n' +
+      'Scryfall API\n' +
+      'Keyrune Icons\n' +
+      "Probability mathematics based on Frank Karsten's research"
+  }
+]

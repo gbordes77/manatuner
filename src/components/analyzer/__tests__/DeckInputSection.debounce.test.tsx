@@ -32,8 +32,8 @@ function setup(overrides: Partial<React.ComponentProps<typeof DeckInputSection>>
     ...overrides,
   }
 
-  render(<DeckInputSection {...props} />)
-  return { setDeckList, onAnalyze, props }
+  const view = render(<DeckInputSection {...props} />)
+  return { setDeckList, onAnalyze, props, ...view }
 }
 
 describe('T01 DeckInputSection debounce', () => {
@@ -131,4 +131,95 @@ describe('external clear invalidates pending draft persistence', () => {
       expect(input.value).toBe('24 Forest')
     }
   )
+})
+
+describe('route departure preserves pending edits', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+  it('flushes the latest Unicode and zone draft on immediate unmount without analyzing', () => {
+    const { setDeckList, onAnalyze, unmount } = setup({
+      deckList: '24 Mountain\n36 Lightning Bolt',
+    })
+    const draft = 'Deck\n25 Mountain\n35 Lightning Bolt\n\nSideboard\n1 Éclair 森 — incomplete'
+    fireEvent.change(screen.getByLabelText(/Paste your decklist/i), { target: { value: draft } })
+    unmount()
+    expect(setDeckList).toHaveBeenCalledExactlyOnceWith(draft)
+    expect(onAnalyze).not.toHaveBeenCalled()
+    act(() => vi.advanceTimersByTime(1000))
+    expect(setDeckList).toHaveBeenCalledTimes(1)
+  })
+  it('uses the latest parent callback and only flushes once under StrictMode', () => {
+    const { props, unmount: removeSetup } = setup()
+    removeSetup()
+    const initial = vi.fn(),
+      latest = vi.fn()
+    const { rerender, unmount } = render(
+      <React.StrictMode>
+        <DeckInputSection {...props} setDeckList={initial} />
+      </React.StrictMode>
+    )
+    expect(initial).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByLabelText(/Paste your decklist/i), {
+      target: { value: '25 Mountain' },
+    })
+    rerender(
+      <React.StrictMode>
+        <DeckInputSection {...props} setDeckList={latest} />
+      </React.StrictMode>
+    )
+    expect(initial).not.toHaveBeenCalled()
+    expect(latest).not.toHaveBeenCalled()
+    unmount()
+    expect(initial).not.toHaveBeenCalled()
+    expect(latest).toHaveBeenCalledExactlyOnceWith('25 Mountain')
+  })
+  it.each(['Clear', 'Try Example'])(
+    'does not resurrect a pending draft when %s immediately navigates away',
+    (button) => {
+      const { props, unmount: removeSetup } = setup()
+      removeSetup()
+      const setDeckList = vi.fn()
+      const callback = vi.fn(() => leave())
+      const view = render(
+        <DeckInputSection
+          {...props}
+          setDeckList={setDeckList}
+          onClear={callback}
+          onLoadSample={callback}
+        />
+      )
+      const leave = view.unmount
+      fireEvent.change(screen.getByLabelText(/Paste your decklist/i), {
+        target: { value: 'OLD DRAFT' },
+      })
+      fireEvent.click(screen.getByRole('button', { name: button }))
+      act(() => vi.advanceTimersByTime(1000))
+      expect(callback).toHaveBeenCalledOnce()
+      expect(setDeckList).not.toHaveBeenCalled()
+    }
+  )
+  it('external sample replacement wins over the pending draft on departure', () => {
+    const { props, rerender, unmount, setDeckList } = setup({ deckList: '24 Mountain' })
+    fireEvent.change(screen.getByLabelText(/Paste your decklist/i), {
+      target: { value: 'OLD DRAFT' },
+    })
+    rerender(<DeckInputSection {...props} deckList="24 Forest" />)
+    unmount()
+    expect(setDeckList).not.toHaveBeenCalled()
+  })
+})
+
+describe('leaving the editor before lazy route unmount', () => {
+  beforeEach(() => vi.useFakeTimers())
+  afterEach(() => vi.useRealTimers())
+  it('flushes on blur even while the route keeps its previous editor mounted', () => {
+    const { setDeckList, onAnalyze } = setup({ deckList: '24 Mountain\n36 Lightning Bolt' })
+    const input = screen.getByLabelText(/Paste your decklist/i)
+    fireEvent.change(input, { target: { value: '25 Mountain\n35 Lightning Bolt' } })
+    fireEvent.blur(input)
+    expect(setDeckList).toHaveBeenCalledExactlyOnceWith('25 Mountain\n35 Lightning Bolt')
+    expect(onAnalyze).not.toHaveBeenCalled()
+    act(() => vi.advanceTimersByTime(1000))
+    expect(setDeckList).toHaveBeenCalledTimes(1)
+  })
 })

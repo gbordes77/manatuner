@@ -1,0 +1,4 @@
+{
+  "foreground": "rgb(245, 245, 245)",
+  "background": "rgb(26, 26, 30)"
+}

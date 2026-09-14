@@ -1,0 +1,15 @@
+import {chromium} from 'playwright';
+import fs from 'node:fs';
+import records from '../../../../tests/fixtures/scryfall-audit.json' with {type:'json'};
+const out=decodeURIComponent(new URL('.',import.meta.url).pathname);
+const browser=await chromium.launch(); const page=await browser.newPage();
+await page.addInitScript(()=>localStorage.setItem('manatuner-onboarding-completed','true'));
+await page.route('https://api.scryfall.com/**',async route=>{const req=route.request();if(req.url().includes('/cards/collection')){const names=req.postDataJSON().identifiers.map(x=>x.name.toLowerCase());await route.fulfill({json:{object:'list',data:records.filter(c=>names.includes(c.name.toLowerCase()))}});}else{await route.fulfill({status:404,json:{object:'error',code:'not_found'}});}});
+await page.goto('http://127.0.0.1:4190/analyzer');
+await page.getByPlaceholder(/paste your decklist/i).fill('59 Plains\n1 =1+1');
+await page.getByRole('button',{name:'Analyze Manabase',exact:true}).click();
+await page.getByTestId('analysis-results').waitFor();
+fs.writeFileSync(out+'csv-vector-before.json',JSON.stringify(await page.evaluate(()=>JSON.parse(localStorage.getItem('manatuner_analyses')||'[]')),null,2));
+await page.getByTestId('tab-blueprint').click(); await page.getByRole('button',{name:'Export Blueprint',exact:true}).click();
+const download=page.waitForEvent('download');await page.getByRole('menuitem',{name:/CSV/}).click();await(await download).saveAs(out+'formula-before.csv');
+await page.screenshot({path:out+'csv-before.png',fullPage:true});await browser.close();

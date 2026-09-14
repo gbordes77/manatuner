@@ -1,0 +1,99 @@
+[WebServer] (node:68146) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 8 tests using 1 worker
+
+(node:68153) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/8] [chromium] › tests/e2e/core-flows/analyzer-happy-path.spec.js:10:7 › Analyzer happy path (P0) › Try Example → Analyze → all 5 result tabs without crash
+  1) [chromium] › tests/e2e/core-flows/analyzer-happy-path.spec.js:10:7 › Analyzer happy path (P0) › Try Example → Analyze → all 5 result tabs without crash 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText(/Health Score/i)
+    Expected: visible
+    Error: strict mode violation: getByText(/Health Score/i) resolved to 2 elements:
+        1) <span id="health-score-label" class="MuiTypography-root MuiTypography-caption css-17d5nws-MuiTypography-root">…</span> aka getByText('Health Score 91% · Excellent')
+        2) <span class="MuiTypography-root MuiTypography-caption css-1f8m3md-MuiTypography-root">Health Score averages turn-two access to each req…</span> aka getByText('Health Score averages turn-')
+
+    Call log:
+      - Expect "toBeVisible" getByText(/Health Score/i) with timeout 5000ms
+      - waiting for getByText(/Health Score/i)
+
+
+      38 |     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 90000 })
+      39 |     await expect(page.getByTestId('quick-verdict')).toBeVisible({ timeout: 15000 })
+    > 40 |     await expect(page.getByText(/Health Score/i)).toBeVisible()
+         |                                                   ^
+      41 |
+      42 |     // No fatal error UI on Castability (default tab)
+      43 |     await expect(page.getByText(/Something went wrong|could not be cloned|DataCloneError/i)).toHaveCount(
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/analyzer-happy-path.spec.js:40:51
+
+    Error Context: docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-analyzer-happy--10d80-5-result-tabs-without-crash-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-analyzer-happy--10d80-5-result-tabs-without-crash-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-analyzer-happy--10d80-5-result-tabs-without-crash-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:68176) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/8] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+  2) [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').filter({ hasText: /worker stopped|worker did not respond/i })
+    Expected: visible
+    Timeout: 20000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert').filter({ hasText: /worker stopped|worker did not respond/i }) with timeout 20000ms
+      - waiting for getByRole('alert').filter({ hasText: /worker stopped|worker did not respond/i })
+
+
+      20 |   await expect(page.getByTestId('analysis-results')).toBeVisible()
+      21 |   await page.getByTestId('tab-mulligan').click()
+    > 22 |   await expect(page.getByRole('alert').filter({ hasText: /worker stopped|worker did not respond/i })).toBeVisible({ timeout: 20000 })
+         |                                                                                                       ^
+      23 |   await expect(page.getByRole('button', { name: 'Re-run Analysis', exact: true })).toBeEnabled()
+      24 |   // A new precision selection triggers a fresh worker after the platform failure.
+      25 |   await page.getByText('Precise (50k)', { exact: true }).click()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/mulligan-worker-recovery.spec.js:22:103
+
+    Error Context: docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/implementation-publication-2026-09-14/devops/repro-before/core-flows-mulligan-worker-d5cb1-runs-again-at-50k-precision-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:68347) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 390
+[4/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 390
+[5/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 390
+[6/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+[7/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /guide keyboard, contrast, themes and viewport 1440
+[8/8] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › R01–R07 /library keyboard, contrast, themes and viewport 1440
+  2 failed
+    [chromium] › tests/e2e/core-flows/analyzer-happy-path.spec.js:10:7 › Analyzer happy path (P0) › Try Example → Analyze → all 5 result tabs without crash 
+    [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision 
+  6 passed (1.1m)

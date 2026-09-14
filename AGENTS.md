@@ -1,5 +1,15 @@
 # ManaTuner — repères pour les agents
 
+## Préférence permanente — validation des évolutions par les six personas
+
+Instruction explicite du propriétaire du **14 septembre 2026**, applicable à toutes les futures sessions et à tous les agents de ManaTuner :
+
+- **Chaque évolution proposée pour le site doit être soumise systématiquement aux six personas avant d’être présentée comme recommandation validée ou mise en œuvre.** Ne pas attendre que le propriétaire redemande cette analyse. Cela couvre fonctionnalités, parcours, interface, contenu et prototypes.
+- Utiliser les profils canoniques de `docs/personas/mtg-player-personas.md` : **Léo (Curieux), Sarah (Régulière), Karim (Tacticien), Natsuki (Grinder), David (Architecte), Thibault (Capitaine Commander)**. Aucun profil ne doit être omis ni remplacé par un avis global.
+- Évaluer le parcours complet et son point d’entrée, le besoin de chaque profil, l’utilité, les frictions, les risques de contresens et l’alternative minimale. Chaque persona peut accepter, demander une modification ou rejeter la proposition ; ne pas forcer le consensus.
+- Conserver les six avis distincts et présenter une synthèse avec les désaccords, les adaptations retenues et les réserves restantes. Si la proposition change substantiellement après cette revue, faire réévaluer la version révisée avant de la considérer validée.
+- Cette validation est une **évaluation simulée par personas**, pas une étude auprès de six joueurs réels. Elle ne remplace ni les tests techniques, ni la recherche humaine lorsqu’elle est nécessaire, ni l’autorisation du propriétaire de modifier ou publier le site.
+
 ## Préférence permanente du propriétaire — branche principale uniquement
 
 Instruction explicite du 10 septembre 2026, applicable à toutes les futures sessions de ce projet et à tous les sous-agents :
@@ -10,6 +20,12 @@ Instruction explicite du 10 septembre 2026, applicable à toutes les futures ses
 - Cette préférence remplace les anciennes consignes du projet recommandant une branche dédiée. Ne pas déduire d’un ancien document une autorisation de créer une branche.
 - Préserver les changements existants ; cette règle n’autorise ni suppression de branches existantes, ni reset destructif, ni force-push. Si le checkout est sur une ancienne branche, examiner son contenu et intégrer le travail pertinent sans perte avant de poursuivre sur main.
 - Le choix de main n’autorise pas à lui seul un commit, un push ou un déploiement non demandé ; respecter le périmètre de la tâche en cours et vérifier les effets automatiques d’un push demandé.
+
+## Préparation de l'audit avant communication — 13 septembre 2026
+
+- Nouvelle entrée : `docs/handoff/PROMPT-AUDIT-PRECOMMUNICATION-2026-09-13.md`, avec prompt de lancement court associé. Kit : `docs/quality/precommunication-2026-09-13/`.
+- Huit cahiers, 48 cas NON EXÉCUTÉS, six fixtures synthétiques avec empreintes, oracles indépendants, protocole humain et cinq hypothèses produit. Aucun test de l'application, audit complet ou nouvelle note persona exécuté lors de cette préparation.
+- Briefing agent-organizer (context-manager absent), contributions product-manager et devops-engineer. Le futur audit doit établir l'artefact actuel, distinguer constats/hypothèses/propositions et préserver les preuves historiques. Main reste la destination ; la préparation documentaire n'autorise pas un nouveau push/déploiement.
 
 ## Session du 9 septembre 2026
 
@@ -78,3 +94,35 @@ Référence : `docs/engineering/persona-validation-mfydqnp5/FINAL.md`, candidat 
 ## Publication sur main et Vercel — 10 septembre 2026
 
 La demande utilisateur « si non fais le » autorise désormais main et la production Vercel. Main a été avancée sans divergence vers e14f329, puis le correctif runtime e206991 a été commité et poussé. Les ajouts postréaudit et rapports utilisateur sont préservés. Le premier déploiement a échoué faute de libnspr4.so ; setup-build-browser installe les bibliothèques natives uniquement sur Vercel/Linux, erreurs bloquantes, puis npm ci. Chromium, options et gate inchangés. Six tests ciblés acquis ; CI GitHub réussie et Vercel READY pour e2069916186737fedac3ae3cb58f4e7872d728ce. Gate natif complet acquis, dont101routes et16Chromium. Vérification publique :5routes200 avec textes actualisés, route inconnue404/noindex. SHA origin/main identique. Preuves de cette publication : docs/engineering/main-publication-kyj03ixa/ (local, non versionné).
+
+## Audit précommunication exécuté — 13 septembre 2026
+
+- Entrée actuelle : `docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md` ; candidat isolé `audit-precommunication-2026-09-13-r7k2/candidate`, sources main a0a2351. Aucun code produit, commit/push/déploiement modifié.
+- Gate actuel 801/79 + 101 routes +16 Chromium ; audit33 Chromium/33 WebKit acquis ; persona22/23, Library390 sombre rouge (badge lost,2.69<4.5). Firefox bloqué avant navigation. Ne pas qualifier toutes les suites de vertes.
+- Oracles source45 événements conformes ; helperlegacy double# latent mais parcours page+reload réussi. Fallback Scryfall mock12GET/21ms : durcissement, pas débit réel mesuré. Trois assets publics identiques au candidat, SHA public complet non établi.
+- 48cas enrichis, résultats composites partiels laissés ouverts,16chantiers,2prototypes illustratifs ; humains/appareils/lecteurécran/terrain restent distincts. Prochaine mission L0 confiance puis L1 contraste nécessite autorisation applicative.
+- Runner d’audit doit isoler chaque navigateur par dossier : sortie commune Playwright nettoie les captures précédentes. Incident interne à la campagne documenté, reprise Chromium isolée ; anciens rapports préservés.
+
+## 14 septembre 2026 — atelier évalué par six personas
+
+Rapport : [docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md](docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md). Six évaluations simulées réparties entre trois agents disponibles après briefing ; aucune étude humaine. Proposition clarifiée : action facultative après analyse, original A conservé et variante B choisie par le joueur. Recommandation : réutiliser Compare, tester une préparation compacte pour les novices ; ne pas intégrer la page de démonstration telle quelle. Restaurer A et afficher B ont été revérifiés en CUA ; aucun nouveau gate ou test moteur. Main et code/prototypes inchangés, aucun commit/push/déploiement. Les462fichiers du manifeste de campagne précédent ont été contrôlés et sont intacts. Prochain travail éventuel : prototype du parcours complet, sur demande distincte.
+
+## Choix Compare après les six personas — 14 septembre 2026
+
+- Référence active B05/C-P01/L5 : `docs/product/EVOLUTION-COMPARE-2026-09-14.md` ; backlog courant : `docs/product/BACKLOG-ACTIF-2026-09-14.csv` (16 entrées, seul B05 révisé).
+- Compare depuis les résultats, A prérempli, B choisi manuellement, aide facultative ; abandon de la page atelier autonome. Six avis simulés favorables avec réserves : `docs/quality/validation-compare-2026-09-14/VALIDATION.md`.
+- Critères CMP-01–07 non exécutés, évolution non implémentée. Prototype et rapports historiques préservés ; priorités confiance/contraste et recommandation de lancement inchangées. Aucun commit, push ou déploiement.
+
+## Mission suivante préparée — 14 septembre 2026
+
+- Prompt complet : `docs/handoff/PROMPT-IMPLEMENTATION-PUBLICATION-2026-09-14.md` ; lancement court : `docs/handoff/PROMPT-LANCEMENT-IMPLEMENTATION-2026-09-14.txt`.
+- Future équipe : audit complet et B01–B16, Compare révisé, six personas, tests candidat final, commit/push origin/main et publication Vercel autorisés lors de l’exécution de cette mission. Publication technique distincte de la communication large.
+- Session présente limitée à préparer les prompts ; aucun changement applicatif, commit, push ou déploiement exécuté.
+
+## Implémentation du 14 septembre 2026 — candidat local, publication conditionnée
+
+Entrée : `docs/engineering/implementation-publication-2026-09-14/00-SYNTHESE.md`. B01–B16 suivis, Compare depuis Analyzer et texte contextuel intégrés après six avis simulés distincts ; exports PDF/TXT/CSV, liens legacy/bornes, queue Scryfall et éditorial corrigés. Formules, protocole deck/name/tab et Sentry désactivé préservés. B07 différé, B08 humain non exécuté, B09 communication réservée ; Library390sombre historique non reproduit après stabilisation.
+
+Le candidat courant est final-08 : consulter son gate et manifestes, ne pas recopier les résultats des candidats précédents. Incidents conservés : clipboard OS partagé entre deux sondes (rejouer ces suites séquentiellement), premier Headers retardant le départ fetch (horodatage désormais après préparation), POST collection externe expiré puis rétabli. Firefox bloque avant navigation. Les rapports lourds restent locaux, les preuves textuelles nouvelles sont sélectionnées explicitement pour Git.
+
+L'autorisation commit/push main/Vercel est acquise. Le prompt §4 exige cependant la confirmation visuelle propriétaire du candidat avant publication ; elle reste en attente à la rédaction. Aucun ancien succès Vercel ne prouve la publication de cette mission. Préserver les changements initiaux et anciens worktrees ; ne pas créer de branche.

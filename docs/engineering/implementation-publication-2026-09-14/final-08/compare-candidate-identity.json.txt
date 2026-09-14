@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-14T05:22:01.780463+00:00",
+  "scope": "AnalyzerPage asset only",
+  "results": [
+    {
+      "asset": "AnalyzerPage-CtfeQz9q.js",
+      "sha256": "126a8de00622b3a072c62c085aaec39cfddd4baefc275261cfd3791e3c23df12",
+      "served_sha256": "126a8de00622b3a072c62c085aaec39cfddd4baefc275261cfd3791e3c23df12",
+      "identical": true
+    }
+  ]
+}

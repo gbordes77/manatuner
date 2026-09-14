@@ -1,0 +1,26 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/http.scryfallQueue.test.ts (5 tests | 1 failed) 18ms
+     × paces actual fetch starts even when the first Headers preparation is slow 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/http.scryfallQueue.test.ts > Scryfall shared pacing B04 > paces actual fetch starts even when the first Headers preparation is slow
+AssertionError: expected 85 to be greater than or equal to 100
+ ❯ src/services/__tests__/http.scryfallQueue.test.ts:140:35
+    138|     await pending
+    139|     expect(starts).toHaveLength(2)
+    140|     expect(starts[1] - starts[0]).toBeGreaterThanOrEqual(100)
+       |                                   ^
+    141|   })
+    142|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 4 passed (5)
+   Start at  06:56:17
+   Duration  593ms (transform 25ms, setup 83ms, import 12ms, tests 18ms, environment 394ms)
+

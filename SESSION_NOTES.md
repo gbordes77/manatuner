@@ -102,3 +102,56 @@ La demande utilisateur « si non fais le » autorise désormais main et la produ
 ## Préférence de push reconfirmée — 10 septembre 2026
 
 À la demande explicite du propriétaire, tous les pushes du projet ciblent `origin/main`, sauf nouvelle instruction explicite contraire. Règle durable précisée dans AGENTS.md et HANDOFF.md. Modifications existantes préservées ; aucun changement applicatif ni nouveau test pour cette mise à jour documentaire.
+
+## Préparation audit avant communication — 13 septembre 2026
+
+- Demande : préparer un prompt complet, des cahiers de tests réutilisables et des pistes produit pour rendre ManaTuner utile et agréable avant communication.
+- Livrables : prompt maître et lancement court dans docs/handoff ; kit docs/quality/precommunication-2026-09-13 avec huit cahiers, 48 cas NON EXÉCUTÉS, six fixtures synthétiques avec SHA-256, oracles combinatoires, matrice/résultats CSV distincts, protocole humain et cinq concepts.
+- Briefing agent-organizer, contributions product-manager et devops-engineer ; revue documentaire indépendante effectuée par le devops-engineer, quatre précisions intégrées. Compétence engineering:testing-strategy appliquée.
+- Commandes de préparation : git status/rev-parse, rg, lectures ciblées des contrats/configs/tests ; génération Python des cahiers, fixtures et CSV ; calcul des oracles sans import du moteur. Références publiques : accueil, WCAG 2.2 et Web Vitals ; lecture Scryfall API indisponible, aucune limite de quota affirmée.
+- Tests applicatifs : aucun exécuté. Audit public : lecture textuelle de l'accueil seulement, aucune nouvelle validation des parcours ou note persona. Aucune donnée utilisateur recrutée/collectée.
+- État : documentation préparée sur main ; pas de changement applicatif, commit, push ou déploiement. Prochaine étape : exécuter le prompt avec une campagne neuve. Ancien worktree et anciens rapports préservés. Durée de préparation non chronométrée.
+
+- Vérification de préparation : 48 IDs concordants Markdown/CSV, 48 statuts NON EXÉCUTÉ, 29 cibles locales existantes, six hashes et cinq populations de fixtures vérifiés, deux oracles recomputés. Détail : docs/quality/precommunication-2026-09-13/VERIFICATION-PREPARATION.md.
+
+## Session 13 septembre 2026 — audit précommunication
+
+### Réalisé
+
+Briefing agent-organizer (context-manager absent), product-manager, devops-engineer, revue indépendante. Campagne [docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md](docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md), documents00–09,48cas versionnés,16chantiers,2prototypes. Gate801/79,101routes,16delivery ; audit33Chromium/33WebKit ; persona22/23 (contrasteLibrary390sombre rouge). Oracles45événements indépendants, exports JSON/CSV/PNG/PDF, vrai clipboard, parcours public/local, profils jetables et tests de stockage. Aucun changement applicatif ni publication.
+
+### Erreurs et limites
+
+Firefox bloqué au lancement. Deux sondes lead initiales corrigées (regex texte et attente lazy) sans toucher produit ; erreurs legacy/history des sondes agent conservées. Répertoire audit partagé a nettoyé captures Chromium de cette nouvelle campagne, log conservé ; reprise vers sortie unique réalisée. Aucun ancien rapport touché. Mesures laboratoire locales ne valent pas CWV terrain ; étude humaine et appareils physiques non exécutés.
+
+### Prochaine priorité
+
+NO-GO communication large : lot L0 références/promesses, L1 contraste, puis pilote humain autorisé. Lire08 pour le prompt de reprise et les critères. Commandes, codes et durées exactes dans COMMANDES.md et preuves/commands.jsonl ; aucune durée globale de développement facturée ou estimée rétrospectivement.
+
+## 14 septembre 2026 — atelier évalué par six personas
+
+Rapport : [docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md](docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md). Six évaluations simulées réparties entre trois agents disponibles après briefing ; aucune étude humaine. Proposition clarifiée : action facultative après analyse, original A conservé et variante B choisie par le joueur. Recommandation : réutiliser Compare, tester une préparation compacte pour les novices ; ne pas intégrer la page de démonstration telle quelle. Restaurer A et afficher B ont été revérifiés en CUA ; aucun nouveau gate ou test moteur. Main et code/prototypes inchangés, aucun commit/push/déploiement. Les462fichiers du manifeste de campagne précédent ont été contrôlés et sont intacts. Prochain travail éventuel : prototype du parcours complet, sur demande distincte.
+
+## 14 septembre 2026 — mémorisation de la validation par personas
+
+Demande explicite du propriétaire enregistrée dans AGENTS.md : faire évaluer chaque évolution du site par les six personas avant de la considérer validée. HANDOFF.md et README.md actualisés pour les futures sessions. Changement documentaire uniquement, aucun code, commit, push ou déploiement.
+
+## Choix Compare après les six personas — 14 septembre 2026
+
+- Référence active B05/C-P01/L5 : `docs/product/EVOLUTION-COMPARE-2026-09-14.md` ; backlog courant : `docs/product/BACKLOG-ACTIF-2026-09-14.csv` (16 entrées, seul B05 révisé).
+- Compare depuis les résultats, A prérempli, B choisi manuellement, aide facultative ; abandon de la page atelier autonome. Six avis simulés favorables avec réserves : `docs/quality/validation-compare-2026-09-14/VALIDATION.md`.
+- Critères CMP-01–07 non exécutés, évolution non implémentée. Prototype et rapports historiques préservés ; priorités confiance/contraste et recommandation de lancement inchangées. Aucun commit, push ou déploiement.
+
+## Mission suivante préparée — 14 septembre 2026
+
+- Prompt complet : `docs/handoff/PROMPT-IMPLEMENTATION-PUBLICATION-2026-09-14.md` ; lancement court : `docs/handoff/PROMPT-LANCEMENT-IMPLEMENTATION-2026-09-14.txt`.
+- Future équipe : audit complet et B01–B16, Compare révisé, six personas, tests candidat final, commit/push origin/main et publication Vercel autorisés lors de l’exécution de cette mission. Publication technique distincte de la communication large.
+- Session présente limitée à préparer les prompts ; aucun changement applicatif, commit, push ou déploiement exécuté.
+
+## Session du 14 septembre 2026 — implémentation et préparation de publication
+
+Mission exécutée sur main, base a0a23519253751b9c98d6b93f73822f21e8191c0. Briefing agent-organizer (context-manager absent), travail produit/DevOps/résilience et QA indépendante ; six personas canoniques par évolution. Prototype contextualisé puis Compare minimal, reçu texte, éditorial, liens, API, export et outillage réalisés. Aucun recrutement ni communication externe.
+
+Campagne neuve : `docs/engineering/implementation-publication-2026-09-14/`. COMMANDES.md détaille les commandes et essais ; JOURNAL.md les seize chantiers ; RESULTATS.csv les48cas. Gates successifs conservés, final-08 courant. Échecs réels documentés : découverte de suites historiques par Vitest, reporters --list propres rétablis, contraste dialogues, sérialisation metadata CSV, POST collection temporairement indisponible, cadence88,966ms avant préparation Headers corrigée, collision clipboard entre sondes. Pas de seuil abaissé. Durée : session prolongée ; aucun relevé fiable de temps humain.
+
+Les482fichiers préexistants ont été contrôlés intacts avant les ajouts aux quatre fichiers de suivi ; leurs versions initiales sont sauvegardées dans tracking-before. Les fichiers personnels/rapports historiques restent hors ajout global. Publication conditionnée par confirmation visuelle du candidat selon prompt §4 ; autorisation générale acquise. État exact du commit et des validations dans le bilan et PUBLICATION.md.

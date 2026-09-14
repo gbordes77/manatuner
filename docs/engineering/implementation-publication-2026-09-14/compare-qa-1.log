@@ -1,0 +1,21 @@
+
+Running 13 tests using 1 worker
+
+(node:72946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:23:5 › CMP01–04 edit manual B, points only for comparable populations, discard preserves A
+[2/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:48:5 › CMP05 saving produces a distinct ID and quota refusal leaves history intact
+[3/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:74:5 › CMP06 cancellation ignores late B and restores original focus on discard
+[4/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:95:5 › CMP04 commander 99+1 remains fixed and outside library
+[5/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:121:5 › B06 preview choices and copied payload match, clipboard refusal is recoverable
+[6/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 320 light no outer overflow, keyboard comparison region
+[7/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 320 dark no outer overflow, keyboard comparison region
+[8/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 390 light no outer overflow, keyboard comparison region
+[9/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 390 dark no outer overflow, keyboard comparison region
+[10/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 768 light no outer overflow, keyboard comparison region
+[11/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 768 dark no outer overflow, keyboard comparison region
+[12/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 1440 light no outer overflow, keyboard comparison region
+[13/13] [chromium] › tests/e2e/core-flows/compare-change.spec.js:143:7 › CMP responsive 1440 dark no outer overflow, keyboard comparison region
+  13 passed (23.5s)

@@ -1,0 +1,41 @@
+{
+  "width": 720,
+  "height": 1503.375,
+  "blocks": [
+    {
+      "top": 24,
+      "bottom": 159.09375,
+      "title": "◆ MANA BLUEPRINTÉtude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à compa"
+    },
+    {
+      "top": 375.0625,
+      "bottom": 566.3125,
+      "title": "Engine 2.7.9 · Blueprint Stability combines Health (40%), land-ratio balance around 40% la"
+    },
+    {
+      "top": 566.3125,
+      "bottom": 699.375,
+      "title": "HEURISTIC MANA STABILITY INDEX96ExcellentWeighted color access and land balance; not spell"
+    },
+    {
+      "top": 723.375,
+      "bottom": 878.796875,
+      "title": "HYPERGEOMETRIC PROBABILITY MATRIXT1T2T3T4Green98%99%100%100%"
+    },
+    {
+      "top": 902.796875,
+      "bottom": 1008.296875,
+      "title": "🏔️43Lands⚡56Spells📊1.0Avg CMC🎯43%Land %"
+    },
+    {
+      "top": 1032.296875,
+      "bottom": 1257.96875,
+      "title": "OPENING HAND ANALYSISPerfect Hand (2-4 lands + early play)77%Good Hand (2-4 lands)77%Borde"
+    },
+    {
+      "top": 1281.96875,
+      "bottom": 1420.453125,
+      "title": "💡 SUGGESTIONS⚠️ Heuristics only — not mathematical certainties. Your meta and playstyle m"
+    }
+  ]
+}

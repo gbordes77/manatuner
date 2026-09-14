@@ -1,0 +1,104 @@
+[WebServer] (node:80889) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 33 tests using 1 worker
+
+(node:80919) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/33] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution aborts the pending request and remains empty after reload
+[2/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+[3/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+[4/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px
+  1) [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px 
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator: getByPlaceholder(/paste your decklist/i)
+    Timeout: 5000ms
+    - Expected  - 2
+    + Received  + 6
+
+    - 24 Mountain
+    - 36 Lightning Bolt
+    + ManaTuner analysis context
+    + Library: 60 cards; 24 lands. Commander: 0; sideboard: 0.
+    + Question: potential to cast a listed spell by its mana-value turn, excluding the chance of drawing that spell.
+    + Model: physical-v1; report engine 2.7.9. Saved lands-only potential: on the play, no mulligans or ramp, X=2, target turn=max(1, mana value). Target spell draw is excluded; a legal sequence may use future draws. Interactive Castability settings are not saved here.
+    + Limits: supported payment mechanics only; unavailable results are not zero. These results do not measure win rate or overall deck quality.
+    + Share links contain deck, name and tab only. Interactive model settings are not transported. This text provides context, not a complete interactive scenario.
+
+    Call log:
+      - Expect "toHaveValue" getByPlaceholder(/paste your decklist/i) with timeout 5000ms
+      - waiting for getByPlaceholder(/paste your decklist/i)
+        12 × locator resolved to <textarea rows="12" id=":rb:" maxlength="20000" aria-invalid="false" aria-describedby="deck-format-hint" placeholder="Paste your decklist here...↵Format: 4 Lightning Bolt↵3 Counterspell↵..." class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline css-u36398" aria-label="Paste your decklist in MTGA, Moxfield, Archidekt, or plain text format. Each line should be quantity followed by card name, e.g. "4 Lightning Bolt".">24 Mountain↵36 Lightning Bolt</textarea>
+           - unexpected value "ManaTuner analysis context
+    Library: 60 cards; 24 lands. Commander: 0; sideboard: 0.
+    Question: potential to cast a listed spell by its mana-value turn, excluding the chance of drawing that spell.
+    Model: physical-v1; report engine 2.7.9. Saved lands-only potential: on the play, no mulligans or ramp, X=2, target turn=max(1, mana value). Target spell draw is excluded; a legal sequence may use future draws. Interactive Castability settings are not saved here.
+    Limits: supported payment mechanics only; unavailable results are not zero. These results do not measure win rate or overall deck quality.
+    Share links contain deck, name and tab only. Interactive model settings are not transported. This text provides context, not a complete interactive scenario."
+
+
+      76 |     await page.goBack()
+      77 |     await page.goto(url)
+    > 78 |     await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue('24 Mountain\n36 Lightning Bolt')
+         |                                                                 ^
+      79 |     await page.reload()
+      80 |     await expect(page.getByPlaceholder(/paste your decklist/i)).toHaveValue('24 Mountain\n36 Lightning Bolt')
+      81 |     await page.getByRole('button', { name: /analyze manabase/i }).click()
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/final-audit.spec.js:78:65
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/final-03/audit-chromium/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/implementation-publication-2026-09-14/final-03/audit-chromium/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-chromium/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/final-03/audit-chromium/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/implementation-publication-2026-09-14/final-03/audit-chromium/core-flows-final-audit-NR--15460-avigation-and-back-at-768px-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:81257) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[5/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px
+[6/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:90:5 › NR-M02 actual Try Example resolves all twenty public card names and saves sixty cards
+[7/33] [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried
+[8/33] [chromium] › tests/e2e/core-flows/history-audit.spec.js:27:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+[9/33] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 invalid import preserves existing history and reports outcome
+[10/33] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 quota import preserves existing history and reports outcome
+[11/33] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 merge import preserves existing history and reports outcome
+[12/33] [chromium] › tests/e2e/core-flows/history-audit.spec.js:84:5 › F06 comparison handles validated results and F03 unavailable score
+[13/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[14/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[15/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[16/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[17/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[18/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[19/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:5 › F01 reports the offending line and retains valid experimental decks
+[20/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 excluded sections: saved populations match input
+[21/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 local SB prefix and transitions: saved populations match input
+[22/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 categories and blank lines: saved populations match input
+[23/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[24/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[25/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[26/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[27/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:134:5 › F02 preserves post-board swaps and returning to the main population
+[28/33] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+[29/33] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+[30/33] [chromium] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring
+[31/33] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:33:5 › F03 hybrid can be supported by green, with honest target limitation and exact detail
+[32/33] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:46:5 › F03 strict RG still reports missing red and phyrexian score is unavailable
+[33/33] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:59:5 › F04 adding a blue sideboard does not change the red main-deck verdict
+  1 failed
+    [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px 
+  32 passed (1.6m)

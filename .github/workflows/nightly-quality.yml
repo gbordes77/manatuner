@@ -13,6 +13,7 @@ concurrency:
 
 env:
   NODE_VERSION: '22'
+  PLAYWRIGHT_USE_PREVIEW: '1'
 
 jobs:
   e2e-core:
@@ -26,8 +27,18 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npm run build
       - name: Core flows
         run: npx playwright test tests/e2e/core-flows/ --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-${{ github.job }}
+          path: |
+            playwright-report/
+            test-results.json
+            test-results/
+          retention-days: 7
 
   a11y:
     name: Accessibility suite
@@ -40,11 +51,21 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npm run build
       - name: a11y
         run: npm run test:accessibility -- --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-${{ github.job }}
+          path: |
+            playwright-report/
+            test-results.json
+            test-results/
+          retention-days: 7
 
   visual:
-    name: Visual regression
+    name: Visual contrast and reflow
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,5 +75,15 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - run: npm run build
       - name: visual
         run: npm run test:visual -- --project=chromium
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nightly-${{ github.job }}
+          path: |
+            playwright-report/
+            test-results.json
+            test-results/
+          retention-days: 7

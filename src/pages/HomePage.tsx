@@ -173,7 +173,7 @@ export const HomePage: React.FC = () => {
     },
     {
       title: 'Smart Mulligan Advice',
-      desc: '10,000 hands simulated to find your optimal keep/mull thresholds',
+      desc: '10,000 sampled hands explore heuristic keep/mull thresholds under a stated scoring policy',
       formula: 'Keep / Mull',
       techTerm: 'Monte Carlo + Bellman',
       manaColor: 'r' as const,
@@ -186,7 +186,7 @@ export const HomePage: React.FC = () => {
     <Container maxWidth="lg" sx={{ position: 'relative' }}>
       <SEO
         title="ManaTuner — MTG Mana Calculator + Competitive Library"
-        description="Magic: The Gathering mana calculator — free, counts your dorks & rocks, plus the competitive MTG library: Karsten, PVDDR, Saito, Chapin, Budde."
+        description="Free MTG mana estimates with explicit model limits, supported rocks and dorks, heuristic mulligan analysis, and a competitive reading library."
         path="/"
         jsonLd={{
           '@context': 'https://schema.org',
@@ -1266,7 +1266,8 @@ export const HomePage: React.FC = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <BookIcon sx={{ color: '#9c27b0', fontSize: 28 }} />
           <Typography variant="body1">
-            <strong>New to manabase theory?</strong> Learn the math behind optimal deckbuilding
+            <strong>New to manabase theory?</strong> Explore the models and assumptions behind mana
+            analysis
           </Typography>
         </Box>
         <Button

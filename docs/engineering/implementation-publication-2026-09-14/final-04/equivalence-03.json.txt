@@ -1,0 +1,8 @@
+{
+  "differentFiles": [
+    "analyzer/index.html",
+    "manifest.json"
+  ],
+  "identicalFiles": 155,
+  "scope": "SHA-256 every candidate file; final03 browser tests applicable to byte-identical application assets; final04 full delivery gate separately"
+}

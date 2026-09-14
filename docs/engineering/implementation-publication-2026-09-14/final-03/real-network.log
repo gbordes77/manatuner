@@ -1,0 +1,33 @@
+[
+  {
+    type: 'request',
+    method: 'POST',
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361397260
+  },
+  {
+    type: 'response',
+    status: 200,
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361397855
+  },
+  {
+    type: 'request',
+    method: 'POST',
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361397856
+  },
+  {
+    type: 'response',
+    status: 200,
+    url: 'https://api.scryfall.com/cards/collection',
+    time: 1789361397983
+  },
+  {
+    type: 'request',
+    method: 'GET',
+    url: 'https://api.scryfall.com/cards/named?fuzzy=Savannah%20Lions',
+    time: 1789361398051
+  },
+  { type: 'result', success: true }
+]

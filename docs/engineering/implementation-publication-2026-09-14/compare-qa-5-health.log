@@ -1,0 +1,14 @@
+
+Running 2 tests using 1 worker
+
+(node:74238) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/2] [chromium] › tests/e2e/core-flows/compare-change.spec.js:169:5 › CMP03 changed spell cost groups hide heuristic deltas but preserve common-spell comparison
+(node:74259) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/2] [webkit] › tests/e2e/core-flows/compare-change.spec.js:169:5 › CMP03 changed spell cost groups hide heuristic deltas but preserve common-spell comparison
+  2 passed (5.9s)

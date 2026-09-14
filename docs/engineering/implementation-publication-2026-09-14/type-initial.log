@@ -1,0 +1,5 @@
+
+> manatuner@2.7.9 type-check
+> tsc --noEmit
+
+src/data/__tests__/editorialContract.test.ts(1,30): error TS2307: Cannot find module 'node:fs' or its corresponding type declarations.

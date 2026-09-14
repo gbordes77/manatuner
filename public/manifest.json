@@ -1,7 +1,7 @@
 {
   "name": "ManaTuner - MTG Manabase Analyzer",
   "short_name": "ManaTuner",
-  "description": "The only mana calculator that factors in your mana rocks and dorks — not just lands. Exact probabilities + Smart mulligan advice.",
+  "description": "Explore mana estimates and supported exact calculations, with explicit model limits and heuristic keep/mulligan guidance.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0D0D0F",

@@ -1,0 +1,26 @@
+[
+  {
+    "source": "src/components/export/ManaBlueprint.tsx",
+    "final05": "081a0b5edcd32c1e29ba93f8adb9b0bc783e052c2e4ff01c19757b15c8fc86bb",
+    "final08": "081a0b5edcd32c1e29ba93f8adb9b0bc783e052c2e4ff01c19757b15c8fc86bb",
+    "identical": true
+  },
+  {
+    "source": "src/utils/analysisText.ts",
+    "final05": "d0b92b9468525b236ef66fdebc071f39f9d6b7bccdd8430eed22ee9b2dc8e61e",
+    "final08": "d0b92b9468525b236ef66fdebc071f39f9d6b7bccdd8430eed22ee9b2dc8e61e",
+    "identical": true
+  },
+  {
+    "source": "src/utils/pdfPagination.ts",
+    "final05": "3e8b6c6355cd1cf16ea97f911944e775bc91b8b4d7f1f9e0ed9bc1a90db06da3",
+    "final08": "3e8b6c6355cd1cf16ea97f911944e775bc91b8b4d7f1f9e0ed9bc1a90db06da3",
+    "identical": true
+  },
+  {
+    "source": "src/components/export/manaStability.ts",
+    "final05": "19fe7e2c504c6e67a069210a759ce8b78761adb442d2fefa97f87855f52ec3ce",
+    "final08": "19fe7e2c504c6e67a069210a759ce8b78761adb442d2fefa97f87855f52ec3ce",
+    "identical": true
+  }
+]

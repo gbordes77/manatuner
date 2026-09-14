@@ -1,0 +1,1249 @@
+{
+  "deckName": "Unnamed Deck",
+  "format": "Constructed",
+  "generatedAt": "2026-09-14T05:22:09.548Z",
+  "engineVersion": "2.7.9",
+  "scoreDefinitions": {
+    "health": "Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.",
+    "blueprint": "Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%).",
+    "mulligan": "Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.",
+    "limitation": "These are heuristic indices, not win probabilities or guaranteed keep decisions."
+  },
+  "assumptions": {
+    "snapshotModel": "physical-v1",
+    "playDraw": "PLAY",
+    "mulligans": false,
+    "ramp": false,
+    "xValue": 2,
+    "targetTurn": "max(1, mana value)",
+    "targetSpellDrawIncluded": false,
+    "note": "Saved lands-only potential, not interactive Castability settings."
+  },
+  "stabilityScore": 80,
+  "analysis": {
+    "totalCards": 60,
+    "totalLands": 59,
+    "totalNonLands": 1,
+    "colorDistribution": {
+      "W": 59,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 0,
+      "C": 0
+    },
+    "manaRequirements": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 0,
+      "C": 0
+    },
+    "consistency": 1,
+    "consistencyUnavailable": false,
+    "colorAccessNotes": [],
+    "colorAccessByTurn": {
+      "turn2": 1,
+      "turn4": 1
+    },
+    "rating": "excellent",
+    "inputWarnings": [],
+    "recommendations": [
+      "🎯 Consider reducing lands (current: 98%, recommended: 35-40%)"
+    ],
+    "probabilities": {
+      "turn1": {
+        "anyColor": 1,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn2": {
+        "anyColor": 1,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn3": {
+        "anyColor": 1,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 1,
+          "C": 1
+        }
+      },
+      "turn4": {
+        "anyColor": 1,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 1,
+          "C": 1
+        }
+      }
+    },
+    "averageCMC": 2,
+    "landRatio": 0.9833333333333333,
+    "manaCurve": {
+      "0": 0,
+      "1": 0,
+      "2": 1,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7+": 0
+    },
+    "mulliganAnalysis": {
+      "perfectHand": 0,
+      "goodHand": 0,
+      "averageHand": 0,
+      "poorHand": 12,
+      "terribleHand": 88
+    },
+    "spellAnalysis": {},
+    "unsupportedSpellAnalysis": {
+      "=1+1": "Complete resolved card and land metadata is required"
+    },
+    "spellAnalysisModel": "physical-v1",
+    "tempoImpactByColor": {
+      "W": {
+        "color": "W",
+        "method": "exact",
+        "rawSources": 59,
+        "effectiveSources": 59,
+        "rawProbability": 1,
+        "tempoAdjustedProbability": 1,
+        "impact": 0,
+        "impactPercent": "0%"
+      }
+    },
+    "landMetadata": [
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Plains",
+        "category": "basic",
+        "produces": [
+          "W"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Plains"
+        ],
+        "confidence": 100
+      }
+    ],
+    "cards": [
+      {
+        "name": "Plains",
+        "quantity": 59,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "W"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Plains",
+          "category": "basic",
+          "produces": [
+            "W"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Plains"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "=1+1",
+        "quantity": 1,
+        "manaCost": "{2}",
+        "colors": [],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": false,
+        "resolved": false,
+        "resolution": "not_found"
+      }
+    ]
+  }
+}

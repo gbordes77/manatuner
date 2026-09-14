@@ -1,0 +1,23 @@
+{
+  "B01": {
+    "baseline_source_HEAD": "FAIL",
+    "working_source": "PASS",
+    "assertion": "obsolete claim absent",
+    "obsolete": "20 for 2 pips T2",
+    "path": "src/pages/GuidePage.tsx"
+  },
+  "B03": {
+    "baseline_source_HEAD": "FAIL",
+    "working_source": "PASS",
+    "assertion": "obsolete claim absent",
+    "obsolete": "optimal keep/mull thresholds",
+    "path": "src/pages/HomePage.tsx"
+  },
+  "B11": {
+    "baseline_source_HEAD": "FAIL",
+    "working_source": "PASS",
+    "assertion": "obsolete claim absent",
+    "obsolete": "year: 2024",
+    "path": "src/data/articlesReferenceSeed.ts"
+  }
+}

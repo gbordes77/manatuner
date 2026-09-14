@@ -1,0 +1,39 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/http.scryfallQueue.test.ts (2 tests | 2 failed) 13ms
+     × spaces concurrent collection, named, metadata and retry attempts globally 12ms
+     × shares Retry-After with other queued requests 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/http.scryfallQueue.test.ts > Scryfall shared pacing B04 > spaces concurrent collection, named, metadata and retry attempts globally
+AssertionError: expected 0 to be greater than or equal to 100
+ ❯ src/services/__tests__/http.scryfallQueue.test.ts:17:79
+     15|     await pending
+     16|     expect(starts).toHaveLength(4)
+     17|     for (let i = 1; i < starts.length; i++) expect(starts[i] - starts[…
+       |                                                                               ^
+     18|   })
+     19|   it('shares Retry-After with other queued requests', async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/services/__tests__/http.scryfallQueue.test.ts > Scryfall shared pacing B04 > shares Retry-After with other queued requests
+AssertionError: expected 0 to be greater than or equal to 2000
+ ❯ src/services/__tests__/http.scryfallQueue.test.ts:30:35
+     28|     await pending
+     29|     expect(starts).toHaveLength(3)
+     30|     expect(starts[1] - starts[0]).toBeGreaterThanOrEqual(2000)
+       |                                   ^
+     31|   })
+     32| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  06:22:28
+   Duration  397ms (transform 22ms, setup 35ms, import 11ms, tests 13ms, environment 182ms)
+

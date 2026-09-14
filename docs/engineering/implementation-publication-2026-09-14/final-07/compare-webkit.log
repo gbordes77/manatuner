@@ -1,0 +1,26 @@
+
+Running 15 tests using 1 worker
+
+(node:90445) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:23:5 › CMP01–04 edit manual B, points only for comparable populations, discard preserves A
+[2/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:48:5 › CMP05 saving produces a distinct ID and quota refusal leaves history intact
+[3/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:74:5 › CMP06 cancellation ignores late B and restores original focus on discard
+[4/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:101:5 › CMP04 commander 99+1 remains fixed and outside library
+[5/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:127:5 › B06 preview choices and copied payload match, clipboard refusal is recoverable
+[6/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 320 light no outer overflow, keyboard comparison region
+[7/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 320 dark no outer overflow, keyboard comparison region
+[8/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 390 light no outer overflow, keyboard comparison region
+[9/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 390 dark no outer overflow, keyboard comparison region
+[10/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 768 light no outer overflow, keyboard comparison region
+[11/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 768 dark no outer overflow, keyboard comparison region
+[12/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 1440 light no outer overflow, keyboard comparison region
+[13/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:149:7 › CMP responsive 1440 dark no outer overflow, keyboard comparison region
+[14/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:169:5 › CMP03 changed spell cost groups hide heuristic deltas but preserve common-spell comparison
+[15/15] [webkit] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast
+[webkit] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast
+[{"text":"Compare a change","color":"rgb(245, 245, 245)","background":"rgb(25, 26, 31)","ratio":15.933758120044084,"threshold":4.5},{"text":"A — Original","color":"rgb(245, 245, 245)","background":"rgb(25, 26, 31)","ratio":15.933758120044084,"threshold":4.5},{"text":"List changes before calculation","color":"rgb(245, 245, 245)","background":"rgb(25, 26, 31)","ratio":15.933758120044084,"threshold":4.5}]
+
+  15 passed (35.1s)

@@ -1,0 +1,25 @@
+[WebServer] (node:68998) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:69025) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 11 tests using 1 worker
+
+(node:69033) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/11] [chromium] › tests/e2e/core-flows/analyzer-happy-path.spec.js:10:7 › Analyzer happy path (P0) › Try Example → Analyze → all 5 result tabs without crash
+[2/11] [chromium] › tests/e2e/core-flows/audit-wave-c-verify.spec.js:45:7 › Audit verification (automated) › analyzer happy path + format controls + health score
+[3/11] [chromium] › tests/e2e/core-flows/mulligan-worker-recovery.spec.js:3:5 › F13 failed worker asset is recoverable; real worker runs again at 50k precision
+[4/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /mathematics keyboard, contrast, themes and viewport 390
+[5/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /guide keyboard, contrast, themes and viewport 390
+[6/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /library keyboard, contrast, themes and viewport 390
+[7/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /my-analyses keyboard, contrast, themes and viewport 390
+[8/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /mathematics keyboard, contrast, themes and viewport 1440
+[9/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /guide keyboard, contrast, themes and viewport 1440
+[10/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /library keyboard, contrast, themes and viewport 1440
+[11/11] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:475:9 › @visual R01–R07 /my-analyses keyboard, contrast, themes and viewport 1440
+  11 passed (1.1m)

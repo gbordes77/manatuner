@@ -1,0 +1,251 @@
+{
+  "scope": "Add FINAL-05 proof selection to proposal04; do not stage automatically. Refresh after other audits finish.",
+  "files": [
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/compare-chromium.log",
+      "bytes": 2967,
+      "sha256": "84d22c39f0c54ac53ec8a16e0800f586397b9fea43085360fc613afdf3b26baf",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/source-manifest.json",
+      "bytes": 22530,
+      "sha256": "038efa498b49eebe7ed3ea04f4500cdc2f507cde5fd5c4857c6acf5d5b741a2b",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/source-manifest.json.txt",
+      "bytes": 22530,
+      "sha256": "038efa498b49eebe7ed3ea04f4500cdc2f507cde5fd5c4857c6acf5d5b741a2b",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/compare-webkit.log",
+      "bytes": 2935,
+      "sha256": "64bd70fd9cb90b70b73ac21ac946e49a74bac89e08e4a1b6b244ee4f26e69fca",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/audit-chromium.log",
+      "bytes": 5468,
+      "sha256": "a1b7a0555f6c505f46856258ee0b0c46391f043c21762a95becc9abb71c78c55",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/candidate-manifest.json.txt",
+      "bytes": 17431,
+      "sha256": "55154bf7c65772d9ae6d24d6510505827cb977786bd7a53a4dff5649f64fa995",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/persona.log",
+      "bytes": 2081,
+      "sha256": "34139ef186dff31f92701a60f81d07dbfe243371b5dd68db8f0c9ea523185bcc",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/candidate-manifest.json",
+      "bytes": 17431,
+      "sha256": "55154bf7c65772d9ae6d24d6510505827cb977786bd7a53a4dff5649f64fa995",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/compare-candidate-identity.json",
+      "bytes": 403,
+      "sha256": "b4b69bb698060ebd63dea897adaf31f63884b0b42de0b9a7e7790ae5dba55d90",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/gate.log",
+      "bytes": 32444,
+      "sha256": "94d74c56d85df99460f0a7191f291556f51fab93859a08fcd14c7c16c9d60e25",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/audit-webkit.log",
+      "bytes": 5402,
+      "sha256": "07f524939adf26a44669809079b6bbc5c7044fdc135f952e44fdf605e744ff6d",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/run-inspection.log",
+      "bytes": 805,
+      "sha256": "7f84a419c33bdaa06d128629549d429699094ff26929f0b5bbd36d5054b68bec",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/dialog-a11y-final.json",
+      "bytes": 60327,
+      "sha256": "7aff13798f49a4ab5548fd9c4d8e39412c942475dc711761317f5aced5b55e5c",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/formula.txt",
+      "bytes": 2626,
+      "sha256": "8a800a29836eea132cccce82b14b468cac647412285b72706568e9baffc17acb",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/constructed.csv",
+      "bytes": 1495,
+      "sha256": "f550e96cdac07aa1e957fb2526901a1b55ce0147497346dcbd9e01725b3cc76f",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/formula.json",
+      "bytes": 27588,
+      "sha256": "59b366a10f50c49d7aa66ae6f686a251002acdb80d1887ea2415aaff8e9d027b",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/run-exports.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/dialog-title-paint.json",
+      "bytes": 75,
+      "sha256": "9c18f18432ca1737086907e6f669352bbac9e2568a088076f0e8a49efd7f7517",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/commander.csv",
+      "bytes": 1626,
+      "sha256": "148e1df55cd074da715469e9782efd45501c0a626ce3ea90405bfac26f08f2c7",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/results.json",
+      "bytes": 541,
+      "sha256": "b3b4da220a5342fa11bec454442f3b218f362d789bec6a616d29e3f219721686",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/run-dialog.log",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/README.md",
+      "bytes": 2388,
+      "sha256": "240a46a5da49e2f25bbf8d1f87f378ba83cdab330c2ef895cfff3950388fad89",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/formula.csv",
+      "bytes": 1498,
+      "sha256": "fd578ae5c374038a23a3e86b87405e552b4ff644f7bbd7b376085f074b2b67dc",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/formula-official-recipe.json",
+      "bytes": 1068,
+      "sha256": "eedb713a092e023b4e9ca5faa77cee92921ce9769d91c00d891e5b06246165d8",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/constructed.json",
+      "bytes": 14135,
+      "sha256": "545158d7198c6e6da4d553909e134a1ea0966f7668848add353f0e8af76b35ab",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/commander-official-recipe.json",
+      "bytes": 1626,
+      "sha256": "fcb92ccd603157d374ea901162fbb909df184388b1c450c6f29df70e8a40841b",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/constructed.txt",
+      "bytes": 2584,
+      "sha256": "723ecf26c1a40073e3ae68ead5fe8bfdd08d8a526a5fb6b1c9414e0e994ebcd4",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/MANIFEST.json",
+      "bytes": 3225,
+      "sha256": "a0e0ef98e7a384a8d663e438f9b2f8304914f291d704b72d9e7574baa9735f3d",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/constructed-official-recipe.json",
+      "bytes": 1065,
+      "sha256": "1ae5fcb9ff428bf462b18198e694188fc2a051b0934cc067675a08b58429771e",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/commander-blocks.json",
+      "bytes": 1187,
+      "sha256": "1f62e5f35808dcdc64a3bb8fef05567819938f33086a5b8f4ab595de76623171",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/formula-blocks.json",
+      "bytes": 1169,
+      "sha256": "6f52518bce419d4c458803e10f911e2c2e84ec48f808c755ee9ee37abfce6e53",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/commander.txt",
+      "bytes": 2641,
+      "sha256": "a19ae5bb4a70cd0567dc35619d53e8c7ca077af4357d5a37e3f18f85c07000d9",
+      "hook": "review explicit path"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/inspection.json",
+      "bytes": 1135,
+      "sha256": "4078f41ff9d7cd1991f10f32b5f175de32dbe604bfa5b3c0e704679736901ef9",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/commander.json",
+      "bytes": 22278,
+      "sha256": "8e2e18873f084dd98bb6978672c66b55e92b4d3456a99b0d7593820beae1354b",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/exports/constructed-blocks.json",
+      "bytes": 1167,
+      "sha256": "a79de7640e224470b32346d9fe3b81a598b7850a5ffe05e906e42a4f2e356466",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/math/manatuner-pathway-oracle.json",
+      "bytes": 1502,
+      "sha256": "4f952ad50cc07983a861f5125212f702fb5cf5e9ba5f034b40a728a38e3d2149",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/math/mtg-audit-known-limitations.json",
+      "bytes": 1082,
+      "sha256": "5cf639b3fbf818f3404ebeb3394935d36639ef6fb360f0fd5a9b434bd2941e44",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/math/mtg-audit-monte-carlo.json",
+      "bytes": 197,
+      "sha256": "b4159d635b4dba804d498287508a11515e15c78258ec780a08e6cfc15d382380",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/math/mtg-audit-exact-results.json",
+      "bytes": 5699,
+      "sha256": "75fd9143452977194db036d751431afe4d9944fbd627d8c5fa1160b8110b69a5",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/final-05/math/mtg-audit-canonical.json",
+      "bytes": 995,
+      "sha256": "409d05c5f657712b10ff2a15cf92c55855eabb13f44c7315c1efff0ff2be0b90",
+      "hook": "copy raw JSON as .json.txt or preserve hash after controlled formatting"
+    },
+    {
+      "path": "docs/engineering/implementation-publication-2026-09-14/exports/inspect-exports.py",
+      "bytes": 2726,
+      "sha256": "0d39574d2948fc2437ea7213351e097449eb6604bd6cf4a51128b8a9ad6f7333",
+      "hook": "not targeted"
+    }
+  ]
+}

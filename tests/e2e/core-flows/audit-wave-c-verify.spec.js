@@ -50,7 +50,7 @@ test.describe('Audit verification (automated)', () => {
     await page.getByRole('button', { name: /analyze manabase|analyze/i }).first().click()
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 60000 })
     await expect(page.getByTestId('quick-verdict')).toBeVisible()
-    await expect(page.getByText(/Health Score/i)).toBeVisible()
+    await expect(page.getByTestId('quick-verdict').locator('#health-score-label')).toBeVisible()
     await expect(page.getByTestId('engine-stamp')).toContainText(/Engine v2\.7/)
 
     await expect(page.getByTestId('analysis-settings')).toBeVisible({ timeout: 20000 })

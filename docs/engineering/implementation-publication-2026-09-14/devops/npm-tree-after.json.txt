@@ -1,0 +1,67 @@
+{
+  "version": "2.7.9",
+  "name": "manatuner",
+  "dependencies": {
+    "@vitejs/plugin-react": {
+      "version": "5.1.2",
+      "resolved": "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-5.1.2.tgz",
+      "overridden": false,
+      "dependencies": {
+        "vite": {
+          "version": "7.3.6"
+        }
+      }
+    },
+    "@vitest/coverage-v8": {
+      "version": "4.1.11",
+      "resolved": "https://registry.npmjs.org/@vitest/coverage-v8/-/coverage-v8-4.1.11.tgz",
+      "overridden": false,
+      "dependencies": {
+        "vitest": {
+          "version": "4.1.11"
+        }
+      }
+    },
+    "@vitest/ui": {
+      "version": "4.1.11",
+      "resolved": "https://registry.npmjs.org/@vitest/ui/-/ui-4.1.11.tgz",
+      "overridden": false,
+      "dependencies": {
+        "vitest": {
+          "version": "4.1.11"
+        }
+      }
+    },
+    "vite": {
+      "version": "7.3.6",
+      "resolved": "https://registry.npmjs.org/vite/-/vite-7.3.6.tgz",
+      "overridden": false
+    },
+    "vitest": {
+      "version": "4.1.11",
+      "resolved": "https://registry.npmjs.org/vitest/-/vitest-4.1.11.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@vitest/coverage-v8": {
+          "version": "4.1.11"
+        },
+        "@vitest/mocker": {
+          "version": "4.1.11",
+          "resolved": "https://registry.npmjs.org/@vitest/mocker/-/mocker-4.1.11.tgz",
+          "overridden": false,
+          "dependencies": {
+            "vite": {
+              "version": "7.3.6"
+            }
+          }
+        },
+        "@vitest/ui": {
+          "version": "4.1.11"
+        },
+        "vite": {
+          "version": "7.3.6"
+        }
+      }
+    }
+  }
+}

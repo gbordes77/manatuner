@@ -1,3 +1,4 @@
+import { KARSTEN_UU_REFERENCE } from '../data/karstenReference'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CasinoIcon from '@mui/icons-material/Casino'
@@ -75,9 +76,10 @@ export const GuidePage: React.FC = () => {
     {
       icon: <CasinoIcon sx={{ fontSize: 32 }} />,
       title: 'Mulligan',
-      description: 'Smart keep/mull advice based on 10,000 simulated opening hands.',
+      description:
+        'Heuristic keep/mull thresholds from 10,000 sampled hands under a stated scoring policy; not a guarantee of the best play.',
       color: '#9c27b0',
-      badge: 'Unique',
+      badge: 'Heuristic',
     },
     {
       icon: <AnalyticsIcon sx={{ fontSize: 32 }} />,
@@ -114,11 +116,11 @@ export const GuidePage: React.FC = () => {
     },
     {
       title: 'Karsten Standards',
-      formula: '90%',
-      desc: 'How many sources you actually need per color',
+      formula: '91%',
+      desc: 'Conditional color-consistency reference for UU on turn 2',
       color: '#e8f5e9',
       borderColor: '#1b5e20',
-      details: 'Pro-level targets: 14 sources for 1 pip T1, 20 for 2 pips T2, 23 for 3 pips T3',
+      details: KARSTEN_UU_REFERENCE,
     },
     {
       title: 'Monte Carlo',
@@ -228,7 +230,9 @@ export const GuidePage: React.FC = () => {
                   name: 'How many sources do I need for a turn-2 double-colored spell like Counterspell?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Per Frank Karsten 2022, you need approximately 20 sources of that color in a 60-card deck to cast a UU spell on turn 2 with 90% reliability (including mulligans). ManaTuner compares your sources with scaled reference targets; its default castability estimate answers a different, no-mulligan question.',
+                    text:
+                      KARSTEN_UU_REFERENCE +
+                      ' ManaTuner’s default no-mulligan estimate answers a different question. See Mathematics for the reference policy and scope.',
                   },
                 },
                 {
@@ -926,7 +930,7 @@ export const GuidePage: React.FC = () => {
               <List dense sx={{ pl: 0 }}>
                 {[
                   'Command zone: identified only via *CMDR* or an explicit Commander section. Unmarked lists have no inferred commander. Castability pins it first; library size for other spells excludes commander copies (N−1 on a 100-card paste).',
-                  'Karsten tables are published for 60-card decks. Manabase color targets are scaled by N/60 for 100-card lists (first-order approximation — not a published EDH table).',
+                  'ManaTuner scales its 60-card Manabase reference targets by N/60 for 100-card lists. This first-order approximation is not Karsten’s separately published 99-card table.',
                   'Castability priority horizon is T4–T8 in Commander mode (CMC 4–8 listed after the commander). Early rocks/dorks still appear below.',
                   'Multiplayer political variance (3 opponents, threat assessment, group hug) and Rule 0 are out of scope — this tool is strictly a manabase / castability lens.',
                   'Partners or Backgrounds must be entered on separate lines under Commander:. Their payment results are separate. Castability excludes mulligans and commander tax; the Mulligan tab can model the multiplayer free first mulligan and turn-one draw.',

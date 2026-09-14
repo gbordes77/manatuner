@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-14T04:59:32.643457+00:00",
+  "base_url": "http://127.0.0.1:4198",
+  "scope": "AnalyzerPage assets only",
+  "assets": [
+    {
+      "asset": "AnalyzerPage-ComUfyKn.js",
+      "sha256": "2cd1106f2dd19f6920cf10436f2edee706be47ed86ef6d653b064fcf216d6a66",
+      "served_sha256": "2cd1106f2dd19f6920cf10436f2edee706be47ed86ef6d653b064fcf216d6a66",
+      "identical": true
+    }
+  ]
+}

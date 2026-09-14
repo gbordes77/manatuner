@@ -17,6 +17,8 @@
 
 **Persona review (2026-09-10, corrected local candidate):** [latest comparative report](./docs/session/PERSONA_REAUDIT_POST_R01_R07_2026-09-10.md). Simulated score15.11/20, previously14.67/20; this is not a new production score or test run.
 
+**Pre-communication audit preparation (2026-09-13):** [mission prompt](docs/handoff/PROMPT-AUDIT-PRECOMMUNICATION-2026-09-13.md) and [reusable test kit](docs/quality/precommunication-2026-09-13/README.md), with 48 specified cases. These are plans for future evaluation, not new passing test results.
+
 ## Overview
 
 ManaTuner answers the fundamental question every Magic player asks: **"Can I cast my spells on curve?"**
@@ -282,3 +284,21 @@ Project contributors and agents should follow the [main-branch workflow preferen
 The re-audit corrections clarify calculation modes, group unavailable comparison reasons, format comparison percentages and identify Commander library/command zones. CSV import instructions are available in the [Blueprint CSV recipe](docs/engineering/BLUEPRINT-CSV.md). The [current validation report](docs/engineering/reaudit-fixes-szrp1r9w/FINAL.md) records local evidence; this mission explicitly authorizes the dedicated branch and excludes deployment.
 
 Vercel builds install missing Chromium system libraries on Amazon Linux before the locked npm install; prerender and delivery checks remain mandatory. See [native deployment](docs/deployment/NATIVE-DEPLOYMENT.md).
+
+### Audit avant communication — septembre 2026
+
+Une [campagne d’audit documentée](docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md) sépare les validations techniques, les défauts encore ouverts et la recherche utilisateurs à réaliser. Elle comprend des cahiers réutilisables et deux prototypes isolés ; ces prototypes ne sont pas des fonctionnalités disponibles dans l’application. Aucun changement de version ou nouvelle publication n’accompagne cette campagne.
+
+Une [évaluation simulée de l’atelier par six personas](docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md) complète l’audit : il s’agit d’une exploration produit, sans fonctionnalité ajoutée ni validation utilisateurs.
+
+Les évolutions proposées font systématiquement l’objet d’une revue selon les [six personas du projet](docs/personas/mtg-player-personas.md). Ces évaluations simulées complètent les tests techniques et la recherche utilisateurs, sans s’y substituer.
+
+Documentation produit : [demande Compare révisée après revue des six personas](docs/product/EVOLUTION-COMPARE-2026-09-14.md). Spécification préparatoire, fonctionnalité non implémentée.
+
+[Mission préparée : implémentation, validation et publication](docs/handoff/PROMPT-IMPLEMENTATION-PUBLICATION-2026-09-14.md).
+
+### Évolutions préparées le 14 septembre 2026
+
+Le candidat local ajoute une comparaison depuis les résultats : conserver l'analyse originale, modifier une variante, examiner les différences et sauvegarder séparément. Le partage propose un texte de contexte facultatif ; les liens conservent leur format. Blueprint fournit un rapport texte et une pagination PDF améliorée. Les références éditoriales, la compatibilité des liens, les bornes d'entrée et la cadence Scryfall sont renforcées.
+
+La disponibilité publique de ces changements doit être vérifiée dans le [bilan de livraison](docs/engineering/implementation-publication-2026-09-14/00-SYNTHESE.md) ; cette section ne constitue pas une annonce de déploiement. Les avis par personas sont simulés et ne remplacent pas une étude utilisateurs.

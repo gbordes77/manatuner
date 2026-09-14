@@ -1,0 +1,41 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/services/__tests__/http.test.ts (6 tests | 2 failed) 10020ms
+     × retries on 429 then succeeds 5006ms
+     × respects Retry-After header on 429 5002ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/http.test.ts > fetchWithTimeout (T05) > retries on 429 then succeeds
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/services/__tests__/http.test.ts:51:3
+     49|   })
+     50|
+     51|   it('retries on 429 then succeeds', async () => {
+       |   ^
+     52|     const fetchMock = vi
+     53|       .fn()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/services/__tests__/http.test.ts > fetchWithTimeout (T05) > respects Retry-After header on 429
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/services/__tests__/http.test.ts:107:3
+    105|   })
+    106|
+    107|   it('respects Retry-After header on 429', async () => {
+       |   ^
+    108|     const fetchMock = vi
+    109|       .fn()
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  2 failed | 40 passed (42)
+   Start at  06:24:24
+   Duration  10.75s (transform 289ms, setup 480ms, import 257ms, tests 11.33s, environment 2.39s)
+

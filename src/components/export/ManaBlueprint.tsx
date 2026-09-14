@@ -1,3 +1,5 @@
+import { analysisTextReport, csvText, csvDeckComment } from '../../utils/analysisText'
+import { paginateBlueprint } from '../../utils/pdfPagination'
 import { SCORE_DEFINITIONS } from '../../data/scoreDefinitions'
 import { version as engineVersion } from '../../../package.json'
 import { healthScoreBand } from '../../utils/healthScore'
@@ -14,6 +16,11 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
   LinearProgress,
   Menu,
   MenuItem,
@@ -76,6 +83,8 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 }) => {
   const blueprintRef = useRef<HTMLDivElement>(null)
   const [isExporting, setIsExporting] = useState(false)
+  const [textOpen, setTextOpen] = useState(false)
+  const reportText = analysisTextReport(analysisResult, deckName)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const stabilityScore = calculateStabilityScore(analysisResult)
@@ -159,13 +168,24 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
         const pageHeight = 277 // A4 height minus two 10 mm margins.
         const sliceHeight = Math.max(1, Math.floor((canvas.width * pageHeight) / imgWidth))
         const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-        // Crop contiguous source rows so a tall/mobile blueprint is never cut off
-        // at the first A4 page and each page retains its margins.
-        for (let y = 0; y < canvas.height; y += sliceHeight) {
-          if (y > 0) pdf.addPage()
+        const bounds = blueprintRef.current.getBoundingClientRect()
+        const scale = canvas.height / bounds.height
+        const blocks = Array.from(blueprintRef.current.querySelectorAll('[data-pdf-block]')).map(
+          (element) => {
+            const rect = element.getBoundingClientRect()
+            return {
+              top: (rect.top - bounds.top) * scale,
+              bottom: (rect.bottom - bounds.top) * scale,
+            }
+          }
+        )
+        const slices = paginateBlueprint(canvas.height, sliceHeight, blocks)
+        for (const [index, source] of slices.entries()) {
+          if (index > 0) pdf.addPage()
+          const y = source.top
           const slice = document.createElement('canvas')
           slice.width = canvas.width
-          slice.height = Math.min(sliceHeight, canvas.height - y)
+          slice.height = source.height
           const context = slice.getContext('2d')
           if (!context) throw new Error('PDF canvas unavailable')
           context.drawImage(
@@ -239,13 +259,10 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
    */
   const handleExportCSV = () => {
     handleClose()
-    const escape = (v: unknown): string => {
-      const s = String(v ?? '')
-      return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s
-    }
+    const escape = csvText
     const lines: string[] = []
     lines.push('# ManaTuner CSV export')
-    lines.push(`# Deck: ${escape(deckName)}`)
+    lines.push(csvDeckComment(deckName))
     lines.push(`# Format: ${detectedFormat}`)
     lines.push(`# Generated: ${new Date().toISOString()}`)
     lines.push(`# Stability: ${stabilityScore ?? 'Unavailable'}`)
@@ -273,9 +290,9 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           card.quantity,
           card.cmc ?? 0,
           escape(card.manaCost ?? ''),
-          (card.colors ?? []).join('|'),
+          escape((card.colors ?? []).join('|')),
           card.isLand ? 'true' : 'false',
-          producesColors,
+          escape(producesColors),
           Boolean(card.isSideboard),
           Boolean(card.isCommander),
         ].join(',')
@@ -314,8 +331,45 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
     URL.revokeObjectURL(link.href)
   }
 
+  const downloadText = () => {
+    const url = URL.createObjectURL(new Blob([reportText], { type: 'text/plain;charset=utf-8' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `mana-blueprint-${deckName.replace(/\s+/g, '-').toLowerCase()}.txt`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <Box>
+      <Dialog
+        open={textOpen}
+        onClose={() => setTextOpen(false)}
+        fullWidth
+        maxWidth="md"
+        aria-labelledby="blueprint-text-title"
+      >
+        <DialogTitle id="blueprint-text-title" sx={{ color: 'text.primary' }}>
+          Text report
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            minRows={12}
+            maxRows={20}
+            label="Analysis report"
+            value={reportText}
+            InputProps={{ readOnly: true }}
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={downloadText}>Download text</Button>
+          <Button onClick={() => setTextOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
       {/* Export Controls */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3, justifyContent: 'flex-end' }}>
         <ButtonGroup variant="contained" disabled={isExporting}>
@@ -342,6 +396,14 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           <MenuItem onClick={handleExportPDF}>
             <PdfIcon sx={{ mr: 1 }} /> PDF (Documentation)
           </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClose()
+              setTextOpen(true)
+            }}
+          >
+            <DownloadIcon sx={{ mr: 1 }} /> Text report (accessible)
+          </MenuItem>
           <MenuItem onClick={handleExportJSON}>
             <ShareIcon sx={{ mr: 1 }} /> JSON (Backup)
           </MenuItem>
@@ -352,7 +414,8 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
       </Box>
 
       <Typography variant="caption" display="block" sx={{ mb: 1 }}>
-        Export as PNG, PDF, JSON or CSV. CSV contains separate deck and summary tables.
+        PDF and PNG are visual snapshots. Use Text report for selectable text and the complete deck
+        by zone. CSV contains separate deck and summary tables.
       </Typography>
       <Typography variant="caption" sx={{ display: { xs: 'block', md: 'none' }, mb: 1 }}>
         Scroll horizontally to view the full blueprint. Exports include its entire width.
@@ -393,7 +456,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           }}
         >
           {/* Header */}
-          <Box sx={{ position: 'relative', zIndex: 1, mb: 3 }}>
+          <Box data-pdf-block sx={{ position: 'relative', zIndex: 1, mb: 3 }}>
             <Box
               sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
             >
@@ -487,6 +550,22 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                 DECK LIST
               </Typography>
 
+              {commanderCount > 0 && (
+                <Typography
+                  sx={{
+                    mt: 1,
+                    color: BLUEPRINT_COLORS.text,
+                    fontFamily: 'monospace',
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  COMMANDER ({commanderCount}):{' '}
+                  {analysisResult.cards
+                    .filter((card) => card.isCommander && !card.isSideboard)
+                    .map((card) => `${card.quantity}x ${card.name}`)
+                    .join('; ')}
+                </Typography>
+              )}
               {/* Maindeck */}
               <Box
                 sx={{
@@ -680,7 +759,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
             </Box>
           )}
 
-          <Box sx={{ px: 3, py: 2, color: BLUEPRINT_COLORS.text }}>
+          <Box data-pdf-block sx={{ px: 3, py: 2, color: BLUEPRINT_COLORS.text }}>
             <Typography variant="caption" display="block">
               Engine {engineVersion} · {SCORE_DEFINITIONS.blueprint}
             </Typography>
@@ -697,6 +776,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           </Box>
           {/* Mana Stability Index */}
           <Box
+            data-pdf-block
             sx={{
               position: 'relative',
               zIndex: 1,
@@ -803,6 +883,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 
           {/* Probability Matrix */}
           <Box
+            data-pdf-block
             sx={{
               position: 'relative',
               zIndex: 1,
@@ -920,6 +1001,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 
           {/* Key Stats */}
           <Box
+            data-pdf-block
             sx={{
               position: 'relative',
               zIndex: 1,
@@ -976,6 +1058,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
 
           {/* Mulligan Analysis */}
           <Box
+            data-pdf-block
             sx={{
               position: 'relative',
               zIndex: 1,
@@ -1016,7 +1099,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
                   color: BLUEPRINT_COLORS.warning,
                 },
                 {
-                  label: 'Mulligan (0 or 6+ lands)',
+                  label: 'Poor Hand (0 or 6 lands)',
                   value: analysisResult.mulliganAnalysis.poorHand,
                   color: BLUEPRINT_COLORS.error,
                 },
@@ -1080,6 +1163,7 @@ export const ManaBlueprint: React.FC<ManaBlueprintProps> = ({
           {/* Top Recommendations */}
           {analysisResult.recommendations.length > 0 && (
             <Box
+              data-pdf-block
               sx={{
                 position: 'relative',
                 zIndex: 1,

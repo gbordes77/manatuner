@@ -1,0 +1,45 @@
+ManaTuner analysis context
+Deck: Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)
+Library: 99 cards; 43 lands. Commander: 1; sideboard: 0.
+Question: potential to cast a listed spell by its mana-value turn, excluding the chance of drawing that spell.
+Model: physical-v1; report engine 2.7.9. Saved lands-only potential: on the play, no mulligans or ramp, X=2, target turn=max(1, mana value). Target spell draw is excluded; a legal sequence may use future draws. Interactive Castability settings are not saved here.
+Limits: supported payment mechanics only; unavailable results are not zero. These results do not measure win rate or overall deck quality.
+Share links contain deck, name and tab only. Interactive model settings are not transported. This text provides context, not a complete interactive scenario.
+
+SCORES (HEURISTICS)
+Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.
+Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%).
+Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.
+These are heuristic indices, not win probabilities or guaranteed keep decisions.
+Health: 99.17%
+Blueprint Stability: 96 / 100 (index)
+Average mana value: 1.00; land ratio: 43.43%
+
+OPENING HAND ANALYSIS — classification heuristic, not a keep recommendation
+Perfect (2–4 lands + early play): 77.00%
+Good (2–4 lands): 77.00%
+Borderline (1 or 5 lands): 19.00%
+Poor (0 or 6 lands): 4.00%
+Terrible (7 lands, or 0 lands without an early play): 0.00%
+These categories overlap; they do not sum to 100%. Seven-card starting hand, no mulligans.
+
+COLOR SOURCE PROBABILITIES — at least one required-color source, on the play, no mulligans
+T1–T4 see 7–10 cards. Colors not required by the deck use a 100% convention, not evidence of a source.
+turn1: any color 98.44%; W 100.00%; U 100.00%; B 100.00%; R 100.00%; G 98.44%; C 100.00%
+turn2: any color 99.17%; W 100.00%; U 100.00%; B 100.00%; R 100.00%; G 99.17%; C 100.00%
+turn3: any color 99.56%; W 100.00%; U 100.00%; B 100.00%; R 100.00%; G 99.56%; C 100.00%
+turn4: any color 99.77%; W 100.00%; U 100.00%; B 100.00%; R 100.00%; G 99.77%; C 100.00%
+
+SAVED SPELL POTENTIAL — percentage, under the model above
+Llanowar Elves: 98.44%
+
+SUGGESTIONS — heuristics only, not mathematical certainties
+🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources.
+
+DECK BY ZONE
+Deck
+43 Forest
+56 Llanowar Elves
+
+Commander
+1 Atraxa, Praetors' Voice

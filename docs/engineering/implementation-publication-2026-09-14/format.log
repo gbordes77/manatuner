@@ -1,0 +1,7 @@
+src/components/analyzer/CompareView.tsx 56ms
+src/components/analyzer/CompareChange.tsx 18ms
+src/components/analyzer/ShareContext.tsx 5ms
+src/utils/comparison.ts 5ms
+src/utils/variant.ts 2ms
+src/pages/MyAnalysesPage.tsx 27ms (unchanged)
+src/pages/AnalyzerPage.tsx 30ms

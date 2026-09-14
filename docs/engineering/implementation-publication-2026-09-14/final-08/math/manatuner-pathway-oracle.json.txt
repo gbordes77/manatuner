@@ -1,0 +1,80 @@
+[
+  {
+    "turn": 1,
+    "draw": false,
+    "expected": 0,
+    "expectedP1": 0,
+    "genericProbability": 0,
+    "result": {
+      "status": "exact",
+      "p1": 0,
+      "p2": 0,
+      "histories": 11
+    }
+  },
+  {
+    "turn": 2,
+    "draw": false,
+    "expected": 0.8944444444444445,
+    "expectedP1": 0.930635838150289,
+    "genericProbability": 0.9611111111111111,
+    "result": {
+      "status": "exact",
+      "p1": 0.9306358381502889,
+      "p2": 0.8944444444444444,
+      "histories": 25
+    }
+  },
+  {
+    "turn": 3,
+    "draw": false,
+    "expected": 0.9777777777777777,
+    "expectedP1": 0.9777777777777777,
+    "genericProbability": 1,
+    "result": {
+      "status": "exact",
+      "p1": 0.9777777777777777,
+      "p2": 0.9777777777777773,
+      "histories": 43
+    }
+  },
+  {
+    "turn": 1,
+    "draw": true,
+    "expected": 0,
+    "expectedP1": 0,
+    "genericProbability": 0,
+    "result": {
+      "status": "exact",
+      "p1": 0,
+      "p2": 0,
+      "histories": 25
+    }
+  },
+  {
+    "turn": 2,
+    "draw": true,
+    "expected": 0.9777777777777777,
+    "expectedP1": 0.9777777777777777,
+    "genericProbability": 1,
+    "result": {
+      "status": "exact",
+      "p1": 0.9777777777777777,
+      "p2": 0.9777777777777773,
+      "histories": 43
+    }
+  },
+  {
+    "turn": 3,
+    "draw": true,
+    "expected": 1,
+    "expectedP1": 1,
+    "genericProbability": 1,
+    "result": {
+      "status": "exact",
+      "p1": 1,
+      "p2": 0.9999999999999996,
+      "histories": 43
+    }
+  }
+]

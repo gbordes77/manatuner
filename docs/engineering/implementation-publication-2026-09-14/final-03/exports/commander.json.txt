@@ -1,0 +1,999 @@
+{
+  "deckName": "Unnamed Deck",
+  "format": "Commander",
+  "generatedAt": "2026-09-14T04:50:19.588Z",
+  "engineVersion": "2.7.9",
+  "scoreDefinitions": {
+    "health": "Health Score averages turn-two access to each required color or hybrid alternative group. It does not measure simultaneous payment or spell castability.",
+    "blueprint": "Blueprint Stability combines Health (40%), land-ratio balance around 40% lands (20%), turn-two color access (25%) and turn-four color access (15%).",
+    "mulligan": "Mulligan scores simulated opening hands using archetype weights. They differ from deck-level Health and Blueprint Stability.",
+    "limitation": "These are heuristic indices, not win probabilities or guaranteed keep decisions."
+  },
+  "assumptions": {
+    "snapshotModel": "physical-v1",
+    "playDraw": "PLAY",
+    "mulligans": false,
+    "ramp": false,
+    "xValue": 2,
+    "targetTurn": "max(1, mana value)",
+    "targetSpellDrawIncluded": false,
+    "note": "Saved lands-only potential, not interactive Castability settings."
+  },
+  "stabilityScore": 96,
+  "analysis": {
+    "totalCards": 99,
+    "totalLands": 43,
+    "totalNonLands": 56,
+    "colorDistribution": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 43,
+      "C": 0
+    },
+    "manaRequirements": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 34,
+      "C": 0
+    },
+    "consistency": 0.9917027633380378,
+    "consistencyUnavailable": false,
+    "colorAccessNotes": [],
+    "colorAccessByTurn": {
+      "turn2": 0.9917027633380378,
+      "turn4": 0.997714460816899
+    },
+    "rating": "excellent",
+    "inputWarnings": [],
+    "recommendations": [
+      "🏃 Very aggressive curve (1.0). Ensure sufficient early mana sources."
+    ],
+    "probabilities": {
+      "turn1": {
+        "anyColor": 0.984421514838922,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 0.984421514838922,
+          "C": 1
+        }
+      },
+      "turn2": {
+        "anyColor": 0.9917027633380378,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 0.9917027633380378,
+          "C": 1
+        }
+      },
+      "turn3": {
+        "anyColor": 0.9956234356068187,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 0.9956234356068187,
+          "C": 1
+        }
+      },
+      "turn4": {
+        "anyColor": 0.997714460816899,
+        "specificColors": {
+          "W": 1,
+          "U": 1,
+          "B": 1,
+          "R": 1,
+          "G": 0.997714460816899,
+          "C": 1
+        }
+      }
+    },
+    "averageCMC": 1,
+    "landRatio": 0.43434343434343436,
+    "manaCurve": {
+      "0": 0,
+      "1": 56,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7+": 0
+    },
+    "mulliganAnalysis": {
+      "perfectHand": 77,
+      "goodHand": 77,
+      "averageHand": 19,
+      "poorHand": 4,
+      "terribleHand": 0
+    },
+    "spellAnalysis": {
+      "Llanowar Elves": {
+        "castable": 55.127604830982285,
+        "total": 56,
+        "percentage": 98.44215148389694
+      }
+    },
+    "unsupportedSpellAnalysis": {},
+    "spellAnalysisModel": "physical-v1",
+    "tempoImpactByColor": {
+      "G": {
+        "color": "G",
+        "method": "exact",
+        "rawSources": 43,
+        "effectiveSources": 43,
+        "rawProbability": 0.996,
+        "tempoAdjustedProbability": 0.996,
+        "impact": 0,
+        "impactPercent": "0%"
+      }
+    },
+    "landMetadata": [
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      },
+      {
+        "name": "Forest",
+        "category": "basic",
+        "produces": [
+          "G"
+        ],
+        "producesAny": false,
+        "etbBehavior": {
+          "type": "always_untapped"
+        },
+        "isFetch": false,
+        "isCreatureLand": false,
+        "hasChannel": false,
+        "basicLandTypes": [
+          "Forest"
+        ],
+        "confidence": 100
+      }
+    ],
+    "cards": [
+      {
+        "name": "Atraxa, Praetors' Voice",
+        "quantity": 1,
+        "manaCost": "{G}{W}{U}{B}",
+        "colors": [
+          "G",
+          "W",
+          "U",
+          "B"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "isCommander": true,
+        "cmc": 4,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Forest",
+        "quantity": 43,
+        "manaCost": "",
+        "colors": [],
+        "isLand": true,
+        "producedMana": [
+          "G"
+        ],
+        "cmc": 0,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok",
+        "etbTapped": false,
+        "producesMana": true,
+        "landMetadata": {
+          "name": "Forest",
+          "category": "basic",
+          "produces": [
+            "G"
+          ],
+          "producesAny": false,
+          "etbBehavior": {
+            "type": "always_untapped"
+          },
+          "isFetch": false,
+          "isCreatureLand": false,
+          "hasChannel": false,
+          "basicLandTypes": [
+            "Forest"
+          ],
+          "confidence": 100
+        }
+      },
+      {
+        "name": "Llanowar Elves",
+        "quantity": 56,
+        "manaCost": "{G}",
+        "colors": [
+          "G"
+        ],
+        "isLand": false,
+        "isCreature": true,
+        "cmc": 1,
+        "isSideboard": false,
+        "resolved": true,
+        "resolution": "ok"
+      },
+      {
+        "name": "Negate",
+        "quantity": 2,
+        "manaCost": "{1}{U}",
+        "colors": [
+          "U"
+        ],
+        "isLand": false,
+        "cmc": 2,
+        "isSideboard": true,
+        "resolved": true,
+        "resolution": "ok"
+      }
+    ]
+  }
+}

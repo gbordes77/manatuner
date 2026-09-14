@@ -1,0 +1,14 @@
+import {chromium} from 'playwright';
+import AxeBuilder from '@axe-core/playwright';
+import fs from 'node:fs';
+import records from '../../../../tests/fixtures/scryfall-audit.json' with {type:'json'};
+const out=process.env.EXPORT_OUTPUT || decodeURIComponent(new URL('.',import.meta.url).pathname);fs.mkdirSync(out,{recursive:true});
+const b=await chromium.launch();const context=await b.newContext({viewport:{width:390,height:900}});const p=await context.newPage();p.setDefaultTimeout(30000);
+await p.addInitScript(()=>{localStorage.setItem('manatuner-theme','dark');localStorage.setItem('manatuner-onboarding-completed','true')});
+await p.route('https://api.scryfall.com/**',r=>r.fulfill({json:{object:'list',data:records.filter(c=>c.name==='Forest')}}));
+await p.goto((process.env.EXPORT_BASE_URL || 'http://127.0.0.1:4197')+'/analyzer');await p.getByPlaceholder(/paste your decklist/i).fill('60 Forest');await p.getByRole('button',{name:'Analyze Manabase',exact:true}).click();await p.getByTestId('analysis-results').waitFor();await p.getByTestId('tab-blueprint').click();await p.getByRole('button',{name:'Export Blueprint',exact:true}).click();await p.getByRole('menuitem',{name:/Text report/}).click();await p.getByRole('dialog').waitFor();
+await p.evaluate(async()=>{await document.fonts.ready;await Promise.all(document.getAnimations().filter(a=>a.effect?.getComputedTiming().iterations!==Infinity).map(a=>a.finished.catch(()=>{})))});
+const paint=await p.locator('#blueprint-text-title').evaluate(e=>({foreground:getComputedStyle(e).color,background:getComputedStyle(e.closest('.MuiPaper-root')).backgroundColor}));fs.writeFileSync(out+'dialog-title-paint.json',JSON.stringify(paint,null,2));
+const results=await new AxeBuilder({page:p}).include('[role="dialog"]').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();fs.writeFileSync(out+'dialog-a11y'+(process.env.RUN_SUFFIX||'')+'.json',JSON.stringify(results,null,2));console.log(results.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>({html:n.html,summary:n.failureSummary}))})));
+await p.screenshot({path:out+'dialog-final.png',fullPage:true});
+await p.keyboard.press('Escape');await p.getByRole('dialog').waitFor({state:'hidden'});await b.close();if(results.violations.length)process.exitCode=1;

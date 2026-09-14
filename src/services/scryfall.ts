@@ -3,9 +3,9 @@ import type { ScryfallCard } from '../types/scryfall'
 import { DECKLIST_MAX_CARDS, parseDecklist } from './deckParser'
 import {
   abortable,
-  abortableDelay,
   fetchJsonWithTimeout,
   HttpError,
+  HttpTimeoutError,
   isCancellation,
   throwIfAborted,
 } from './http'
@@ -16,7 +16,6 @@ import {
 } from './scryfallPersistentCache'
 
 const SCRYFALL_API_BASE = 'https://api.scryfall.com'
-const RATE_LIMIT_DELAY = 100 // 100ms entre les requêtes
 
 interface ScryfallResponse<T> {
   object: string
@@ -61,19 +60,6 @@ export class BoundedMap<K, V> extends Map<K, V> {
 const cardCache = new BoundedMap<string, Card>(500)
 const collectionCache = new BoundedMap<string, Card[]>(100)
 
-// Rate limiting
-let lastRequestTime = 0
-
-const ensureRateLimit = async (signal?: AbortSignal): Promise<void> => {
-  throwIfAborted(signal)
-  const timeSinceLastRequest = Date.now() - lastRequestTime
-  if (timeSinceLastRequest < RATE_LIMIT_DELAY) {
-    await abortableDelay(RATE_LIMIT_DELAY - timeSinceLastRequest, signal)
-  }
-  throwIfAborted(signal)
-  lastRequestTime = Date.now()
-}
-
 /**
  * Convertit une carte Scryfall en format interne
  */
@@ -108,8 +94,6 @@ const convertScryfallCard = (scryfallCard: ScryfallCard): Card => {
  * Effectue une requête à l'API Scryfall
  */
 const scryfallRequest = async <T>(endpoint: string, signal?: AbortSignal): Promise<T> => {
-  await ensureRateLimit(signal)
-
   try {
     const { response, data } = await fetchJsonWithTimeout<T>(
       `${SCRYFALL_API_BASE}${endpoint}`,
@@ -401,7 +385,6 @@ export const fetchLandData = async (
     const encodedName = encodeURIComponent(cardName.trim())
     let definitiveNotFound = true
     for (const match of ['exact', 'fuzzy']) {
-      await ensureRateLimit(signal)
       const { response, data } = await fetchJsonWithTimeout<ScryfallCard>(
         `${SCRYFALL_API_BASE}/cards/named?${match}=${encodedName}`,
         {},
@@ -495,8 +478,6 @@ export const fetchLandDataBatch = async (
   for (let i = 0; i < toFetch.length; i += SCRYFALL_COLLECTION_CHUNK_SIZE) {
     const chunk = toFetch.slice(i, i + SCRYFALL_COLLECTION_CHUNK_SIZE)
     try {
-      await ensureRateLimit(signal)
-
       const identifiers = chunk.map((name) => ({ name: name.trim() }))
 
       const { response, data } = await fetchJsonWithTimeout<ScryfallResponse<ScryfallCard>>(
@@ -559,16 +540,20 @@ export const fetchLandDataBatch = async (
         }
       }
     } catch (error) {
-      if (isCancellation(error)) throw error
+      throwIfAborted(signal)
+      const collectionTimedOut = error instanceof HttpTimeoutError
+      if (!collectionTimedOut && isCancellation(error)) throw error
       console.error('[Scryfall] Batch land data fetch failed (chunk):', error)
 
-      // Fallback: sequential named fetch for this chunk
-      for (const name of chunk) {
+      // A local timeout skips remaining collections, without renewing the parent
+      // budget. Named lookup remains exact-first; only definitive 404 is cached.
+      for (const name of collectionTimedOut ? toFetch.slice(i) : chunk) {
         if (!results.has(name)) {
           const landData = await fetchLandData(name, signal)
           results.set(name, landData)
         }
       }
+      if (collectionTimedOut) return results
     }
   }
 

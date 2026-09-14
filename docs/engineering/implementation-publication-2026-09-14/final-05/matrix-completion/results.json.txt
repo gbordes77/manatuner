@@ -1,0 +1,19 @@
+{
+  "at": "2026-09-14T05:06:36.059Z",
+  "baseURL": "http://127.0.0.1:4198",
+  "candidate": "final-05",
+  "results": [
+    {
+      "id": "DATA-005",
+      "status": "PASS partial",
+      "checks": "saved A/B, reload, delete B, reopen A with name and deck intact; structural original unchanged",
+      "notApplicable": "Rename saved record command absent in current product; naming at creation checked, not claimed as rename"
+    },
+    {
+      "id": "DATA-006-corruption-recovery",
+      "status": "PASS",
+      "checks": "malformed JSON survives reload unchanged, page remains usable; restoration valid data and reload retrieves A",
+      "limits": "generic Storage denial not injected here; quota recovery covered Compare final05"
+    }
+  ]
+}

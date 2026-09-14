@@ -1,0 +1,51 @@
+{
+  "cards": [
+    {
+      "section": "deck",
+      "card_name": "Plains",
+      "quantity": 59,
+      "cmc": "0",
+      "mana_cost": "",
+      "colors": "",
+      "is_land": true,
+      "produces": "W",
+      "is_sideboard": false,
+      "is_commander": false
+    },
+    {
+      "section": "deck",
+      "card_name": "'=1+1",
+      "quantity": 1,
+      "cmc": "2",
+      "mana_cost": "{2}",
+      "colors": "",
+      "is_land": false,
+      "produces": "",
+      "is_sideboard": false,
+      "is_commander": false
+    }
+  ],
+  "metrics": {
+    "total_cards": "60",
+    "total_lands": "59",
+    "land_ratio": "0.9833333333333333",
+    "average_cmc": "2",
+    "effective_sources_W": "59",
+    "effective_sources_U": "0",
+    "effective_sources_B": "0",
+    "effective_sources_R": "0",
+    "effective_sources_G": "0",
+    "effective_sources_C": "0",
+    "pip_count_W": "0",
+    "pip_count_U": "0",
+    "pip_count_B": "0",
+    "pip_count_R": "0",
+    "pip_count_G": "0"
+  },
+  "totals": {
+    "library": 60,
+    "lands": 59,
+    "commanders": 0,
+    "sideboard": 0
+  }
+}

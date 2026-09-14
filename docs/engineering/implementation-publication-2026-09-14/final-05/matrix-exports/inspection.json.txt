@@ -1,0 +1,66 @@
+[
+  {
+    "id": "commander-light",
+    "deckName": "Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)",
+    "totalCards": 99,
+    "totalLands": 43,
+    "commander": 1,
+    "pdfPages": 2,
+    "pdfNativeText": [
+      0,
+      0
+    ],
+    "pngDimensions": [
+      1440,
+      3008
+    ],
+    "blueprintDimensions": [
+      720,
+      1503.375
+    ],
+    "allCanvasRows": true,
+    "goodHand": 77,
+    "poorHand": 4,
+    "pdfBytes": 12998457,
+    "pngBytes": 614455,
+    "pngSha256": "e6b1d5ae4cba197cb9865d5cd40fc3afb695ee4fa906e685149cb516b9e67ee7",
+    "officialCsvRecipe": {
+      "library": 99,
+      "lands": 43,
+      "commanders": 1,
+      "sideboard": 0
+    }
+  },
+  {
+    "id": "commander-dark",
+    "deckName": "Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)",
+    "totalCards": 99,
+    "totalLands": 43,
+    "commander": 1,
+    "pdfPages": 2,
+    "pdfNativeText": [
+      0,
+      0
+    ],
+    "pngDimensions": [
+      1440,
+      3008
+    ],
+    "blueprintDimensions": [
+      720,
+      1503.375
+    ],
+    "allCanvasRows": true,
+    "goodHand": 77,
+    "poorHand": 4,
+    "pdfBytes": 12998457,
+    "pngBytes": 614455,
+    "pngSha256": "e6b1d5ae4cba197cb9865d5cd40fc3afb695ee4fa906e685149cb516b9e67ee7",
+    "officialCsvRecipe": {
+      "library": 99,
+      "lands": 43,
+      "commanders": 1,
+      "sideboard": 0
+    }
+  }
+]

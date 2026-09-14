@@ -4,9 +4,12 @@ import { clearCardResolverCache } from '../cardResolver'
 import { clearLandDataCache } from '../scryfall'
 import { DeckAnalyzer } from '../deckAnalyzer'
 
+// Keep the shared rate limiter clock monotonic across isolated fake-timer cases.
+let clockCase = 0
+
 describe('F08 network cancellation', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
+    vi.useFakeTimers({ now: Date.UTC(2030, 0, ++clockCase) })
     clearCardResolverCache()
     clearLandDataCache()
   })
@@ -55,7 +58,7 @@ describe('F08 network cancellation', () => {
 
 describe('F08 resolver lineage and cache integrity', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
+    vi.useFakeTimers({ now: Date.UTC(2030, 0, ++clockCase) })
     clearCardResolverCache()
     clearLandDataCache()
   })
@@ -93,9 +96,11 @@ describe('F08 resolver lineage and cache integrity', () => {
         return Promise.resolve(new Response('{"name":"F08 Spell"}'))
       })
     vi.stubGlobal('fetch', fetchMock)
-    await expect(
+    const assertion = expect(
       fetchCardFromScryfallWithMeta('F08 Spell', controller.signal)
     ).rejects.toMatchObject({ name: 'AbortError' })
+    await vi.runAllTimersAsync()
+    await assertion
     expect(fetchMock).toHaveBeenCalledTimes(2)
     expect(getCardResolverCacheSize()).toBe(0)
   })
@@ -106,7 +111,9 @@ describe('F08 resolver lineage and cache integrity', () => {
       .fn()
       .mockImplementation(() => Promise.resolve(new Response('', { status: 404 })))
     vi.stubGlobal('fetch', fetchMock)
-    expect(await fetchCardFromScryfallWithMeta('F08 Absent')).toEqual({
+    const absent = fetchCardFromScryfallWithMeta('F08 Absent')
+    await vi.runAllTimersAsync()
+    expect(await absent).toEqual({
       data: null,
       notFound: true,
     })

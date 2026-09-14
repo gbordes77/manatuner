@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-14T04:50:33.499365+00:00",
+  "base_url": "http://127.0.0.1:4198",
+  "scope": "AnalyzerPage assets only, not full deployment identity",
+  "assets": [
+    {
+      "asset": "AnalyzerPage-DvoAuJFJ.js",
+      "candidate_sha256": "2694faf6799e9b501a0e056ea3d27b123be739d74862776c6e0597a624609e95",
+      "served_sha256": "2694faf6799e9b501a0e056ea3d27b123be739d74862776c6e0597a624609e95",
+      "identical": true
+    }
+  ]
+}

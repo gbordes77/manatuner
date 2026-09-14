@@ -1,0 +1,13 @@
+[
+  {
+    check: 'analyzed deck after Guide/back',
+    pass: true,
+    resultShown: true
+  },
+  {
+    pass: false,
+    error: 'TimeoutError: locator.click: Timeout 30000ms exceeded.\n' +
+      'Call log:\n' +
+      "\x1B[2m  - waiting for getByRole('button', { name: 'Edit Deck', exact: true })\x1B[22m\n"
+  }
+]

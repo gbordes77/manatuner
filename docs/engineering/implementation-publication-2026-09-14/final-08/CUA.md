@@ -1,0 +1,3 @@
+# Contrôle visible final-08
+
+Le lead a rechargé l’onglet2 du navigateur intégré après bascule du serveur4198 vers final-08, puis lancé Analyze Manabase sur24Plains/36SavannahLions. Résultat visible60/24, Health99%, estimation98%, limites source-count affichées. Aucun mock injecté dans cet onglet ; un cache est possible, donc pas d’affirmation de nouvel appel Scryfall pour chaque donnée. Compare a change ouvert : A60/24, texte initial par zones et hypothèses présents, B modifiable et Save désactivé avant calcul. Onglet conservé pour revue propriétaire. Les tests15+15 et UX3 couvrent séparément variantes, sauvegardes et navigation. Ce contrôle du lead n’est pas une confirmation du propriétaire.

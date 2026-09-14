@@ -1,0 +1,24 @@
+[
+  {
+    "id": "commander-light",
+    "width": 390,
+    "theme": "light",
+    "total": 99,
+    "commander": 1,
+    "lands": 43,
+    "goodHand": 77,
+    "reportMatchesDownload": true,
+    "deckName": "Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)"
+  },
+  {
+    "id": "commander-dark",
+    "width": 390,
+    "theme": "dark",
+    "total": 99,
+    "commander": 1,
+    "lands": 43,
+    "goodHand": 77,
+    "reportMatchesDownload": true,
+    "deckName": "Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)"
+  }
+]

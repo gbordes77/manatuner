@@ -1,0 +1,45 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx (10 tests | 2 failed) 299ms
+     × flushes the latest Unicode and zone draft on immediate unmount without analyzing 12ms
+     × uses the latest parent callback and only flushes once under StrictMode 26ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx > route departure preserves pending edits > flushes the latest Unicode and zone draft on immediate unmount without analyzing
+AssertionError: expected "vi.fn()" to be called once with arguments: [ Array(1) ]
+
+Number of calls: 0
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx:145:25
+    143|     fireEvent.change(screen.getByLabelText(/Paste your decklist/i), { …
+    144|     unmount()
+    145|     expect(setDeckList).toHaveBeenCalledExactlyOnceWith(draft)
+       |                         ^
+    146|     expect(onAnalyze).not.toHaveBeenCalled()
+    147|     act(() => vi.advanceTimersByTime(1000))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx > route departure preserves pending edits > uses the latest parent callback and only flushes once under StrictMode
+AssertionError: expected "vi.fn()" to be called once with arguments: [ '25 Mountain' ]
+
+Number of calls: 0
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx:162:20
+    160|     unmount()
+    161|     expect(initial).not.toHaveBeenCalled()
+    162|     expect(latest).toHaveBeenCalledExactlyOnceWith('25 Mountain')
+       |                    ^
+    163|   })
+    164|   it.each(['Clear', 'Try Example'])('does not resurrect a pending draf…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 8 passed (10)
+   Start at  07:11:45
+   Duration  1.62s (transform 52ms, setup 105ms, import 708ms, tests 299ms, environment 415ms)
+

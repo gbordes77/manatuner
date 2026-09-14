@@ -1,0 +1,16 @@
+--- 
+
++++ 
+
+@@ -256,2 +256,4 @@
+
+ <link rel="modulepreload" as="script" crossorigin="" href="/assets/Onboarding-Bhxs_ovP.js">
++<link rel="modulepreload" as="script" crossorigin="" href="/assets/PrivacySettings-DHKaLuQn.js">
++<link rel="modulepreload" as="script" crossorigin="" href="/assets/index-Hs-3p891.js">
+ <link rel="canonical" href="https://www.manatuner.app/analyzer" data-rh="true">
+@@ -266,4 +268,2 @@
+
+ <script type="application/ld+json" data-rh="true">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.manatuner.app/"},{"@type":"ListItem","position":2,"name":"Deck Analyzer","item":"https://www.manatuner.app/analyzer"}]}</script>
+-<link rel="modulepreload" as="script" crossorigin="" href="/assets/PrivacySettings-DHKaLuQn.js">
+-<link rel="modulepreload" as="script" crossorigin="" href="/assets/index-Hs-3p891.js">
+ <style id="manatuner-joyride-nonblocking">

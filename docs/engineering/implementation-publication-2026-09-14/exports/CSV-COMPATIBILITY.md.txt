@@ -1,0 +1,9 @@
+# B15 — reprise compatibilité après FINAL-02
+
+Le scénario T07 persona échouait sur l'ancienne assertion de forme du commentaire deck. La recette officielle scripts/read-blueprint-csv.py lit csv.reader puis ignore row[0] commençant par#. Elle acceptait le champ entier quoted de FINAL-02. Cependant une lecture par lignes brutes ne trouvait plus#en début ; restaurer simplement l'ancien préfixe devant un champ quoted aurait aussi laissé les virgules du nom créer des cellules de formule lors d'un import brut.
+
+Correction retenue : `# Deck:,"Persona, ""White"""`. Le marqueur est le premier champ, le nom est une vraie seconde cellule RFC CSV. Les CR/LF sont écrits en caractères littéraux\r/\n pour maintenir une ligne physique ; JSON conserve l'identité complète. csvText protège un nom débutant par un marqueur de formule et garde la virgule interne dans sa cellule. Exemple Safe,=1+1 reste une cellule unique, pas une formule supplémentaire.
+
+T07 vérifie désormais l'identité décodée du nom face au JSON, pas une ancienne présentation de commentaire. Aucune assertion de nom, population, moteur ou définitions supprimée.17unitaires passent,1T07Chromium passe sur4197, et le CSV réellement téléchargé est relu par la recette officielle : bibliothèque60,terrains24,commandant0,réserve0. Preuves csv-comment-unit.log, csv-comment-e2e.log, csv-comment-official-recipe.json et comment-tests/.
+
+Source modifiée après FINAL-02 : le gate doit porter le nouveau candidat du lead. Les résultats FINAL-02 restent historiques pour PDF/texte/chiffres et ne prouvent pas cette nouvelle représentation du commentaire. Nouveau déploiement et gate non exécutés par cet agent.

@@ -1,0 +1,50 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+stdout | src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > finishes a real deck analysis via named GET when every collection hangs
+[LandCacheService] Preloaded 264 lands from seed
+[LandService] Initialized with seed data
+
+ ❯ src/services/__tests__/collectionTimeout.test.ts (4 tests | 2 failed) 118ms
+     × finishes a real deck analysis via named GET when every collection hangs 115ms
+     × recovers land metadata through GET after a local collection timeout 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > finishes a real deck analysis via named GET when every collection hangs
+AssertionError: expected undefined to be 60 // Object.is equality
+
+- Expected:
+60
+
++ Received:
+undefined
+
+ ❯ src/services/__tests__/collectionTimeout.test.ts:29:33
+     27|     await vi.advanceTimersByTimeAsync(20_000)
+     28|     const analysis = await result
+     29|     expect(analysis.totalCards).toBe(60)
+       |                                 ^
+     30|     expect(analysis.totalLands).toBe(24)
+     31|     expect(analysis.cards.some((c: { name: string }) => c.name === 'Sa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/services/__tests__/collectionTimeout.test.ts > collection-only outage stays inside the analysis deadline > recovers land metadata through GET after a local collection timeout
+TypeError: lands.get is not a function
+ ❯ src/services/__tests__/collectionTimeout.test.ts:43:18
+     41|     await vi.advanceTimersByTimeAsync(9000)
+     42|     const lands = await result
+     43|     expect(lands.get('Plains')?.produced_mana).toEqual(['W'])
+       |                  ^
+     44|   })
+     45|   it('does not fall back after user cancellation', async () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)
+   Start at  06:43:54
+   Duration  588ms (transform 110ms, setup 67ms, import 11ms, tests 118ms, environment 310ms)
+

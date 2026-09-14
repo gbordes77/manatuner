@@ -17,3 +17,7 @@ Dans Sheets, importer le CSV, puis copier chaque table dans une feuille distinct
 Les preuves de la campagne courante doivent accompagner la livraison : exporter les fixtures 24 Plains/36 Savannah Lions et Atraxa99+1 avec une carte de réserve, puis exécuter la recette sur chacun des deux fichiers téléchargés. Résultats attendus : bibliothèque60/terrains24/commandants0/réserve0 et bibliothèque99/commandants1/réserve1. La première fixture est synthétique et n'est pas une liste légale de tournoi.
 
 Vérification du 10 septembre 2026 sur les deux téléchargements du nouveau candidat : les totaux attendus ci-dessus sont acquis (43 terrains pour Atraxa). Preuve : [csv-import.json](reaudit-fixes-szrp1r9w/csv-import.json).
+
+## Métadonnées et cellules textuelles — 14 septembre 2026
+
+La ligne du nom utilise deux champs : `# Deck:,"Persona, ""White"""`. Elle commence toujours par `#` ; le nom est une véritable cellule CSV, ce qui préserve virgules et guillemets sans créer de cellule de formule supplémentaire. Les retours CR/LF du nom sont représentés par les caractères littéraux `\r` et `\n` pour garder une ligne physique unique ; le JSON conserve le nom original exact. Les cellules textuelles commençant éventuellement après espaces par `=`, `+`, `-` ou `@` reçoivent une apostrophe de protection. Les quantités, nombres et zones ne changent pas. La recette `read-blueprint-csv.py` ignore toujours les lignes dont le premier champ commence par `#`.

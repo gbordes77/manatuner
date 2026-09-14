@@ -1,0 +1,48 @@
+[
+  {
+    "id": "wizards-commander-brackets-2024",
+    "title": "Introducing Commander Brackets",
+    "linkStatus": "live",
+    "primaryUrl": "https://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta",
+    "checkedAt": "2026-09-14T05:05:51.786418+00:00",
+    "curlExit": 0,
+    "httpFinalUrlSeconds": "200\nhttps://magic.wizards.com/en/news/announcements/introducing-commander-brackets-beta\n0.634012",
+    "error": "",
+    "bytes": 269505,
+    "bodySha256": "b927b79af908ae40924b43e5825a73a0ddf2a868bdafcaf38af5aa58b43c5d4f",
+    "pageTitle": [
+      "Introducing Commander Brackets Beta"
+    ]
+  },
+  {
+    "id": "saito-part-2-having-fun",
+    "title": "Important Things for Tournament Success",
+    "linkStatus": "archived",
+    "primaryUrl": "https://web.archive.org/web/20220520011135/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-2-having-fun/",
+    "originalUrl": "https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-2-having-fun/",
+    "checkedAt": "2026-09-14T05:05:54.357866+00:00",
+    "curlExit": 0,
+    "httpFinalUrlSeconds": "200\nhttps://web.archive.org/web/20220520011135/https://strategy.channelfireball.com/all-strategy/mtg/channelmagic-articles/important-things-for-tournament-success-part-2-having-fun/\n1.538972",
+    "error": "",
+    "bytes": 292498,
+    "bodySha256": "39e9ffad1128fd9eaaca98327530e265fa6b3c2bbca5c2b45a572a95f60fe3da",
+    "pageTitle": [
+      "Important Things for Tournament Success – Part 2: Having Fun - ChannelFireball - Magic: The Gathering Strategy, Singles, Cards, Decks"
+    ]
+  },
+  {
+    "id": "pvddr-when-to-mulligan",
+    "title": "When to Mulligan",
+    "linkStatus": "lost",
+    "primaryUrl": "https://www.channelfireball.com/articles/when-to-mulligan/",
+    "checkedAt": "2026-09-14T05:05:56.252924+00:00",
+    "curlExit": 0,
+    "httpFinalUrlSeconds": "200\nhttps://www.tcgplayer.com/content/magic-the-gathering/channelfireball\n0.867100",
+    "error": "",
+    "bytes": 20948,
+    "bodySha256": "12522918e689be923f2190b527d356fcefd99e7f510e0513c9aaee493478ad50",
+    "pageTitle": [
+      " TCGplayer "
+    ]
+  }
+]

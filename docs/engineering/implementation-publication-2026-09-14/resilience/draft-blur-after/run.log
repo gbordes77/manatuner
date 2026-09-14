@@ -1,0 +1,40 @@
+[
+  {
+    check: 'analyzed deck after Guide/back',
+    pass: true,
+    resultShown: true
+  },
+  { check: 'saved deck reload', pass: true, resultShown: false },
+  {
+    stage: 'dirty before departure',
+    url: 'http://127.0.0.1:4197/analyzer',
+    document: 1789363139341.9,
+    stored: '24 Mountain\n36 Lightning Bolt',
+    field: '25 Mountain\n35 Lightning Bolt'
+  },
+  {
+    stage: 'after Guide',
+    url: 'http://127.0.0.1:4197/guide',
+    document: 1789363139341.9,
+    stored: '24 Mountain\n36 Lightning Bolt',
+    field: '25 Mountain\n35 Lightning Bolt'
+  },
+  {
+    stage: 'after back',
+    url: 'http://127.0.0.1:4197/analyzer',
+    document: 1789363139341.9,
+    stored: '25 Mountain\n35 Lightning Bolt',
+    field: '25 Mountain\n35 Lightning Bolt'
+  },
+  {
+    stage: 'after reload',
+    url: 'http://127.0.0.1:4197/analyzer',
+    document: 1789363139641.7,
+    stored: '25 Mountain\n35 Lightning Bolt',
+    field: '25 Mountain\n35 Lightning Bolt'
+  },
+  {
+    check: 'unanalysed edited draft after Guide/back/reload',
+    pass: true
+  }
+]

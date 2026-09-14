@@ -2,8 +2,11 @@ import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useCardImage } from '../useCardImage'
 
+// A shared queue keeps time across calls; do not rewind its fake clock between cases.
+let clockCase = 0
+
 describe('F08 card image network lifecycle', () => {
-  beforeEach(() => vi.useFakeTimers())
+  beforeEach(() => vi.useFakeTimers({ now: Date.UTC(2030, 0, ++clockCase) }))
   afterEach(() => {
     vi.useRealTimers()
     vi.unstubAllGlobals()

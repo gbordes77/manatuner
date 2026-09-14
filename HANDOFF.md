@@ -1,6 +1,12 @@
 > **Préférence permanente : travailler sur `main`, tous les pushes vers `origin/main`, aucune branche annexe.** Exception uniquement pour une justification majeure expliquée avant l’action et acceptée par l’utilisateur, ou une nouvelle instruction explicite de sa part. Préférence reconfirmée le 10 septembre 2026. Voir la règle prioritaire en tête de [AGENTS.md](AGENTS.md) ; les anciennes consignes de branche dédiée sont historiques.
 
-# Point de reprise actuel — améliorations personas
+# Point de reprise — audit avant communication, préparé le 13 septembre 2026
+
+Le propriétaire demande un prompt pour une analyse approfondie du site, des cahiers de tests et des pistes d'amélioration avant sa communication. Le [prompt de lancement](docs/handoff/PROMPT-LANCEMENT-AUDIT-PRECOMMUNICATION-2026-09-13.txt) appelle la [mission complète](docs/handoff/PROMPT-AUDIT-PRECOMMUNICATION-2026-09-13.md). Le [kit](docs/quality/precommunication-2026-09-13/README.md) comprend huit cahiers et 48 cas NON EXÉCUTÉS, six fixtures synthétiques, une matrice CSV, un protocole humain et cinq concepts à évaluer.
+
+État : préparation documentaire effectuée ; audit complet, tests applicatifs, prototypes et recherche utilisateurs restent à exécuter lors de la future mission. Aucun changement applicatif, commit, push ou déploiement dans cette préparation. Base locale lue : `a0a23519253751b9c98d6b93f73822f21e8191c0`. Ancien worktree préservé. Prochaine action : lancer le prompt dans une nouvelle session sur main et établir une base actuelle, sans recopier les succès historiques.
+
+# Historique — améliorations personas
 
 Lire en priorité la [passation du 9 septembre](docs/handoff/HANDOFF-PERSONAS-2026-09-09.md), puis le [journal des tâches T00–T11](docs/engineering/JOURNAL-TACHES-PERSONAS-2026-09-09.md). Le [prompt prêt à copier](docs/handoff/PROMPT-REPRISE-PERSONAS-2026-09-09.txt) précise les lectures, agents et validations à lancer. Toutes les tâches de correction restent ouvertes ; documents préparés, aucun correctif produit exécuté dans cette session.
 
@@ -94,3 +100,35 @@ La dernière demande autorise uniquement le commit/push sur `codex/persona-follo
 ## Publication sur main et Vercel — 10 septembre 2026
 
 La demande utilisateur « si non fais le » autorise désormais main et la production Vercel. Main a été avancée sans divergence vers e14f329, puis le correctif runtime e206991 a été commité et poussé. Les ajouts postréaudit et rapports utilisateur sont préservés. Le premier déploiement a échoué faute de libnspr4.so ; setup-build-browser installe les bibliothèques natives uniquement sur Vercel/Linux, erreurs bloquantes, puis npm ci. Chromium, options et gate inchangés. Six tests ciblés acquis ; CI GitHub réussie et Vercel READY pour e2069916186737fedac3ae3cb58f4e7872d728ce. Gate natif complet acquis, dont101routes et16Chromium. Vérification publique :5routes200 avec textes actualisés, route inconnue404/noindex. SHA origin/main identique. Preuves de cette publication : docs/engineering/main-publication-kyj03ixa/ (local, non versionné).
+
+## Audit précommunication exécuté — 13 septembre 2026
+
+Campagne neuve : [docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md](docs/quality/audit-precommunication-2026-09-13-r7k2/00-SYNTHESE.md). Main et origin/main lus à a0a2351. Aucun changement applicatif, commit, push ou déploiement. Gate neuf réussi : 801 tests/79 fichiers, 101 routes, 16 Chromium ; suites audit 33 Chromium et 33 WebKit réussies. Suite persona : 22 réussites/1 échec de contraste Library390 sombre ; Firefox bloqué au lancement. Guide20/Mathematics21 et promesses JSON-LD reconfirmés. Deux prototypes isolés, 48 cas enrichis et 16 chantiers livrés ; étude humaine non exécutée. NO-GO communication large ; pilote accompagné conditionnel. Priorité : autoriser L0 confiance, puis L1 contraste et recrutement consenti. Les preuves anciennes et les modifications initiales sont préservées ; détails d’empreintes dans la campagne.
+
+## 14 septembre 2026 — atelier évalué par six personas
+
+Rapport : [docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md](docs/quality/personas-atelier-2026-09-14/00-SYNTHESE.md). Six évaluations simulées réparties entre trois agents disponibles après briefing ; aucune étude humaine. Proposition clarifiée : action facultative après analyse, original A conservé et variante B choisie par le joueur. Recommandation : réutiliser Compare, tester une préparation compacte pour les novices ; ne pas intégrer la page de démonstration telle quelle. Restaurer A et afficher B ont été revérifiés en CUA ; aucun nouveau gate ou test moteur. Main et code/prototypes inchangés, aucun commit/push/déploiement. Les462fichiers du manifeste de campagne précédent ont été contrôlés et sont intacts. Prochain travail éventuel : prototype du parcours complet, sur demande distincte.
+
+## Préférence permanente ajoutée — 14 septembre 2026
+
+Toute évolution proposée pour ManaTuner doit désormais être évaluée systématiquement par les six personas canoniques, sans nouvelle demande du propriétaire. Conserver les avis distincts, les désaccords et les adaptations ; distinguer cette validation simulée des tests techniques et des études humaines. Règle complète en tête de AGENTS.md.
+
+## Choix Compare après les six personas — 14 septembre 2026
+
+- Référence active B05/C-P01/L5 : `docs/product/EVOLUTION-COMPARE-2026-09-14.md` ; backlog courant : `docs/product/BACKLOG-ACTIF-2026-09-14.csv` (16 entrées, seul B05 révisé).
+- Compare depuis les résultats, A prérempli, B choisi manuellement, aide facultative ; abandon de la page atelier autonome. Six avis simulés favorables avec réserves : `docs/quality/validation-compare-2026-09-14/VALIDATION.md`.
+- Critères CMP-01–07 non exécutés, évolution non implémentée. Prototype et rapports historiques préservés ; priorités confiance/contraste et recommandation de lancement inchangées. Aucun commit, push ou déploiement.
+
+## Mission suivante préparée — 14 septembre 2026
+
+- Prompt complet : `docs/handoff/PROMPT-IMPLEMENTATION-PUBLICATION-2026-09-14.md` ; lancement court : `docs/handoff/PROMPT-LANCEMENT-IMPLEMENTATION-2026-09-14.txt`.
+- Future équipe : audit complet et B01–B16, Compare révisé, six personas, tests candidat final, commit/push origin/main et publication Vercel autorisés lors de l’exécution de cette mission. Publication technique distincte de la communication large.
+- Session présente limitée à préparer les prompts ; aucun changement applicatif, commit, push ou déploiement exécuté.
+
+## Reprise prioritaire — implémentation du 14 septembre 2026
+
+Lire `docs/engineering/implementation-publication-2026-09-14/00-SYNTHESE.md`, puis JOURNAL.md et RESULTATS.csv. Les développements et preuves sont réalisés sur main ; candidat final-08, serveur de revue http://127.0.0.1:4198/analyzer?sample=exact. Compare depuis les résultats, original préservé, variante manuelle ; Blueprint fournit PDF et texte structuré.
+
+Prochaine action conditionnelle : obtenir la confirmation visuelle déjà demandée au propriétaire selon §4 de la mission, puis vérifier hooks/candidat/SHA origin/main, pousser main normalement et suivre le déploiement natif sur le projet Vercel existant. Ne pas redemander une autorisation générale ni annoncer une publication absente. Tant que cette confirmation manque, garder push et production en attente. Le registre PUBLICATION.md porte le statut Git exact.
+
+Réserves : B07 différé, B08/CMP07 humains non exécutés, communication large réservée ; Firefox/environnement, appareils physiques, lecteur écran, tableur réel et juridique restent distincts. Les essais rouges de cette campagne sont conservés, dont collision clipboard de deux sondes et cadence initiale trop courte corrigée.

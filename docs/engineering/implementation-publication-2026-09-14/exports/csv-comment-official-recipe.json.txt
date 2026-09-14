@@ -1,0 +1,56 @@
+{
+  "metadataRaw": "# Deck:,\"Persona, \"\"White\"\"\"",
+  "decodedName": "Persona, \"White\"",
+  "recipeExit": 0,
+  "recipeResult": {
+    "cards": [
+      {
+        "section": "deck",
+        "card_name": "Plains",
+        "quantity": 24,
+        "cmc": "0",
+        "mana_cost": "",
+        "colors": "",
+        "is_land": true,
+        "produces": "W",
+        "is_sideboard": false,
+        "is_commander": false
+      },
+      {
+        "section": "deck",
+        "card_name": "Savannah Lions",
+        "quantity": 36,
+        "cmc": "1",
+        "mana_cost": "{W}",
+        "colors": "W",
+        "is_land": false,
+        "produces": "",
+        "is_sideboard": false,
+        "is_commander": false
+      }
+    ],
+    "metrics": {
+      "total_cards": "60",
+      "total_lands": "24",
+      "land_ratio": "0.4",
+      "average_cmc": "1",
+      "effective_sources_W": "24",
+      "effective_sources_U": "0",
+      "effective_sources_B": "0",
+      "effective_sources_R": "0",
+      "effective_sources_G": "0",
+      "effective_sources_C": "0",
+      "pip_count_W": "36",
+      "pip_count_U": "0",
+      "pip_count_B": "0",
+      "pip_count_R": "0",
+      "pip_count_G": "0"
+    },
+    "totals": {
+      "library": 60,
+      "lands": 24,
+      "commanders": 0,
+      "sideboard": 0
+    }
+  }
+}

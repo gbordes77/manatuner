@@ -1,0 +1,46 @@
+
+Running 1 test using 1 worker
+
+(node:80726) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [firefox] › tests/e2e/core-flows/compare-change.spec.js:23:5 › CMP01–04 edit manual B, points only for comparable populations, discard preserves A
+  1) [firefox] › tests/e2e/core-flows/compare-change.spec.js:23:5 › CMP01–04 edit manual B, points only for comparable populations, discard preserves A 
+
+    Error: browserType.launch: Failed to launch the browser process.
+    Browser logs:
+
+    <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/_r/p2tt2k510nn24br_gjfh3t1h0000gn/T/playwright_firefoxdev_profile-y4u0Wy -juggler-pipe -silent
+    <launched> pid=80733
+    [pid=80733][err] *** You are running in headless mode.
+    [pid=80733][err] Could not find profile folder.
+    [pid=80733] <process did exit: exitCode=1, signal=null>
+    [pid=80733] starting temporary directories cleanup
+    Call log:
+      - <launching> /Users/guillaumebordes/Library/Caches/ms-playwright/firefox-1543/firefox/Nightly.app/Contents/MacOS/firefox -no-remote -headless -profile /var/folders/_r/p2tt2k510nn24br_gjfh3t1h0000gn/T/playwright_firefoxdev_profile-y4u0Wy -juggler-pipe -silent
+      - <launched> pid=80733
+      - [pid=80733][err] *** You are running in headless mode.
+      - [pid=80733][err] Could not find profile folder.
+      - [pid=80733] <process did exit: exitCode=1, signal=null>
+      - [pid=80733] starting temporary directories cleanup
+      - [pid=80733] <gracefully close start>
+      - [pid=80733] <kill>
+      - [pid=80733] <skipped force kill spawnedProcess.killed=false processClosed=true>
+      - [pid=80733] finished temporary directories cleanup
+      - [pid=80733] <gracefully close end>
+
+
+    Error Context: docs/engineering/implementation-publication-2026-09-14/final-03/compare-firefox/core-flows-compare-change--f71f8-lations-discard-preserves-A-firefox/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/final-03/compare-firefox/core-flows-compare-change--f71f8-lations-discard-preserves-A-firefox/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/implementation-publication-2026-09-14/final-03/compare-firefox/core-flows-compare-change--f71f8-lations-discard-preserves-A-firefox/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [firefox] › tests/e2e/core-flows/compare-change.spec.js:23:5 › CMP01–04 edit manual B, points only for comparable populations, discard preserves A 

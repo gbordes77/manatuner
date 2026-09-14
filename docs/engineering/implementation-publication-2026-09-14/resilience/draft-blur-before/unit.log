@@ -1,0 +1,29 @@
+
+ RUN  v4.1.11 /Volumes/DataDisk/_Projects/Project Mana base V2
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx (11 tests | 1 failed) 434ms
+     × flushes on blur even while the route keeps its previous editor mounted 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx > leaving the editor before lazy route unmount > flushes on blur even while the route keeps its previous editor mounted
+AssertionError: expected "vi.fn()" to be called once with arguments: [ '25 Mountain\n35 Lightning Bolt' ]
+
+Number of calls: 0
+
+ ❯ src/components/analyzer/__tests__/DeckInputSection.debounce.test.tsx:221:25
+    219|     fireEvent.change(input, { target: { value: '25 Mountain\n35 Lightn…
+    220|     fireEvent.blur(input)
+    221|     expect(setDeckList).toHaveBeenCalledExactlyOnceWith('25 Mountain\n…
+       |                         ^
+    222|     expect(onAnalyze).not.toHaveBeenCalled()
+    223|     act(() => vi.advanceTimersByTime(1000))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 10 passed (11)
+   Start at  07:18:22
+   Duration  1.75s (transform 55ms, setup 74ms, import 791ms, tests 434ms, environment 360ms)
+

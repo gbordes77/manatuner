@@ -1,3 +1,4 @@
+import { ShareContext } from '../components/analyzer/ShareContext'
 import { ANALYZER_TABS } from '../data/analyzerTabs'
 import AnalyticsIcon from '@mui/icons-material/Analytics'
 import AssessmentIcon from '@mui/icons-material/Assessment'
@@ -54,6 +55,9 @@ import { buildShareUrl, parseShareParams } from '../utils/urlCodec'
 
 // Audit fix perf (2026-04-13): lazy-load PrivacySettings to drop ~14 KB gzip
 // from the first AnalyzerPage paint (DOMPurify ships inside this component).
+const CompareChange = React.lazy(() =>
+  import('../components/analyzer/CompareChange').then((m) => ({ default: m.CompareChange }))
+)
 const PrivacySettings = React.lazy(() => import('../components/PrivacySettings'))
 
 // Lazy-loaded tabs (only loaded when selected)
@@ -90,6 +94,7 @@ const AnalyzerPage: React.FC = () => {
   // (the CTA from the Library's Commander Pod track). Drives a persistent
   // info banner so Thibault sees the preset is actually active, and auto-
   // loads the Atraxa EDH sample if no deck is in state yet.
+  const [compareOpen, setCompareOpen] = useState(false)
   const [focusDeckEditor, setFocusDeckEditor] = useState(false)
   const [commanderPreset, setCommanderPreset] = useState(false)
   const [exactExample, setExactExample] = useState(false)
@@ -184,7 +189,9 @@ const AnalyzerPage: React.FC = () => {
       }
     }
 
-    const shared = parseShareParams()
+    const shared = parseShareParams((message) =>
+      dispatch(showSnackbar({ message, severity: 'error' }))
+    )
     if (shared && shared.deckList) {
       dispatch(setDeckList(shared.deckList))
       if (shared.deckName) dispatch(setDeckName(shared.deckName))
@@ -786,6 +793,18 @@ const AnalyzerPage: React.FC = () => {
                 </Box>
               ) : (
                 <div data-testid="analysis-results">
+                  <Button variant="outlined" onClick={() => setCompareOpen(true)} sx={{ mb: 2 }}>
+                    Compare a change
+                  </Button>
+                  {compareOpen && (
+                    <Suspense fallback={<Typography>Loading comparison…</Typography>}>
+                      <CompareChange
+                        result={analysisResult}
+                        name={deckName}
+                        onClose={() => setCompareOpen(false)}
+                      />
+                    </Suspense>
+                  )}
                   <Typography
                     variant={isMobile ? 'h6' : 'h5'}
                     gutterBottom
@@ -825,6 +844,8 @@ const AnalyzerPage: React.FC = () => {
                       />
                     )}
                   </Typography>
+
+                  <ShareContext result={analysisResult} name={deckName} />
 
                   {/* One-phrase verdict — Léo persona ask: "tell me plainly
                       whether my deck is good before I read 5 tabs". */}

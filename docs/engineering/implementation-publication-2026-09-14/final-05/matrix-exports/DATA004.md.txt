@@ -1,0 +1,13 @@
+# DATA004 — RÉUSSI sur FINAL-05, 14 septembre 2026
+
+Nouveau parcours exécuté sur http://127.0.0.1:4198, profils neufs, viewport réel390×900. Fixture F100-CMD :43Forest,56LlanowarElves et1Atraxa en commandant, sans réserve. Nom long fourni par le champ de nom : «Étude d’Atraxa — Forêts, elfes et stabilité : une base multijoueur à comparer (99 + 1)». Valeur exacte conservée dans lesJSON téléchargés.
+
+**Quatre exports visuels réellement téléchargés et inspectés** : commander-light.png, commander-light.pdf, commander-dark.png, commander-dark.pdf. Le nom accentué est lisible sur deux lignes sans découpe, titre et chiffres des sections restent associés, bibliothèque99 + commandant1 explicites avec nomAtraxa ; terrains43,sorts56,CMC1,0,proportion43% et stabilité96 visibles. Opening Hand77/77/19/4 et titre sont ensemble surpage2 du PDF. Probabilités affichées98/99/100/100 correspondent aux arrondis des donnéesJSON. Aucune nouvelle formule calculée par cette sonde.
+
+PNG1440×3008, dimensions complètes cohérentes avec carte720×1503,375 capturée àéchelle2. Inspection visuelle du PNG entier et des rendusPDF pypdfium2. Chaque PDF comporte2pages. Les deuxPNG sont identiques octet pour octet ; les rendus des deuxPDF le sont également pour chaque page. C'est attendu : la palette du Blueprint est fixe, tandis que les deux parcours démarrent réellement avec les thèmesUI clair/sombre dans leurs stockages locaux séparés. Les captures *-blueprint.png montrent le contexteUI de chaque parcours ; elles sont distinctes des fichiersPNG exportés sans suffixe.
+
+JSON/CSV/TXT supplémentaires téléchargés pour les comparaisons, texte du dialogue identique auTXT. Recette officielle read-blueprint-csv.py exécutée sur chacun desCSV :99bibliothèque,43terrains,1commandant,0réserve. Voir inspection.json et results.json. Script de reproduction : ../../exports/matrix-exports.mjs ; EXPORT_BASE_URL4198 et EXPORT_OUTPUT absolu vers ce dossier. Aucun presse-papiers réel utilisé, aucune modification source.
+
+Limites conservées : PDF/PNG raster, aucun texte natif PDF (0caractère), PDF≈13Mo par fichier ; les noms/valeurs sont contrôlés visuellement, pas par OCR. L'alternativeTXT contient les zones et données sélectionnables. Pas de lecteur d'écran ou appareil physique déduit de ce succès technique ; ni étude auprès de joueurs. MétadonnéesAPI entièrement mockées localement, aucun test de charge tiers.
+
+**Statut proposé au lead : DATA004 RÉUSSI** pour PNG/PDF clair+sombre, fixtureCommander et nomlongaccentué, avec les limitesci-dessus. Ne pas laisser ce cas NONEXÉCUTÉ pour absence d'inspectionPNG : les fichiers ont maintenant été ouverts et comparés aux données exportées. Aucun défaut nouveau observé.

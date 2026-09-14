@@ -1,0 +1,7 @@
+
+/Volumes/DataDisk/_Projects/Project Mana base V2/src/services/__tests__/collectionTimeout.test.ts
+  105:43  warning  'init' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+
+ESLint found too many warnings (maximum: 0).

@@ -1,0 +1,17 @@
+[
+  {
+    "file": "constructed-page-1.png",
+    "identicalToVisuallyInspectedFinal07": true,
+    "sha256": "f64fc04288a96f49b33a8d19b5a61b03be46eae77be65800c36789e117ca65a5"
+  },
+  {
+    "file": "constructed-page-2.png",
+    "identicalToVisuallyInspectedFinal07": true,
+    "sha256": "27957337633a82252e1d36c2eaa8bacd1fa6c53c6697ca14aa5c7e934adc881e"
+  },
+  {
+    "file": "commander-page-1.png",
+    "identicalToVisuallyInspectedFinal07": true,
+    "sha256": "a2ded3dabff1fc521e76f5edfecfa5023510cb5d456a4ee46080df55129538dd"
+  }
+]

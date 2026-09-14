@@ -12,6 +12,7 @@ export default defineConfig({
     exclude: [
       "node_modules/**",
       "tests/e2e/**",
+      "docs/**", // Historical audit runners use Playwright, not Vitest
       "scripts/delivery-gate.test.mjs", // Uses node:test; executed separately by the delivery gate
       "**/node_modules/**",
       ".claude/**", // claude-code worktrees shadow the main test tree

@@ -1,8 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { fetchWithTimeout, HttpTimeoutError } from '../http'
+let fetchWithTimeout: typeof import('../http').fetchWithTimeout
+let HttpTimeoutError: typeof import('../http').HttpTimeoutError
 
 describe('fetchWithTimeout (T05)', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    vi.resetModules()
+    ;({ fetchWithTimeout, HttpTimeoutError } = await import('../http'))
     vi.useFakeTimers()
   })
 

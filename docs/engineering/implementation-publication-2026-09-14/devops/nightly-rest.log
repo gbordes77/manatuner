@@ -1,0 +1,87 @@
+[WebServer] (node:69801) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+[WebServer] (node:69829) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+
+Running 73 tests using 1 worker
+
+(node:69837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:28:7 › Accessibility smoke (EN) › Home page — axe critical/serious clear
+[2/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:38:7 › Accessibility smoke (EN) › Analyzer empty — axe critical/serious clear
+[3/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:51:7 › Accessibility smoke (EN) › Analyzer with fixed card metadata — no critical/serious axe
+[4/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:71:7 › Accessibility smoke (EN) › Analyzer navigation is unique in the active desktop or mobile menu
+[5/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:87:7 › Accessibility smoke (EN) › Keyboard: tab reaches primary actions on home
+[6/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:98:7 › Accessibility smoke (EN) › Footer contrast text is readable (grey.800 / grey.300)
+[7/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:111:7 › Accessibility smoke (EN) › Home hero shows product preview (P2-2)
+[8/73] [chromium] › tests/e2e/accessibility/a11y.spec.js:117:7 › Accessibility smoke (EN) › Analyzer primary buttons use text + icons (no emoji-only)
+[9/73] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Enter at 1440px
+[10/73] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with Space at 768px
+[11/73] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with pointer at 360px
+[12/73] [chromium] › tests/e2e/accessibility/edit-deck-keyboard.spec.js:12:7 › Edit Deck restores content and focus with touch at 360px
+[13/73] [chromium] › tests/e2e/core-flows/analyzer-recovery.spec.js:4:7 › Legacy minimized deck recovers, analyzes and remains usable after reload (24 Forest)
+[14/73] [chromium] › tests/e2e/core-flows/analyzer-recovery.spec.js:4:7 › Legacy minimized deck recovers, analyzes and remains usable after reload (empty)
+[15/73] [chromium] › tests/e2e/core-flows/audit-wave-c-verify.spec.js:14:7 › Audit verification (automated) › shell: Learn nav + Feedback entry points
+[16/73] [chromium] › tests/e2e/core-flows/audit-wave-c-verify.spec.js:74:7 › Audit verification (automated) › EDH sample auto-detects Commander format family
+[17/73] [chromium] › tests/e2e/core-flows/audit-wave-c-verify.spec.js:104:7 › Audit verification (automated) › Limited sample auto-detects Limited
+[18/73] [chromium] › tests/e2e/core-flows/audit-wave-c-verify.spec.js:120:7 › Audit verification (automated) › sideboard main/post-board toggle when SB present
+[19/73] [chromium] › tests/e2e/core-flows/cancellation-audit.spec.js:3:5 › F05 Clear during metadata resolution aborts the pending request and remains empty after reload
+[20/73] [chromium] › tests/e2e/core-flows/final-audit.spec.js:10:5 › E02 mobile manabase tabs show their complete labels and open the deck
+[21/73] [chromium] › tests/e2e/core-flows/final-audit.spec.js:31:5 › V05 blueprint JSON matches results and PNG/PDF retain the whole tall blueprint
+[22/73] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 768px
+[23/73] [chromium] › tests/e2e/core-flows/final-audit.spec.js:64:7 › NR-M21/M27 shared deck survives direct navigation and back at 1440px
+[24/73] [chromium] › tests/e2e/core-flows/final-audit.spec.js:110:5 › NR-M24 global metadata outage reports an error and the same deck can be retried
+[25/73] [chromium] › tests/e2e/core-flows/history-audit.spec.js:27:5 › F06 mixed damaged history retains valid cards and old raw deck without rewriting source
+[26/73] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 invalid import preserves existing history and reports outcome
+[27/73] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 quota import preserves existing history and reports outcome
+[28/73] [chromium] › tests/e2e/core-flows/history-audit.spec.js:51:7 › F06 merge import preserves existing history and reports outcome
+[29/73] [chromium] › tests/e2e/core-flows/history-audit.spec.js:84:5 › F06 comparison handles validated results and F03 unavailable score
+[30/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via typing without resolution or save
+[31/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via typing without resolution or save
+[32/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via share without resolution or save
+[33/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via share without resolution or save
+[34/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "nonsense without quantities" via restore without resolution or save
+[35/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:11:9 › F01 rejects "1000000 Forest" via restore without resolution or save
+[36/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:58:5 › F01 reports the offending line and retains valid experimental decks
+[37/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 excluded sections: saved populations match input
+[38/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 local SB prefix and transitions: saved populations match input
+[39/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:88:7 › F02 categories and blank lines: saved populations match input
+[40/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 40 basics through analyzeDeck and persists the correct population
+[41/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 60 basics through analyzeDeck and persists the correct population
+[42/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 99 basics through analyzeDeck and persists the correct population
+[43/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:113:7 › F01 accepts 100 basics through analyzeDeck and persists the correct population
+[44/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:134:5 › F02 preserves post-board swaps and returning to the main population
+[45/73] [chromium] › tests/e2e/core-flows/input-contract-audit.spec.js:159:5 › NR-M11 independent white T1 demand: 24 Plains / 36 Savannah Lions rounds to 98% in exact mode
+[46/73] [chromium] › tests/e2e/core-flows/main-user-flows.spec.js:4:5 › Deck draft survives a real browser reload without analysis
+[47/73] [chromium] › tests/e2e/core-flows/p1-9-edh-verify.spec.js:18:7 › P1-9 EDH deeper › sample=edh: commander banner, horizon, command zone, scaled manabase
+[48/73] [chromium] › tests/e2e/core-flows/p1-9-edh-verify.spec.js:65:7 › P1-9 EDH deeper › format=commander hydrates Atraxa + banner
+[49/73] [chromium] › tests/e2e/core-flows/payment-policy.spec.js:39:5 › Policy worker: physical fetch target, life reserve, export and stale result clearing
+[50/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:54:5 › T04 home exact example starts supported and agrees with independent opening-hand oracle
+[51/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:73:5 › T07 JSON and CSV retain deck identity, totals, engine and score definitions
+[52/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:110:5 › T07 real clipboard share opens in a separate clean browser context
+[53/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:145:7 › T08 exact example keyboard and viewport 360 in light and dark themes
+[54/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:145:7 › T08 exact example keyboard and viewport 390 in light and dark themes
+[55/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:145:7 › T08 exact example keyboard and viewport 768 in light and dark themes
+[56/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:145:7 › T08 exact example keyboard and viewport 1440 in light and dark themes
+[57/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:208:5 › T03 real midrange persists explicit unsupported reasons across reload
+[58/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:229:5 › T03 compatible 24 and 20 Plains builds compare actual saved probabilities
+[59/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:277:5 › T05 multiplayer control exposes the free redraw contract and toggles without simulation
+[60/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:295:5 › T04/T07 public Atraxa example keeps 99 plus commander, four colors, EDH horizon and CSV zones
+[61/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:342:5 › T05 real 3k worker distinguishes free and paid mulligan results and guidance
+[62/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:395:5 › R03 identical saved builds show equality without an unavailable result
+[63/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:411:5 › R03 unsupported midrange groups shared reasons and keeps spell details accessible
+[64/73] [chromium] › tests/e2e/core-flows/persona-followup.spec.js:444:5 › R03/R05 synthetic snapshot boundary keeps zero distinct from unavailable
+[65/73] [chromium] › tests/e2e/core-flows/privacy-audit.spec.js:3:5 › F12 detailed policy discloses third parties, deletion limits and disabled candidate monitoring
+[66/73] [chromium] › tests/e2e/core-flows/probability-recovery.spec.js:6:5 › Selesnya Limited: numeric estimates, play/draw, ramp and operational exact goldfish
+[67/73] [chromium] › tests/e2e/core-flows/probability-recovery.spec.js:92:5 › Review: result tabs, JSON export, local history and loading another saved deck
+[68/73] [chromium] › tests/e2e/core-flows/probability-recovery.spec.js:147:5 › Post-board estimates use the incoming land and restore main-deck sources
+[69/73] [chromium] › tests/e2e/core-flows/probability-recovery.spec.js:179:5 › Transform spell front-face cost reaches the table and saved analysis
+[70/73] [chromium] › tests/e2e/core-flows/sideboard-banner-n.spec.js:26:3 › EDGE-SIDEBOARD banner N=main › format-family-banner shows lands in 60, not 75
+[71/73] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:33:5 › F03 hybrid can be supported by green, with honest target limitation and exact detail
+[72/73] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:46:5 › F03 strict RG still reports missing red and phyrexian score is unavailable
+[73/73] [chromium] › tests/e2e/core-flows/synthesis-audit.spec.js:59:5 › F04 adding a blue sideboard does not change the red main-deck verdict
+  73 passed (1.9m)

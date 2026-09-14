@@ -1,3 +1,10 @@
+import {
+  KARSTEN_REFERENCE_TABLE,
+  KARSTEN_REFERENCE_URL,
+  KARSTEN_UU_REFERENCE,
+  KARSTEN_REFERENCE_SCOPE,
+  KARSTEN_MULLIGAN_POLICY,
+} from '../data/karstenReference'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CalculateIcon from '@mui/icons-material/Calculate'
 import CasinoIcon from '@mui/icons-material/Casino'
@@ -37,12 +44,6 @@ import { SEO } from '../components/common/SEO'
 
 const MathematicsPage: React.FC = () => {
   const navigate = useNavigate()
-
-  const karstenTable = [
-    { cost: '1 Colored (e.g. {R}, {1}{U})', t1: '14', t2: '13', t3: '12', t4: '10' },
-    { cost: '2 Same (e.g. {U}{U})', t1: '-', t2: '21', t3: '18', t4: '16' },
-    { cost: '3 Same (e.g. {B}{B}{B})', t1: '-', t2: '-', t3: '23', t4: '21' },
-  ]
 
   return (
     <Container maxWidth="lg" sx={{ py: 4, position: 'relative' }}>
@@ -227,7 +228,7 @@ const MathematicsPage: React.FC = () => {
                 </Box>
                 <Typography variant="body1" paragraph>
                   Having enough lands is only half the puzzle. You need the <em>right colors</em> at
-                  the right time — 21 blue sources to cast Counterspell on turn 2.
+                  the right time. {KARSTEN_UU_REFERENCE}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   <strong>ManaTuner tells you</strong> source-count guidelines for each color your
@@ -840,16 +841,14 @@ const MathematicsPage: React.FC = () => {
               Frank Karsten is a <strong>Magic Pro Tour Hall of Famer</strong> and PhD
               mathematician. His{' '}
               <Link
-                href="https://www.channelfireball.com/article/How-Many-Sources-Do-You-Need-to-Consistently-Cast-Your-Spells-A-2022-Update/dc23a7d2-0a16-4c0b-ad36-586fcca03ad8/"
+                href={KARSTEN_REFERENCE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ fontWeight: 600 }}
               >
                 2022 research
               </Link>{' '}
-              provides the following 60-card reference table. It targets conditional color
-              consistency of 89% plus the mana value, under its stated land count and mulligan
-              policy:
+              provides this reference for 60 cards with 25 lands. {KARSTEN_REFERENCE_SCOPE}
             </Typography>
 
             <TableContainer component={Paper} sx={{ my: 3, borderRadius: 2 }}>
@@ -880,7 +879,7 @@ const MathematicsPage: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {karstenTable.map((row, i) => (
+                  {KARSTEN_REFERENCE_TABLE.map((row, i) => (
                     <TableRow key={i} sx={{ '&:hover': { bgcolor: '#f5f5f5' } }}>
                       <TableCell>{row.cost}</TableCell>
                       <TableCell align="center">
@@ -902,9 +901,15 @@ const MathematicsPage: React.FC = () => {
             </TableContainer>
 
             <Typography variant="body2" color="text.secondary">
-              <strong>How to read this:</strong> If your deck has a spell that costs {'{U}{U}'} and
-              you want to cast it on turn 2 reliably, the published 60-card table recommends 21 blue
-              sources. If you're OK casting it on turn 3 instead, 18 sources are enough.
+              <strong>How to read this:</strong> {KARSTEN_UU_REFERENCE}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              {KARSTEN_MULLIGAN_POLICY}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              The table is a color-consistency reference, not a guarantee of land drops or a
+              recommendation to remove a particular spell. ManaTuner’s default no-mulligan estimate
+              answers a different question.
             </Typography>
           </AccordionDetails>
         </Accordion>

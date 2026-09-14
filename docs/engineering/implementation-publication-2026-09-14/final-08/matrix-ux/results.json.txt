@@ -1,0 +1,16 @@
+[
+  {
+    "check": "analyzed deck after Guide/back",
+    "pass": true,
+    "resultShown": true
+  },
+  {
+    "check": "saved deck reload",
+    "pass": true,
+    "resultShown": false
+  },
+  {
+    "check": "unanalysed edited draft after Guide/back/reload",
+    "pass": true
+  }
+]

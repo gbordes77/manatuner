@@ -1,0 +1,13 @@
+ M AGENTS.md
+ M HANDOFF.md
+ M README.md
+ M SESSION_NOTES.md
+?? .claude/worktrees/
+?? docs/engineering/implementation-publication-2026-09-14/
+?? docs/handoff/PROMPT-AUDIT-PRECOMMUNICATION-2026-09-13.md
+?? docs/handoff/PROMPT-IMPLEMENTATION-PUBLICATION-2026-09-14.md
+?? docs/handoff/PROMPT-LANCEMENT-AUDIT-PRECOMMUNICATION-2026-09-13.txt
+?? docs/handoff/PROMPT-LANCEMENT-IMPLEMENTATION-2026-09-14.txt
+?? docs/product/BACKLOG-ACTIF-2026-09-14.csv
+?? docs/product/EVOLUTION-COMPARE-2026-09-14.md
+?? docs/quality/

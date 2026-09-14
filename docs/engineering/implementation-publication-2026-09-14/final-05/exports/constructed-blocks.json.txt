@@ -1,0 +1,41 @@
+{
+  "width": 720,
+  "height": 1442.59375,
+  "blocks": [
+    {
+      "top": 24,
+      "bottom": 125.5,
+      "title": "◆ MANA BLUEPRINTUnnamed DeckConstructed60 cardsManaTuner"
+    },
+    {
+      "top": 314.28125,
+      "bottom": 505.53125,
+      "title": "Engine 2.7.9 · Blueprint Stability combines Health (40%), land-ratio balance around 40% la"
+    },
+    {
+      "top": 505.53125,
+      "bottom": 638.59375,
+      "title": "HEURISTIC MANA STABILITY INDEX99ExcellentWeighted color access and land balance; not spell"
+    },
+    {
+      "top": 662.59375,
+      "bottom": 818.015625,
+      "title": "HYPERGEOMETRIC PROBABILITY MATRIXT1T2T3T4White98%99%99%100%"
+    },
+    {
+      "top": 842.015625,
+      "bottom": 947.515625,
+      "title": "🏔️24Lands⚡36Spells📊1.0Avg CMC🎯40%Land %"
+    },
+    {
+      "top": 971.515625,
+      "bottom": 1197.1875,
+      "title": "OPENING HAND ANALYSISPerfect Hand (2-4 lands + early play)77%Good Hand (2-4 lands)77%Borde"
+    },
+    {
+      "top": 1221.1875,
+      "bottom": 1359.671875,
+      "title": "💡 SUGGESTIONS⚠️ Heuristics only — not mathematical certainties. Your meta and playstyle m"
+    }
+  ]
+}

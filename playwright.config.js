@@ -7,9 +7,10 @@ export default defineConfig({
   // Analyzer E2E hits Scryfall — one local retry absorbs parallel rate-limit flakes
   retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
+  outputDir: process.env.PLAYWRIGHT_TEST_OUTPUT || 'test-results',
   reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results.json' }],
+    ['html', { outputFolder: process.env.PLAYWRIGHT_HTML_OUTPUT || 'playwright-report' }],
+    ['json', { outputFile: process.env.PLAYWRIGHT_JSON_OUTPUT || 'test-results.json' }],
     ['github']
   ],
   use: {

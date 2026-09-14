@@ -101,6 +101,46 @@ function parseRetryAfterMs(header: string | null, attempt: number): number {
   return Number.isFinite(date) ? Math.max(0, date - Date.now()) : fallback
 }
 
+// One queue for every API consumer (collection, fallback, metadata, images, retries).
+// The browser provides User-Agent; Accept is explicit below. No proxy or deck upload.
+const SCRYFALL_REQUEST_INTERVAL_MS = 110
+let scryfallQueue: Promise<unknown> = Promise.resolve()
+let scryfallNextRequestAt = 0
+
+function pacedScryfallFetch(
+  url: string,
+  init: RequestInit,
+  signal: AbortSignal,
+  attempt: number
+): Promise<Response> {
+  const queued = scryfallQueue.then(async () => {
+    throwIfAborted(signal)
+    while (scryfallNextRequestAt > Date.now()) {
+      await abortableDelay(scryfallNextRequestAt - Date.now(), signal)
+    }
+    throwIfAborted(signal)
+    const headers = new Headers(init.headers)
+    if (!headers.has('Accept')) headers.set('Accept', 'application/json;q=0.9,*/*;q=0.8')
+    const requestInit = { ...init, headers, signal }
+    throwIfAborted(signal)
+    // Anchor spacing to dispatch, after potentially costly first-use preparation.
+    scryfallNextRequestAt = Date.now() + SCRYFALL_REQUEST_INTERVAL_MS
+    const response = await abortable(fetch(url, requestInit), signal)
+    throwIfAborted(signal)
+    // Even the last allowed attempt slows subsequent requests after throttling.
+    if (response.status === 429 || response.status === 503) {
+      scryfallNextRequestAt = Math.max(
+        scryfallNextRequestAt,
+        Date.now() + parseRetryAfterMs(response.headers.get('Retry-After'), attempt)
+      )
+    }
+    return response
+  })
+  // A failed/cancelled request must never poison the queue for subsequent analyses.
+  scryfallQueue = queued.catch(() => {})
+  return abortable(queued, signal)
+}
+
 async function request<T>(
   url: string,
   init: RequestInit,
@@ -112,7 +152,9 @@ async function request<T>(
     async (signal) => {
       for (let attempt = 0; ; attempt++) {
         throwIfAborted(signal)
-        const response = await abortable(fetch(url, { ...init, signal }), signal)
+        const response = url.startsWith('https://api.scryfall.com/')
+          ? await pacedScryfallFetch(url, init, signal, attempt)
+          : await abortable(fetch(url, { ...init, signal }), signal)
         throwIfAborted(signal)
         if (
           (response.status === 429 || (response.status >= 500 && response.status <= 599)) &&

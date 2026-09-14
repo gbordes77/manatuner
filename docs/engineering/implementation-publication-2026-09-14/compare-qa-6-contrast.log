@@ -1,0 +1,45 @@
+
+Running 1 test using 1 worker
+
+(node:74458) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/1] [chromium] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast
+[chromium] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast
+[{"text":"Compare a change","color":"rgb(10, 79, 133)","background":"rgb(25, 26, 31)","ratio":2.0432082105337797,"threshold":4.5},{"text":"A — Original","color":"rgb(44, 44, 44)","background":"rgb(25, 26, 31)","ratio":1.2439112367951444,"threshold":4.5},{"text":"List changes before calculation","color":"rgb(44, 44, 44)","background":"rgb(25, 26, 31)","ratio":1.2439112367951444,"threshold":4.5}]
+
+  1) [chromium] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast 
+
+    Error: Compare a change
+
+    expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 4.5
+    Received:    2.0432082105337797
+
+      192 |   await info.attach('heading-contrast', { body: JSON.stringify(findings, null, 2), contentType: 'application/json' })
+      193 |   console.log(JSON.stringify(findings))
+    > 194 |   for (const finding of findings) expect(finding.ratio, finding.text).toBeGreaterThanOrEqual(finding.threshold)
+          |                                                                       ^
+      195 | })
+      196 |
+        at /Volumes/DataDisk/_Projects/Project Mana base V2/tests/e2e/core-flows/compare-change.spec.js:194:71
+
+    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/compare-qa-6-contrast/core-flows-compare-change--2a6d4-gs-retain-readable-contrast-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: docs/engineering/implementation-publication-2026-09-14/compare-qa-6-contrast/core-flows-compare-change--2a6d4-gs-retain-readable-contrast-chromium/error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    docs/engineering/implementation-publication-2026-09-14/compare-qa-6-contrast/core-flows-compare-change--2a6d4-gs-retain-readable-contrast-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace docs/engineering/implementation-publication-2026-09-14/compare-qa-6-contrast/core-flows-compare-change--2a6d4-gs-retain-readable-contrast-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  1 failed
+    [chromium] › tests/e2e/core-flows/compare-change.spec.js:179:5 › CMP dark dialog headings retain readable contrast 

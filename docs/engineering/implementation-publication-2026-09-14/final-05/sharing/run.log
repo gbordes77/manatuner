@@ -1,0 +1,19 @@
+[
+  {
+    id: 'current-share',
+    result: 'PASS',
+    clipboard: 'actual Chromium clipboard read; second context and reload',
+    scope: 'deck/name restored; active tab checked after analyze'
+  },
+  {
+    id: 'context-clipboard',
+    result: 'PASS',
+    scope: 'actual clipboard equals preview; names absent by default'
+  },
+  { id: 'legacy-page-reload', result: 'PASS' },
+  {
+    id: 'oversized-ui',
+    result: 'PASS',
+    scope: 'error shown and previous deck preserved'
+  }
+]

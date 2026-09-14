@@ -1,0 +1,16 @@
+[
+  {
+    check: 'analyzed deck after Guide/back',
+    pass: true,
+    resultShown: true
+  },
+  { check: 'saved deck reload', pass: true, resultShown: false },
+  {
+    pass: false,
+    error: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      "+ '24 Mountain\\n36 Lightning Bolt'\n" +
+      "- '25 Mountain\\n35 Lightning Bolt'\n"
+  }
+]

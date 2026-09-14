@@ -1,0 +1,12 @@
+{
+  "initialTotal": 482,
+  "unchangedExceptIntentionalTracking": 478,
+  "changedTracking": [
+    "AGENTS.md",
+    "HANDOFF.md",
+    "README.md",
+    "SESSION_NOTES.md"
+  ],
+  "unexpectedChanges": [],
+  "sourceMismatch": []
+}

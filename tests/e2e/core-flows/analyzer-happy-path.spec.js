@@ -37,7 +37,7 @@ test.describe('Analyzer happy path (P0)', () => {
     // Results shell + verdict
     await expect(page.getByTestId('analysis-results')).toBeVisible({ timeout: 90000 })
     await expect(page.getByTestId('quick-verdict')).toBeVisible({ timeout: 15000 })
-    await expect(page.getByText(/Health Score/i)).toBeVisible()
+    await expect(page.getByTestId('quick-verdict').locator('#health-score-label')).toBeVisible()
 
     // No fatal error UI on Castability (default tab)
     await expect(page.getByText(/Something went wrong|could not be cloned|DataCloneError/i)).toHaveCount(
