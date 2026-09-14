@@ -132,3 +132,7 @@ Lire `docs/engineering/implementation-publication-2026-09-14/00-SYNTHESE.md`, pu
 Prochaine action conditionnelle : obtenir la confirmation visuelle déjà demandée au propriétaire selon §4 de la mission, puis vérifier hooks/candidat/SHA origin/main, pousser main normalement et suivre le déploiement natif sur le projet Vercel existant. Ne pas redemander une autorisation générale ni annoncer une publication absente. Tant que cette confirmation manque, garder push et production en attente. Le registre PUBLICATION.md porte le statut Git exact.
 
 Réserves : B07 différé, B08/CMP07 humains non exécutés, communication large réservée ; Firefox/environnement, appareils physiques, lecteur écran, tableur réel et juridique restent distincts. Les essais rouges de cette campagne sont conservés, dont collision clipboard de deux sondes et cadence initiale trop courte corrigée.
+
+## Reprise publication — 14 septembre 2026
+
+Après présentation du candidat final-08, le propriétaire a donné l’instruction explicite « ok commit push ». L’attente de confirmation est levée par cette instruction ; aucune inspection visuelle humaine supplémentaire n’est prétendue. Le commit applicatif6bc960f est validé, ses208fichiers source correspondent toujours au manifeste final-08. Publication par push normal origin/main puis intégration Vercel native existante ; CI, identité du déploiement et smoke seront consignés dans publication-verifiee/ après exécution. Les mentions d’attente antérieures sont historiques. Les réserves humaines, Firefox et protocoles partiels restent inchangées.

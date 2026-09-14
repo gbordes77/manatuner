@@ -1,3 +1,9 @@
+## Reprise publication — 14 septembre 2026
+
+Après présentation du candidat final-08, le propriétaire a donné l’instruction explicite « ok commit push ». L’attente de confirmation est levée par cette instruction ; aucune inspection visuelle humaine supplémentaire n’est prétendue. Le commit applicatif6bc960f est validé, ses208fichiers source correspondent toujours au manifeste final-08. Publication par push normal origin/main puis intégration Vercel native existante ; CI, identité du déploiement et smoke seront consignés dans publication-verifiee/ après exécution. Les mentions d’attente antérieures sont historiques. Les réserves humaines, Firefox et protocoles partiels restent inchangées.
+
+---
+
 # ManaTuner — bilan du 14 septembre 2026
 
 **Candidat final : final-08, sur main.** Les changements sont implémentés et les validations finales ci-dessous sont acquises. Aucun push ni déploiement de cette mission à la rédaction. La confirmation visuelle du propriétaire, demandée selon le §4 de la mission, reste en attente. L’autorisation générale de publication est déjà acquise.

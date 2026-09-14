@@ -1,3 +1,9 @@
+## Reprise publication — 14 septembre 2026
+
+Après présentation du candidat final-08, le propriétaire a donné l’instruction explicite « ok commit push ». L’attente de confirmation est levée par cette instruction ; aucune inspection visuelle humaine supplémentaire n’est prétendue. Le commit applicatif6bc960f est validé, ses208fichiers source correspondent toujours au manifeste final-08. Publication par push normal origin/main puis intégration Vercel native existante ; CI, identité du déploiement et smoke seront consignés dans publication-verifiee/ après exécution. Les mentions d’attente antérieures sont historiques. Les réserves humaines, Firefox et protocoles partiels restent inchangées.
+
+---
+
 # État Git et publication
 
 Autorisation générale reçue pour commit main, origin/main et projet Vercel existant. Condition visuelle du prompt §4 encore pendante : le push déclenchant potentiellement production, il reste en attente. Aucun contournement du circuit natif.

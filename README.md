@@ -302,3 +302,5 @@ Documentation produit : [demande Compare révisée après revue des six personas
 Le candidat local ajoute une comparaison depuis les résultats : conserver l'analyse originale, modifier une variante, examiner les différences et sauvegarder séparément. Le partage propose un texte de contexte facultatif ; les liens conservent leur format. Blueprint fournit un rapport texte et une pagination PDF améliorée. Les références éditoriales, la compatibilité des liens, les bornes d'entrée et la cadence Scryfall sont renforcées.
 
 La disponibilité publique de ces changements doit être vérifiée dans le [bilan de livraison](docs/engineering/implementation-publication-2026-09-14/00-SYNTHESE.md) ; cette section ne constitue pas une annonce de déploiement. Les avis par personas sont simulés et ne remplacent pas une étude utilisateurs.
+
+Publication du candidat du14septembre autorisée après présentation. Le [registre de publication](docs/engineering/implementation-publication-2026-09-14/PUBLICATION.md) distingue la préparation des vérifications distantes.
